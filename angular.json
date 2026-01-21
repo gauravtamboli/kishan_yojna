@@ -28,6 +28,15 @@
             ],
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",
+
+            "budgets": [
+              {
+                "type": "anyComponentStyle",
+                "maximumWarning": "10kb",
+                "maximumError": "15kb"
+              }
+            ],
+
             "assets": [
               {
                 "glob": "**/*",
@@ -41,7 +50,11 @@
               "node_modules/@ng-select/ng-select/themes/default.theme.css"
             ],
             "scripts": [],
-            "browser": "src/main.ts"
+            "browser": "src/main.ts",
+            "allowedCommonJsDependencies": [
+              "canvg",
+              "core-js"
+            ]
           },
           "configurations": {
             "production": {
@@ -50,11 +63,6 @@
                   "type": "initial",
                   "maximumWarning": "2mb",
                   "maximumError": "5mb"
-                },
-                {
-                  "type": "anyComponentStyle",
-                  "maximumWarning": "10kb",
-                  "maximumError": "15kb"
                 }
               ],
               "fileReplacements": [
@@ -87,7 +95,7 @@
               "buildTarget": "app:build:development"
             },
             "ci": {
-              "progress": false
+              "buildTarget": "app:build:ci"
             }
           },
           "defaultConfiguration": "development"
