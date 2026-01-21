@@ -57,18 +57,36 @@ export class YearSelectPage implements OnInit {
   async selectYear(year: number): Promise<void> {
     try {
       await this.storageService.set('current_year', year);
-      await this.storageService.set('current_session', this.years.find(y => y.years === year)?.label || '');
+      await this.storageService.set(
+        'current_session',
+        this.years.find(y => y.years === year)?.label || ''
+      );
 
-      if (this.userDesignation === '4') {
-        await this.router.navigateByUrl(
-          '/officers-dashboard-ro',
-          { replaceUrl: true }
-        );
+      const designation = Number(this.userDesignation);
+      let route = '/not-found-page';
+
+      switch (designation) {
+        case 1:
+          route = '/officers-dashboard-circle'; // Circle/CFO
+          break;
+
+        case 2:
+          route = '/officers-dashboard'; // DFO
+          break;
+
+        case 3:
+          route = '/officers-dashboard-sdo'; // SDO
+          break;
+
+        case 4:
+          route = '/officers-dashboard-ro'; // RO
+          break;
+        case 7:
+          route = '/officers-dashboard-supreme'; // SUPER ADMIN
+          break;
       }
 
-      // else {
-      //   await this.router.navigateByUrl('/dashboard', { replaceUrl: true });
-      // }
+      await this.router.navigateByUrl(route, { replaceUrl: true });
 
     } catch (error) {
       console.error('Failed to select year:', error);

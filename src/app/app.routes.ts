@@ -232,7 +232,11 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/gaon-var-goswara/gaon-var-goswara.page').then(m => m.GaonVarGoswaraPage),
     canActivate: [authGuard]
   },
-  
+   {
+    path: 'not-found-page',
+    loadComponent: () => import('./pages/not-found-page/not-found-page.component').then(m => m.NotFoundPageComponent),
+    canActivate: [authGuard]
+  },
 
 
 ];
