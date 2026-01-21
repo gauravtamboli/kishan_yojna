@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">KisanVrikshMitraYojna</string>
+    <string name="title_activity_main">KisanVrikshMitraYojna</string>
+    <string name="package_name">com.kisan_vriksh_mitra_yojna</string>
+    <string name="custom_url_scheme">com.kisan_vriksh_mitra_yojna</string>
+</resources>

@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../../../../../../node_modules/capacitor-sms-retriever/dist/esm/web.js"],
+  "sourcesContent": ["import { WebPlugin } from '@capacitor/core';\nexport class SmsRetrieverWeb extends WebPlugin {\n  getAppSignature() {\n    this.throwUnsupportedError();\n  }\n  requestPhoneNumber() {\n    this.throwUnsupportedError();\n  }\n  startSmsReceiver() {\n    this.throwUnsupportedError();\n  }\n  removeSmsReceiver() {\n    this.throwUnsupportedError();\n  }\n  throwUnsupportedError() {\n    throw this.unavailable('SMS retriever API not available in this browser.');\n  }\n}\n"],
+  "mappings": ";;;;;;AACO,IAAM,kBAAN,cAA8B,UAAU;AAAA,EAC7C,kBAAkB;AAChB,SAAK,sBAAsB;AAAA,EAC7B;AAAA,EACA,qBAAqB;AACnB,SAAK,sBAAsB;AAAA,EAC7B;AAAA,EACA,mBAAmB;AACjB,SAAK,sBAAsB;AAAA,EAC7B;AAAA,EACA,oBAAoB;AAClB,SAAK,sBAAsB;AAAA,EAC7B;AAAA,EACA,wBAAwB;AACtB,UAAM,KAAK,YAAY,kDAAkD;AAAA,EAC3E;AACF;",
+  "names": []
+}

@@ -1,0 +1,127 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button [defaultHref]="'/officers-dashboard-ro'" (click)="goBack()" class="custom-back-button">
+      </ion-back-button>
+    </ion-buttons>
+    <ion-title class="responsive-toolbar-title">
+      किसान रिपोर्ट
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="container">
+    <!-- <h2>किसान रिपोर्ट</h2> -->
+
+    <!-- Export Button -->
+
+
+    <!-- Loading State -->
+    <div *ngIf="isLoading" class="loading-container">
+      <ion-spinner name="crescent"></ion-spinner>
+      <p>डेटा लोड हो रहा है...</p>
+    </div>
+
+    <!-- Error State -->
+    <div *ngIf="!isLoading && errorMessage" class="error-container">
+      <p>{{ errorMessage }}</p>
+    </div>
+
+    <!-- Data Table -->
+    <ion-card *ngIf="!isLoading && !errorMessage && farmers.length > 0">
+      <ion-card-content>
+
+        <p class="table-info">कुल रिकॉर्ड: <strong>{{ totalCount }}</strong></p>
+
+        <ion-button *ngIf="!isLoading && !errorMessage && farmers.length > 0"
+          style="margin-bottom: 15px; text-align: right;" (click)="exportToExcel()" color="success">
+          <ion-icon slot="start" name="download-outline"></ion-icon>
+          एक्सेल डाउनलोड करें
+        </ion-button>
+
+        <div class="table-container">
+          <table class="farmer-table">
+            <thead>
+              <tr>
+                <th>हितग्राही का नाम</th>
+                <th>पिता का नाम</th>
+                <th>जाति श्रेणी</th>
+                <th>आधार नंबर</th>
+                <th>मोबाइल नंबर</th>
+                <th>पता</th>
+                <th>बैंक का नाम</th>
+                <th>IFSC कोड</th>
+                <th>खाता नंबर</th>
+
+                <th>कक्षा क्रमांक</th>
+                <th>हल्का नंबर / नाम</th>
+                <th>गाँव का नाम</th>
+                <th>ग्राम पंचायत</th>
+                <th>रेत का प्रकार</th>
+                <th>सिंचित/असिंचित</th>
+                <th>आवेदन स्थिति</th>
+                <th>आवेदन नंबर</th>
+                <th>वृक्षारोपण प्रकार</th>
+                <th>क्षेत्र</th>
+                <th>पौधा प्रकार</th>
+                <th>भूमि प्रकार</th>
+                <th>कुल एकड़</th>
+                <th>FRA Land पट्टा नंबर</th>
+                <th>FRA Land कक्षा क्रमांक</th>
+                <th>Revenue Land खसरा नंबर</th>
+                <th>उपलब्ध क्षेत्र</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let farmer of farmers">
+                <td>{{ farmer.hitgrahi_name || 'N/A' }}</td>
+                <td>{{ farmer.father_name || 'N/A' }}</td>
+                <td>{{ farmer.cast_category || 'N/A' }}</td>
+                <td>{{ farmer.aadhar_no || 'N/A' }}</td>
+                <td>{{ farmer.mobile_no || 'N/A' }}</td>
+                <td>{{ farmer.address || 'N/A' }}</td>
+                <td>{{ farmer.bank_name || 'N/A' }}</td>
+                <td>{{ farmer.ifsc_code || 'N/A' }}</td>
+                <td>{{ farmer.account_no || 'N/A' }}</td>
+
+                <td>{{ farmer.kaksha_kramank || 'N/A' }}</td>
+                <td>{{ farmer.halka_no || 'N/A' }}</td>
+                <td>{{ farmer.village_name || 'N/A' }}</td>
+                <td>{{ farmer.gram_panchayat_name || 'N/A' }}</td>
+                <td>{{ farmer.sand_type || 'N/A' }}</td>
+                <td>{{ farmer.sinchit_asinchit || 'N/A' }}</td>
+                <td>{{ farmer.awedan_status_text || farmer.awedan_status || 'N/A' }}</td>
+                <td>{{ farmer.application_number || 'N/A' }}</td>
+                <td>{{ farmer.plantation_type || 'N/A' }}</td>
+                <td>{{ farmer.area || 'N/A' }}</td>
+                <td>{{ farmer.plant_type || 'N/A' }}</td>
+                <td>
+                  {{
+                  farmer.land_type === '1'
+                  ? 'FRA Land'
+                  : farmer.land_type === '2'
+                  ? 'REVENUE Land'
+                  : 'N/A'
+                  }}
+                </td>
+                <td>{{ farmer.total_acre || 'N/A' }}</td>
+                <td>{{ farmer.patta_no || 'N/A' }}</td>
+                <td>{{ farmer.compartment_no || 'N/A' }}</td>
+                <td>{{ farmer.khasra_no || 'N/A' }}</td>
+                <td>{{ farmer.available_area || 'N/A' }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- No Data State -->
+    <ion-card *ngIf="!isLoading && !errorMessage && farmers.length === 0">
+      <ion-card-content>
+        <p class="no-data">कोई रिकॉर्ड नहीं मिला</p>
+      </ion-card-content>
+    </ion-card>
+  </div>
+</ion-content>

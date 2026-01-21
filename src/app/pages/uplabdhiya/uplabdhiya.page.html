@@ -1,0 +1,1784 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button (click)="goBack()" class="custom-back-button"></ion-back-button>
+    </ion-buttons>
+    <ion-title class="responsive-toolbar-title">{{ getTranslation('uplabdhiya') }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid>
+    <ion-row style="margin-top: 10px;">
+        <ion-label class="custom-ion-label-points-center">
+          उपलब्धियां
+        </ion-label>
+    </ion-row>
+    <ion-row>
+      <ion-label class="custom-ion-label-points-center">
+        {{ getTranslation('app_name') }}
+      </ion-label>
+    </ion-row>
+    <ion-row>
+      <ion-label class="item-style-center-align" style="width: 100%; text-align: center;">
+        <b>वित्तीय वर्ष  (वर्षाऋतु 2023) में रोपित पौधों की जानकारी</b>
+      </ion-label>
+    </ion-row>
+  </ion-grid>
+
+<ion-grid>
+  <ion-row class="item-style-table-header">
+    <ion-col size = .5>
+      <ion-label class="responsive-label" style="color: white; height: 100%; text-align: center;display: flex; flex-direction: column; justify-content: center; align-items: center;">
+        क्र.
+      </ion-label>
+    </ion-col>
+    <ion-col size = 1>
+      <ion-label class="responsive-label" style="height: 100%; text-align: center;display: flex; flex-direction: column; justify-content: center; align-items: center;">
+        वृत्त का नाम
+      </ion-label>
+    </ion-col>
+    <ion-col size = 3>
+      <ion-label  class="responsive-label" style="height: 100%; text-align: center;display: flex; flex-direction: column; justify-content: center; align-items: center;">
+        जिले का नाम
+      </ion-label>
+    </ion-col>
+    <ion-col size = 3>
+      <ion-label  class="responsive-label" style="height: 100%; text-align: center;display: flex; flex-direction: column; justify-content: center; align-items: center;">
+        वनमण्डल का नाम
+      </ion-label>
+    </ion-col>
+    <ion-col size = 4.5 >
+      <ion-row style="display: flex; flex-direction: column; justify-content: center; align-items: center;font-size: 8px; color: white;">
+        <ion-label  class="responsive-label">
+          विवरण
+        </ion-label>
+      </ion-row>
+      <ion-row style="margin-top: 10px;">
+        <ion-col size = 2.5>
+          <ion-label  class="responsive-label">
+            कुल किसानो की संख्या
+          </ion-label>
+        </ion-col>
+        <ion-col size = 4.3>
+          <ion-label  class="responsive-label">
+            कुल क्षेत्रफल (एकड़)
+          </ion-label>
+        </ion-col>
+        <ion-col size = 5.2>
+          <ion-label  class="responsive-label">
+            कुल पौधो की संख्या
+          </ion-label>
+        </ion-col>
+      </ion-row>
+    </ion-col>
+  </ion-row>
+
+  <ion-row class="item-style-table-header">
+    <ion-col size = .5>
+      <ion-label class="responsive-label">
+        1
+      </ion-label>
+    </ion-col>
+    <ion-col size = 1>
+      <ion-label class="responsive-label">
+        2
+      </ion-label>
+    </ion-col>
+    <ion-col size = 3>
+      <ion-label  class="responsive-label">
+        3
+      </ion-label>
+    </ion-col>
+    <ion-col size = 3>
+      <ion-label  class="responsive-label">
+        4
+      </ion-label>
+    </ion-col>
+    <ion-col size = 1>
+      <ion-label  class="responsive-label">
+        5
+      </ion-label>
+    </ion-col>
+    <ion-col size = 1.5>
+      <ion-label  class="responsive-label">
+        6
+      </ion-label>
+    </ion-col>
+    <ion-col size = 2>
+      <ion-label  class="responsive-label">
+        7
+      </ion-label>
+    </ion-col>
+    
+  </ion-row>
+
+
+  <!-- जगदलपुर Start-->
+  <ion-row class="ion-row-style">
+    <ion-col size = .5 style="display: flex; justify-content: center; align-items: center; flex-direction: column;">
+      <ion-row>
+        <ion-label  class="responsive-label-for-content">1</ion-label>
+      </ion-row>
+      <ion-row>
+        <ion-label  class="responsive-label-for-content">2</ion-label>
+      </ion-row>
+      <ion-row>
+        <ion-label  class="responsive-label-for-content">3</ion-label>
+      </ion-row>
+      <ion-row>
+        <ion-label  class="responsive-label-for-content">4</ion-label>
+      </ion-row>
+      <ion-row>
+        <ion-label  class="responsive-label-for-content">5</ion-label>
+      </ion-row>
+      <ion-row>
+        <ion-label  class="responsive-label-for-content">6</ion-label>
+      </ion-row>
+      <ion-row>
+        <ion-label  class="responsive-label-for-content">7</ion-label>
+      </ion-row>
+    </ion-col>
+
+    <ion-col size = 1 style="display: flex; justify-content: center; align-items: center;">
+      <ion-label class="responsive-label-for-content" style="align-items: center;text-align: center;">जगदल<br>पुर</ion-label>
+    </ion-col>
+
+    <ion-col size = 3 style="display: flex; justify-content: center; align-items: center;flex-direction: column;">
+        <ion-row><ion-label class="responsive-label-for-content">बस्तर</ion-label></ion-row>
+        <ion-row><ion-label class="responsive-label-for-content">बस्तर</ion-label></ion-row>
+        <ion-row><ion-label class="responsive-label-for-content">बस्तर</ion-label></ion-row>
+        <ion-row><ion-label class="responsive-label-for-content">दंतेवाड़ा</ion-label></ion-row>
+        <ion-row><ion-label class="responsive-label-for-content">बीजापुर</ion-label></ion-row>
+        <ion-row><ion-label class="responsive-label-for-content">बीजापुर</ion-label></ion-row>
+        <ion-row><ion-label class="responsive-label-for-content">सुकमा</ion-label></ion-row>
+    </ion-col>
+
+    <ion-col size = 3 style="display: flex; justify-content: center; align-items: center;flex-direction: column;">
+      <ion-row><ion-label class="responsive-label-for-content">बस्तर</ion-label></ion-row>
+      <ion-row><ion-label class="responsive-label-for-content">अनु.एवं</ion-label></ion-row>
+      <ion-row><ion-label class="responsive-label-for-content">दंतेवाड़ा</ion-label> </ion-row>
+      <ion-row><ion-label class="responsive-label-for-content">दंतेवाड़ा</ion-label> </ion-row>
+      <ion-row><ion-label class="responsive-label-for-content">दंतेवाड़ा</ion-label> </ion-row>
+      <ion-row><ion-label class="responsive-label-for-content">बीजापुर</ion-label></ion-row>
+      <ion-row><ion-label class="responsive-label-for-content">सुकमा</ion-label> </ion-row>
+    </ion-col>
+
+    <ion-col size = 1 style="display: flex; justify-content: center; align-items: center;flex-direction: column;font-size: 9px;">
+      <ion-row><ion-label class="responsive-label-for-content">1551</ion-label></ion-row>
+      <ion-row><ion-label class="responsive-label-for-content">666</ion-label></ion-row>
+      <ion-row><ion-label class="responsive-label-for-content">17</ion-label> </ion-row>
+      <ion-row><ion-label class="responsive-label-for-content">576</ion-label> </ion-row>
+      <ion-row><ion-label class="responsive-label-for-content">38</ion-label> </ion-row>
+      <ion-row><ion-label class="responsive-label-for-content">671</ion-label> </ion-row>
+      <ion-row><ion-label class="responsive-label-for-content">107</ion-label> </ion-row>
+    </ion-col>
+
+    <ion-col size = 1.5 style="display: flex; justify-content: center; align-items: center;flex-direction: column;font-size: 9px;">
+      <ion-row><ion-label class="responsive-label-for-content">3241.47</ion-label></ion-row>
+      <ion-row><ion-label class="responsive-label-for-content">1500.60</ion-label></ion-row>
+      <ion-row><ion-label class="responsive-label-for-content">46.20</ion-label></ion-row>
+      <ion-row><ion-label class="responsive-label-for-content">1417.78</ion-label></ion-row>
+      <ion-row><ion-label class="responsive-label-for-content">70.00</ion-label></ion-row>
+      <ion-row><ion-label class="responsive-label-for-content">1415.96</ion-label></ion-row>
+      <ion-row><ion-label class="responsive-label-for-content">1906.73</ion-label></ion-row>
+    </ion-col>
+
+    <ion-col size = 2 style="display: flex; justify-content: center; align-items: center;flex-direction: column;font-size: 9px;">
+      <ion-row><ion-label class="responsive-label-for-content">2783279</ion-label></ion-row>
+      <ion-row><ion-label class="responsive-label-for-content">1338310</ion-label></ion-row>
+      <ion-row><ion-label class="responsive-label-for-content">41580</ion-label></ion-row>
+      <ion-row><ion-label class="responsive-label-for-content">1193439</ion-label></ion-row>
+      <ion-row><ion-label class="responsive-label-for-content">62350</ion-label></ion-row>
+      <ion-row><ion-label class="responsive-label-for-content">1238657</ion-label></ion-row>
+      <ion-row><ion-label class="responsive-label-for-content">1358966</ion-label></ion-row>
+    </ion-col>
+
+  </ion-row>
+  <ion-row style="background: green">
+    <ion-col size = 7.5 >
+      <ion-label class="responsive-label" style="border: 0px; display: flex; flex-direction: column;align-items: end;color: white;">
+        जगदलपुर वृत्त योग
+      </ion-label>
+    </ion-col>
+    <ion-col size = 1 >
+      <ion-label class="responsive-label" style="border: 0px; display: flex; flex-direction: column;align-items: center;color: white;">
+        4598
+      </ion-label>
+    </ion-col>
+    <ion-col size = 1.5 >
+      <ion-label class="responsive-label" style="border: 0px; display: flex; flex-direction: column;align-items: center;color: white;">
+        9598.74
+      </ion-label>
+    </ion-col>
+    <ion-col size = 2 >
+      <ion-label class="responsive-label" style="border: 0px; display: flex; flex-direction: column;align-items: center;color: white;">
+        8016581
+      </ion-label>
+    </ion-col>
+  </ion-row>
+<!-- जगदलपुर End -->
+
+
+
+
+  <!-- कांकेर Start-->
+  <ion-row class="ion-row-style">
+    <ion-col size = .5 style="display: flex; justify-content: center; align-items: center; flex-direction: column;">
+      <ion-row>
+        <ion-label class="responsive-label-for-content">1</ion-label>
+      </ion-row>
+      <ion-row>
+        <ion-label class="responsive-label-for-content">2</ion-label>
+      </ion-row>
+      <ion-row>
+        <ion-label class="responsive-label-for-content">3</ion-label>
+      </ion-row>
+      <ion-row>
+        <ion-label class="responsive-label-for-content">4</ion-label>
+      </ion-row>
+      <ion-row>
+        <ion-label class="responsive-label-for-content">5</ion-label>
+      </ion-row>
+      <ion-row>
+        <ion-label class="responsive-label-for-content">6</ion-label>
+      </ion-row>
+    </ion-col>
+
+    <ion-col size = 1 style="display: flex; justify-content: center; align-items: center;">
+      <ion-label class="responsive-label-for-content">कांकेर</ion-label>
+    </ion-col>
+
+    <ion-col size = 3 style="display: flex; justify-content: center; align-items: center;flex-direction: column;">
+      <ion-row><ion-label class="responsive-label-for-content">कांकेर</ion-label></ion-row>
+      <ion-row><ion-label class="responsive-label-for-content">कांकेर</ion-label></ion-row>
+      <ion-row><ion-label class="responsive-label-for-content">कांकेर</ion-label></ion-row>
+      <ion-row><ion-label class="responsive-label-for-content">कोण्डागांव</ion-label></ion-row>
+      <ion-row><ion-label class="responsive-label-for-content">कोण्डागांव</ion-label></ion-row>
+      <ion-row><ion-label class="responsive-label-for-content">नारायणपु</ion-label></ion-row>
+    </ion-col>
+
+    <ion-col size = 3 style="display: flex; justify-content: center; align-items: center;flex-direction: column;font-size: 8px;">
+      <ion-row><ion-label class="responsive-label-for-content">कांकेर</ion-label></ion-row>
+      <ion-row><ion-label class="responsive-label-for-content">पूर्व भानुप्रतापपुर</ion-label></ion-row>
+      <ion-row><ion-label class="responsive-label-for-content">पश्चिम भानुप्रताापुर</ion-label></ion-row>
+      <ion-row><ion-label class="responsive-label-for-content">केशकाल</ion-label></ion-row>
+      <ion-row><ion-label class="responsive-label-for-content">दक्षिण कोंडागांव</ion-label></ion-row>
+      <ion-row><ion-label class="responsive-label-for-content">नारायणपुर</ion-label></ion-row>
+    </ion-col>
+
+    <ion-col size = 1 style="display: flex; justify-content: center; align-items: center;flex-direction: column;font-size: 9px;">
+      <ion-row><ion-label class="responsive-label-for-content">688</ion-label></ion-row>
+      <ion-row><ion-label class="responsive-label-for-content">1006</ion-label></ion-row>
+      <ion-row><ion-label class="responsive-label-for-content">464</ion-label></ion-row>
+      <ion-row><ion-label class="responsive-label-for-content">591</ion-label></ion-row>
+      <ion-row><ion-label class="responsive-label-for-content">681</ion-label></ion-row>
+      <ion-row><ion-label class="responsive-label-for-content">314</ion-label></ion-row>
+    </ion-col>
+
+    <ion-col size = 1.5 style="display: flex; justify-content: center; align-items: center;flex-direction: column;font-size: 9px;">
+      <ion-row><ion-label class="responsive-label-for-content">407.75</ion-label></ion-row>
+      <ion-row><ion-label class="responsive-label-for-content">964.82</ion-label></ion-row>
+      <ion-row><ion-label class="responsive-label-for-content">446.17</ion-label></ion-row>
+      <ion-row><ion-label class="responsive-label-for-content">612.00</ion-label></ion-row>
+      <ion-row><ion-label class="responsive-label-for-content">679.28</ion-label></ion-row>
+      <ion-row><ion-label class="responsive-label-for-content">707.06</ion-label></ion-row>
+    </ion-col>
+
+    <ion-col size = 2 style="display: flex; justify-content: center; align-items: center;flex-direction: column;font-size: 9px;">
+      <ion-row><ion-label class="responsive-label-for-content">308374</ion-label></ion-row>
+      <ion-row><ion-label class="responsive-label-for-content">600203</ion-label></ion-row>
+      <ion-row><ion-label class="responsive-label-for-content">385018</ion-label></ion-row>
+      <ion-row><ion-label class="responsive-label-for-content">527350</ion-label></ion-row>
+      <ion-row><ion-label class="responsive-label-for-content">556922</ion-label></ion-row>
+      <ion-row><ion-label class="responsive-label-for-content">630742</ion-label></ion-row>
+    </ion-col>
+
+  </ion-row>
+  <ion-row style="background: green">
+    <ion-col size = 7.5 >
+      <ion-label class="responsive-label" style="border: 0px; display: flex; flex-direction: column;align-items: end;color: white;">
+        कांकेर वृत्त योग
+      </ion-label>
+    </ion-col>
+    <ion-col size = 1 >
+      <ion-label class="responsive-label" style="border: 0px; display: flex; flex-direction: column;align-items: center;color: white;">
+        3744
+      </ion-label>
+    </ion-col>
+    <ion-col size = 1.5 >
+      <ion-label class="responsive-label" style="border: 0px; display: flex; flex-direction: column;align-items: center;color: white;">
+        3817.08
+      </ion-label>
+    </ion-col>
+    <ion-col size = 2 >
+      <ion-label class="responsive-label" style="border: 0px; display: flex; flex-direction: column;align-items: center;color: white;">
+        3008609
+      </ion-label>
+    </ion-col>
+  </ion-row>
+<!-- कांकेर End -->
+
+
+<!-- रायपुर  Start-->
+<ion-row class="ion-row-style">
+  <ion-col size = .5 style="display: flex; justify-content: center; align-items: center; flex-direction: column;">
+    <ion-row>
+      <ion-label class="responsive-label-for-content">1</ion-label>
+    </ion-row>
+    <ion-row>
+      <ion-label class="responsive-label-for-content">2</ion-label>
+    </ion-row>
+    <ion-row>
+      <ion-label class="responsive-label-for-content">3</ion-label>
+    </ion-row>
+    <ion-row>
+      <ion-label class="responsive-label-for-content">4</ion-label>
+    </ion-row>
+    <ion-row>
+      <ion-label class="responsive-label-for-content">5</ion-label>
+    </ion-row>
+    <ion-row>
+      <ion-label class="responsive-label-for-content">6</ion-label>
+    </ion-row>
+  </ion-col>
+
+  <ion-col size = 1 style="display: flex; justify-content: center; align-items: center;">
+    <ion-label class="responsive-label-for-content">रायपुर</ion-label>
+  </ion-col>
+
+  <ion-col size = 3 style="display: flex; justify-content: center; align-items: center;flex-direction: column;">
+    <ion-row><ion-label class="responsive-label-for-content">गरियाबंद</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">धमतरी</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">महासमुंद</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">रायपुर</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">रायपुर, महासमुंद</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">बलौदाबाजार</ion-label></ion-row>
+  </ion-col>
+
+  <ion-col size = 3 style="display: flex; justify-content: center; align-items: center;flex-direction: column;font-size: 8px;">
+    <ion-row><ion-label class="responsive-label-for-content">गरियाबंद</ion-label> </ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">धमतरी</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">महासमुंद</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">रायपुर</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">अनु.वि.रायपुर</ion-label><br></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">बलौदाबाजार</ion-label></ion-row>
+  </ion-col>
+
+  <ion-col size = 1 style="display: flex; justify-content: center; align-items: center;flex-direction: column;font-size: 9px;">
+    <ion-row><ion-label class="responsive-label-for-content">856</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">471</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">915</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">152</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">101</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">292</ion-label></ion-row>
+  </ion-col>
+
+  <ion-col size = 1.5 style="display: flex; justify-content: center; align-items: center;flex-direction: column;font-size: 9px;">
+    <ion-row><ion-label class="responsive-label-for-content">1209.01</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">690.97</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">1159.07</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">414.86</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">130.02</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">516.70</ion-label></ion-row>
+  </ion-col>
+
+  <ion-col size = 2 style="display: flex; justify-content: center; align-items: center;flex-direction: column;font-size: 9px;">
+    <ion-row><ion-label class="responsive-label-for-content">585784</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">392464</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">418386</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">99157</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">53602</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">393781</ion-label></ion-row>
+  </ion-col>
+
+</ion-row>
+<ion-row style="background: green">
+  <ion-col size = 7.5 >
+    <ion-label class="responsive-label" style="border: 0px; display: flex; flex-direction: column;align-items: end;color: white;">
+      रायपुर वृत्त योग
+    </ion-label>
+  </ion-col>
+  <ion-col size = 1 >
+    <ion-label class="responsive-label" style="border: 0px; display: flex; flex-direction: column;align-items: center;color: white;">
+      2787
+    </ion-label>
+  </ion-col>
+  <ion-col size = 1.5 >
+    <ion-label class="responsive-label" style="border: 0px; display: flex; flex-direction: column;align-items: center;color: white;">
+      4120.63
+    </ion-label>
+  </ion-col>
+  <ion-col size = 2 >
+    <ion-label class="responsive-label" style="border: 0px; display: flex; flex-direction: column;align-items: center;color: white;">
+      1943174
+    </ion-label>
+  </ion-col>
+</ion-row>
+<!-- रायपुर  End -->
+
+
+
+<!-- दुर्ग  Start-->
+<ion-row class="ion-row-style">
+  <ion-col size = .5 style="display: flex; justify-content: center; align-items: center; flex-direction: column;">
+    <ion-row>
+      <ion-label class="responsive-label-for-content">1</ion-label>
+    </ion-row>
+    <ion-row>
+      <ion-label class="responsive-label-for-content">2</ion-label>
+    </ion-row>
+    <ion-row>
+      <ion-label class="responsive-label-for-content">3</ion-label>
+    </ion-row>
+    <ion-row>
+      <ion-label class="responsive-label-for-content">4</ion-label>
+    </ion-row>
+    <ion-row>
+      <ion-label class="responsive-label-for-content">5</ion-label> 
+    </ion-row>
+    <ion-row>
+      <ion-label class="responsive-label-for-content">6</ion-label>
+    </ion-row>
+    <ion-row>
+      <ion-label class="responsive-label-for-content">7</ion-label>
+  </ion-row>
+  </ion-col>
+
+  <ion-col size = 1 style="display: flex; justify-content: center; align-items: center;">
+    <ion-label class="responsive-label-for-content">दुर्ग</ion-label>
+  </ion-col>
+
+  <ion-col size = 3 style="display: flex; justify-content: center; align-items: center;flex-direction: column;">
+    <ion-row><ion-label class="responsive-label-for-content">दुर्ग</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">बेमेतरा</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">बालोद</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">मोहला-मानपुर-अ.</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">राजनांदगांव</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">खैरागढ़-छुईखदान</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">कबीरधाम</ion-label></ion-row>
+  </ion-col>
+
+  <ion-col size = 3 style="display: flex; justify-content: center; align-items: center;flex-direction: column;font-size: 8px;">
+    <ion-row><ion-label class="responsive-label-for-content">दुर्ग</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">दुर्ग</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">बालोद</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">मोहला</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">राजनांदगांव</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">खैरागढ़</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">कवर्धा</ion-label></ion-row>
+  </ion-col>
+
+  <ion-col size = 1 style="display: flex; justify-content: center; align-items: center;flex-direction: column;font-size: 9px;">
+    <ion-row><ion-label class="responsive-label-for-content">273</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">231</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">242</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">170</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">247</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">153</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">416</ion-label></ion-row>
+  </ion-col>
+
+  <ion-col size = 1.5 style="display: flex; justify-content: center; align-items: center;flex-direction: column;font-size: 9px;">
+    <ion-row><ion-label class="responsive-label-for-content">606.65</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">937.45</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">388.46</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">260.61</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">339.37</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">271.33</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">778.42</ion-label></ion-row>
+  </ion-col>
+
+  <ion-col size = 2 style="display: flex; justify-content: center; align-items: center;flex-direction: column;font-size: 9px;">
+    <ion-row><ion-label class="responsive-label-for-content">321253</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">185925</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">249175</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">225784</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">256566</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">218644</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">344993</ion-label></ion-row>
+  </ion-col>
+
+</ion-row>
+<ion-row style="background: green">
+  <ion-col size = 7.5 >
+    <ion-label class="responsive-label" style="border: 0px; display: flex; flex-direction: column;align-items: end;color: white;">
+      दुर्ग वृत्त योग
+    </ion-label>
+  </ion-col>
+  <ion-col size = 1 >
+    <ion-label class="responsive-label" style="border: 0px; display: flex; flex-direction: column;align-items: center;color: white;">
+      1732
+    </ion-label>
+  </ion-col>
+  <ion-col size = 1.5 >
+    <ion-label class="responsive-label" style="border: 0px; display: flex; flex-direction: column;align-items: center;color: white;">
+      3582.28
+    </ion-label>
+  </ion-col>
+  <ion-col size = 2 >
+    <ion-label class="responsive-label" style="border: 0px; display: flex; flex-direction: column;align-items: center;color: white;">
+      1802340
+    </ion-label>
+  </ion-col>
+</ion-row>
+<!-- दुर्ग  End -->
+
+
+
+
+<!-- बिलासपुर  Start-->
+<ion-row class="ion-row-style">
+  <ion-col size = .5 style="display: flex; justify-content: center; align-items: center; flex-direction: column;">
+    <ion-row>
+      <ion-label class="responsive-label-for-content">1</ion-label>
+    </ion-row>
+    <ion-row>
+      <ion-label class="responsive-label-for-content">2</ion-label>
+    </ion-row>
+    <ion-row>
+      <ion-label class="responsive-label-for-content">3</ion-label>
+    </ion-row>
+    <ion-row>
+      <ion-label class="responsive-label-for-content">4</ion-label>
+    </ion-row>
+    <ion-row>
+      <ion-label class="responsive-label-for-content">5</ion-label>
+    </ion-row>
+    <ion-row>
+      <ion-label class="responsive-label-for-content">6</ion-label>
+    </ion-row>
+    <ion-row>
+      <ion-label class="responsive-label-for-content">7</ion-label>
+  </ion-row>
+      <ion-row>
+        <ion-label class="responsive-label-for-content">8</ion-label>
+    </ion-row>
+    <ion-row>
+      <ion-label class="responsive-label-for-content">9</ion-label>
+    </ion-row>
+    <ion-row>
+      <ion-label class="responsive-label-for-content">10</ion-label>
+    </ion-row>
+    <ion-row>
+      <ion-label class="responsive-label-for-content">11</ion-label>
+    </ion-row>
+  </ion-col>
+
+  <ion-col size = 1 style="display: flex; justify-content: center; align-items: center;">
+    <ion-label class="responsive-label-for-content">बिलासपुर</ion-label>
+  </ion-col>
+
+  <ion-col size = 3 style="display: flex; justify-content: center; align-items: center;flex-direction: column;">
+    <ion-row><ion-label class="responsive-label-for-content">बिलासपुर</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">गौरेला पेण्ड्रा मरवाही</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">कोरबा</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">कोरबा</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">रायगढ़</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">सारंगढ़- बिलाईगढ़</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">रायगढ़</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">जांजगीर-चांपा</ion-label></ion-row> 
+    <ion-row><ion-label class="responsive-label-for-content">सक्ती</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">मुंगेली</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">जांजगीर-चांपा.</ion-label></ion-row>
+  </ion-col>
+
+  <ion-col size = 3 style="display: flex; justify-content: center; align-items: center;flex-direction: column;font-size: 8px;">
+    <ion-row><ion-label class="responsive-label-for-content">बिलासपुर</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">मरवाही</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">कोरबा</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">कटघोरा</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">रायगढ़</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">सारंगढ़- बिलाईगढ़</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">धरमजयगढ़</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">जांजगीर-चांपा</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">जांजगीर-चांपा</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">मुंगेली</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">अनुसंधान एवं विस्तार</ion-label></ion-row>
+  </ion-col>
+
+  <ion-col size = 1 style="display: flex; justify-content: center; align-items: center;flex-direction: column;font-size: 9px;">
+    <ion-row><ion-label class="responsive-label-for-content">334</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">1080</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">819</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">489</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">295</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">138</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">508</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">392</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">33</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">230</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">656</ion-label></ion-row>
+  </ion-col>
+
+  <ion-col size = 1.5 style="display: flex; justify-content: center; align-items: center;flex-direction: column;font-size: 9px;">
+    <ion-row><ion-label class="responsive-label-for-content">549.69</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">1542.75</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">897.02</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">698.89</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">536.09</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">117.58</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">613.19</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">314.14</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">51.03</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">392.18</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">1533.55</ion-label></ion-row>
+  </ion-col>
+
+  <ion-col size = 2 style="display: flex; justify-content: center; align-items: center;flex-direction: column;font-size: 9px;">
+    <ion-row><ion-label class="responsive-label-for-content">418660</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">1273254</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">359910</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">411991</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">248410</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">82215</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">290974</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">100942</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">18467</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">208476</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">560284</ion-label></ion-row>
+  </ion-col>
+
+</ion-row>
+<ion-row style="background: green">
+  <ion-col size = 7.5 >
+    <ion-label class="responsive-label" style="border: 0px; display: flex; flex-direction: column;align-items: end;color: white;">
+      बिलासपुर वृत्त योग
+    </ion-label>
+  </ion-col>
+  <ion-col size = 1 >
+    <ion-label class="responsive-label" style="border: 0px; display: flex; flex-direction: column;align-items: center;color: white;">
+      4974
+    </ion-label>
+  </ion-col>
+  <ion-col size = 1.5 >
+    <ion-label class="responsive-label" style="border: 0px; display: flex; flex-direction: column;align-items: center;color: white;">
+      7246.11
+    </ion-label>
+  </ion-col>
+  <ion-col size = 2 >
+    <ion-label class="responsive-label" style="border: 0px; display: flex; flex-direction: column;align-items: center;color: white;">
+      3973583
+    </ion-label>
+  </ion-col>
+</ion-row>
+<!-- बिलासपुर  End -->
+
+
+
+<!-- सरगुजा  Start-->
+<ion-row class="ion-row-style">
+  <ion-col size = .5 style="display: flex; justify-content: center; align-items: center; flex-direction: column;">
+    <ion-row>
+      <ion-label class="responsive-label-for-content">1</ion-label>
+    </ion-row>
+    <ion-row>
+      <ion-label class="responsive-label-for-content">2</ion-label>
+    </ion-row>
+    <ion-row>
+      <ion-label class="responsive-label-for-content">3</ion-label>
+    </ion-row>
+    <ion-row>
+      <ion-label class="responsive-label-for-content">4</ion-label>
+    </ion-row>
+    <ion-row>
+      <ion-label class="responsive-label-for-content">5</ion-label>
+    </ion-row>
+    <ion-row>
+      <ion-label class="responsive-label-for-content">6</ion-label>
+    </ion-row>
+  </ion-col>
+
+  <ion-col size = 1 style="display: flex; justify-content: center; align-items: center;">
+    <ion-label class="responsive-label-for-content">सरगुजा</ion-label>
+  </ion-col>
+
+  <ion-col size = 3 style="display: flex; justify-content: center; align-items: center;flex-direction: column;">
+    <ion-row><ion-label class="responsive-label-for-content">सरगुजा</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">सूरजपुर</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">बलरामपुर</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">कोरिया</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">मनेन्द्रगढ़- चिरमिरी</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">जशपुर</ion-label></ion-row>
+  </ion-col>
+
+  <ion-col size = 3 style="display: flex; justify-content: center; align-items: center;flex-direction: column;font-size: 8px;">
+    <ion-row><ion-label class="responsive-label-for-content">सरगुजा</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">सूरजपुर</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">बलरामपुर</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">कोरिया</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">मनेन्द्रगढ़</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">जशपुर</ion-label></ion-row>
+  </ion-col>
+
+  <ion-col size = 1 style="display: flex; justify-content: center; align-items: center;flex-direction: column;font-size: 9px;">
+    <ion-row><ion-label class="responsive-label-for-content">1033</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">912</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">2464</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">502</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">814</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">685</ion-label></ion-row>
+  </ion-col>
+
+  <ion-col size = 1.5 style="display: flex; justify-content: center; align-items: center;flex-direction: column;font-size: 9px;">
+    <ion-row><ion-label class="responsive-label-for-content">1034.40</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">1093.00</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">2220.34</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">705.03</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">1191.39</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">1067.19</ion-label></ion-row>
+  </ion-col>
+
+  <ion-col size = 2 style="display: flex; justify-content: center; align-items: center;flex-direction: column;font-size: 9px;">
+    <ion-row><ion-label class="responsive-label-for-content">514266</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">531779</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">706088</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">722189</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">903798</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">268282</ion-label></ion-row>
+  </ion-col>
+
+</ion-row>
+<ion-row style="background: green">
+  <ion-col size = 7.5 >
+    <ion-label class="responsive-label" style="border: 0px; display: flex; flex-direction: column;align-items: end;color: white;">
+      सरगुजा वृत्त योग
+    </ion-label>
+  </ion-col>
+  <ion-col size = 1 >
+    <ion-label class="responsive-label"  style="border: 0px; display: flex; flex-direction: column;align-items: center;color: white;">
+      6410
+    </ion-label>
+  </ion-col>
+  <ion-col size = 1.5 >
+    <ion-label class="responsive-label" style="border: 0px; display: flex; flex-direction: column;align-items: center;color: white;">
+      7311.35
+    </ion-label>
+  </ion-col>
+  <ion-col size = 2 >
+    <ion-label class="responsive-label" style="border: 0px; display: flex; flex-direction: column;align-items: center;color: white;">
+      3646402
+    </ion-label>
+  </ion-col>
+</ion-row>
+<!-- सरगुजा  End -->
+
+<!-- MahaYog Start -->
+
+<ion-row style="background: yellow">
+  <ion-col size = 7.5 >
+    <ion-label class="responsive-label-for-content" style="border: 0px; display: flex; flex-direction: column;align-items: end;color: black;">
+      महायोग
+    </ion-label>
+  </ion-col>
+  <ion-col size = 1 >
+    <ion-label class="responsive-label-for-content"  style="border: 0px; display: flex; flex-direction: column;align-items: center;color: black;">
+      24245
+    </ion-label>
+  </ion-col>
+  <ion-col size = 1.5 >
+    <ion-label class="responsive-label-for-content"  style="border: 0px; display: flex; flex-direction: column;align-items: center;color: black;">
+      35676.20
+    </ion-label>
+  </ion-col>
+  <ion-col size = 2 >
+    <ion-label class="responsive-label-for-content"  style="border: 0px; display: flex; flex-direction: column;align-items: center;color: black;">
+      22390689
+    </ion-label>
+  </ion-col>
+</ion-row>
+
+<!-- Mahayog End -->
+
+</ion-grid>
+
+
+<ion-row style="margin-top: 20px;">
+  <ion-label class="item-style-center-align" style="width: 100%; text-align: center; margin-left: 5px; margin-right: 5px;">
+    <b>वित्तीय वर्ष 2024-25 (वर्षाऋतु 2025) में रोपित पौधों की जानकारी</b>
+  </ion-label>
+</ion-row>
+
+<ion-grid >
+
+  <ion-row class="item-style-table-header">
+    <ion-col size = .5>
+      <ion-label class="responsive-label" style="height: 100%; text-align: center;display: flex; flex-direction: column; justify-content: center; align-items: center;">
+        क्र.
+      </ion-label>
+    </ion-col>
+    <ion-col size = 1>
+      <ion-label class="responsive-label" style="height: 100%; text-align: center;display: flex; flex-direction: column; justify-content: center; align-items: center;">
+        वृत्त का नाम
+      </ion-label>
+    </ion-col>
+    <ion-col size = 3>
+      <ion-label  class="responsive-label" style="height: 100%; text-align: center;display: flex; flex-direction: column; justify-content: center; align-items: center;">
+        जिले का नाम
+      </ion-label>
+    </ion-col>
+    <ion-col size = 3>
+      <ion-label  class="responsive-label" style="height: 100%; text-align: center;display: flex; flex-direction: column; justify-content: center; align-items: center;">
+        वनमण्डल का नाम
+      </ion-label>
+    </ion-col>
+    <ion-col size = 4.5 >
+      <ion-row  style="display: flex; flex-direction: column; justify-content: center; align-items: center;font-size: 8px; color: white;">
+        <ion-label class="responsive-label">विवरण</ion-label>
+      </ion-row>
+      <ion-row style="margin-top: 10px;">
+        <ion-col size = 2.5>
+          <ion-label class="responsive-label">
+            कुल किसानो की संख्या
+          </ion-label>
+        </ion-col>
+        <ion-col size = 4.3>
+          <ion-label class="responsive-label">
+            कुल क्षेत्रफल (एकड़)
+          </ion-label>
+        </ion-col>
+        <ion-col size = 5.2>
+          <ion-label class="responsive-label">
+            कुल पौधो की संख्या
+          </ion-label>
+        </ion-col>
+      </ion-row>
+    </ion-col>
+  </ion-row>
+
+  <ion-row class="item-style-table-header">
+    <ion-col size = .5>
+      <ion-label class="table-lable-style">
+        1
+      </ion-label>
+    </ion-col>
+    <ion-col size = 1>
+      <ion-label class="table-lable-style">
+        2
+      </ion-label>
+    </ion-col>
+    <ion-col size = 3>
+      <ion-label  class="table-lable-style">
+        3
+      </ion-label>
+    </ion-col>
+    <ion-col size = 3>
+      <ion-label  class="table-lable-style">
+        4
+      </ion-label>
+    </ion-col>
+    <ion-col size = 1>
+      <ion-label  class="table-lable-style">
+        5
+      </ion-label>
+    </ion-col>
+    <ion-col size = 1.5>
+      <ion-label  class="table-lable-style">
+        6
+      </ion-label>
+    </ion-col>
+    <ion-col size = 2>
+      <ion-label  class="table-lable-style">
+        7
+      </ion-label>
+    </ion-col>
+    
+  </ion-row>
+
+  <!-- जगदलपुर Start-->
+  <ion-row class="ion-row-style">
+    <ion-col size = .5 style="display: flex; justify-content: center; align-items: center; flex-direction: column;">
+      <ion-row>
+        <ion-label class="responsive-label-for-content">1</ion-label>
+      </ion-row>
+      <ion-row>
+        <ion-label class="responsive-label-for-content">2</ion-label>
+      </ion-row>
+      <ion-row>
+        <ion-label class="responsive-label-for-content">3</ion-label>
+      </ion-row>
+      <ion-row>
+        <ion-label class="responsive-label-for-content">4</ion-label>
+      </ion-row>
+      <ion-row>
+        <ion-label class="responsive-label-for-content">5</ion-label>    
+      </ion-row>
+    </ion-col>
+
+    <ion-col size = 1 style="display: flex; justify-content: center; align-items: center;">
+      <ion-label class="responsive-label-for-content" style="align-items: center;text-align: center;">जगदल<br>पुर</ion-label>
+    </ion-col>
+
+    <ion-col size = 3 style="display: flex; justify-content: center; align-items: center;flex-direction: column;">
+        <ion-row><ion-label class="responsive-label-for-content">बस्तर</ion-label></ion-row>
+        <ion-row><ion-label class="responsive-label-for-content">बस्तर</ion-label></ion-row>
+        <ion-row><ion-label class="responsive-label-for-content">बीजापुर</ion-label></ion-row>
+        <ion-row><ion-label class="responsive-label-for-content">सुकमा</ion-label></ion-row>
+        <ion-row><ion-label class="responsive-label-for-content">दंतेवाड़ा</ion-label></ion-row>
+    </ion-col>
+
+    <ion-col size = 3 style="display: flex; justify-content: center; align-items: center;flex-direction: column;">
+      <ion-row><ion-label class="responsive-label-for-content">बस्तर</ion-label></ion-row>
+      <ion-row><ion-label class="responsive-label-for-content">अनु.एवं विस्तार</ion-label></ion-row>
+      <ion-row><ion-label class="responsive-label-for-content">बीजापुर</ion-label></ion-row>
+      <ion-row><ion-label class="responsive-label-for-content">सुकमा</ion-label></ion-row>
+      <ion-row><ion-label class="responsive-label-for-content">दंतेवाड़ा</ion-label></ion-row>
+    </ion-col>
+
+    <ion-col size = 1 style="display: flex; justify-content: center; align-items: center;flex-direction: column;font-size: 9px;">
+        <ion-row><ion-label class="responsive-label-for-content">1445</ion-label></ion-row>
+        <ion-row><ion-label class="responsive-label-for-content">816</ion-label></ion-row>
+        <ion-row><ion-label class="responsive-label-for-content">331</ion-label></ion-row>
+        <ion-row><ion-label class="responsive-label-for-content">570</ion-label></ion-row>
+        <ion-row><ion-label class="responsive-label-for-content">528</ion-label></ion-row>
+    </ion-col>
+
+    <ion-col size = 1.5 style="display: flex; justify-content: center; align-items: center;flex-direction: column;font-size: 9px;">
+      <ion-row><ion-label class="responsive-label-for-content">2965.58</ion-label></ion-row>
+      <ion-row><ion-label class="responsive-label-for-content">2250.86</ion-label></ion-row>
+      <ion-row><ion-label class="responsive-label-for-content">611.35</ion-label></ion-row>
+      <ion-row><ion-label class="responsive-label-for-content">1236.51</ion-label></ion-row>
+      <ion-row><ion-label class="responsive-label-for-content">1101.17</ion-label></ion-row>
+    </ion-col>
+
+    <ion-col size = 2 style="display: flex; justify-content: center; align-items: center;flex-direction: column;font-size: 9px;">
+      <ion-row><ion-label class="responsive-label-for-content">2612931</ion-label></ion-row>
+      <ion-row><ion-label class="responsive-label-for-content">2020963</ion-label></ion-row>
+      <ion-row><ion-label class="responsive-label-for-content">542420</ion-label></ion-row>
+      <ion-row><ion-label class="responsive-label-for-content">869275</ion-label></ion-row>
+      <ion-row><ion-label class="responsive-label-for-content">957250</ion-label></ion-row>
+    </ion-col>
+
+  </ion-row>
+  <ion-row style="background: green">
+    <ion-col size = 7.5 >
+      <ion-label class="responsive-label" style="border: 0px; display: flex; flex-direction: column;align-items: end;color: white;">
+        जगदलपुर वृत्त योग
+      </ion-label>
+    </ion-col>
+    <ion-col size = 1 >
+      <ion-label class="responsive-label"  style="border: 0px; display: flex; flex-direction: column;align-items: center;color: white;">
+        3690
+      </ion-label>
+    </ion-col>
+    <ion-col size = 1.5 >
+      <ion-label class="responsive-label"  style="border: 0px; display: flex; flex-direction: column;align-items: center;color: white;">
+        8165.47
+      </ion-label>
+    </ion-col>
+    <ion-col size = 2 >
+      <ion-label class="responsive-label"  style="border: 0px; display: flex; flex-direction: column;align-items: center;color: white;">
+        7002839
+      </ion-label>
+    </ion-col>
+  </ion-row>
+<!-- जगदलपुर End -->
+
+
+<!-- कांकेर Start-->
+<ion-row class="ion-row-style">
+  <ion-col size = .5 style="display: flex; justify-content: center; align-items: center; flex-direction: column;">
+    <ion-row>
+      <ion-label class="responsive-label-for-content">1</ion-label>
+    </ion-row>
+    <ion-row>
+      <ion-label class="responsive-label-for-content">2</ion-label>
+    </ion-row>
+    <ion-row>
+      <ion-label class="responsive-label-for-content">3</ion-label>
+    </ion-row>
+    <ion-row>
+      <ion-label class="responsive-label-for-content">4</ion-label>
+    </ion-row>
+    <ion-row>
+      <ion-label class="responsive-label-for-content">5</ion-label>
+    </ion-row>
+    <ion-row>
+      <ion-label class="responsive-label-for-content">6</ion-label>
+    </ion-row>
+  </ion-col>
+
+  <ion-col size = 1 style="display: flex; justify-content: center; align-items: center;">
+    <ion-label class="responsive-label-for-content">कांकेर</ion-label>
+  </ion-col>
+
+  <ion-col size = 3 style="display: flex; justify-content: center; align-items: center;flex-direction: column;">
+    <ion-row><ion-label class="responsive-label-for-content">कांकेर</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">कांकेर</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">कांकेर</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">कोण्डागांव</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">कोण्डागांव</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">नारायणपु</ion-label></ion-row>
+  </ion-col>
+
+  <ion-col size = 3 style="display: flex; justify-content: center; align-items: center;flex-direction: column;font-size: 8px;">
+    <ion-row><ion-label class="responsive-label-for-content">कांकेर</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">पूर्व भानुप्रतापपुर</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">पश्चिम भानुप्रताापुर</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">केशकाल</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">कोंडागांव</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">नारायणपुर</ion-label></ion-row>
+  </ion-col>
+
+  <ion-col size = 1 style="display: flex; justify-content: center; align-items: center;flex-direction: column;font-size: 9px;">
+    <ion-row><ion-label class="responsive-label-for-content">661</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">761</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">231</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">451</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">671</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">410</ion-label></ion-row>
+  </ion-col>
+
+  <ion-col size = 1.5 style="display: flex; justify-content: center; align-items: center;flex-direction: column;font-size: 9px;">
+    <ion-row><ion-label class="responsive-label-for-content">715.04</ion-label></ion-row>	
+    <ion-row><ion-label class="responsive-label-for-content">1042.58</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">215.77</ion-label></ion-row>	
+    <ion-row><ion-label class="responsive-label-for-content">557.00</ion-label></ion-row>	
+    <ion-row><ion-label class="responsive-label-for-content">691.20</ion-label></ion-row>	
+    <ion-row><ion-label class="responsive-label-for-content">530.71</ion-label></ion-row>	
+  </ion-col>
+
+  <ion-col size = 2 style="display: flex; justify-content: center; align-items: center;flex-direction: column;font-size: 9px;">
+    <ion-row><ion-label class="responsive-label-for-content">549838</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">808601</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">199450</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">498827</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">622090</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">475255</ion-label></ion-row>
+  </ion-col>
+
+</ion-row>
+<ion-row style="background: green">
+  <ion-col size = 7.5 >
+    <ion-label class="responsive-label" style="border: 0px; display: flex; flex-direction: column;align-items: end;color: white;">
+      कांकेर वृत्त योग
+    </ion-label>
+  </ion-col>
+  <ion-col size = 1 >
+    <ion-label class="responsive-label" style="border: 0px; display: flex; flex-direction: column;align-items: center;color: white;">
+      3185
+    </ion-label>
+  </ion-col>
+  <ion-col size = 1.5 >
+    <ion-label class="responsive-label"  style="border: 0px; display: flex; flex-direction: column;align-items: center;color: white;">
+      3752.29
+    </ion-label>
+  </ion-col>
+  <ion-col size = 2 >
+    <ion-label class="responsive-label"  style="border: 0px; display: flex; flex-direction: column;align-items: center;color: white;">
+      3154061
+    </ion-label>
+  </ion-col>
+</ion-row>
+<!-- कांकेर End -->
+
+
+<!-- रायपुर  Start-->
+<ion-row class="ion-row-style">
+  <ion-col size = .5 style="display: flex; justify-content: center; align-items: center; flex-direction: column;">
+    <ion-row>
+      <ion-label class="responsive-label-for-content">1</ion-label>
+    </ion-row>
+    <ion-row>
+      <ion-label class="responsive-label-for-content">2</ion-label>
+    </ion-row>
+    <ion-row>
+      <ion-label class="responsive-label-for-content">3</ion-label>
+    </ion-row>
+    <ion-row>
+      <ion-label class="responsive-label-for-content">4</ion-label>
+    </ion-row>
+    <ion-row>
+      <ion-label class="responsive-label-for-content">5</ion-label>
+    </ion-row>
+    <ion-row>
+      <ion-label class="responsive-label-for-content">6</ion-label>
+    </ion-row>
+  </ion-col>
+
+  <ion-col size = 1 style="display: flex; justify-content: center; align-items: center;">
+    <ion-label class="responsive-label-for-content">रायपुर</ion-label>
+  </ion-col>
+
+  <ion-col size = 3 style="display: flex; justify-content: center; align-items: center;flex-direction: column;">
+    <ion-row><ion-label class="responsive-label-for-content">रायपुर</ion-label></ion-row>				
+    <ion-row><ion-label class="responsive-label-for-content">रायपुर</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">महासमुन्द</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">बलौदाबाजार</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">धमतरी</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">गरियाबंद</ion-label></ion-row>
+  </ion-col>
+
+  <ion-col size = 3 style="display: flex; justify-content: center; align-items: center;flex-direction: column;font-size: 8px;">
+    <ion-row><ion-label class="responsive-label-for-content">रायपुर</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">अनुसंधान एवं रायपुर</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">महासमुन्द</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">बलौदाबाजार</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">धमतरी</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">गरियाबंद</ion-label></ion-row>
+  </ion-col>
+
+  <ion-col size = 1 style="display: flex; justify-content: center; align-items: center;flex-direction: column;font-size: 9px;">
+    <ion-row><ion-label class="responsive-label-for-content">203</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">129</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">1449</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">1048</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">1467</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">792</ion-label></ion-row>
+  </ion-col>
+
+  <ion-col size = 1.5 style="display: flex; justify-content: center; align-items: center;flex-direction: column;font-size: 9px;">
+    <ion-row><ion-label class="responsive-label-for-content">558.44</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">207.30</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">2372.47</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">1916.27</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">2248.34</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">1374.98</ion-label></ion-row>
+  </ion-col>
+
+  <ion-col size = 2 style="display: flex; justify-content: center; align-items: center;flex-direction: column;font-size: 9px;">
+    <ion-row><ion-label class="responsive-label-for-content">62295</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">44208</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">898137</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">784620</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">964985</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">915628</ion-label></ion-row>
+  </ion-col>
+
+</ion-row>
+<ion-row style="background: green">
+  <ion-col size = 7.5 >
+    <ion-label class="responsive-label" style="border: 0px; display: flex; flex-direction: column;align-items: end;color: white;">
+      रायपुर वृत्त योग
+    </ion-label>
+  </ion-col>
+  <ion-col size = 1 >
+    <ion-label class="responsive-label" style="border: 0px; display: flex; flex-direction: column;align-items: center;color: white;">
+      5088
+    </ion-label>
+  </ion-col>
+  <ion-col size = 1.5 >
+    <ion-label class="responsive-label" style="border: 0px; display: flex; flex-direction: column;align-items: center;color: white;">
+      8677.81
+    </ion-label>
+  </ion-col>
+  <ion-col size = 2 >
+    <ion-label class="responsive-label" style="border: 0px; display: flex; flex-direction: column;align-items: center;color: white;">
+      3669873
+    </ion-label>
+  </ion-col>
+</ion-row>
+<!-- रायपुर  End -->
+
+
+<!-- दुर्ग  Start-->
+<ion-row class="ion-row-style">
+  <ion-col size = .5 style="display: flex; justify-content: center; align-items: center; flex-direction: column;">
+    <ion-row>
+      <ion-label class="responsive-label-for-content">1</ion-label>
+    </ion-row>
+    <ion-row>
+      <ion-label class="responsive-label-for-content">2</ion-label>
+    </ion-row>
+    <ion-row>
+      <ion-label class="responsive-label-for-content">3</ion-label>
+    </ion-row>
+    <ion-row>
+      <ion-label class="responsive-label-for-content">4</ion-label>
+    </ion-row>
+    <ion-row>
+      <ion-label class="responsive-label-for-content">5</ion-label>
+    </ion-row>
+    <ion-row>
+      <ion-label class="responsive-label-for-content">6</ion-label>
+    </ion-row>
+    <ion-row>
+      <ion-label class="responsive-label-for-content">7</ion-label>
+  </ion-row>
+  </ion-col>
+
+  <ion-col size = 1 style="display: flex; justify-content: center; align-items: center;">
+    <ion-label class="responsive-label-for-content">दुर्ग</ion-label>
+  </ion-col>
+
+  <ion-col size = 3 style="display: flex; justify-content: center; align-items: center;flex-direction: column;">
+    <ion-row><ion-label class="responsive-label-for-content">दुर्ग</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">बेमेतरा</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">बालोद</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">राजनांदगांव</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">मोहला</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">खैरागढ़</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">कबीरधाम</ion-label></ion-row>
+  </ion-col>
+
+  <ion-col size = 3 style="display: flex; justify-content: center; align-items: center;flex-direction: column;font-size: 8px;">
+    <ion-row><ion-label class="responsive-label-for-content">दुर्ग</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">दुर्ग</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">बालोद</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">राजनांदगांव</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">मोहला</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">खैरागढ़</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">कवर्धा</ion-label></ion-row>
+  </ion-col>
+
+  <ion-col size = 1 style="display: flex; justify-content: center; align-items: center;flex-direction: column;font-size: 9px;">
+    <ion-row><ion-label class="responsive-label-for-content">260</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">468</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">309</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">335</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">296</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">109</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">306</ion-label></ion-row>
+  </ion-col>
+
+  <ion-col size = 1.5 style="display: flex; justify-content: center; align-items: center;flex-direction: column;font-size: 9px;">
+    <ion-row><ion-label class="responsive-label-for-content">805.73</ion-label></ion-row>	
+    <ion-row><ion-label class="responsive-label-for-content">1556.54</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">704.74</ion-label></ion-row>	
+    <ion-row><ion-label class="responsive-label-for-content">550.46</ion-label></ion-row>	
+    <ion-row><ion-label class="responsive-label-for-content">372.95</ion-label></ion-row>	
+    <ion-row><ion-label class="responsive-label-for-content">191.54</ion-label></ion-row>	
+    <ion-row><ion-label class="responsive-label-for-content">432.50</ion-label></ion-row>	
+  </ion-col>
+
+  <ion-col size = 2 style="display: flex; justify-content: center; align-items: center;flex-direction: column;font-size: 9px;">
+    <ion-row><ion-label class="responsive-label-for-content">385325</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">242775</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">343204</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">351190</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">256880</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">100000</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">326960</ion-label></ion-row>
+  </ion-col>
+
+</ion-row>
+<ion-row style="background: green">
+  <ion-col size = 7.5 >
+    <ion-label class="responsive-label" style="border: 0px; display: flex; flex-direction: column;align-items: end;color: white;">
+      दुर्ग वृत्त योग
+    </ion-label>
+  </ion-col>
+  <ion-col size = 1 >
+    <ion-label class="responsive-label" style="border: 0px; display: flex; flex-direction: column;align-items: center;color: white;">
+      2083
+    </ion-label>
+  </ion-col>
+  <ion-col size = 1.5 >
+    <ion-label class="responsive-label" style="border: 0px; display: flex; flex-direction: column;align-items: center;color: white;">
+      4614.46
+    </ion-label>
+  </ion-col>
+  <ion-col size = 2 >
+    <ion-label class="responsive-label" style="border: 0px; display: flex; flex-direction: column;align-items: center;color: white;">
+      2006334
+    </ion-label>
+  </ion-col>
+</ion-row>
+<!-- दुर्ग  End -->
+
+
+
+<!-- बिलासपुर  Start-->
+<ion-row class="ion-row-style">
+  <ion-col size = .5 style="display: flex; justify-content: center; align-items: center; flex-direction: column;">
+    <ion-row>
+      <ion-label class="responsive-label-for-content">1</ion-label>
+    </ion-row>
+    <ion-row>
+      <ion-label class="responsive-label-for-content">2</ion-label>
+    </ion-row>
+    <ion-row>
+      <ion-label class="responsive-label-for-content">3</ion-label>
+    </ion-row>
+    <ion-row>
+      <ion-label class="responsive-label-for-content">4</ion-label>
+    </ion-row>
+    <ion-row>
+      <ion-label class="responsive-label-for-content">5</ion-label>
+    </ion-row>
+    <ion-row>
+      <ion-label class="responsive-label-for-content">6</ion-label>
+    </ion-row>
+    <ion-row>
+      <ion-label class="responsive-label-for-content">7</ion-label>
+  </ion-row>
+      <ion-row>
+        <ion-label class="responsive-label-for-content">8</ion-label>
+    </ion-row>
+    <ion-row>
+      <ion-label class="responsive-label-for-content">9</ion-label>
+    </ion-row>
+    <ion-row>
+      <ion-label class="responsive-label-for-content">10</ion-label>
+    </ion-row>
+  </ion-col>
+
+  <ion-col size = 1 style="display: flex; justify-content: center; align-items: center;">
+    <ion-label class="responsive-label-for-content">बिलासपुर</ion-label>
+  </ion-col>
+
+  <ion-col size = 3 style="display: flex; justify-content: center; align-items: center;flex-direction: column;">
+    <ion-row><ion-label class="responsive-label-for-content">बिलासपुर</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">गौरेला पेण्ड्रा मरवाही</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">कोरबा</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">कोरबा</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">रायगढ़</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">सारंगढ़- बिलाईगढ़</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">रायगढ़</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">जांजगीर-चांपा</ion-label></ion-row> 
+    <ion-row><ion-label class="responsive-label-for-content">मुंगेली</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">जांजगीर चांपा कोरबा</ion-label></ion-row>
+  </ion-col>
+
+  <ion-col size = 3 style="display: flex; justify-content: center; align-items: center;flex-direction: column;font-size: 8px;">
+    <ion-row><ion-label class="responsive-label-for-content">बिलासपुर</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">मरवाही</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">कोरबा</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">कटघोरा</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">रायगढ़</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">सारंगढ़- बिलाईगढ़</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">धरमजयगढ़</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">जांजगीर-चांपा</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">मुंगेली</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">अनुसंधान एवं विस्तार</ion-label></ion-row>
+  </ion-col>
+
+  <ion-col size = 1 style="display: flex; justify-content: center; align-items: center;flex-direction: column;font-size: 9px;">
+    <ion-row><ion-label class="responsive-label-for-content">419</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">716</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">740</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">651</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">146</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">272</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">399</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">236</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">90</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">457</ion-label></ion-row>
+  </ion-col>
+
+  <ion-col size = 1.5 style="display: flex; justify-content: center; align-items: center;flex-direction: column;font-size: 9px;">
+    <ion-row><ion-label class="responsive-label-for-content">678.24</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">1307.63</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">512.16</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">922.03</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">218.81</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">161.99</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">536.08</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">325.62</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">143.30</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">1131.83</ion-label></ion-row>
+  </ion-col>
+
+  <ion-col size = 2 style="display: flex; justify-content: center; align-items: center;flex-direction: column;font-size: 9px;">
+    <ion-row><ion-label class="responsive-label-for-content">421760</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">1037385</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">499850</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">631705</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">153830</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">153145</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">288291</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">110000</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">120878</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">468253</ion-label></ion-row>
+  </ion-col>
+
+</ion-row>
+<ion-row style="background: green">
+  <ion-col size = 7.5 >
+    <ion-label class="responsive-label-for-content" style="border: 0px; display: flex; flex-direction: column;align-items: end;color: white;">
+      बिलासपुर वृत्त योग
+    </ion-label>
+  </ion-col>
+  <ion-col size = 1 >
+    <ion-label class="responsive-label-for-content" style="border: 0px; display: flex; flex-direction: column;align-items: center;color: white;">
+      4126
+    </ion-label>
+  </ion-col>
+  <ion-col size = 1.5 >
+    <ion-label class="responsive-label-for-content"  style="border: 0px; display: flex; flex-direction: column;align-items: center;color: white;">
+      5937.69
+    </ion-label>
+  </ion-col>
+  <ion-col size = 2 >
+    <ion-label class="responsive-label-for-content"  style="border: 0px; display: flex; flex-direction: column;align-items: center;color: white;">
+      3885097
+    </ion-label>
+  </ion-col>
+</ion-row>
+<!-- बिलासपुर  End -->
+
+<!-- सरगुजा  Start-->
+<ion-row class="ion-row-style">
+  <ion-col size = .5 style="display: flex; justify-content: center; align-items: center; flex-direction: column;">
+    <ion-row>
+      <ion-label class="responsive-label-for-content">1</ion-label>
+    </ion-row>
+    <ion-row>
+      <ion-label class="responsive-label-for-content">2</ion-label>       
+    </ion-row>
+    <ion-row>
+      <ion-label class="responsive-label-for-content">3</ion-label>     
+    </ion-row>
+    <ion-row>
+      <ion-label class="responsive-label-for-content">4</ion-label>
+    </ion-row>
+    <ion-row>
+      <ion-label class="responsive-label-for-content">5</ion-label>
+    </ion-row>
+    <ion-row>
+      <ion-label class="responsive-label-for-content">6</ion-label>
+    </ion-row>
+  </ion-col>
+
+  <ion-col size = 1 style="display: flex; justify-content: center; align-items: center;">
+    <ion-label class="responsive-label-for-content">सरगुजा</ion-label>
+  </ion-col>
+
+  <ion-col size = 3 style="display: flex; justify-content: center; align-items: center;flex-direction: column;">
+    <ion-row><ion-label class="responsive-label-for-content">सरगुजा</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">सूरजपुर</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">बलरामपुर</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">कोरिया</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">मनेन्द्रगढ़- चिरमिरी</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">जशपुर</ion-label></ion-row>
+  </ion-col>
+
+  <ion-col size = 3 style="display: flex; justify-content: center; align-items: center;flex-direction: column;font-size: 8px;">
+    <ion-row><ion-label class="responsive-label-for-content">सरगुजा</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">सूरजपुर</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">बलरामपुर</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">कोरिया</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">मनेन्द्रगढ़</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">जशपुर</ion-label></ion-row>
+  </ion-col>
+
+  <ion-col size = 1 style="display: flex; justify-content: center; align-items: center;flex-direction: column;font-size: 9px;">
+    <ion-row><ion-label class="responsive-label-for-content">496</ion-label></ion-row>	
+    <ion-row><ion-label class="responsive-label-for-content">186</ion-label></ion-row>	
+    <ion-row><ion-label class="responsive-label-for-content">2039</ion-label></ion-row>	
+    <ion-row><ion-label class="responsive-label-for-content">589</ion-label></ion-row>	
+    <ion-row><ion-label class="responsive-label-for-content">558</ion-label></ion-row>	
+    <ion-row><ion-label class="responsive-label-for-content">1007</ion-label></ion-row>	
+  </ion-col>
+
+  <ion-col size = 1.5 style="display: flex; justify-content: center; align-items: center;flex-direction: column;font-size: 9px;">
+    <ion-row><ion-label class="responsive-label-for-content">517.49</ion-label></ion-row>	
+    <ion-row><ion-label class="responsive-label-for-content">418.73</ion-label></ion-row>	
+    <ion-row><ion-label class="responsive-label-for-content">2719.18</ion-label></ion-row>	
+    <ion-row><ion-label class="responsive-label-for-content">719.92</ion-label></ion-row>	
+    <ion-row><ion-label class="responsive-label-for-content">633.09</ion-label></ion-row>	
+    <ion-row><ion-label class="responsive-label-for-content">1678.95</ion-label></ion-row>	
+  </ion-col>
+
+  <ion-col size = 2 style="display: flex; justify-content: center; align-items: center;flex-direction: column;font-size: 9px;">
+    <ion-row><ion-label class="responsive-label-for-content">168800</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">379053</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">855149</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">541360</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">486732</ion-label></ion-row>
+    <ion-row><ion-label class="responsive-label-for-content">417707</ion-label></ion-row>
+  </ion-col>
+
+</ion-row>
+<ion-row style="background: green">
+  <ion-col size = 7.5 >
+    <ion-label class="responsive-label" style="border: 0px; display: flex; flex-direction: column;align-items: end;color: white;">
+      सरगुजा वृत्त योग
+    </ion-label>
+  </ion-col>
+  <ion-col size = 1 >
+    <ion-label class="responsive-label" style="border: 0px; display: flex; flex-direction: column;align-items: center;color: white;">
+      4875
+    </ion-label>
+  </ion-col>
+  <ion-col size = 1.5 >
+    <ion-label class="responsive-label" style="border: 0px; display: flex; flex-direction: column;align-items: center;color: white;">
+      6687.36
+    </ion-label>
+  </ion-col>
+  <ion-col size = 2 >
+    <ion-label class="responsive-label" style="border: 0px; display: flex; flex-direction: column;align-items: center;color: white;">
+      2848801
+    </ion-label>
+  </ion-col>
+</ion-row>
+<!-- सरगुजा  End -->
+
+<!-- MahaYog Start -->
+
+<ion-row style="background: yellow">
+  <ion-col size = 7.5 >
+    <ion-label class="responsive-label-for-content" style="border: 0px; display: flex; flex-direction: column;align-items: end;color: black;">
+      महायोग
+    </ion-label>
+  </ion-col>
+  <ion-col size = 1 >
+    <ion-label class="responsive-label-for-content" style="border: 0px; display: flex; flex-direction: column;align-items: center;color: black;">
+      23047
+    </ion-label>
+  </ion-col>
+  <ion-col size = 1.5 >
+    <ion-label class="responsive-label-for-content" style="border: 0px; display: flex; flex-direction: column;align-items: center;color: black;">
+      37835.08
+    </ion-label>
+  </ion-col>
+  <ion-col size = 2 >
+    <ion-label class="responsive-label-for-content" style="border: 0px; display: flex; flex-direction: column;align-items: center;color: black;">
+      22567005
+    </ion-label>
+  </ion-col>
+</ion-row>
+
+<!-- Mahayog End -->
+
+</ion-grid>
+
+
+<ion-row style="margin-top: 20px;">
+  <ion-label class="item-style-center-align" style="width: 100%; display: flex; flex-direction: column; align-items: center;text-align: center; margin-left: 5px; margin-right: 5px;">
+    <b>वित्तीय वर्ष  एवं 2024-25 में रोपित पौधों की प्रजातिवार जानकारी</b>
+  </ion-label>
+</ion-row>
+
+
+<ion-grid>
+
+  <ion-row class="item-style-table-header">
+    <ion-col size = .5>
+      <ion-label class="table-lable-style" style="height: 100%; text-align: center;display: flex; flex-direction: column; justify-content: center; align-items: center;">
+        क्र.
+      </ion-label>
+    </ion-col>
+    <ion-col size = 1.5>
+      <ion-label class="table-lable-style" style="height: 100%; text-align: center;display: flex; flex-direction: column; justify-content: center; align-items: center;">
+        प्रजाति का नाम
+      </ion-label>
+    </ion-col>
+
+    <ion-col size = 5>
+      <ion-row class="table-lable-style" style="display: flex; flex-direction: column; justify-content: center; align-items: center;font-size: 8px; color: white;">
+        <ion-label class="responsive-label">वर्ष 2023-24</ion-label>
+      </ion-row>
+
+      <ion-row style="margin-top: 10px;">
+        <ion-col size = 3.5 style="border-width: .5px;">
+          <ion-label  class="table-lable-style">
+            कुल किसानो की संख्या
+          </ion-label>
+        </ion-col>
+        <ion-col size = 3.5 style="border-width: .5px;">
+          <ion-label  class="table-lable-style">
+            कुल क्षेत्रफल (एकड़)
+          </ion-label>
+        </ion-col>
+        <ion-col size = 5 style="border-width: .5px;">
+          <ion-label  class="table-lable-style">
+            कुल पौधो की संख्या
+          </ion-label>
+        </ion-col>
+      </ion-row>
+
+    </ion-col>
+
+    <ion-col size = 5>
+      <ion-row style="display: flex; flex-direction: column; justify-content: center; align-items: center;font-size: 8px; color: white;">
+        <ion-label class="responsive-label">वर्ष 2024-25</ion-label>
+      </ion-row>
+
+      <ion-row style="margin-top: 10px;">
+        <ion-col size = 3.5>
+          <ion-label  class="table-lable-style">
+            कुल किसानो की संख्या
+          </ion-label>
+        </ion-col>
+        <ion-col size = 3.5>
+          <ion-label  class="table-lable-style">
+            कुल क्षेत्रफल (एकड़)
+          </ion-label>
+        </ion-col>
+        <ion-col size = 5>
+          <ion-label  class="table-lable-style">
+            कुल पौधो की संख्या
+          </ion-label>
+        </ion-col>
+      </ion-row>
+
+    </ion-col>
+
+  </ion-row>
+
+  <ion-row>
+    <ion-col size = .5 class="table-lable-style" style="color: black;">1</ion-col>
+    <ion-col size = 1.5 class="table-lable-style" style="color: black;">क्लोनल नीलगिरी</ion-col>
+    
+    <ion-col size = 1.5 class="table-lable-style" style="color: black;">13257</ion-col>
+    <ion-col size = 1.5 class="table-lable-style" style="color: black;">21998.80</ion-col>
+    <ion-col size = 2 class="table-lable-style" style="color: black;">18614318</ion-col>
+
+    <ion-col size = 1.5 class="table-lable-style" style="color: black;">15107</ion-col>
+    <ion-col size = 1.5 class="table-lable-style" style="color: black;">26249.81</ion-col>
+    <ion-col size = 2 class="table-lable-style" style="color: black;">19003045</ion-col>
+
+  </ion-row>
+
+
+  <ion-row>
+    <ion-col size = .5 class="table-lable-style" style="color: black;">2</ion-col>
+    <ion-col size = 1.5 class="table-lable-style" style="color: black;">टिशू कल्चर सागौन</ion-col>
+    
+    <ion-col size = 1.5 class="table-lable-style" style="color: black;">1833</ion-col>
+    <ion-col size = 1.5 class="table-lable-style" style="color: black;">3253.16</ion-col>
+    <ion-col size = 2 class="table-lable-style" style="color: black;">618825</ion-col>
+
+    <ion-col size = 1.5 class="table-lable-style" style="color: black;">778</ion-col>
+    <ion-col size = 1.5 class="table-lable-style" style="color: black;">1302.68</ion-col>
+    <ion-col size = 2 class="table-lable-style" style="color: black;">470905</ion-col>
+
+  </ion-row>
+
+  <ion-row>
+    <ion-col size = .5 class="table-lable-style" style="color: black;">3</ion-col>
+    <ion-col size = 1.5 class="table-lable-style" style="color: black;">साधारण सागौन</ion-col>
+    
+    <ion-col size = 1.5 class="table-lable-style" style="color: black;">6471</ion-col>
+    <ion-col size = 1.5 class="table-lable-style" style="color: black;">7664.74</ion-col>
+    <ion-col size = 2 class="table-lable-style" style="color: black;">2242554</ion-col>
+
+    <ion-col size = 1.5 class="table-lable-style" style="color: black;">5787</ion-col>
+    <ion-col size = 1.5 class="table-lable-style" style="color: black;">8615.84</ion-col>
+    <ion-col size = 2 class="table-lable-style" style="color: black;">2708685</ion-col>
+
+  </ion-row>
+
+
+  <ion-row>
+    <ion-col size = .5 class="table-lable-style" style="color: black;">4</ion-col>
+    <ion-col size = 1.5 class="table-lable-style" style="color: black;">टिशू कल्चर बांस</ion-col>
+    
+    <ion-col size = 1.5 class="table-lable-style" style="color: black;">489</ion-col>
+    <ion-col size = 1.5 class="table-lable-style" style="color: black;">654.19</ion-col>
+    <ion-col size = 2 class="table-lable-style" style="color: black;">278928</ion-col>
+
+    <ion-col size = 1.5 class="table-lable-style" style="color: black;">58</ion-col>
+    <ion-col size = 1.5 class="table-lable-style" style="color: black;">100.58</ion-col>
+    <ion-col size = 2 class="table-lable-style" style="color: black;">27095</ion-col>
+
+  </ion-row>
+
+
+  <ion-row>
+    <ion-col size = .5 class="table-lable-style" style="color: black;">5</ion-col>
+    <ion-col size = 1.5 class="table-lable-style" style="color: black;">साधारण बांस</ion-col>
+    
+    <ion-col size = 1.5 class="table-lable-style" style="color: black;">657</ion-col>
+    <ion-col size = 1.5 class="table-lable-style" style="color: black;">621.48</ion-col>
+    <ion-col size = 2 class="table-lable-style" style="color: black;">277729</ion-col>
+
+    <ion-col size = 1.5 class="table-lable-style" style="color: black;">321</ion-col>
+    <ion-col size = 1.5 class="table-lable-style" style="color: black;">309.48</ion-col>
+    <ion-col size = 2 class="table-lable-style" style="color: black;">100280</ion-col>
+
+  </ion-row>
+
+  <ion-row>
+    <ion-col size = .5 class="table-lable-style" style="color: black;">6</ion-col>
+    <ion-col size = 1.5 class="table-lable-style" style="color: black;">चंदन</ion-col>
+    
+    <ion-col size = 1.5 class="table-lable-style" style="color: black;">1244</ion-col>
+    <ion-col size = 1.5 class="table-lable-style" style="color: black;">930.41</ion-col>
+    <ion-col size = 2 class="table-lable-style" style="color: black;">164353</ion-col>
+
+    <ion-col size = 1.5 class="table-lable-style" style="color: black;">779</ion-col>
+    <ion-col size = 1.5 class="table-lable-style" style="color: black;">906.86</ion-col>
+    <ion-col size = 2 class="table-lable-style" style="color: black;">138186</ion-col>
+
+  </ion-row>
+
+
+  <ion-row>
+    <ion-col size = .5 class="table-lable-style" style="color: black;">7</ion-col>
+    <ion-col size = 1.5 class="table-lable-style" style="color: black;">मिलिया डूबिया</ion-col>
+    
+    <ion-col size = 1.5 class="table-lable-style" style="color: black;">294</ion-col>
+    <ion-col size = 1.5 class="table-lable-style" style="color: black;">553.42</ion-col>
+    <ion-col size = 2 class="table-lable-style" style="color: black;">193982</ion-col>
+
+    <ion-col size = 1.5 class="table-lable-style" style="color: black;">155</ion-col>
+    <ion-col size = 1.5 class="table-lable-style" style="color: black;">284.05</ion-col>
+    <ion-col size = 2 class="table-lable-style" style="color: black;">63824</ion-col>
+
+  </ion-row>
+
+  <ion-row>
+    <ion-col size = .5 class="table-lable-style" style="color: black;">8</ion-col>
+    <ion-col size = 1.5 class="table-lable-style" style="color: black;">कटंग बांस</ion-col>
+    
+    <ion-col size = 1.5 class="table-lable-style" style="color: black;"> - </ion-col>
+    <ion-col size = 1.5 class="table-lable-style" style="color: black;"> - </ion-col>
+    <ion-col size = 2 class="table-lable-style" style="color: black;"> - </ion-col>
+
+    <ion-col size = 1.5 class="table-lable-style" style="color: black;">6</ion-col>
+    <ion-col size = 1.5 class="table-lable-style" style="color: black;">7.50</ion-col>
+    <ion-col size = 2 class="table-lable-style" style="color: black;">8500</ion-col>
+
+  </ion-row>
+
+  <ion-row>
+    <ion-col size = .5 class="table-lable-style" style="color: black;">9</ion-col>
+    <ion-col size = 1.5 class="table-lable-style" style="color: black;">ग्राफ्टेड आंवला</ion-col>
+    
+    <ion-col size = 1.5 class="table-lable-style" style="color: black;"> - </ion-col>
+    <ion-col size = 1.5 class="table-lable-style" style="color: black;"> - </ion-col>
+    <ion-col size = 2 class="table-lable-style" style="color: black;"> - </ion-col>
+
+    <ion-col size = 1.5 class="table-lable-style" style="color: black;">56</ion-col>
+    <ion-col size = 1.5 class="table-lable-style" style="color: black;">58.25</ion-col>
+    <ion-col size = 2 class="table-lable-style" style="color: black;">46485</ion-col>
+
+  </ion-row>
+
+<!-- MahaYog Start -->
+
+<ion-row style="background: yellow">
+  <ion-col size = 2 >
+    <ion-label class="responsive-label-for-content" style="border: 0px; display: flex; flex-direction: column;align-items: end;color: black;">
+      महायोग
+    </ion-label>
+  </ion-col>
+  <ion-col size = 1.5 >
+    <ion-label class="responsive-label-for-content"  style="border: 0px; display: flex; flex-direction: column;align-items: center;color: black;">
+      24245
+    </ion-label>
+  </ion-col>
+  <ion-col size = 1.5 >
+    <ion-label class="responsive-label-for-content" style="border: 0px; display: flex; flex-direction: column;align-items: center;color: black;">
+      35676.20
+    </ion-label>
+  </ion-col>
+  <ion-col size = 2 >
+    <ion-label class="responsive-label-for-content" style="border: 0px; display: flex; flex-direction: column;align-items: center;color: black;">
+      22390689
+    </ion-label>
+  </ion-col>
+  <ion-col size = 1.5 >
+    <ion-label class="responsive-label-for-content" style="border: 0px; display: flex; flex-direction: column;align-items: center;color: black;">
+      23047
+    </ion-label>
+  </ion-col>
+  <ion-col size = 1.5 >
+    <ion-label class="responsive-label-for-content" style="border: 0px; display: flex; flex-direction: column;align-items: center;color: black;">
+      37835.05
+    </ion-label>
+  </ion-col>
+  <ion-col size = 2 >
+    <ion-label class="responsive-label-for-content" style="border: 0px; display: flex; flex-direction: column;align-items: center;color: black;">
+      22567005
+    </ion-label>
+  </ion-col>
+</ion-row>
+
+<!-- Mahayog End -->
+
+</ion-grid>
+
+</ion-content>

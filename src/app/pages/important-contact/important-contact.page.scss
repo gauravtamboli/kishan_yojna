@@ -1,0 +1,367 @@
+.custom-back-button {
+  color: green;
+}
+
+.custom-ion-label {
+  font-size: 12px;
+  font-weight: 700;
+  color: black;
+  font-style: bold;
+}
+
+.custom-ion-label-points {
+  padding: 5px;
+  background-color: green;
+  font-size: 15px;
+  font-weight: 700;
+  color: white;
+  font-style: bold;
+  border-bottom-right-radius: 10px;
+}
+
+.item-style-label {
+  margin-top: 10px;
+  font-size: 12px;
+  color: green;
+}
+
+ion-title {
+  margin-left: -25px;
+  font-size: 12px;
+}
+
+ion-select {
+  font-size: 12px;
+}
+
+ion-input {
+  font-size: 14px;
+  outline-color: green;
+  margin-left: -3px;
+  size: 12px;
+  --resize: true;
+}
+
+ion-text-area {
+  font-size: 14px;
+  outline-color: green;
+  margin-left: -3px;
+  size: 12px;
+}
+
+.radio-group-horizontal {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+ion-content {
+  --padding-bottom: 60px;
+  /* Adjust this value based on your needs */
+}
+
+
+
+.ion-grid-custom {
+  border: 1px solid #000;
+  /* Border around the grid */
+}
+
+.ion-row-custom {
+  display: flex;
+  border: 1px solid #000;
+  /* Border around the row */
+}
+
+.ion-col-custom {
+  border: 1px solid #000;
+  /* Border around each column */
+  padding: 10px;
+  /* Padding inside the column */
+  margin: 5px;
+  /* Optional: Margin between columns */
+}
+
+
+ion-select {
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  padding: 8px;
+  font-size: 16px;
+  --min-height: 45px;
+  background-color: #f9f9f9;
+}
+
+.title-ion-lable {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-weight: 500;
+  width: 100%;
+  font-size: 15px;
+}
+
+.content-ion-lable {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  font-size: 14px;
+}
+
+
+.status-approved {
+  color: green;
+  font-weight: bold;
+}
+
+.status-pending {
+  color: orange;
+  font-weight: bold;
+}
+
+.status-rejected {
+  color: red;
+  font-weight: bold;
+}
+
+.otp-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.otp-box {
+  text-align: center;
+  font-size: 24px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  height: 50px;
+  width: 50px;
+  --padding-start: 0;
+  --padding-end: 0;
+}
+
+
+.big-text-style {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-size: 25px;
+}
+
+
+
+.responsive-label {
+  font-size: 15px;
+}
+
+/* Medium screens (tablets) */
+@media (min-width: 600px) {
+  .responsive-label {
+    font-size: 16px;
+  }
+}
+
+/* Large screens (desktops) */
+@media (min-width: 1024px) {
+  .responsive-label {
+    font-size: 20px;
+  }
+}
+
+// ::ng-deep .custom-table-row {
+//   margin-bottom: 10px;
+//   background: white;
+// }
+
+::ng-deep .custom-margin-table .p-datatable {
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+::ng-deep .p-datatable-tbody>tr>td {
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+@media screen and (max-width: 768px) {
+  .p-column-title {
+    font-size: 12px;
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #666;
+  }
+}
+
+/* Hide label on large screens */
+@media screen and (min-width: 769px) {
+  .p-column-title {
+    display: none;
+  }
+}
+
+.responsive-toolbar-title {
+  font-size: 12px;
+  font-weight: 700;
+}
+
+/* Medium screens (tablets) */
+@media (min-width: 600px) {
+  .responsive-toolbar-title {
+    font-size: 16px;
+  }
+}
+
+/* Large screens (desktops) */
+@media (min-width: 1024px) {
+  .responsive-toolbar-title {
+    font-size: 20px;
+  }
+}
+
+
+
+
+::ng-deep .custom-margin-table {
+  .p-datatable {
+    margin: 20px;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+
+    .p-datatable-header {
+      background: #2E7D32;
+      color: white;
+      text-align: center;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 1rem;
+    }
+
+    .p-datatable-thead>tr>th {
+      background: #2E7D32;
+      color: white;
+      padding: 1rem;
+      font-weight: 600;
+      transition: background-color 0.3s ease;
+
+      &:hover {
+        background: #1B5E20;
+      }
+    }
+
+    .p-datatable-tbody>tr {
+      transition: all 0.3s ease;
+      border-bottom: 1px solid #e0e0e0;
+
+      &:hover {
+        background: #f5f5f5;
+        transform: translateY(-2px);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+      }
+
+      >td {
+        padding: 1rem;
+        border: none;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .p-column-title {
+    display: block;
+    font-weight: 600;
+    color: #2E7D32;
+    margin-bottom: 8px;
+  }
+
+  ::ng-deep .custom-margin-table {
+    .p-datatable {
+      margin: 10px;
+    }
+  }
+
+  .responsive-label {
+    font-size: 12px;
+  }
+
+  .page-title {
+    font-size: 20px;
+    margin: 1rem 0;
+  }
+}
+
+
+// .custom-table-row td {
+//   padding: 12px 8px;
+//   border-bottom: 1px solid #ccc;
+// }
+
+.cell-label {
+  display: none;
+  font-weight: 600;
+  font-size: 13px;
+  color: #666;
+}
+
+.cell-value {
+  font-size: 14px;
+  font-weight: 500;
+  color: #000;
+  display: flex;
+  gap: 4px;
+}
+
+/* Show label only on small screens (stacked view) */
+@media screen and (max-width: 768px) {
+  .cell-label {
+    display: block;
+    margin-bottom: 5px;
+  }
+
+  .cell-value {
+    flex-direction: column;
+  }
+}
+
+
+
+@media screen and (max-width: 768px) {
+  .p-column-title {
+    display: block;
+    font-weight: 600;
+    color: #2E7D32;
+    margin-bottom: 8px;
+  }
+
+  ::ng-deep .custom-margin-table {
+    .p-datatable {
+      margin: 10px;
+    }
+  }
+
+  .responsive-label {
+    font-size: 12px;
+  }
+
+  .page-title {
+    font-size: 20px;
+    margin: 1rem 0;
+  }
+}
+
+@media screen and (min-width: 769px) {
+  .p-column-title {
+    display: none;
+  }
+
+  .responsive-label {
+    font-size: 16px;
+  }
+}

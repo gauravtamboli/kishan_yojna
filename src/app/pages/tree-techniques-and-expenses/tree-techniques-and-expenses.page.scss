@@ -1,0 +1,113 @@
+.custom-back-button {
+    color: green;
+}
+
+.custom-ion-label{
+    font-size: 12px;
+    font-weight: 700;
+    color: #6A5ACD; // Main text color
+    font-style: bold;
+}
+
+/* Medium screens (tablets) */
+@media (min-width: 600px) {
+    .custom-ion-label {
+        font-size: 16px;
+    }
+}
+
+/* Large screens (desktops) */
+@media (min-width: 1024px) {
+    .custom-ion-label {
+        font-size: 20px;
+    }
+}
+
+.custom-ion-label-points{
+    padding: 5px;
+    background-color: green;
+    font-size: 15px;
+    font-weight: 700;
+    color: white;
+    font-style: bold;
+    border-bottom-right-radius: 10px;
+}
+
+/* Medium screens (tablets) */
+@media (min-width: 600px) {
+    .custom-ion-label-points {
+        font-size: 16px;
+    }
+}
+
+/* Large screens (desktops) */
+@media (min-width: 1024px) {
+    .custom-ion-label-points {
+        font-size: 20px;
+    }
+}
+
+
+.item-style{
+    color: #6A5ACD; // Main text color
+    margin-top: 10px;
+    font-size: 12px;
+}
+
+/* Medium screens (tablets) */
+@media (min-width: 600px) {
+    .item-style {
+        font-size: 16px;
+    }
+}
+
+/* Large screens (desktops) */
+@media (min-width: 1024px) {
+    .item-style {
+        font-size: 20px;
+    }
+}
+
+.dot-item {
+    color: #6A5ACD; // Main text color
+    font-size: 12px;
+    position: relative;
+}
+
+/* Medium screens (tablets) */
+@media (min-width: 600px) {
+    .dot-item {
+        font-size: 16px;
+    }
+}
+
+/* Large screens (desktops) */
+@media (min-width: 1024px) {
+    .dot-item {
+        font-size: 20px;
+    }
+}
+
+ion-title{
+    margin-left: -25px;
+    font-size: 12px;
+}
+
+.responsive-toolbar-title {
+    font-size: 12px;
+    font-weight: 700;
+}
+
+/* Medium screens (tablets) */
+@media (min-width: 600px) {
+    .responsive-toolbar-title {
+        font-size: 16px;
+    }
+}
+
+/* Large screens (desktops) */
+@media (min-width: 1024px) {
+    .responsive-toolbar-title {
+        font-size: 20px;
+    }
+}

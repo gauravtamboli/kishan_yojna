@@ -1,0 +1,601 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button class="custom-back-button" (click)="goBack()" defaultHref="/landigpage"></ion-back-button>
+    </ion-buttons>
+    <ion-title class="responsive-toolbar-title">
+      प्राक्कलन
+    </ion-title>
+    <ion-buttons slot="end">
+      <ion-button class="gradient-btn" size="small" (click)="generatePDF()">
+        Print All
+      </ion-button>
+    </ion-buttons>
+
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-content>
+  <!-- Page Loading Indicator -->
+  <ion-loading *ngIf="isPageLoading" [isOpen]="isPageLoading" message="डेटा लोड हो रहा है..." spinner="circular"
+    backdropDismiss="false">
+  </ion-loading>
+
+  <!-- Main Content - Hide until loading complete -->
+  <div *ngIf="!isPageLoading">
+    <!-- Applicant Card (same fields as normal page) -->
+    <div class="estimate-container" *ngIf="singleData">
+      <ion-card class="applicant-card">
+        <div class="applicant-row">
+          <ion-text class="applicant-text">
+            <strong style="font-size: 20px; text-align: center;">
+              आवेदक क्रमांक : {{ singleData.applicationNumber }}
+            </strong>
+          </ion-text>
+        </div>
+      </ion-card>
+
+      <div class="details-section">
+
+        <strong style="font-size: 20px; text-align: center !important ;">
+          आवेदक विवरण :
+        </strong>
+        <hr />
+        <ion-grid>
+
+          <ion-row>
+            <ion-col size="12" size-md="4">
+              <div class="detail-item">
+                <ion-label class="detail-title">कृषक/हितग्राही का नाम :
+                  <span class="detail-value">{{ singleData.hitgrahiName }}</span>
+                </ion-label>
+              </div>
+            </ion-col>
+
+            <ion-col size="12" size-md="4">
+              <div class="detail-item">
+                <ion-label class="detail-title">पिता का नाम :
+                  <span class="detail-value">{{ singleData.fatherName }}</span>
+                </ion-label>
+              </div>
+            </ion-col>
+
+            <ion-col size="12" size-md="4">
+              <div class="detail-item">
+                <ion-label class="detail-title">पता :
+                  <span class="detail-value">
+                    {{ singleData.address }}, {{ singleData.gramPanchayatName }}
+                  </span>
+                </ion-label>
+              </div>
+            </ion-col>
+          </ion-row>
+
+          <ion-row>
+            <ion-col size="12" size-md="4">
+              <div class="detail-item">
+                <ion-label class="detail-title">मोबाईल नंबर :
+                  <span class="detail-value">{{ singleData.mobileNo }}</span>
+                </ion-label>
+              </div>
+            </ion-col>
+
+            <ion-col size="12" size-md="4">
+              <div class="detail-item">
+                <ion-label class="detail-title">भूमि का प्रकार :
+                  <span class="detail-value">
+                    {{ singleData.landType == 1 ? 'FRA LAND' : 'REVENUE LAND' }}
+                  </span>
+                </ion-label>
+              </div>
+            </ion-col>
+
+            <ion-col size="12" size-md="4">
+              <div class="detail-item">
+                <ion-label class="detail-title">कुल रकबा (एकड़ मे) :
+                  <span class="detail-value">{{ singleData.totalAcre }}</span>
+                </ion-label>
+              </div>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </div>
+
+
+    </div>
+
+    <!-- Actions -->
+
+
+    <div *ngIf="!categoriesToShow.length">कोई मान्य प्रजाति डेटा उपलब्ध नहीं</div>
+
+
+
+    <!-- Goswara Summary Table (New Table) -->
+
+
+    <!-- Previous Detailed Tables (One per Plant Category) -->
+    <ng-container *ngFor="let cat of categoriesToShow; let i = index">
+      <ion-card class="species-card">
+        <ion-text class="species-title">
+          <strong>प्रजाति का नाम :- {{ cat.label }} (कुल पौधे: {{ cat.plantCount }} ,कुल रकबा {{ cat.area }} )</strong>
+        </ion-text>
+        <!-- <ion-button class="my-ion-button" (click)="printSection('print-section-' + i)">Print</ion-button> -->
+      </ion-card>
+
+      <div class="table-wrapper detail-table-wrapper printable-section" [id]="'print-section-' + i">
+        <table class="custom-table detail-table">
+          <thead>
+            <!-- Row 1: Main headers -->
+            <tr>
+              <th rowspan="2" class="detail-th-year">वर्ष</th>
+              <th rowspan="2" class="detail-th">क्रमांक</th>
+              <th rowspan="2" class="detail-th">कार्य विवरण</th>
+              <th rowspan="2" class="detail-th">कूल पौधों</th>
+
+              <th colspan="2" class="detail-th">रोपित पौधों की संख्या</th>
+
+              <th colspan="2" class="detail-th">दर (₹)</th>
+              <th rowspan="2" class="detail-th">राशि (₹)</th>
+            </tr>
+
+            <!-- Row 2: Sub headers -->
+            <tr>
+              <th class="detail-th">5 एकड़ से कम</th>
+              <th class="detail-th">5 एकड़ से अधिक</th>
+              <th class="detail-th">5 एकड़ से कम (100%)</th>
+              <th class="detail-th">5 एकड़ से अधिक (50%)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- प्रथम वर्ष -->
+            <tr class="detail-year-header-row">
+              <td [attr.rowspan]="year1Rows.length + 1" class="year-label detail-year-cell">प्रथम वर्ष</td>
+            </tr>
+            <tr *ngFor="let item of year1Rows" class="detail-data-row">
+              <td class="detail-td detail-kramank">{{ item.itemKramank }}</td>
+              <td class="detail-td detail-karya" [style.text-align]="item.tablealign"
+                [style.font-weight]="item.fontweight">{{ item.karyaVivran }}</td>
+              <td class="detail-td detail-count">{{ cat.plantCount }}</td>
+              <td class="detail-td detail-count">{{ less5TreeCount(cat) }}</td>
+              <td class="detail-td detail-count">{{ more5TreeCount(cat) }}</td>
+              <td class="detail-td detail-rate">{{ item[cat.rateField] }}</td>
+              <td class="detail-td detail-rate">
+                {{ halfrate(item[cat.rateField], item.itemKramank) }}
+              </td>
+              <!-- <td class="detail-td detail-amount">{{ item[cat.rateField] * less5TreeCount(cat)}} +
+                {{more5TreeCount(cat) * halfrate(item[cat.rateField], item.itemKramank) }}  = {{ total(cat, item,1) | number:'1.2-2'
+                }}</td> -->
+
+              <td class="detail-td detail-amount">{{ total(cat, item,1) | number:'1.2-2'
+                }}</td>
+            </tr>
+            <tr class="detail-year-total-row">
+              <td colspan="8" class="detail-year-total-label">प्रथम वर्ष का योग</td>
+              <td class="detail-year-total-amount">{{ getYearTotal(cat, year1Rows) | number:'1.2-2' }}</td>
+            </tr>
+
+            <!-- द्वितीय वर्ष -->
+            <tr class="detail-year-header-row">
+              <td [attr.rowspan]="year2Rows.length + 1" class="year-label detail-year-cell">द्वितीय वर्ष</td>
+            </tr>
+            <tr *ngFor="let item of year2Rows" class="detail-data-row">
+              <td class="detail-td detail-kramank">{{ item.itemKramank }}</td>
+              <td class="detail-td detail-karya" [style.text-align]="item.tablealign"
+                [style.font-weight]="item.fontweight">{{ item.karyaVivran }}</td>
+              <td class="detail-td detail-count">{{ cat.plantCount }}</td>
+              <td class="detail-td detail-count">{{ less5TreeCount(cat) }}</td>
+              <td class="detail-td detail-count">{{ more5TreeCount(cat) }}</td>
+              <td class="detail-td detail-rate">{{ item[cat.rateField] }}</td>
+              <td class="detail-td detail-rate">
+                {{ halfrate2(item[cat.rateField], item.itemKramank) }}
+              </td>
+              <!-- <td class="detail-td detail-amount">{{ item[cat.rateField] * less5TreeCount(cat)}} +
+                {{more5TreeCount(cat) * halfrate2(item[cat.rateField], item.itemKramank) }} = {{ total(cat, item,2) | number:'1.2-2'
+                }}</td> -->
+              <td class="detail-td detail-amount"> {{ total(cat, item,2) | number:'1.2-2'
+                }}</td>
+            </tr>
+            <tr class="detail-year-total-row">
+              <td colspan="8" class="detail-year-total-label">द्वितीय वर्ष का योग</td>
+              <td class="detail-year-total-amount">{{ getYearTotal(cat, year2Rows) | number:'1.2-2' }}</td>
+            </tr>
+
+            <!-- तृतीय वर्ष -->
+            <tr class="detail-year-header-row">
+              <td [attr.rowspan]="year3Rows.length + 1" class="year-label detail-year-cell">तृतीय वर्ष</td>
+            </tr>
+            <tr *ngFor="let item of year3Rows" class="detail-data-row">
+              <td class="detail-td detail-kramank">{{ item.itemKramank }}</td>
+              <td class="detail-td detail-karya" [style.text-align]="item.tablealign"
+                [style.font-weight]="item.fontweight">{{ item.karyaVivran }}</td>
+              <td class="detail-td detail-count">{{ cat.plantCount }}</td>
+              <td class="detail-td detail-count">{{ less5TreeCount(cat) }}</td>
+              <td class="detail-td detail-count">{{ more5TreeCount(cat) }}</td>
+              <td class="detail-td detail-rate">{{ item[cat.rateField] }}</td>
+              <td class="detail-td detail-rate">
+                {{ halfrate2(item[cat.rateField], item.itemKramank) }}
+              </td>
+              <!-- <td class="detail-td detail-amount"> {{ item[cat.rateField] * less5TreeCount(cat)}} +
+                {{more5TreeCount(cat) * halfrate2(item[cat.rateField], item.itemKramank) }} = {{ total(cat, item, 3) |
+                number:'1.2-2'
+                }}</td> -->
+              <td class="detail-td detail-amount">{{ total(cat, item, 3) |
+                number:'1.2-2'
+                }}</td>
+            </tr>
+            <tr class="detail-year-total-row">
+              <td colspan="8" class="detail-year-total-label">तृतीय वर्ष का योग</td>
+              <td class="detail-year-total-amount">{{ getYearTotal(cat, year3Rows) | number:'1.2-2' }}</td>
+            </tr>
+
+            <!-- Grand Total -->
+            <tr class="detail-grand-total-row">
+              <td colspan="2" class="detail-grand-total-label">महायोग</td>
+              <td colspan="6" class="detail-words-text">राशि शब्दों में : {{ convertNumberToWords(getGrandTotal(cat)) }}
+              </td>
+              <td class="detail-grand-total-amount">₹{{ getGrandTotal(cat) | number:'1.2-2' }}</td>
+            </tr>
+            <tr class="detail-words-row">
+
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </ng-container>
+    <ion-card class="goswara-card" style="margin-top: 20px;">
+      <ion-card-header>
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <ion-card-title class="goswara-title">गोस्वारा एस्टीमेट</ion-card-title>
+          <ion-button class="my-ion-button" (click)="printSection('print-section-goswara')">Print</ion-button>
+        </div>
+      </ion-card-header>
+      <ion-card-content>
+        <div class="table-wrapper goswara-table-wrapper printable-section" id="print-section-goswara">
+          <table class="custom-table goswara-table">
+            <thead>
+              <tr>
+                <th>प्रजातिवर गोस्वारा एस्टीमेट</th>
+                <th>पहला वर्ष</th>
+                <th>द्वितीय वर्ष</th>
+                <th>तृतीय वर्ष</th>
+                <th>कूल योग</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- One row for each plant category -->
+              <tr *ngFor="let cat of categoriesToShow" class="goswara-data-row">
+                <td class="goswara-plant-name">{{ cat.label }}</td>
+                <td class="goswara-amount">{{ getYearTotal(cat, year1Rows) | number:'1.2-2' }}</td>
+                <td class="goswara-amount">{{ getYearTotal(cat, year2Rows) | number:'1.2-2' }}</td>
+                <td class="goswara-amount">{{ getYearTotal(cat, year3Rows) | number:'1.2-2' }}</td>
+                <td class="goswara-amount goswara-grand-total">{{ getGrandTotal(cat) | number:'1.2-2' }}</td>
+              </tr>
+
+              <!-- Total Row (महायोग) -->
+              <tr class="total-row goswara-total-row">
+                <td class="goswara-total-label">महायोग</td>
+                <td class="goswara-total-amount">{{ getTotalYear1() | number:'1.2-2' }}</td>
+                <td class="goswara-total-amount">{{ getTotalYear2() | number:'1.2-2' }}</td>
+                <td class="goswara-total-amount">{{ getTotalYear3() | number:'1.2-2' }}</td>
+                <td class="goswara-total-amount goswara-final-total">₹{{ getTotalGrandTotal() | number:'1.2-2' }}</td>
+              </tr>
+
+              <!-- Amount in words row -->
+              <tr class="goswara-words-row">
+                <td colspan="5" class="goswara-words-text">
+                  राशि शब्दों में : {{ convertNumberToWords(getTotalGrandTotal()) }}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </ion-card-content>
+    </ion-card>
+    <!-- Dropdown Section (mirror normal page) -->
+    <!-- <div class="dropdown-section" *ngIf="singleData "> -->
+    <div *ngIf="singleData ">
+
+      <ion-grid>
+        <ion-row style="justify-content: center;">
+
+          <ion-col size="12">
+            <ion-card class="one-big-card">
+              <ion-card-content>
+
+                <ion-row class="center-columns">
+
+                  <!--DFO COLUMN -->
+                  <ion-col size="12" size-md="4" size-lg="4">
+
+                    <!-- When DFO Can Take Action -->
+                    <div *ngIf="singleData.awedan_status === '4' && isDFO">
+
+                      <ng-select [(ngModel)]="vanMandalAdhikari" [items]="vanMandalOptions" bindLabel="label"
+                        bindValue="value" placeholder="विकल्प चुनें" class="custom-ngselect"
+                        (change)="changeDFODeclaration($event)">
+                      </ng-select>
+                      <ion-item lines="none" class="file-item">
+                        <ion-label position="stacked">
+                          {{vanMandalAdhikari === '5' ? 'पत्र अपलोड करे' : 'अग्रेषण पत्र अपलोड करे'}}
+                        </ion-label>
+
+                        <div class="upload-wrapper">
+                          <input type="file" id="uploadFile2" accept="application/pdf" class="file-input" />
+
+                          <ion-button class="upload-btn" (click)="uploadDfo()">
+                            <ion-icon name="cloud-upload-outline" slot="start"></ion-icon>
+                          </ion-button>
+                        </div>
+                      </ion-item>
+                      <ion-item *ngIf="estimate_data.dfo_file != null">
+                        <a [href]="getFileUrl2(estimate_data.dfo_file)" target="_blank"
+                          style="color: blue; text-decoration: underline; font-weight: 600;">
+                          {{ estimate_data.dfo_file }}
+                        </a>
+                      </ion-item>
+
+                      <!-- DFO Description -->
+                      <!-- <ion-item lines="none" *ngIf="vanMandalAdhikari && isDFO" style="margin-top: 8px;">
+                        <ion-label position="stacked">विवरण (DFO)</ion-label>
+                        <ion-textarea [(ngModel)]="dfoDescription" placeholder="विवरण दर्ज करें"></ion-textarea>
+                      </ion-item> -->
+
+                    </div>
+
+                    <!-- After DFO Submitted -->
+                    <div *ngIf="singleData.awedan_status > '4'">
+                      <ion-label>
+                        {{
+                        existingApplicationStatus == '5'
+                        ? 'वन परिक्षेत्राधिकारी , त्रुटि सुधार कर प्राक्कलन पुनः प्रस्तुत करें'
+                        : existingApplicationStatus == '6'
+                        ? 'प्राक्कलन स्वीकृत किया जाता है'
+                        : ''
+                        }}
+                      </ion-label>
+                      <br />
+                      <ion-item *ngIf="estimate_data" lines="none">
+                        <ion-label style="text-align: center;">
+                          <small>
+                            अग्रेषण पत्र (DFO) :- <a [href]="getFileUrl2(estimate_data.dfo_file)" target="_blank"
+                              style="color: blue; font-weight: 500;">
+                              {{ estimate_data.dfo_file }}
+                            </a>
+                          </small>
+
+                        </ion-label>
+                      </ion-item>
+                      <!-- <br />
+                      <ion-label position="stacked">
+                        विवरण (DFO) :- {{ getSafeString(existingDFODescription) }}
+                      </ion-label> -->
+                      <div class="dropdown-label">वनमंडलाधिकारी</div>
+                    </div>
+
+                  </ion-col>
+
+                  <!--SDO COLUMN-->
+                  <ion-col size="12" size-md="4" size-lg="4">
+
+                    <!-- When SDO Can Take Action -->
+                    <div *ngIf="singleData.awedan_status === '2' && isSDO">
+
+                      <ng-select [(ngModel)]="upVanMandalAdhikari" [items]="upVanMandalOptions" bindLabel="label"
+                        bindValue="value" placeholder="विकल्प चुनें" class="custom-ngselect"
+                        (change)="changesdoDeclaration($event)">
+                      </ng-select>
+                      <ion-item lines="none" class="file-item">
+                        <ion-label position="stacked">
+                          {{upVanMandalAdhikari === '3' ? 'पत्र अपलोड करे' : 'अग्रेषण पत्र अपलोड करे'}}
+                        </ion-label>
+
+                        <div class="upload-wrapper">
+                          <input type="file" id="uploadFile1" accept="application/pdf" class="file-input" />
+
+                          <ion-button class="upload-btn" (click)="uploadSdo()">
+                            <ion-icon name="cloud-upload-outline" slot="start"></ion-icon>
+                          </ion-button>
+                        </div>
+
+                      </ion-item>
+                      <ion-item *ngIf="estimate_data.sdo_file != null">
+                        <a [href]="getFileUrl1(estimate_data.sdo_file)" target="_blank"
+                          style="color: blue; text-decoration: underline; font-weight: 600;">
+                          {{ estimate_data.sdo_file }}
+                        </a>
+                      </ion-item>
+                      <!-- <ion-item lines="none" style="margin-top: 8px;">
+                        <ion-label position="stacked">विवरण (SDO)</ion-label>
+                        <ion-textarea [(ngModel)]="sdoDescription" placeholder="विवरण दर्ज करें"></ion-textarea>
+                      </ion-item> -->
+
+                    </div>
+
+                    <!-- After SDO Submitted -->
+                    <div *ngIf="singleData.awedan_status >= '3'">
+
+                      <ion-label>
+                        {{
+                        singleData.awedan_status == '3'
+                        ? 'वन परिक्षेत्राधिकारी , त्रुटि सुधार कर प्राक्कलन पुनः प्रस्तुत करें |'
+                        : singleData.awedan_status == '4'
+                        ? 'वन मंडलाधिकारी की ओर स्वीकृत हेतु प्रेषित है |'
+                        : singleData.awedan_status == '6'
+                        ? 'वन मंडलाधिकारी की ओर स्वीकृत हेतु प्रेषित है |'
+                        : singleData.awedan_status == '5'
+                        ? 'वन मंडलाधिकारी की ओर स्वीकृत हेतु प्रेषित है |'
+                        : ''
+                        }}
+                      </ion-label>
+                      <br />
+                      <ion-item *ngIf="estimate_data" lines="none">
+                        <ion-label style="text-align: center;">
+                          <small>
+                            अग्रेषण पत्र (SDO) :- <a [href]="getFileUrl1(estimate_data.sdo_file)" target="_blank"
+                              style="color: blue; font-weight: 500;">
+                              {{ estimate_data.sdo_file }}
+                            </a>
+                          </small>
+
+                        </ion-label>
+                      </ion-item>
+                      <!-- <br />
+
+                      <ion-label position="stacked">
+                        विवरण (SDO) :- {{ getSafeString(existingSDODescription) }}
+                      </ion-label> -->
+
+                      <div class="dropdown-label">उप-वनमंडलाधिकारी</div>
+                    </div>
+
+                  </ion-col>
+
+                  <!--RO COLUMN-->
+                  <ion-col size="12" size-md="4" size-lg="4">
+
+                    <!-- When RO Can Take Action -->
+                    <div *ngIf="singleData.awedan_status === '1' && isRO">
+
+                      <ng-select [(ngModel)]="vanParikshanAdhikari" [items]="vanParikshanOptions" bindLabel="label"
+                        bindValue="value" placeholder="विकल्प चुनें" class="custom-ngselect">
+                      </ng-select>
+
+
+
+                      <ion-item lines="none" class="file-item">
+                        <ion-label position="stacked">अग्रेषण पत्र अपलोड करे</ion-label>
+
+                        <div class="upload-wrapper">
+                          <input type="file" id="uploadFile" accept="application/pdf" class="file-input" />
+
+                          <ion-button class="upload-btn" (click)="uploadRoFile()">
+                            <ion-icon name="cloud-upload-outline" slot="start"></ion-icon>
+                          </ion-button>
+                        </div>
+                      </ion-item>
+                      <ion-item *ngIf="estimate_data">
+                        <a [href]="getFileUrl(estimate_data.ro_file)" target="_blank"
+                          style="color: blue; text-decoration: underline; font-weight: 600;">
+                          {{ estimate_data.ro_file }}
+                        </a>
+                      </ion-item>
+
+
+                      <!-- <ion-item lines="none" style="margin-top: 8px;">
+                        <ion-label position="stacked">विवरण (RO)</ion-label>
+                        <ion-textarea class="custom-textarea" [(ngModel)]="roDescription"
+                          placeholder="विवरण दर्ज करें"></ion-textarea>
+                      </ion-item> -->
+                      <div class="dropdown-label">वन परिक्षेत्र अधिकारी</div>
+                    </div>
+
+                    <!-- After RO Submitted -->
+                    <div *ngIf="singleData.awedan_status > '1'">
+
+
+                      <ion-label>उप-वन मंडलाधिकारी की ओर स्वीकृत हेतु प्रेषित है |</ion-label>
+                      <br />
+                      <ion-item *ngIf="estimate_data" lines="none">
+                        <ion-label style="text-align: center;">
+                          <small>
+                            अग्रेषण पत्र (RO) :- <a [href]="getFileUrl(estimate_data.ro_file)" target="_blank"
+                              style="color: blue; font-weight: 500;">
+                              {{ estimate_data.ro_file }}
+                            </a>
+                          </small>
+
+                        </ion-label>
+                      </ion-item>
+
+                      <!-- <br />
+                      <ion-label position="stacked">
+                        विवरण (RO) :- {{ getSafeString(existingRODescription) }}
+                      </ion-label> -->
+
+                    </div>
+
+                  </ion-col>
+                </ion-row>
+                <!-- Buttons Row -->
+                <ion-row>
+                  <ion-col size="12" style="margin-top: 40px;">
+                    <!-- RO: Send To SDO Button (only when RO can update and has selected value) -->
+                    <ion-button
+                      *ngIf="isRO && estimate_data && vanParikshanAdhikari && singleData.awedan_status === '1' && !isReturnCase"
+                      style="float: right;" (click)="confirmSendToSDO()">
+                      Send To SDO
+                    </ion-button>
+
+                    <!-- SDO: Send Back to RO Button (only when SDO can update and has selected value '3') -->
+                    <ion-button
+                      *ngIf="upVanMandalAdhikari === '3' && estimate_data.sdo_file !=null && isSDO  &&singleData.awedan_status ==='2'"
+                      style="float: right;" color="danger" (click)="sdoReturnToRO()">
+                      Send Back to RO
+                    </ion-button>
+
+                    <!-- SDO: Send to DFO Button (only when SDO can update and has selected value '4') -->
+                    <ion-button
+                      *ngIf="upVanMandalAdhikari === '4' && estimate_data.sdo_file !=null  && isSDO &&singleData.awedan_status ==='2' "
+                      style="float: right;" (click)="sdoSendToDFO()">
+                      Send to DFO
+                    </ion-button>
+
+
+                    <!-- DFO: Send to RO Button (only when DFO can update and has selected value '5') -->
+                    <ion-button *ngIf="vanMandalAdhikari === '5' &&  isDFO &&singleData.awedan_status ==='4' "
+                      style="float: right;" color="danger" (click)="dfoReturnToRO()">
+                      Send back to RO
+                    </ion-button>
+
+                    <!-- DFO: Prakalan Submit Button (only when DFO can update and has selected value '6') -->
+                    <ion-button *ngIf="vanMandalAdhikari === '6' && isDFO &&singleData.awedan_status ==='4' "
+                      style="float: right;" (click)="dfoAccept()">
+                      Prakalan Submit
+                    </ion-button>
+                  </ion-col>
+                </ion-row>
+
+                <!-- Return Case Section: Show other users' descriptions and delete button -->
+                <ion-row *ngIf="isReturnCase && isRO">
+                  <ion-col size="12" style="margin-top: 20px;">
+
+                    <!-- Delete Button (only when RO can update) -->
+                    <!-- <ion-button color="danger" style="margin-top: 20px; float: right;" (click)="roSoftDelete()">
+            Delete करें
+          </ion-button> -->
+                    <ion-button color="danger" style="margin-top: 20px; float: right;" (click)="confirmDelete()">
+                      Delete करें
+                    </ion-button>
+                    <br>
+                    <!-- Message after delete button -->
+                    <ion-text
+                      style="display: block; margin-top: 60px; text-align: right; font-weight: bold; color: #d9534f;">
+                      Delete करने के पश्चात कृपया इस आवेदन को पुनः संपादित करें
+                    </ion-text>
+                  </ion-col>
+                </ion-row>
+
+                <!-- Final Status Message (Status 6 = DFO Accepted) -->
+                <ion-row *ngIf="isFinalStatus">
+                  <ion-col size="12" style="margin-top: 20px;">
+                    <ion-card>
+                      <ion-card-content>
+                        <ion-text
+                          style="color: #28a745; font-weight: bold; font-size: 16px; display: block; text-align: center;">
+                          ✅ प्राकलन स्वीकृत हो गया है | (Estimate has been approved)
+                        </ion-text>
+                      </ion-card-content>
+                    </ion-card>
+                  </ion-col>
+                </ion-row>
+              </ion-card-content>
+            </ion-card>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </div>
+  </div>
+
+</ion-content>

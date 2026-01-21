@@ -1,0 +1,28 @@
+ion-content {
+  margin-top: 50px;
+}
+
+.otp-input {
+  text-align: center;
+  font-size: 24px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 8px;
+}
+
+.rounded-success-button {
+  --border-radius: 12px;
+  --background: #f81130;
+  color: white;
+}
+
+.cancel-button {
+  --border-radius: 12px;
+  --background: #f81130;
+  color: white;
+}
+
+.otp-verify-button {
+  --border-radius: 12px;
+  color: white;
+}

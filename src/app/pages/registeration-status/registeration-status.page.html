@@ -1,0 +1,90 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button (click)="goBack()" class="custom-back-button" (click)="goBack()"></ion-back-button>
+    </ion-buttons>
+    <ion-title class="responsive-toolbar-title">{{ getTranslation('kisan_registeratino_status') }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-loading cssClass="custom-loading" [isOpen]="isLoading" [message]="loadingMessage"></ion-loading>
+
+  <ion-grid style="margin-left: 5px; margin-right: 5px;">
+
+    <ion-grid>
+      <ion-row class="ion-justify-content-center ion-align-items-center"
+        style="width: 100%; display: flex; justify-content: center;">
+        <ion-col size="12" size-lg="9">
+          <ion-input [disabled]="isOTPVerified" [(ngModel)]="inputMobileNumber" type="number"
+            label="OTP के लिए मोबाइल नंबर दर्ज करें" label-placement="floating" fill="outline" maxlength="10" />
+          <ion-button *ngIf="!isOTPVerified else showListOfAwedan"
+            style="width: 100%; display: flex; flex-direction: column; align-items: center;" (click)="getOTP()">ओटीपी
+            प्राप्त करें</ion-button>
+        </ion-col>
+
+      </ion-row>
+
+    </ion-grid>
+
+    <ion-row>
+      <ng-template #showListOfAwedan>
+
+        <p-table [value]="listOfAwedan" responsiveLayout="stack" class="custom-margin-table striped-table">
+
+          <!-- Table Header -->
+          <ng-template pTemplate="header">
+            <tr>
+              <th style="align-items: center; text-align: center;">हितग्राही का नाम</th>
+              <th style="align-items: center; text-align: center;">पिता का नाम</th>
+              <th style="align-items: center; text-align: center;">वृत्त (वन मंडल)</th>
+              <th style="align-items: center; text-align: center;">आवेदन की स्थिति</th>
+            </tr>
+          </ng-template>
+
+          <!-- Table Body -->
+          <ng-template pTemplate="body" let-item>
+            <tr>
+              <td style="align-items: center; text-align: center;">
+                <span class="p-column-title">हितग्राही का नाम</span>
+                <div class="cell-value">{{ item.hitgrahi_name }}</div>
+              </td>
+              <td style="align-items: center; text-align: center;">
+                <span class="p-column-title">पिता का नाम</span>
+                <div class="cell-value">{{ item.father_name }}</div>
+              </td>
+              <td style="align-items: center; text-align: center;">
+                <span class="p-column-title">वृत्त (वन मंडल)</span>
+                <div class="cell-value">{{ item.circle_name }} ({{ item.division_name }})</div>
+              </td>
+              <td style="align-items: center; text-align: center;">
+                <span class="p-column-title">आवेदन की स्थिति</span>
+                <div class="cell-value" [style.color]="getTextColorOfStatus(item.awedan_status)">
+                  {{ item.awedan_status_text }}
+                </div>
+              </td>
+
+
+              <td style="align-items: center; text-align: center;">
+                <ion-label class="action-link" (click)="viewApplication(item)">
+                  विवरण देखें
+                </ion-label>
+              </td>
+
+              <td *ngIf="!isWebPlatform()">
+                <div style="height: 1px; background-color: black; width: 100%;"></div>
+              </td>
+
+            </tr>
+          </ng-template>
+
+        </p-table>
+
+      </ng-template>
+
+    </ion-row>
+
+  </ion-grid>
+
+</ion-content>

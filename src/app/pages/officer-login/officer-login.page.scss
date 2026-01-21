@@ -1,0 +1,332 @@
+.custom-back-button {
+    color: green;
+}
+
+.custom-ion-label{
+    font-size: 12px;
+    font-weight: 700;
+    color: black;
+    font-style: bold;
+}
+
+.custom-ion-label-points{
+    padding: 5px;
+    background-color: green;
+    font-size: 15px;
+    font-weight: 700;
+    color: white;
+    font-style: bold;
+    border-bottom-right-radius: 10px;
+}
+
+.item-style-label {
+    margin-top: 10px;
+    font-size: 12px;
+    color: green;
+}
+
+ion-title{
+    margin-left: -25px;
+    font-size: 12px;
+}
+
+ion-select{
+    font-size: 12px;
+}
+
+ion-input{
+    font-size: 14px;
+    outline-color: green;
+    margin-left: -3px;
+    size: 12px;
+    --resize:true;
+}
+
+ion-text-area{
+    font-size: 14px;
+    outline-color: green;
+    margin-left: -3px;
+    size: 12px;
+}
+
+.radio-group-horizontal {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+ion-content {
+    --padding-bottom: 60px;  /* Adjust this value based on your needs */
+}
+
+
+
+.ion-grid-custom {
+    border: 1px solid #000; /* Border around the grid */
+}
+  
+.ion-row-custom {
+    display: flex;
+    border: 1px solid #000; /* Border around the row */
+}
+  
+.ion-col-custom {
+    border: 1px solid #000; /* Border around each column */
+    padding: 10px; /* Padding inside the column */
+    margin: 5px; /* Optional: Margin between columns */
+}
+
+
+ion-select {
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    padding: 8px;
+    font-size: 16px;
+    --min-height: 45px;
+    background-color: #f9f9f9;
+  }
+
+.title-ion-lable{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-weight: 500;
+    width: 100%;
+    font-size: 15px;
+}
+
+.content-ion-lable{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    font-size: 14px;
+}
+
+
+.status-approved {
+    color: green;
+    font-weight: bold;
+  }
+  
+  .status-pending {
+    color: orange;
+    font-weight: bold;
+  }
+  
+  .status-rejected {
+    color: red;
+    font-weight: bold;
+  }
+  
+  .otp-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+  }
+  
+  .otp-box {
+    text-align: center;
+    font-size: 24px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    height: 50px;
+    width: 50px;
+    --padding-start: 0;
+    --padding-end: 0;
+  }  
+
+
+.big-text-style{
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: 25px;
+}
+
+
+
+.responsive-label {
+    font-size: 12px;
+  }
+  
+  /* Medium screens (tablets) */
+  @media (min-width: 600px) {
+    .responsive-label {
+      font-size: 16px;
+    }
+  }
+  
+  /* Large screens (desktops) */
+  @media (min-width: 1024px) {
+    .responsive-label {
+      font-size: 26px;
+    }
+  }
+
+
+  .center-content {
+    display: flex;
+    justify-content: center;   /* Horizontal center */
+    align-items: center;       /* Vertical center */
+    height: 100%;              /* Fill full screen height */
+  }
+
+  .login-grid {
+    width: 90%;
+    max-width: 400px;          // Keep form narrow on large screens
+  }
+
+
+
+  .responsive-input {
+    font-size: 12px;
+  }
+  
+  /* Medium screens (tablets) */
+  @media (min-width: 600px) {
+    .responsive-input {
+      font-size: 14px;
+    }
+  }
+  
+  /* Large screens (desktops) */
+  @media (min-width: 1024px) {
+    .responsive-input {
+      font-size: 20px;
+    }
+  }
+
+// New modern styles
+.login-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f5f7fa 0%, #e4e8eb 100%);
+  padding: 20px;
+  --keyboard-offset: 150px; // optional tweak
+}
+
+.logo-container {
+  margin-bottom: 2rem;
+  text-align: center;
+  
+  .logo-image {
+    max-width: 200px;
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+}
+
+.login-card {
+  background: white;
+  padding: 2rem;
+  border-radius: 15px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 400px;
+}
+
+.login-title {
+  color: #2c3e50;
+  text-align: center;
+  margin-bottom: 2rem;
+  font-size: 1.8rem;
+  font-weight: 600;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.input-label {
+  color: #34495e;
+  font-size: 0.9rem;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+
+.custom-input {
+  --border-radius: 8px;
+  --border-color: #e0e0e0;
+  --border-style: solid;
+  --border-width: 1px;
+  --padding-start: 12px;
+  --padding-end: 12px;
+  --padding-top: 12px;
+  --padding-bottom: 12px;
+  margin-top: 0.5rem;
+  
+  &:hover {
+    --border-color: #3498db;
+  }
+  
+  &:focus-within {
+    --border-color: #2980b9;
+    --border-width: 2px;
+  }
+}
+
+.login-button {
+  --background: #3498db;
+  --background-hover: #2980b9;
+  --border-radius: 8px;
+  --box-shadow: 0 4px 6px rgba(52, 152, 219, 0.2);
+  margin-top: 1rem;
+  height: 48px;
+  font-weight: 600;
+  text-transform: none;
+  font-size: 1rem;
+  
+  &:hover {
+    --background: #2980b9;
+  }
+}
+
+.error-message {
+  font-size: 0.8rem;
+  margin-top: 0.5rem;
+  display: block;
+}
+
+.server-error {
+  text-align: center;
+  margin-top: 1rem;
+}
+
+// Responsive adjustments
+@media (max-width: 576px) {
+  .login-card {
+    padding: 1.5rem;
+  }
+  
+  .login-title {
+    font-size: 1.5rem;
+  }
+  
+  .logo-image {
+    max-width: 150px;
+  }
+}
+
+.custom-dialog-modal {
+  --width: 90vw;
+  --max-width: 400px;
+  --height: auto;
+  --border-radius: 16px;
+  --box-shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
+  --background: #fff;
+  --overflow: visible;
+
+  ion-modal {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}

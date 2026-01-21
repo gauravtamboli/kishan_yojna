@@ -1,0 +1,18 @@
+<ion-button (click)="openDialog()">Show Dialog</ion-button>
+
+<ion-modal [isOpen]="isDialogOpen" (didDismiss)="isDialogOpen = false" inert>
+  <ng-template>
+    <ion-header>
+      <ion-toolbar>
+        <ion-title>Alert</ion-title>
+        <ion-buttons slot="end">
+          <ion-button (click)="closeDialog()">Close</ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content class="ion-padding">
+      <p>This is a simple inline modal dialog.</p>
+      <ion-button expand="block" (click)="confirmDialog()">Confirm</ion-button>
+    </ion-content>
+  </ng-template>
+</ion-modal>

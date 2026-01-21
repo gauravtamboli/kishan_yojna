@@ -1,0 +1,506 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button class="custom-back-button"></ion-back-button>
+    </ion-buttons>
+    <ion-title class="responsive-toolbar-title"></ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-loading cssClass="custom-loading" [isOpen]="isLoading" [message]="loadingMessage"></ion-loading>
+
+  <ion-grid>
+    <ion-row style="display: flex; flex-direction: row; justify-content: center;">
+
+      <ion-col size="12" size-lg="9">
+        <ion-row style="background-color: green;">
+          <ion-col size="12">
+            <ion-row style="display: flex; justify-content: center; align-items: center;">
+              <ion-label class="responsive-label"
+                style="font-weight: 700; color: white;  display: flex; justify-content: left; ">
+                आवेदन नंबर :
+              </ion-label>
+              <ion-label class="responsive-label-withoutbold"
+                style="color: white;  display: flex; align-items: center; justify-content: center; margin-left: 10px;">
+                {{getApplicationNumber()}}
+              </ion-label>
+            </ion-row>
+          </ion-col>
+        </ion-row>
+      </ion-col>
+
+      <ion-col size="12" size-lg="9">
+        <p-table [value]="[sendedAwedanObject]" responsiveLayout="stack" class="custom-margin-table styled-table">
+          <ng-template pTemplate="header">
+            <tr>
+              <th *ngFor="let header of tableHeaders">
+                <div class="table-header-label">{{ header }}</div>
+              </th>
+            </tr>
+          </ng-template>
+
+          <ng-template pTemplate="body" let-item>
+            <tr>
+              <td class="text-center">
+                <span class="p-column-title">हितग्राही का नाम</span><br />
+                <div class="label-value">{{ item.hitgrahi_name }}</div>
+              </td>
+              <td class="text-center">
+                <div class="p-column-title">पिता का नाम</div>
+                <div class="label-value">{{ item.father_name }}</div>
+              </td>
+              <td class="text-center">
+                <div class="p-column-title">मोबाइल नंबर</div>
+                <div class="label-value">{{ item.mobile_no }}</div>
+              </td>
+              <td class="text-center">
+                <div class="p-column-title">वृत्त (वन मंडल)</div>
+                <div class="label-value">{{ item.circle_name }} ({{ item.division_name }})</div>
+              </td>
+              <td class="text-center">
+                <div class="p-column-title">जिले का नाम</div>
+                <div class="label-value">{{ item.dist_name }}</div>
+              </td>
+              <td class="text-center">
+                <div class="p-column-title">दस्तावेज</div>
+                <div class="label-value clickable" (click)="openUploadedDocument(item)">
+                  <u>देखने के लिए क्लिक करें</u>
+                </div>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+
+      </ion-col>
+
+      <ion-col size="12" size-lg="9">
+        <ion-card>
+          <ion-card-header class="section-header">
+            <ion-card-title style="color: white;">व्यक्तिगत जानकारी :</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            <ion-row class="form-row">
+
+              <ion-col size="12" size-lg="4" class="form-field">
+                <ion-label class="field-label">जाति वर्ग <span class="required">*</span></ion-label>
+                <ng-select [appendTo]="'body'" [clearable]="false" [items]="listOfCastCategory" bindLabel="name"
+                  bindValue="id" [(ngModel)]="selectedCastCatId" [searchable]="true" placeholder="जाति वर्ग चुनें">
+                </ng-select>
+                <ion-text color="danger" *ngIf="no_cast_selection_error">{{ no_cast_selection_error }}</ion-text>
+              </ion-col>
+
+              <ion-col size="12" size-lg="4" class="form-field">
+                <ion-label class="field-label">आधार कार्ड नम्बर <span class="required">*</span></ion-label>
+                <ion-input [(ngModel)]="adhaar" type="number" fill="outline" maxlength="16"></ion-input>
+                <ion-text color="danger" *ngIf="wrong_adhar_msg">{{ wrong_adhar_msg }}</ion-text>
+              </ion-col>
+
+              <ion-col size="12" size-lg="4" class="form-field">
+                <ion-label class="field-label">पता <span class="required">*</span></ion-label>
+                <ion-textarea [(ngModel)]="address" fill="outline" rows="3" autoGrow="true"></ion-textarea>
+                <ion-text color="danger" *ngIf="no_address_fill_error">{{ no_address_fill_error }}</ion-text>
+              </ion-col>
+
+            </ion-row>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+
+      <ion-col size="12" size-lg="9">
+
+        <hr style="background-color: black; height: 1px;" />
+
+        <ion-card>
+          <ion-card-header class="section-header">
+            <ion-card-title style="color: white;"> बैंक सम्बन्धी जानकारी :</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            <ion-row>
+              <ion-col size="12" size-lg="4" style="display: flex; flex-direction: column; justify-content:flex-start;">
+
+                <div>
+                  <ion-label>बैंक का नाम</ion-label>
+                  <ion-label style="color: red;">*</ion-label>
+                </div>
+
+                <ng-select [appendTo]="'body'" [clearable]="false" style="margin-top: 5px;" [items]="listOfBank"
+                  bindLabel="name" bindValue="id" [(ngModel)]="selectedBankName" [searchable]="true"
+                  placeholder="बैंक का नाम चुनें" />
+                <ion-label class="responsive-label-for-error">{{no_bank_selection_error}}</ion-label>
+              </ion-col>
+
+              <ion-col size="12" size-lg="4" style="display: flex; flex-direction: column; justify-content:flex-start;">
+                <div>
+                  <ion-label>IFSC कोड़</ion-label>
+                  <ion-label style="color: red;">*</ion-label>
+                </div>
+                <ion-input [(ngModel)]="ifsc_code" fill="outline" />
+                <ion-label class="responsive-label-for-error">{{no_ifsc_fill_error}}</ion-label>
+              </ion-col>
+
+              <ion-col size=12 size-lg="4" style="display: flex; flex-direction: column; justify-content:flex-end;">
+                <div>
+                  <ion-label>बैंक खाता नम्बर</ion-label>
+                  <ion-label style="color: red;">*</ion-label>
+                </div>
+                <ion-input [(ngModel)]="bank_account_no" fill="outline" type="number" />
+                <ion-label class="responsive-label-for-error">{{no_bank_account_number_fill_error}}</ion-label>
+              </ion-col>
+            </ion-row>
+          </ion-card-content>
+        </ion-card>
+
+      </ion-col>
+
+      <ion-col size="12" size-lg="9">
+
+        <hr style="background-color: black; height: 1px;" />
+
+        <ion-card>
+          <ion-card-header class="section-header">
+            <ion-card-title style="color: white;"> जमीन सम्बन्धी जानकारी :</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            <ion-row>
+              <ion-col size=12 size-lg=4>
+                <div>
+                  <ion-label>ग्राम का नाम</ion-label>
+                  <ion-label style="color: red;">*</ion-label>
+                </div>
+                <ion-input [(ngModel)]="village_name" fill="outline" />
+                <ion-label class="responsive-label-for-error">{{no_village_name_fill_error}}</ion-label>
+              </ion-col>
+              <ion-col size=12 size-lg=4>
+
+                <div>
+                  <ion-label>ग्राम पंचायत का नाम</ion-label>
+                  <ion-label style="color: red;">*</ion-label>
+                </div>
+                <ion-input [(ngModel)]="gram_panchayat_name" fill="outline" />
+                <ion-label class="responsive-label-for-error">{{no_gram_panchayat_fill_error}}</ion-label>
+
+              </ion-col>
+              <ion-col size=12 size-lg=4>
+
+                <div>
+                  <ion-label>पटवारी हल्का नम्बर</ion-label>
+                  <ion-label style="color: red;">*</ion-label>
+                </div>
+                <ion-input [(ngModel)]="halka_no" fill="outline" />
+                <ion-label class="responsive-label-for-error">{{no_halka_number_fill_error}}</ion-label>
+
+              </ion-col>
+            </ion-row>
+
+            <ion-row>
+              <ion-col size=12 size-lg=4>
+                <div>
+                  <ion-label>खसरा नम्बर</ion-label>
+                  <ion-label style="color: red;">*</ion-label>
+                </div>
+                <ion-input [(ngModel)]="khasra_no" fill="outline" />
+                <ion-label class="responsive-label-for-error">{{no_khasra_number_fill_error}}</ion-label>
+              </ion-col>
+
+              <ion-col size="12" size-lg="4" style="display: flex; flex-direction: row;align-items: center;">
+
+                <ion-row>
+                  <ion-label>क्या आपके द्वारा वन अधिकार क्षेत्र में वृक्षारोपण कार्य किया गया है
+                    ?</ion-label>
+                  <ion-radio-group (ionChange)="onIsPlantationInLandRadioGroupChange()"
+                    [(ngModel)]="selectedYesNoForKakshaKramank" class="radio-group-horizontal" style="width: 100%;">
+                    <ion-col size="12" size-lg="6">
+                      <ion-radio value="no">नहीं</ion-radio>
+                    </ion-col>
+                    <ion-col size="12" size-lg="6">
+                      <ion-radio value="yes">हाँ</ion-radio>
+                    </ion-col>
+                  </ion-radio-group>
+                </ion-row>
+
+              </ion-col>
+
+              <ion-col size="12" size-lg="4">
+                <div>
+                  <ion-label>कक्ष क्रमांक</ion-label>
+                  <ion-label style="color: red;">*</ion-label>
+                </div>
+                <ion-input [disabled]="isKakshKramankDisabled()" [(ngModel)]="kaksha_kramank" label=""
+                  label-placement="floating" fill="outline" />
+                <ion-label class="responsive-label-for-error">{{no_kaksh_kramank_number_fill_error}}</ion-label>
+              </ion-col>
+
+            </ion-row>
+
+            <ion-row style="margin-top: 10px;">
+              <ion-col size=12 size-lg=6>
+                <div>
+                  <ion-label>
+                    वृक्षारोपण माॅडल का प्रकार (ब्लाॅक/खेत का मेड़/अंतरफसल)
+                  </ion-label>
+                  <ion-label style="color: red;">*</ion-label>
+                </div>
+                <ng-select [clearable]="false" style="margin-top: 5px;" [items]="listOfPlantationModel" bindLabel="name"
+                  bindValue="id" [(ngModel)]="selectedPlantationType" [searchable]="true"
+                  placeholder="वृक्षारोपण माॅडल का प्रकार चुनें" />
+                <ion-label class="responsive-label-for-error">{{no_plantation_model_type_selection_error}}</ion-label>
+              </ion-col>
+
+              <ion-col size=12 size-lg=6>
+                <div>
+                  <ion-label>
+                    मिट्टी का प्रकार
+                  </ion-label>
+                  <ion-label style="color: red;">*</ion-label>
+                </div>
+                <ng-select [clearable]="false" style="margin-top: 5px;" [items]="listOfSandType" bindLabel="name"
+                  bindValue="id" [(ngModel)]="selected_sand_type" [searchable]="true"
+                  placeholder="मिट्टी का प्रकार चुनें" />
+                <ion-label class="responsive-label-for-error">{{no_sand_type_selection_error}}</ion-label>
+              </ion-col>
+
+            </ion-row>
+
+            <ion-row style="margin-top: 20px;">
+
+              <ion-col size="12" size-lg="4" style="display: flex; flex-direction: column; justify-content: flex-end;">
+
+                <ion-row>
+                  <ion-label>भूमि सिंचित है या असिंचित ?</ion-label>
+                </ion-row>
+
+                <ion-row>
+                  <ion-radio-group [(ngModel)]="sinchitOrA_sinchit" class="radio-group-horizontal"
+                    style="margin-top: 5px;">
+
+                    <ion-col size=12 size-lg="4">
+                      <ion-radio value="sinchit">सिंचित</ion-radio>
+                    </ion-col>
+
+                    <ion-col size=12 size-lg="4">
+                      <ion-radio value="asinchit">असिंचित</ion-radio>
+                    </ion-col>
+                  </ion-radio-group>
+                </ion-row>
+
+
+              </ion-col>
+
+              <ion-col size="6" size-lg="4">
+                <ion-input [(ngModel)]="vriksharopan_akshansh" label="वृक्षारोपण क्षेत्र अक्षांश"
+                  label-placement="floating" fill="outline" type="number" />
+              </ion-col>
+              <ion-col size="6" size-lg="4">
+                <ion-input [(ngModel)]="vriksharopan_dikshansh" label="वृक्षारोपण क्षेत्र देक्षांश"
+                  label-placement="floating" fill="outline" type="number" />
+              </ion-col>
+            </ion-row>
+
+          </ion-card-content>
+        </ion-card>
+
+      </ion-col>
+
+
+      <ion-col size="12" size-lg="9">
+
+        <ion-card>
+          <ion-card-header class="section-header">
+            <ion-card-title style="color: white;">
+              <div style="display: flex; align-items: center; justify-content: space-between;">
+
+                <!-- Label Text -->
+                <ion-label class="item-style-label" style="color: white; margin-left: 5px; font-size: 16px;">
+                  पौधों की जानकारी भरने के लिए बटन को क्लिक करें
+                </ion-label>
+
+                <!-- Image Button -->
+                <img src="assets/img/add_ic.png" class="responsive-img" (click)="addPlant()"
+                  style="width: 28px; height: 28px; cursor: pointer; margin-right: 5px;" alt="Add" />
+              </div>
+            </ion-card-title>
+          </ion-card-header>
+
+          <ion-card-content>
+            <ion-grid style="margin-top: 10px" class="grid-bordered"
+              *ngIf="listOfPlantationDetailsNew && listOfPlantationDetailsNew.length > 0">
+              <ion-col size="12" size-lg="12">
+
+                <ion-row class="ion-padding ion-text-bold" style="background-color: green; color: white">
+                  <ion-col style="
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: center;
+                  " size="2">पौधों की प्रजाति</ion-col>
+
+                  <ion-col size="5" style="display: flex; flex-direction: column">
+                    <ion-row style="display: flex; justify-content: center; align-items: center;">5 एकर से कम</ion-row>
+                    <ion-row style="display: flex; justify-content: center">
+                      <ion-col size="6" style="
+                        display: flex;
+                        flex-direction: row;
+                        justify-content: center;
+                      ">पौधों की संख्या</ion-col>
+                      <ion-col style="
+                        display: flex;
+                        flex-direction: row;
+                        justify-content: center;
+                      " size="6">रकबा (एकर में)</ion-col>
+                    </ion-row>
+                  </ion-col>
+
+                  <ion-col size="5">
+                    <ion-row style="display: flex; justify-content: center">5 एकर से अधिक</ion-row>
+                    <ion-row style="display: flex; justify-content: center">
+                      <ion-col style="
+                        display: flex;
+                        flex-direction: row;
+                        justify-content: center;
+                      " size="6">पौधों की संख्या</ion-col>
+                      <ion-col style="
+                        display: flex;
+                        flex-direction: row;
+                        justify-content: center;
+                      " size="6">रकबा (एकर में)</ion-col>
+                    </ion-row>
+                  </ion-col>
+
+                </ion-row>
+
+                <ion-row *ngFor="let item of listOfPlantationDetailsNew" class="ion-padding">
+                  <ion-col size="12">
+                    <ion-row>
+                      <ion-col style="
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: center;
+                    align-items: center;
+                  " size="2">
+                        <ion-label style="text-align: center">{{item.prajatiName }}</ion-label>
+                      </ion-col>
+                      <ion-col style="
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: center;
+                    align-items: center;
+                  " size="2.5">{{ item.plant_count_less_5 }}</ion-col>
+                      <ion-col style="
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: center;
+                    align-items: center;
+                  " size="2.5">{{ item.area_size_less_5 }}</ion-col>
+                      <ion-col style="
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: center;
+                    align-items: center;
+                  " size="2.5">{{ item.plant_count_more_5 }}</ion-col>
+                      <ion-col style="
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: center;
+                    align-items: center;
+                  " size="2.5">
+                        {{ item.area_size_more_5 }}
+                      </ion-col>
+
+                    </ion-row>
+                  </ion-col>
+                  <ion-col size="12" style="margin-top: -15px;">
+                    <ion-row>
+                      <ion-col style="border: none;" size="9.5"></ion-col>
+                      <!-- <ion-col size="2.5" style="width: auto; display: flex; justify-content: center; flex-direction: row; align-items: center;">
+                      <img style="display: flex; justify-content: center; flex-direction: row; align-items: center; filter: invert(36%) sepia(100%) saturate(1000%) hue-rotate(90deg);" src="assets/img/edit_ic.png" class="responsive-img" (click)="editPlant(item)" />
+                    </ion-col> -->
+                      <ion-col size="2.5"
+                        style="width: auto; display: flex; justify-content: center; flex-direction: row; align-items: center;">
+                        <img
+                          style="display: flex; justify-content: center; flex-direction: row; align-items: center; filter: invert(17%) sepia(97%) saturate(7450%) hue-rotate(1deg) brightness(102%) contrast(108%)"
+                          src="assets/img/delete_ic.png" class="responsive-img" (click)="deletePlant(item)" />
+                      </ion-col>
+                    </ion-row>
+
+                  </ion-col>
+                </ion-row>
+
+                <ion-row style="background-color: green; color: white; font-weight: 1000"
+                  *ngFor="let item of listOfPlantationDetailsNewTotal" class="ion-padding">
+                  <ion-col size="6" style="
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: center;
+                  " size="2">{{ item.prajatiName }}</ion-col>
+                  <ion-col size="6" style="
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: center;
+                  " size="2.5">{{ item.plant_count_less_5 }}</ion-col>
+                  <ion-col size="6" style="
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: center;
+                  " size="2.5">{{ item.area_size_less_5 }}</ion-col>
+                  <ion-col size="6" style="
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: center;
+                  " size="2.5">{{ item.plant_count_more_5 }}</ion-col>
+                  <ion-col size="6" style="
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: center;
+                  " size="2.5">{{ item.area_size_more_5 }}</ion-col>
+                </ion-row>
+              </ion-col>
+            </ion-grid>
+          </ion-card-content>
+        </ion-card>
+
+      </ion-col>
+
+
+      <ion-col size="12" size-lg="9">
+        <!-- After add plant detail -->
+
+      </ion-col>
+
+      <ion-col size="12" size-lg="9" style="margin-top: 10px;">
+
+        <ion-row style="margin-top: 10px;">
+          <div>
+            <ion-label>आपको अपने सारे दस्तावेज (पासपोर्ट फोटो , आधार , जमीन का B 1 और P 1) ये सभी का एक pdf फाइल बना
+              करके अपलोड करना होगा (फाइल की अधिकतम size 40MB तक ही हो सकती है)</ion-label>
+            <ion-label style="color: red;">*</ion-label>
+          </div>
+          <div>
+            <label for="fileInput" style="margin-bottom: 6px; font-weight: bold;">
+              📁 दस्तावेज अपलोड करें
+            </label>
+            <input id="fileInput" type="file" (change)="onDocPdfFileSelect($event)" accept="application/pdf" required />
+          </div>
+          <ion-label class="responsive-label-for-error">{{no_document_error}}</ion-label>
+        </ion-row>
+      </ion-col>
+
+      <ion-col size="12" size-lg="9" style="margin-top: 10px;">
+        <ion-row>
+          <ion-col size="6">
+            <ion-button (click)="submitFormData()"
+              style="width: 100%; display: flex; flex-direction: column; align-items: center; margin-left: -5px;">SUBMIT</ion-button>
+          </ion-col>
+          <ion-col ion-col size="6">
+            <ion-button (click)="doYouWantToCancelDialog()"
+              style="width: 100%; display: flex; flex-direction: column; align-items: center;  color: white; --background : red;">
+              CANCEL </ion-button>
+          </ion-col>
+        </ion-row>
+      </ion-col>
+
+    </ion-row>
+
+  </ion-grid>
+
+</ion-content>

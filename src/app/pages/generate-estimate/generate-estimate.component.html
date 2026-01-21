@@ -1,0 +1,933 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button class="custom-back-button" (click)="goBack()" defaultHref="/landigpage">
+      </ion-back-button>
+    </ion-buttons>
+
+    <ion-title class="responsive-toolbar-title">
+      भुगतान बनाए  (Create Payment)
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding" style="border: 2px solid black; border-radius: 4px;">
+  <ion-loading [isOpen]="isLoading" [message]="loadingMessage"></ion-loading>
+
+  <!-- Outer Box -->
+  <div class="estimate-container" *ngIf="singleData">
+
+    <!-- Applicant Card -->
+    <ion-card class="applicant-card">
+      <div class="applicant-row">
+        <ion-text class="applicant-text">
+          <strong>आवेदक क्रमांक : {{singleData.applicationNumber }}</strong> {{ awaden_kramank }}
+        </ion-text>
+
+      </div>
+    </ion-card>
+
+    <!-- Applicant Details -->
+    <div class="details-section">
+      <ion-row>
+        <ion-col size="4">
+          <ion-label>कृषक/हितग्राही का नाम : {{singleData.hitgrahiName}}</ion-label>
+        </ion-col>
+        <ion-col size="4">
+          <ion-label>पिता का नाम : {{singleData.fatherName}}</ion-label>
+        </ion-col>
+        <ion-col size="4">
+          <ion-label>पता : {{singleData.address}},{{singleData.gramPanchayatName}}</ion-label>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col size="4">
+          <ion-label>मोबाईल नंबर : {{singleData.mobileNo}}</ion-label>
+        </ion-col>
+        <ion-col size="4">
+          <ion-label>
+            भूमि का प्रकार : {{ singleData.landType == 1 ? 'FRA LAND' : 'REVENUE LAND' }}
+          </ion-label>
+        </ion-col>
+        <ion-col size="4">
+          <ion-label>कुल रकबा (एकड़ मे) : {{singleData.totalAcre}} {{ singleData.klonalnilgiri_total_plant}} </ion-label>
+        </ion-col>
+      </ion-row>
+    </div>
+
+    <!-- क्लोनल नीलगिरी -->
+    <div *ngIf="klonalnilgiri_total_plant > 0 && klonalnilgiri_total_area > 0">
+      <ion-card class="species-card">
+        <ion-text class="species-title">
+          <strong>प्रजाति का नाम :- क्लोनल नीलगिरी (कुल पौधे: {{ klonalnilgiri_total_plant }})</strong>
+        </ion-text>
+        <ion-button class="my-ion-button" (click)="prnti_pdf()">Print PDF</ion-button>
+      </ion-card>
+
+      <div class="table-wrapper" style="margin-top: 10px;">
+        <table class="custom-table">
+          <thead>
+            <tr>
+              <th>वर्ष</th>
+              <th>क्रमांक</th>
+              <th>कार्य विवरण</th>
+              <th>पौधों की संख्या</th>
+              <th>दर (₹)</th>
+              <th>राशि (₹)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td rowspan="9" class="year-label">प्रथम वर्ष</td>
+            </tr>
+            <tr *ngFor="let item of tableData">
+              <td>{{ item.itemKramank }}</td>
+              <td [style.text-align]="item.tablealign" [style.font-weight]="item.fontweight">
+                {{ item.karyaVivran }}
+              </td>
+
+              <!-- Only show these 3 cells if it's NOT the total row -->
+              <ng-container *ngIf="item.karyaVivran !== 'प्रथम वर्ष का योग'; else emptyCells">
+                <td style="text-align: center;">{{ klonalnilgiri_total_plant }}</td>
+                <td style="text-align: center;">{{ item.klonalNeelgiri }}</td>
+                <td style="text-align: center;">{{ item.klonalNeelgiri * klonalnilgiri_total_plant }}</td>
+              </ng-container>
+
+              <ng-template #emptyCells>
+                <td></td>
+                <td></td>
+                <td style="text-align: center; font-weight: 900; ">{{totalPrathamVarshAmount | number}} </td>
+              </ng-template>
+
+            </tr>
+
+
+            <tr>
+              <td rowspan="5" class="year-label">द्वितीय वर्ष</td>
+            </tr>
+            <tr *ngFor="let item of tableData1">
+              <td>{{ item.itemKramank }}</td>
+              <td [style.text-align]="item.tablealign" [style.font-weight]="item.fontweight"> {{ item.karyaVivran }}
+              </td>
+              <ng-container *ngIf="item.karyaVivran !== 'द्वितीय वर्ष का योग'; else emptyCells">
+                <td style="text-align: center;">{{ klonalnilgiri_total_plant }}</td>
+                <td style="text-align: center;">{{ item.klonalNeelgiri }}</td>
+                <td style="text-align: center;">{{ item.klonalNeelgiri * klonalnilgiri_total_plant }}</td>
+              </ng-container>
+
+              <ng-template #emptyCells>
+                <td></td>
+                <td></td>
+                <td style="text-align: center; font-weight: 900;">{{totalDwitiyaVarshAmount | number}} </td>
+              </ng-template>
+
+            </tr>
+
+            <tr>
+              <td rowspan="5" class="year-label">तृतीय वर्ष</td>
+            </tr>
+            <tr *ngFor="let item of tableData2">
+              <td>{{ item.itemKramank }}</td>
+              <td [style.text-align]="item.tablealign" [style.font-weight]="item.fontweight"> {{ item.karyaVivran }}
+              </td>
+
+              <ng-container *ngIf="item.karyaVivran !== 'तृतीय वर्ष का योग'; else emptyCells">
+                <td style="text-align: center;">{{ klonalnilgiri_total_plant }}</td>
+                <td style="text-align: center;">{{ item.klonalNeelgiri }}</td>
+                <td style="text-align: center;">{{ item.klonalNeelgiri * klonalnilgiri_total_plant }}</td>
+              </ng-container>
+
+              <ng-template #emptyCells>
+                <td></td>
+                <td></td>
+                <td style="text-align: center; font-weight: 900;">{{totalTritiyaVarshAmount | number}} </td>
+              </ng-template>
+            </tr>
+            <tr>
+              <td colspan="5" class="total-label">महायोग</td>
+              <td style="text-align: center; font-weight: 900;">₹{{ grand_total | number:'1.2-2' }}</td>
+            </tr>
+            <tr>
+              <td colspan="6" class="total-label">Amount in words : {{ amountInWordsEnglish }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- टिशू कल्चर बांस -->
+    <div *ngIf="tissueclturebans_total_palnt > 0 && tissueclturebans_total_area > 0">
+      <ion-card class="species-card">
+        <ion-text class="species-title">
+          <strong>प्रजाति का नाम :- टिशू कल्चर बांस (कुल पौधे: {{ tissueclturebans_total_palnt }})</strong>
+        </ion-text>
+        <ion-button class="my-ion-button" (click)="prnti_pdf()">Print PDF</ion-button>
+      </ion-card>
+
+      <div class="table-wrapper" style="margin-top: 10px;">
+        <table class="custom-table">
+          <thead>
+            <tr>
+              <th>वर्ष</th>
+              <th>क्रमांक</th>
+              <th>कार्य विवरण</th>
+              <th>पौधों की संख्या</th>
+              <th>दर (₹)</th>
+              <th>राशि (₹)</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <!-- 🌱 प्रथम वर्ष -->
+            <tr>
+              <td rowspan="9" class="year-label">प्रथम वर्ष</td>
+            </tr>
+            <tr *ngFor="let item of tableData">
+              <td>{{ item.itemKramank }}</td>
+              <td [style.text-align]="item.tablealign" [style.font-weight]="item.fontweight">
+                {{ item.karyaVivran }}
+              </td>
+
+              <ng-container *ngIf="item.karyaVivran !== 'प्रथम वर्ष का योग'; else tissuclturebans1">
+                <td style="text-align: center;">{{ tissueclturebans_total_palnt }}</td>
+                <td style="text-align: center;">{{ item.tissuclturebans }}</td>
+                <td style="text-align: center;">{{ item.tissuclturebans * tissueclturebans_total_palnt | number }}</td>
+              </ng-container>
+
+              <ng-template #tissuclturebans1>
+                <td></td>
+                <td></td>
+                <td style="text-align: center; font-weight: 900;">{{ totalTissueBansPrathamVarshamount | number }}</td>
+              </ng-template>
+            </tr>
+
+            <!-- 🌿 द्वितीय वर्ष -->
+            <tr>
+              <td rowspan="5" class="year-label">द्वितीय वर्ष</td>
+            </tr>
+            <tr *ngFor="let item of tableData1">
+              <td>{{ item.itemKramank }}</td>
+              <td [style.text-align]="item.tablealign" [style.font-weight]="item.fontweight">
+                {{ item.karyaVivran }}
+              </td>
+
+              <ng-container *ngIf="item.karyaVivran !== 'द्वितीय वर्ष का योग'; else tissuclturebans2">
+                <td style="text-align: center;">{{ tissueclturebans_total_palnt }}</td>
+                <td style="text-align: center;">{{ item.tissuclturebans }}</td>
+                <td style="text-align: center;">{{ item.tissuclturebans * tissueclturebans_total_palnt | number }}</td>
+              </ng-container>
+
+              <ng-template #tissuclturebans2>
+                <td></td>
+                <td></td>
+                <td style="text-align: center; font-weight: 900;">{{ totalTissuebansDwitiyaVarshamount | number:'1.2-2'
+                  }}</td>
+              </ng-template>
+            </tr>
+
+            <!-- 🌳 तृतीय वर्ष -->
+            <tr>
+              <td rowspan="5" class="year-label">तृतीय वर्ष</td>
+            </tr>
+            <tr *ngFor="let item of tableData2">
+              <td>{{ item.itemKramank }}</td>
+              <td [style.text-align]="item.tablealign" [style.font-weight]="item.fontweight">
+                {{ item.karyaVivran }}
+              </td>
+
+              <ng-container *ngIf="item.karyaVivran !== 'तृतीय वर्ष का योग'; else tissuclturebans3">
+                <td style="text-align: center;">{{ tissueclturebans_total_palnt }}</td>
+                <td style="text-align: center;">{{ item.tissuclturebans }}</td>
+                <td style="text-align: center;">{{ item.tissuclturebans * tissueclturebans_total_palnt | number:'1.2-2'
+                  }}</td>
+              </ng-container>
+
+              <ng-template #tissuclturebans3>
+                <td></td>
+                <td></td>
+                <td style="text-align: center; font-weight: 900;">{{ totalTissueBansTritiyaVarshamount | number:'1.2-2'
+                  }}</td>
+              </ng-template>
+            </tr>
+
+            <!-- 💰 Grand Total -->
+            <tr>
+              <td colspan="5" class="total-label">महायोग</td>
+              <td style="text-align: center; font-weight: 900;">₹{{ tissuebansGrandTotal | number:'1.2-2' }}</td>
+            </tr>
+            <tr>
+              <td colspan="6" class="total-label">
+                Amount in words: {{ tissuebansAmountInWordsEnglish }}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+
+    <!--  साधारण बांस -->
+    <div *ngIf="normalbans_total_plant > 0 && normalbans_total_area > 0">
+      <ion-card class="species-card">
+        <ion-text class="species-title">
+          <strong>प्रजाति का नाम :- साधारण बांस (कुल पौधे: {{ normalbans_total_plant }})</strong>
+        </ion-text>
+        <ion-button class="my-ion-button" (click)="prnti_pdf()">Print PDF</ion-button>
+      </ion-card>
+
+      <div class="table-wrapper" style="margin-top: 10px;">
+        <table class="custom-table">
+          <thead>
+            <tr>
+              <th>वर्ष</th>
+              <th>क्रमांक</th>
+              <th>कार्य विवरण</th>
+              <th>पौधों की संख्या</th>
+              <th>दर (₹)</th>
+              <th>राशि (₹)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td rowspan="9" class="year-label">प्रथम वर्ष</td>
+            </tr>
+            <tr *ngFor="let item of tableData">
+              <td>{{ item.itemKramank }}</td>
+              <td>{{ item.karyaVivran }}</td>
+            <ng-container *ngIf="item.karyaVivran !== 'प्रथम वर्ष का योग'; else tissuclturebans1">
+                <td style="text-align: center;">{{ normalbans_total_plant }}</td>
+                <td style="text-align: center;">{{ item.tissuclturebans }}</td>
+                <td style="text-align: center;">{{ item.tissuclturebans * normalbans_total_plant | number:'1.2-2' }}</td>
+              </ng-container>
+
+              <ng-template #tissuclturebans1>
+                <td></td>
+                <td></td>
+                <td style="text-align: center; font-weight: 900;">{{ totalNormalBansPrathamVarsh1 | number:'1.2-2' }}</td>
+              </ng-template>
+            </tr>
+
+            <tr>
+              <td rowspan="5" class="year-label">द्वितीय वर्ष</td>
+            </tr>
+            <tr *ngFor="let item of tableData1">
+              <td>{{ item.itemKramank }}</td>
+              <td>{{ item.karyaVivran }}</td>
+             <ng-container *ngIf="item.karyaVivran !== 'द्वितीय वर्ष का योग'; else tissuclturebans2">
+                <td style="text-align: center;">{{ tissueclturebans_total_palnt }}</td>
+                <td style="text-align: center;">{{ item.tissuclturebans }}</td>
+                <td style="text-align: center;">{{ item.tissuclturebans * tissueclturebans_total_palnt | number:'1.2-2' }}</td>
+              </ng-container>
+
+              <ng-template #tissuclturebans2>
+                <td></td>
+                <td></td>
+                <td style="text-align: center; font-weight: 900;">{{ totalNormalBansDwitiyaVarsh2 | number:'1.2-2' }}</td>
+              </ng-template>
+            </tr>
+
+            <tr>
+              <td rowspan="5" class="year-label">तृतीय वर्ष</td>
+            </tr>
+            <tr *ngFor="let item of tableData2">
+              <td>{{ item.itemKramank }}</td>
+              <td>{{ item.karyaVivran }}</td>
+             <ng-container *ngIf="item.karyaVivran !== 'तृतीय वर्ष का योग'; else tissuclturebans3">
+                <td style="text-align: center;">{{ tissueclturebans_total_palnt }}</td>
+                <td style="text-align: center;">{{ item.tissuclturebans }}</td>
+                <td style="text-align: center;">{{ item.tissuclturebans * tissueclturebans_total_palnt | number:'1.2-2' }}</td>
+              </ng-container>
+
+              <ng-template #tissuclturebans3>
+                <td></td>
+                <td></td>
+                <td style="text-align: center; font-weight: 900;">{{ totalNormalBansTritiyaVarsh3 | number:'1.2-2' }}</td>
+              </ng-template>
+            </tr>
+
+            <tr>
+              <td colspan="5" class="total-label">महायोग</td>
+              <td>{{normalBansGrandTotal}}</td>
+            </tr>
+            <tr>
+              <td colspan="6" class="total-label">राशि शब्दों में : {{normalBansAmountInWordsEnglish}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!--  चंदन पौधा -->
+    <div *ngIf="chandan_total_plant > 0 && chandan_total_area > 0">
+      <ion-card class="species-card">
+        <ion-text class="species-title">
+          <strong>प्रजाति का नाम :- चंदन पौधा (कुल पौधे: {{ chandan_total_plant }})</strong>
+        </ion-text>
+        <ion-button class="my-ion-button" (click)="prnti_pdf()">Print PDF</ion-button>
+      </ion-card>
+
+      <div class="table-wrapper" style="margin-top: 10px;">
+        <table class="custom-table">
+          <thead>
+            <tr>
+              <th>वर्ष</th>
+              <th>क्रमांक</th>
+              <th>कार्य विवरण</th>
+              <th>पौधों की संख्या</th>
+              <th>दर (₹)</th>
+              <th>राशि (₹)</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <!-- प्रथम वर्ष -->
+            <tr>
+              <td rowspan="9" class="year-label">प्रथम वर्ष</td>
+            </tr>
+            <tr *ngFor="let item of tableData">
+              <td>{{ item.itemKramank }}</td>
+              <td>{{ item.karyaVivran }}</td>
+             <ng-container *ngIf="item.karyaVivran !== 'प्रथम वर्ष का योग'; else chandan_poudha1">
+                <td style="text-align: center;">{{ chandan_total_plant }}</td>
+                <td style="text-align: center;">{{ item.chandan_poudha }}</td>
+                <td style="text-align: center;">{{ item.chandan_poudha * chandan_total_plant | number:'1.2-2' }}</td>
+              </ng-container>
+
+              <ng-template #chandan_poudha1>
+                <td></td>
+                <td></td>
+                <td style="text-align: center; font-weight: 900;">{{ totalChandanPrathamVarsh | number:'1.2-2' }}</td>
+              </ng-template>
+            </tr>
+
+            <!-- द्वितीय वर्ष -->
+            <tr>
+              <td rowspan="5" class="year-label">द्वितीय वर्ष</td>
+            </tr>
+            <tr *ngFor="let item of tableData1">
+              <td>{{ item.itemKramank }}</td>
+              <td>{{ item.karyaVivran }}</td>
+              <ng-container *ngIf="item.karyaVivran !== 'द्वितीय वर्ष का योग'; else chandan_poudha2">
+                <td style="text-align: center;">{{ chandan_total_plant }}</td>
+                <td style="text-align: center;">{{ item.chandan_poudha }}</td>
+                <td style="text-align: center;">{{ item.chandan_poudha * chandan_total_plant | number:'1.2-2' }}</td>
+              </ng-container>
+
+              <ng-template #chandan_poudha2>
+                <td></td>
+                <td></td>
+                <td style="text-align: center; font-weight: 900;">{{ totalChandanDwitiyaVarsh | number:'1.2-2' }}</td>
+              </ng-template>
+              
+            </tr>
+
+            <!-- तृतीय वर्ष -->
+            <tr>
+              <td rowspan="5" class="year-label">तृतीय वर्ष</td>
+            </tr>
+            <tr *ngFor="let item of tableData2">
+              <td>{{ item.itemKramank }}</td>
+              <td>{{ item.karyaVivran }}</td>
+               <ng-container *ngIf="item.karyaVivran !== 'तृतीय वर्ष का योग'; else chandan_poudha3">
+                <td style="text-align: center;">{{ chandan_total_plant }}</td>
+                <td style="text-align: center;">{{ item.chandan_poudha }}</td>
+                <td style="text-align: center;">{{ item.chandan_poudha * chandan_total_plant | number:'1.2-2' }}</td>
+              </ng-container>
+
+              <ng-template #chandan_poudha3>
+                <td></td>
+                <td></td>
+                <td style="text-align: center; font-weight: 900;">{{ totalChandanTritiyaVarsh | number:'1.2-2' }}</td>
+              </ng-template>
+            </tr>
+
+            <!-- Total -->
+            <tr>
+              <td colspan="5" class="total-label">महायोग</td>
+              <td style="text-align: center; font-weight: 900;">₹{{ chandanGrandTotal | number:'1.2-2' }}</td>
+            </tr>
+            <tr>
+              <td colspan="6" class="total-label">
+                राशि शब्दों में : {{ chandanAmountInWordsEnglish }}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+
+    <!--  मिलिया डूबिया -->
+    <div *ngIf="miliyadubiya_total_plant > 0 && miliyadubiya_total_area > 0">
+      <ion-card class="species-card">
+        <ion-text class="species-title">
+          <strong>प्रजाति का नाम :- मिलिया डूबिया (कुल पौधे: {{ miliyadubiya_total_plant }})</strong>
+        </ion-text>
+        <ion-button class="my-ion-button" (click)="prnti_pdf()">Print PDF</ion-button>
+      </ion-card>
+
+      <div class="table-wrapper" style="margin-top: 10px;">
+        <table class="custom-table">
+          <thead>
+            <tr>
+              <th>वर्ष</th>
+              <th>क्रमांक</th>
+              <th>कार्य विवरण</th>
+              <th>पौधों की संख्या</th>
+              <th>दर (₹)</th>
+              <th>राशि (₹)</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <!-- प्रथम वर्ष -->
+            <tr>
+              <td rowspan="9" class="year-label">प्रथम वर्ष</td>
+            </tr>
+            <tr *ngFor="let item of tableData">
+              <td>{{ item.itemKramank }}</td>
+              <td>{{ item.karyaVivran }}</td>
+             <ng-container *ngIf="item.karyaVivran !== 'प्रथम वर्ष का योग'; else milidubiya1">
+                <td style="text-align: center;">{{ miliyadubiya_total_plant }}</td>
+                <td style="text-align: center;">{{ item.milidubiya }}</td>
+                <td style="text-align: center;">{{ item.milidubiya * miliyadubiya_total_plant | number:'1.2-2'
+                  }}</td>
+              </ng-container>
+
+              <ng-template #milidubiya1>
+                <td></td>
+                <td></td>
+                <td style="text-align: center; font-weight: 900;">{{ totalMiliyaDubiyaPrathamVarsh | number:'1.2-2'
+                  }}</td>
+              </ng-template>
+            </tr>
+
+            <!-- द्वितीय वर्ष -->
+            <tr>
+              <td rowspan="5" class="year-label">द्वितीय वर्ष</td>
+            </tr>
+            <tr *ngFor="let item of tableData1">
+              <td>{{ item.itemKramank }}</td>
+              <td>{{ item.karyaVivran }}</td>
+            <ng-container *ngIf="item.karyaVivran !== 'द्वितीय वर्ष का योग'; else milidubiya2">
+                <td style="text-align: center;">{{ miliyadubiya_total_plant }}</td>
+                <td style="text-align: center;">{{ item.milidubiya }}</td>
+                <td style="text-align: center;">{{ item.milidubiya * miliyadubiya_total_plant | number:'1.2-2'
+                  }}</td>
+              </ng-container>
+
+              <ng-template #milidubiya2>
+                <td></td>
+                <td></td>
+                <td style="text-align: center; font-weight: 900;">{{ totalMiliyaDubiyaDwitiyaVarsh | number:'1.2-2'
+                  }}</td>
+              </ng-template>
+            </tr>
+
+            <!-- तृतीय वर्ष -->
+            <tr>
+              <td rowspan="5" class="year-label">तृतीय वर्ष</td>
+            </tr>
+            <tr *ngFor="let item of tableData2">
+              <td>{{ item.itemKramank }}</td>
+              <td>{{ item.karyaVivran }}</td>
+             <ng-container *ngIf="item.karyaVivran !== 'तृतीय वर्ष का योग'; else milidubiya3">
+                <td style="text-align: center;">{{ miliyadubiya_total_plant }}</td>
+                <td style="text-align: center;">{{ item.milidubiya }}</td>
+                <td style="text-align: center;">{{ item.milidubiya * miliyadubiya_total_plant | number:'1.2-2'
+                  }}</td>
+              </ng-container>
+
+              <ng-template #milidubiya3>
+                <td></td>
+                <td></td>
+                <td style="text-align: center; font-weight: 900;">{{ totalMiliyaDubiyaTritiyaVarsh | number:'1.2-2'
+                  }}</td>
+              </ng-template>
+            </tr>
+
+            <!-- Total -->
+            <tr>
+              <td colspan="5" class="total-label">महायोग</td>
+              <td style="text-align: center; font-weight: 900;">
+                ₹{{ miliyaDubiyaGrandTotal | number:'1.2-2' }}
+              </td>
+            </tr>
+
+            <tr>
+              <td colspan="6" class="total-label">
+                राशि शब्दों में : {{ miliyaDubiyaAmountInWordsEnglish }}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+
+    <!--  साधारण सागौन -->
+    <div *ngIf="normal_sagon_total_plant > 0 && normal_sagon_total_area > 0">
+      <ion-card class="species-card">
+        <ion-text class="species-title">
+          <strong>प्रजाति का नाम :- साधारण सागौन (कुल पौधे: {{ normal_sagon_total_plant }})</strong>
+        </ion-text>
+        <ion-button class="my-ion-button" (click)="prnti_pdf()">Print PDF</ion-button>
+      </ion-card>
+
+      <div class="table-wrapper" style="margin-top: 10px;">
+        <table class="custom-table">
+          <thead>
+            <tr>
+              <th>वर्ष</th>
+              <th>क्रमांक</th>
+              <th>कार्य विवरण</th>
+              <th>पौधों की संख्या</th>
+              <th>दर (₹)</th>
+              <th>राशि (₹)</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <!-- प्रथम वर्ष -->
+            <tr>
+              <td rowspan="9" class="year-label">प्रथम वर्ष</td>
+            </tr>
+            <tr *ngFor="let item of tableData">
+              <td>{{ item.itemKramank }}</td>
+              <td>{{ item.karyaVivran }}</td>
+            <ng-container *ngIf="item.karyaVivran !== 'प्रथम वर्ष का योग'; else tissueTritiyaEmpty">
+                <td style="text-align: center;">{{ normal_sagon_total_plant }}</td>
+                <td style="text-align: center;">{{ item.tissuclturebans }}</td>
+                <td style="text-align: center;">{{ item.tissuclturebans * normal_sagon_total_plant | number:'1.2-2'
+                  }}</td>
+              </ng-container>
+
+              <ng-template #tissueTritiyaEmpty>
+                <td></td>
+                <td></td>
+                <td style="text-align: center; font-weight: 900;">{{ totalNormalSagonPrathamVarsh | number:'1.2-2'
+                  }}</td>
+              </ng-template>
+            </tr>
+
+            <!-- द्वितीय वर्ष -->
+            <tr>
+              <td rowspan="5" class="year-label">द्वितीय वर्ष</td>
+            </tr>
+            <tr *ngFor="let item of tableData1">
+              <td>{{ item.itemKramank }}</td>
+              <td>{{ item.karyaVivran }}</td>
+            <ng-container *ngIf="item.karyaVivran !== 'द्वितीय वर्ष का योग'; else tissueTritiyaEmpty">
+                <td style="text-align: center;">{{ totalNormalSagonDwitiyaVarsh }}</td>
+                <td style="text-align: center;">{{ item.tissuclturebans }}</td>
+                <td style="text-align: center;">{{ item.tissuclturebans * totalNormalSagonDwitiyaVarsh | number:'1.2-2'
+                  }}</td>
+              </ng-container>
+
+              <ng-template #tissueTritiyaEmpty>
+                <td></td>
+                <td></td>
+                <td style="text-align: center; font-weight: 900;">{{ totalNormalSagonTritiyaVarsh | number:'1.2-2'
+                  }}</td>
+              </ng-template>
+            </tr>
+
+            <!-- तृतीय वर्ष -->
+            <tr>
+              <td rowspan="5" class="year-label">तृतीय वर्ष</td>
+            </tr>
+            <tr *ngFor="let item of tableData2">
+              <td>{{ item.itemKramank }}</td>
+              <td>{{ item.karyaVivran }}</td>
+             <ng-container *ngIf="item.karyaVivran !== 'तृतीय वर्ष का योग'; else tissueTritiyaEmpty">
+                <td style="text-align: center;">{{ normal_sagon_total_plant }}</td>
+                <td style="text-align: center;">{{ item.tissuclturebans }}</td>
+                <td style="text-align: center;">{{ item.tissuclturebans * normal_sagon_total_plant | number:'1.2-2'
+                  }}</td>
+              </ng-container>
+
+              <ng-template #tissueTritiyaEmpty>
+                <td></td>
+                <td></td>
+                <td style="text-align: center; font-weight: 900;">{{ totalTissueBansTritiyaVarshamount | number:'1.2-2'
+                  }}</td>
+              </ng-template>
+            </tr>
+
+            <!-- Total -->
+            <tr>
+              <td colspan="5" class="total-label">महायोग</td>
+              <td style="text-align: center; font-weight: 900;">
+                ₹{{ normalSagonGrandTotal | number:'1.2-2' }}
+              </td>
+            </tr>
+
+            <tr>
+              <td colspan="6" class="total-label">
+                राशि शब्दों में : {{ normalSagonAmountInWordsEnglish }}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- 🪴 टिशू कल्चर सागौन -->
+    <div *ngIf="tissueclturesagon_total_plant > 0 && tissueclturesagon_total_area > 0">
+      <ion-card class="species-card">
+        <ion-text class="species-title">
+          <strong>प्रजाति का नाम :- टिशू कल्चर सागौन (कुल पौधे: {{ tissueclturesagon_total_plant }})</strong>
+        </ion-text>
+        <ion-button class="my-ion-button" (click)="prnti_pdf()">Print PDF</ion-button>
+      </ion-card>
+
+      <div class="table-wrapper" style="margin-top: 10px;">
+        <table class="custom-table">
+          <thead>
+            <tr>
+              <th>वर्ष</th>
+              <th>क्रमांक</th>
+              <th>कार्य विवरण</th>
+              <th>पौधों की संख्या</th>
+              <th>दर (₹)</th>
+              <th>राशि (₹)</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <!-- प्रथम वर्ष -->
+            <tr>
+              <td rowspan="9" class="year-label">प्रथम वर्ष</td>
+            </tr>
+            <tr *ngFor="let item of tableData">
+              <td>{{ item.itemKramank }}</td>
+              <td>{{ item.karyaVivran }}</td>
+             <ng-container *ngIf="item.karyaVivran !== 'प्रथम वर्ष का योग'; else tissuclturesagonmt1">
+                <td style="text-align: center;">{{ tissueclturesagon_total_plant }}</td>
+                <td style="text-align: center;">{{ item.tissuclturesagon }}</td>
+                <td style="text-align: center;">{{ item.tissuclturesagon * tissueclturesagon_total_plant | number:'1.2-2'
+                  }}</td>
+              </ng-container>
+
+              <ng-template #tissuclturesagonmt1>
+                <td></td>
+                <td></td>
+                <td style="text-align: center; font-weight: 900;">{{ totalTissueSagonPrathamVarsh | number:'1.2-2'
+                  }}</td>
+              </ng-template>
+            </tr>
+
+            <!-- द्वितीय वर्ष -->
+            <tr>
+              <td rowspan="5" class="year-label">द्वितीय वर्ष</td>
+            </tr>
+            <tr *ngFor="let item of tableData1">
+              <td>{{ item.itemKramank }}</td>
+              <td>{{ item.karyaVivran }}</td>
+            <ng-container *ngIf="item.karyaVivran !== 'द्वितीय वर्ष का योग'; else tissuclturesagonmt2">
+                <td style="text-align: center;">{{ tissueclturebans_total_palnt }}</td>
+                <td style="text-align: center;">{{ item.tissuclturesagon }}</td>
+                <td style="text-align: center;">{{ item.tissuclturesagon * tissueclturesagon_total_plant | number:'1.2-2'
+                  }}</td>
+              </ng-container>
+
+              <ng-template #tissuclturesagonmt2>
+                <td></td>
+                <td></td>
+                <td style="text-align: center; font-weight: 900;">{{ totalTissueSagonDwitiyaVarsh | number:'1.2-2'
+                  }}</td>
+              </ng-template>
+            </tr>
+
+            <!-- तृतीय वर्ष -->
+            <tr>
+              <td rowspan="5" class="year-label">तृतीय वर्ष</td>
+            </tr>
+            <tr *ngFor="let item of tableData2">
+              <td>{{ item.itemKramank }}</td>
+              <td>{{ item.karyaVivran }}</td>
+            <ng-container *ngIf="item.karyaVivran !== 'तृतीय वर्ष का योग'; else tissuclturesagonmt3">
+                <td style="text-align: center;">{{ tissueclturesagon_total_plant }}</td>
+                <td style="text-align: center;">{{ item.tissuclturesagon }}</td>
+                <td style="text-align: center;">{{ item.tissuclturesagon * tissueclturesagon_total_plant | number:'1.2-2'
+                  }}</td>
+              </ng-container>
+
+              <ng-template #tissuclturesagonmt3>
+                <td></td>
+                <td></td>
+                <td style="text-align: center; font-weight: 900;">{{ totalTissueSagonTritiyaVarsh | number:'1.2-2'
+                  }}</td>
+              </ng-template>
+            </tr>
+
+            <!-- Total -->
+            <tr>
+              <td colspan="5" class="total-label">महायोग</td>
+              <td style="text-align: center; font-weight: 900;">
+                ₹{{ tissueSagonGrandTotal | number:'1.2-2' }}
+              </td>
+            </tr>
+
+            <tr>
+              <td colspan="6" class="total-label">
+                राशि शब्दों में : {{ tissueSagonAmountInWordsEnglish }}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+
+    <!-- 🌿 अन्य लाभकारी पौधे -->
+    <div *ngIf="other_labhkari_total_palnt > 0 && other_labhkari_total_area > 0">
+      <ion-card class="species-card">
+        <ion-text class="species-title">
+          <strong>प्रजाति का नाम :- अन्य लाभकारी पौधे (कुल पौधे: {{ other_labhkari_total_palnt }})</strong>
+        </ion-text>
+        <ion-button class="my-ion-button" (click)="prnti_pdf()">Print PDF</ion-button>
+      </ion-card>
+
+      <div class="table-wrapper" style="margin-top: 10px;">
+        <table class="custom-table">
+          <thead>
+            <tr>
+              <th>वर्ष</th>
+              <th>क्रमांक</th>
+              <th>कार्य विवरण</th>
+              <th>पौधों की संख्या</th>
+              <th>दर (₹)</th>
+              <th>राशि (₹)</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <!-- प्रथम वर्ष -->
+            <tr>
+              <td rowspan="9" class="year-label">प्रथम वर्ष</td>
+            </tr>
+            <tr *ngFor="let item of tableData">
+              <td>{{ item.itemKramank }}</td>
+              <td>{{ item.karyaVivran }}</td>
+             <ng-container *ngIf="item.karyaVivran !== 'प्रथम वर्ष का योग'; else anyaPoudha1">
+                <td style="text-align: center;">{{ other_labhkari_total_palnt }}</td>
+                <td style="text-align: center;">{{ item.anyaPoudha }}</td>
+                <td style="text-align: center;">{{ item.anyaPoudha * other_labhkari_total_palnt | number:'1.2-2'
+                  }}</td>
+              </ng-container>
+
+              <ng-template #anyaPoudha1>
+                <td></td>
+                <td></td>
+                <td style="text-align: center; font-weight: 900;">{{ totalOtherLabhkariPrathamVarsh | number:'1.2-2'
+                  }}</td>
+              </ng-template>
+            </tr>
+
+            <!-- द्वितीय वर्ष -->
+            <tr>
+              <td rowspan="5" class="year-label">द्वितीय वर्ष</td>
+            </tr>
+            <tr *ngFor="let item of tableData1">
+              <td>{{ item.itemKramank }}</td>
+              <td>{{ item.karyaVivran }}</td>
+              <ng-container *ngIf="item.karyaVivran !== 'द्वितीय वर्ष का योग'; else anyaPoudha2">
+                <td style="text-align: center;">{{ other_labhkari_total_palnt }}</td>
+                <td style="text-align: center;">{{ item.anyaPoudha }}</td>
+                <td style="text-align: center;">{{ item.anyaPoudha * other_labhkari_total_palnt | number:'1.2-2'
+                  }}</td>
+              </ng-container>
+
+              <ng-template #anyaPoudha2>
+                <td></td>
+                <td></td>
+                <td style="text-align: center; font-weight: 900;">{{ totalOtherLabhkariDwitiyaVarsh | number:'1.2-2'
+                  }}</td>
+              </ng-template>
+            </tr>
+
+            <!-- तृतीय वर्ष -->
+            <tr>
+              <td rowspan="5" class="year-label">तृतीय वर्ष</td>
+            </tr>
+            <tr *ngFor="let item of tableData2">
+              <td>{{ item.itemKramank }}</td>
+              <td>{{ item.karyaVivran }}</td>
+             <ng-container *ngIf="item.karyaVivran !== 'तृतीय वर्ष का योग'; else anyaPoudha3">
+                <td style="text-align: center;">{{ other_labhkari_total_palnt }}</td>
+                <td style="text-align: center;">{{ item.anyaPoudha }}</td>
+                <td style="text-align: center;">{{ item.anyaPoudha * other_labhkari_total_palnt | number:'1.2-2'
+                  }}</td>
+              </ng-container>
+
+              <ng-template #anyaPoudha3>
+                <td></td>
+                <td></td>
+                <td style="text-align: center; font-weight: 900;">{{ totalOtherLabhkariTritiyaVarsh | number:'1.2-2'
+                  }}</td>
+              </ng-template>
+            </tr>
+
+            <!-- Total -->
+            <tr>
+              <td colspan="5" class="total-label">महायोग</td>
+              <td style="text-align: center; font-weight: 900;">
+                ₹{{ otherLabhkariGrandTotal | number:'1.2-2' }}
+              </td>
+            </tr>
+
+            <tr>
+              <td colspan="6" class="total-label">
+                राशि शब्दों में : {{ otherLabhkariAmountInWordsEnglish }}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+
+
+
+    <!-- Dropdown Section -->
+    <div class="dropdown-section " style="margin-top: 200px;">
+      <ion-row>
+
+
+        <ion-col size="12" size-md="4" size-lg="4">
+          <ng-select [(ngModel)]="vanMandalAdhikari" [items]="vanMandalOptions" bindLabel="label" bindValue="value"
+            placeholder="विकल्प चुनें" class="custom-ngselect">
+          </ng-select>
+          <div class="dropdown-label">वनमंडलाधिकारी</div>
+          <div class="dropdown-label">({{officer_name}})</div>
+
+        </ion-col>
+
+        <ion-col size="12" size-md="4" size-lg="4">
+          <ng-select [(ngModel)]="upVanMandalAdhikari" [items]="upVanMandalOptions" bindLabel="label" bindValue="value"
+            placeholder="विकल्प चुनें" class="custom-ngselect">
+          </ng-select>
+          <div class="dropdown-label">उप-वनमंडलाधिकारी</div>
+          <div class="dropdown-label">({{officer_name}})</div>
+
+        </ion-col>
+
+        <ion-col size="12" size-md="4" size-lg="4" >
+          <ng-select [(ngModel)]="vanParikshanAdhikari" [items]="vanParikshanOptions" bindLabel="label"
+            bindValue="value" placeholder="विकल्प चुनें" class="custom-ngselect">
+          </ng-select>
+          <div class="dropdown-label">वन परिक्षेत्र अधिकारी</div>
+          <div class="dropdown-label">({{officer_name}})</div>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="12" size-md="4" size-lg="12" style="margin-top: 40px; float: inline-end; ">
+          <ion-button style="float: inline-end;">Send To SDO</ion-button>
+          <!-- <ion-button color="danger" style="float: inline-end;">Cancle</ion-button> -->
+        </ion-col>
+      </ion-row>
+    </div>
+  </div>
+</ion-content>

@@ -1,0 +1,292 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <!-- Always visible back button -->
+      <ion-back-button [defaultHref]="'/home'" (click)="goBack()" class="custom-back-button">
+      </ion-back-button>
+    </ion-buttons>
+    <ion-title class="responsive-toolbar-title">
+      किसान वृक्ष योजना आवेदन
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-content>
+  <ion-loading [isOpen]="isLoading" [message]="loadingMessage"></ion-loading>
+
+  <!-- OTP Verification Section (similar to registration page) -->
+  <ion-grid *ngIf="!isOTPVerified">
+    <ion-row class="ion-justify-content-center ion-align-items-center">
+      <ion-col>
+        <ion-card style="padding: 20px; text-align: center;">
+          <ion-card-header>
+            <ion-card-title>मोबाइल नंबर सत्यापन</ion-card-title>
+            <ion-card-subtitle>आवेदन जमा करने से पहले अपना मोबाइल नंबर सत्यापित करें</ion-card-subtitle>
+          </ion-card-header>
+
+          <ion-grid>
+            <ion-row>
+              <ion-col size="12" size-md="8" offset-md="2">
+                <ion-input [(ngModel)]="inputMobileNumber" type="number" label="मोबाइल नंबर दर्ज करें"
+                  label-placement="floating" fill="outline" maxlength="10" style="font-size: 16px;">
+                </ion-input>
+              </ion-col>
+            </ion-row>
+
+            <ion-row style="margin-top: 20px;">
+              <ion-col size="12" size-md="6" offset-md="3">
+                <ion-button expand="block" (click)="getOTP()" style="height: 45px;">
+                  ओटीपी प्राप्त करें
+                </ion-button>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+
+          <ion-text style="font-size: 12px; color: #666; margin-top: 15px; display: block;">
+            आवेदन जारी रखने के लिए मोबाइल नंबर सत्यापन आवश्यक है
+          </ion-text>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <!-- Main Form Section (only shown after OTP verification) -->
+  <ion-grid *ngIf="isOTPVerified">
+    <ion-row style="margin-bottom: 15px;">
+      <ion-col>
+        <ion-card style="background-color: #e8f5e8; padding: 15px; border-left: 4px solid #28a745;">
+          <ion-text style="font-size: 14px; color: #2d5a2d;">
+            <strong>✅ मोबाइल नंबर सत्यापित। अब आवेदन फॉर्म भर सकते हैं।</strong>
+          </ion-text>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+
+    <form #kisanForm="ngForm">
+      <ion-row style="padding-left: 15px; padding-right: 15px;">
+        <ion-col>
+
+          <!-- District, Division, Range Selection -->
+          <ion-row>
+            <ion-col size="12" size-md="4">
+              <ion-label class="item-style-label">जिला</ion-label>
+              <ng-select [items]="listOfDist" bindLabel="name" bindValue="id" [(ngModel)]="formData.district_id"
+                name="district" [searchable]="true" [clearable]="false" placeholder="जिला चुनें"
+                (change)="onDistrictChange($event)" required class="custom-select">
+              </ng-select>
+            </ion-col>
+
+            <ion-col size="12" size-md="4">
+              <ion-label class="item-style-label">वनमण्डल</ion-label>
+              <ng-select [items]="listOfDivision" bindLabel="name" bindValue="id" [(ngModel)]="formData.division_id"
+                name="division" [searchable]="true" [clearable]="false" placeholder="वनमण्डल चुनें"
+                (change)="onDivisionChange($event)" required class="custom-select">
+              </ng-select>
+            </ion-col>
+
+            <ion-col size="12" size-md="4">
+              <ion-label class="item-style-label">परिक्षेत्र</ion-label>
+              <ng-select [items]="listOfRang" bindLabel="name" bindValue="id" [(ngModel)]="formData.range_id"
+                name="range" [searchable]="true" [clearable]="false" placeholder="परिक्षेत्र चुनें" required
+                class="custom-select">
+              </ng-select>
+            </ion-col>
+          </ion-row>
+
+          <!-- Beneficiary Details -->
+          <ion-row style="margin-top: 15px">
+            <ion-col size="12" size-md="4">
+              <ion-input [(ngModel)]="formData.hitgrahi_name" name="hitgrahi" label="हितग्राही का नाम"
+                label-placement="floating" fill="outline" required />
+            </ion-col>
+
+            <ion-col size="12" size-md="4">
+              <ion-input [(ngModel)]="formData.father_husband_name" name="father" label="पिता/पति का नाम"
+                label-placement="floating" fill="outline" />
+            </ion-col>
+
+            <ion-col size="12" size-md="4">
+              <ion-input [(ngModel)]="formData.mobile_no" name="mobile" type="number" label="मोबाइल नंबर"
+                label-placement="floating" fill="outline" maxlength="10" [disabled]="true"
+                style="--background: #f0f0f0;">
+              </ion-input>
+              <!-- <ion-note style="font-size: 11px; color: #666;">मोबाइल नंबर सत्यापन के द्वारा भरा गया है</ion-note> -->
+            </ion-col>
+
+          </ion-row>
+
+          <!-- Caste and Mobile -->
+          <ion-row style="margin-top: 15px">
+            <ion-col size="12" size-md="4">
+              <ion-label class="item-style-label">जाति वर्ग</ion-label>
+              <ng-select [items]="listOfCastCategory" bindLabel="name" bindValue="id" [(ngModel)]="formData.caste"
+                name="caste" [searchable]="true" [clearable]="false" placeholder="जाति वर्ग चुनें" required
+                class="custom-select">
+              </ng-select>
+            </ion-col>
+
+            <ion-col size="12" size-md="4">
+              <ion-radio-group [(ngModel)]="formData.isMale" name="gender">
+                <ion-grid>
+                  <ion-row>
+                    <ion-col size="6">
+                      <ion-item lines="none">
+                        <ion-label>पुरुष</ion-label>
+                        <ion-radio slot="start" [value]="true"></ion-radio>
+                      </ion-item>
+                    </ion-col>
+
+                    <ion-col size="6">
+                      <ion-item lines="none">
+                        <ion-label>महिला</ion-label>
+                        <ion-radio slot="start" [value]="false"></ion-radio>
+                      </ion-item>
+                    </ion-col>
+                  </ion-row>
+                </ion-grid>
+              </ion-radio-group>
+            </ion-col>
+
+            <ion-col size="12" size-md="4">
+              <ion-input [(ngModel)]="formData.gram_panchayat" name="panchayat" label="ग्राम पंचायत / नगरीय निकाय "
+                label-placement="floating" fill="outline" required />
+            </ion-col>
+            <!-- <ion-col size="12" size-md="4">
+              <ion-input [(ngModel)]="formData.area" name="area" type="text" label="हितग्राही का कुल रकबा  (एकड़ में)"
+                label-placement="floating" fill="outline" required />
+            </ion-col> -->
+            <ion-col size="12" size-md="4">
+              <ion-input [(ngModel)]="formData.village_city" name="village" label="गांव/शहर" label-placement="floating"
+                fill="outline" required />
+            </ion-col>
+            <ion-col size="12" size-md="8">
+              <ion-textarea [(ngModel)]="formData.address" name="address" fill="outline" label="पूरा पता"
+                label-placement="floating" autosize="true" required />
+            </ion-col>
+          </ion-row>
+
+          <!-- Area Details -->
+
+          <ion-row style="margin-top: 15px">
+            <ion-col size="12" size-md="4">
+              <ion-input [(ngModel)]="formData.area" name="area" type="text" label="हितग्राही का कुल रकबा  (एकड़ में)"
+                label-placement="floating" fill="outline" required />
+            </ion-col>
+            <ion-col size="12" size-md="4">
+              <ion-input [(ngModel)]="formData.available_area" name="available_area" type="text"
+                label="इस योजना अंतर्गत उपलब्ध रोपण योग्य भूमि का रकबा (एकड़ मे )" label-placement="floating"
+                fill="outline" required />
+            </ion-col>
+          </ion-row>
+        </ion-col>
+      </ion-row>
+      <ion-card style="background-color: #e8f5e8; padding: 15px; border-left: 4px solid #28a745;">
+        <ion-text style="font-size: 14px; color: #2d5a2d;">
+          <strong>पौधों की जानकारी भरे : </strong>
+        </ion-text>
+      </ion-card>
+      <ion-row style="padding-left: 15px; padding-right: 15px;">
+
+        <ion-col size="12">
+
+
+
+          <!-- Plant Type Selection -->
+          <ion-row style="margin-top: 15px">
+            <ion-col size="12">
+              <ion-label class="item-style-label">पौधों की प्रजाति</ion-label>
+              <ng-select [clearable]="false" style="margin-top: 5px" [items]="listOfPlantTypes" bindLabel="name"
+                bindValue="id" [(ngModel)]="selectedPlantType" name="plantType" [multiple]="true" [searchable]="true"
+                placeholder="पौधों की प्रजाति चुनें (एक एक अधिक)" (change)="onPlantTypeChange($event)" required />
+            </ion-col>
+          </ion-row>
+
+          <!-- Display Selected Plant Types -->
+          <ion-row style="margin-top: 15px" *ngIf="selectedPlantType && selectedPlantType.length > 0">
+            <ion-col size="12">
+              <ion-label style="font-weight: bold; color: green;">चयनित पौधों की प्रजातियाँ:</ion-label>
+              <div style="margin-top: 10px;">
+                <ion-chip *ngFor="let plantId of selectedPlantType" color="success">
+                  <ion-label>{{ getPlantNameById(plantId) }}</ion-label>
+                </ion-chip>
+              </div>
+            </ion-col>
+          </ion-row>
+
+          <!-- Other Plant (if applicable) -->
+          <ion-row style="margin-top: 15px" *ngIf="showOtherPlantField()">
+            <ion-col size="12">
+              <ion-input [(ngModel)]="formData.other_plant" name="otherPlant" label="अन्य पौधों का विवरण"
+                label-placement="floating" fill="outline" placeholder="अन्य पौधों का नाम लिखें" />
+            </ion-col>
+          </ion-row>
+
+        </ion-col>
+      </ion-row>
+      <!-- Terms and Conditions -->
+      <ion-row style="margin-top: 20px">
+        <ion-col size="12">
+
+          <ion-card style="background-color: #e8f5e8; padding: 15px; border-left: 4px solid #28a745;">
+            <ion-card style="background-color: #f8f9fa; padding: 15px;">
+              <ion-text style="font-size: 14px; line-height: 1.5; color: #333;">
+                <p style="margin: 0; text-align: center; font-weight: 500;">
+                  किसान वृक्ष मित्र योजना अंतर्गत उपर्युक्तानुसार पौधे प्रदान करने का सादर अनुरोध है।
+                </p>
+              </ion-text>
+            </ion-card>
+            <ion-text style="font-size: 13px; line-height: 1.4; color: #2d5a2d;">
+              <p style="margin: 0 0 8px 0; font-weight: 600; color: #1e7e34;text-align: center;">
+                टीप :-
+                वन एवं जलवायु परिवर्तन विभाग के क्षेत्रीय अधिकारी/कर्मचारी आपसे 15 दिवस के भीतर संपर्क करेंगे। कृपया
+                अपना आधार कार्ड, बैंक पासबुक एवं भूमि संबंधी दस्तावेज़ तैयार रखें। सत्यापन उपरांत आपका आवेदन स्वीकार
+                किया जाएगा।
+              </p>
+            </ion-text>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+      <ion-row style="margin-top: 20px;">
+        <ion-col size="12">
+          <ion-item
+            style="--background: transparent; --padding-start: 0;background-color: #e8f5e8; padding: 15px; border-left: 4px solid #a72828;">
+            <ion-checkbox [(ngModel)]="termsAccepted" name="terms" slot="start" style="margin-right: 10px;">
+            </ion-checkbox>
+            <ion-label style="font-size: 14px; line-height: 1.4;">
+              किसान वृक्ष मित्र योजना से संबंधित समस्त नियम शर्त से सहमत हूँ!
+            </ion-label>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+
+      <ion-row style="margin-top: 10px">
+        <ion-col size="12">
+          <ion-text style="text-align: center; display: block;">
+            <a href="/about-yojna" target="_blank" style="color: #007bff; text-decoration: underline; font-size: 13px;">
+              योजना से जुड़े सारे नियम देखने के लिए क्लिक करें
+            </a>
+          </ion-text>
+        </ion-col>
+      </ion-row>
+
+      <!-- Submit Buttons -->
+      <ion-row class="custom-submit" style="margin-top: 30px">
+        <ion-col class="submit-col">
+          <ion-button expand="block" (click)="submitForm()" [disabled]="!isFormReadyForSubmission()">
+            आवेदन जमा करें
+          </ion-button>
+        </ion-col>
+
+        <ion-col class="submit-col">
+          <ion-button expand="block" color="danger" (click)="cancelForm()">
+            रद्द करें
+          </ion-button>
+        </ion-col>
+      </ion-row>
+
+
+
+    </form>
+  </ion-grid>
+</ion-content>

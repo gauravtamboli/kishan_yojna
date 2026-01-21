@@ -1,0 +1,32 @@
+<ion-content>
+  <div class="header-section">
+    <div class="logo-container">
+      <img src="assets/img/app_logo.png" alt="Logo" class="app-logo" />
+    </div>
+    <h1 class="main-heading">किसान वृक्ष मित्र योजना</h1>
+  </div>
+
+  <div class="intro">
+    <h2 *ngIf="userName">स्वागत है, {{ userName }}</h2>
+    <p>कृपया आगे बढ़ने के लिए वर्ष चुनें</p>
+  </div>
+
+  <ion-row class="year-list ion-justify-content-center">
+    <ion-col size="12" class="year-col">
+      <!-- <ion-card class="year-card" *ngFor="let year of years" (click)="selectYear(year)">
+        <ion-card-content>
+          <span>{{ year }}</span>
+        </ion-card-content>
+      </ion-card> -->
+      <ion-card class="year-card" *ngFor="let year of years" (click)="selectYear(year.years)">
+        <ion-card-content>
+          <span>{{ year.label }}</span>
+        </ion-card-content>
+      </ion-card>
+
+    </ion-col>
+  </ion-row>
+
+
+
+</ion-content>

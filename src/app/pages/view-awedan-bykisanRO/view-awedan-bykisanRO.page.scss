@@ -1,0 +1,173 @@
+
+
+.custom-back-button {
+  color: #4CAF50;
+  font-weight: 500;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+  
+  &:hover {
+    background-color: rgba(76, 175, 80, 0.1);
+  }
+}
+
+.responsive-toolbar-title {
+  font-size: 14px;
+  font-weight: 700;
+
+  @media (min-width: 600px) {
+    font-size: 18px;
+  }
+
+  @media (min-width: 1024px) {
+    font-size: 20px;
+  }
+}
+
+.label-title {
+  display: block;
+  font-weight: 600;
+  font-size: 13px;
+  color: #4CAF50;
+  margin-bottom: 8px;
+
+  @media (min-width: 600px) {
+    font-size: 14px;
+  }
+
+  @media (min-width: 1024px) {
+    font-size: 15px;
+  }
+}
+
+.label-value {
+  display: block;
+  font-size: 14px;
+  color: #333;
+  padding: 10px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  border-left: 3px solid #4CAF50;
+
+  @media (min-width: 600px) {
+    font-size: 15px;
+  }
+
+  @media (min-width: 1024px) {
+    font-size: 16px;
+  }
+}
+
+ion-card {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  border-radius: 12px;
+}
+
+ion-card-title {
+  font-size: 16px;
+
+  @media (min-width: 600px) {
+    font-size: 18px;
+  }
+
+  @media (min-width: 1024px) {
+    font-size: 20px;
+  }
+}
+
+ion-input {
+  --background: #ffffff;
+  --padding-start: 16px;
+  --padding-end: 16px;
+  --border-radius: 10px;
+  --border: 1px solid #e0e0e0;
+  --box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  margin: 0;
+  transition: all 0.3s ease;
+
+  &:focus-within {
+    --border-color: #4CAF50;
+    --box-shadow: 0 4px 12px rgba(76, 175, 80, 0.15);
+  }
+}
+
+ion-button {
+  --background: linear-gradient(to right, #4CAF50, #45a049);
+  --border-radius: 10px;
+  --box-shadow: 0 4px 12px rgba(76, 175, 80, 0.2);
+  font-weight: 600;
+  height: 48px;
+  transition: all 0.3s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    --box-shadow: 0 6px 16px rgba(76, 175, 80, 0.3);
+  }
+}
+
+ion-chip {
+  font-size: 13px;
+  
+  @media (min-width: 600px) {
+    font-size: 14px;
+  }
+}
+
+// ng-select dropdown styling to ensure all items are visible
+::ng-deep {
+  .ng-dropdown-panel {
+    z-index: 10000 !important;
+    
+    .ng-dropdown-panel-items {
+      max-height: 500px !important; // Increased to show more items
+      overflow-y: auto !important;
+    }
+  }
+
+  // Ensure parent containers don't clip the dropdown
+  ion-card {
+    overflow: visible !important;
+  }
+}
+
+// Style for ng-select components
+ng-select {
+  width: 100%;
+  
+  .ng-select-container {
+    border-radius: 8px;
+    border: 1px solid #e0e0e0;
+    background: #ffffff;
+    min-height: 48px;
+    transition: border-color 0.2s ease;
+
+    &:hover {
+      border-color: #4CAF50;
+    }
+
+    &:focus-within {
+      border-color: #4CAF50;
+      box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.1);
+    }
+  }
+
+  .ng-placeholder {
+    color: #999;
+  }
+}
+
+.cst-btn{
+  width: fit-content;
+  float: right;
+  --background: #ff9800;
+  --border-radius: 8px;
+  font-weight: 600;
+  height: 44px;
+  transition: all 0.3s ease;
+  margin-bottom: 20px;
+
+  &:hover {
+    transform: translateY(-2px);
+    --box-shadow: 0 6px 16px rgba(255, 152, 0, 0.3);
+  }
+}

@@ -1,0 +1,61 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button class="custom-back-button"></ion-back-button>
+    </ion-buttons>
+    <ion-title class="responsive-toolbar-title">{{ getTranslation('offline_to_online_awedan') }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  
+
+  <p-table [value]="listOfAwedan" responsiveLayout="stack" class="custom-margin-table"> 
+    <ng-template pTemplate="header"> 
+      <tr> 
+        <th>आवेदन नंबर</th> 
+        <th>हितग्राही का नाम</th> 
+        <th>पिता का नाम</th> 
+        <th>मोबाइल नंबर</th> 
+        <th>वृत्त (वन मंडल)</th>
+        <th></th>
+      </tr> 
+    </ng-template> 
+
+    <ng-template pTemplate="body" let-item> 
+      <tr> 
+        <td> 
+          <span class="p-column-title">आवेदन नंबर</span>
+          <ion-label class="responsive-label">{{item.application_number}}</ion-label>
+        </td> 
+        <td> 
+          <span class="p-column-title">हितग्राही का नाम</span>
+          <ion-label class="responsive-label">{{item.hitgrahi_name}}</ion-label>
+        </td> 
+        <td> 
+          <span class="p-column-title">पिता का नाम</span>
+          <ion-label class="responsive-label">{{item.father_name}}</ion-label>
+        </td> 
+        <td> 
+          <span class="p-column-title">मोबाइल नंबर</span>
+          <ion-label class="responsive-label">{{item.mobile_no}}</ion-label>
+        </td> 
+        <td> 
+          <span class="p-column-title">वृत्त (वन मंडल)</span>
+          <ion-label class="responsive-label">{{item.circle_name}} ({{item.division_name}})</ion-label>
+        </td> 
+        <td> 
+          <span class="p-column-title"></span>
+          <ion-label class="responsive-label make-online-link" (click)="goToMakeOnline(item)">
+            MAKE ONLINE
+          </ion-label>
+        </td> 
+      </tr> 
+    </ng-template> 
+  </p-table>
+
+  <div *ngIf="isNoRecordFound" class="no-records-message">
+    <ion-label>कोई आवेदन प्राप्त नहीं</ion-label>
+  </div>
+
+</ion-content>

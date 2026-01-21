@@ -1,0 +1,45 @@
+<div class="dialog-wrapper">
+  <ion-grid>
+    <ion-row class="ion-justify-content-center ion-text-center">
+      <ion-col size="12" size-lg="12">
+        <ion-text class="responsive-label">
+          {{ server_message }}
+        </ion-text>
+      </ion-col>
+    </ion-row>
+
+    <ion-row class="ion-justify-content-center ion-text-end">
+      <!-- Show full width if getIsYesNO() is false -->
+      <ion-col *ngIf="!getIsYesNO()" size="12">
+        <!-- <ion-text class="responsive-label" style="width: 100%; display: block; text-align: center;"
+          (click)="yesClick()">
+          {{ yesOrOk }}
+        </ion-text> -->
+        <ion-button expand="block" shape="round" fill="outline" color="success" (click)="yesClick()">
+          {{ yesOrOk }}
+        </ion-button>
+      </ion-col>
+
+      <!-- Show two columns if getIsYesNO() is true -->
+      <ng-container *ngIf="getIsYesNO()">
+        <ion-col size="6">
+          <!-- <ion-text class="responsive-label" style="color: green; width: 100%; display: block; text-align: center;"
+            (click)="yesClick()">
+            {{ yesOrOk }}
+          </ion-text> -->
+          <ion-button expand="block" shape="round" fill="outline" color="success" (click)="yesClick()">
+            {{ yesOrOk }}
+          </ion-button>
+        </ion-col>
+        <ion-col size="6">
+          <ion-button expand="block" shape="round" fill="outline" color="medium" (click)="noClick()">
+            नहीं
+          </ion-button>
+          <!-- <ion-text class="responsive-label" style="color: red; width: 100%; display: block; text-align: center;" (click)="noClick()">
+           
+          </ion-text> -->
+        </ion-col>
+      </ng-container>
+    </ion-row>
+  </ion-grid>
+</div>

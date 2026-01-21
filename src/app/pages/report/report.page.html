@@ -1,0 +1,152 @@
+<ion-header [translucent]="true">
+  <ion-toolbar class="custom-toolbar">
+    <ion-buttons slot="start">
+      <ion-back-button (click)="goBack()" class="custom-back-button"></ion-back-button>
+    </ion-buttons>
+    <ion-title class="responsive-toolbar-title">{{ getTranslation('report') }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-loading cssClass="custom-loading" [isOpen]="isLoading" [message]="loadingMessage"></ion-loading>
+
+  <div class="search-container">
+    <ion-grid>
+      <ion-row>
+        <ion-col size="12" size-lg="3">
+          <div class="date-picker-card" (click)="onSelecteDate('1')">
+            <ion-icon name="calendar-outline"></ion-icon>
+            <ion-label class="date-label">
+              {{ fromDate ? (fromDate | date:'dd-MM-yyyy') : 'कब से' }}
+            </ion-label>
+          </div>
+        </ion-col>
+        <ion-col size="12" size-lg="3">
+          <div class="date-picker-card" (click)="onSelecteDate('2')">
+            <ion-icon name="calendar-outline"></ion-icon>
+            <ion-label class="date-label">
+              {{ toDate ? (toDate | date:'dd-MM-yyyy') : 'कब तक' }}
+            </ion-label>
+          </div>
+        </ion-col>
+        <ion-col size="12" size-lg="3" *ngIf="isSuperAdmin()">
+          <ng-select (change)="onSelectionChangeOfCircle($event)" class="nice-ng-select" [items]="listOfCircle"
+            bindLabel="name" bindValue="id" [(ngModel)]="selectedVrittId" [searchable]="true" [clearable]="false"
+            placeholder="वृत्त का नाम चुनें">
+          </ng-select>
+        </ion-col>
+        <ion-col size="12" size-lg="3" *ngIf="isSuperAdmin()">
+          <ng-select class="nice-ng-select" [clearable]="false" placeholder="वनमण्डल का नाम चुनें"
+            [(ngModel)]="selectedDivisionlId" [items]="listOfDivision" bindLabel="name" bindValue="id"
+            [searchable]="true" />
+        </ion-col>
+      </ion-row>
+
+      <ion-row class="ion-margin-top">
+        <ion-col size="12" size-lg="3">
+          <ng-select class="nice-ng-select" [clearable]="false" placeholder="आवेदन की स्थिति चुनें"
+            [(ngModel)]="selectedAwedanStatus" [items]="listOfAwedanStatus" bindLabel="status_text"
+            bindValue="status_id" [searchable]="true" />
+        </ion-col>
+        <ion-col size="12" size-lg="3" class="ion-text-center">
+          <ion-button expand="block" class="search-button" (click)="searchData()">
+            <ion-icon name="search-outline" slot="start"></ion-icon>
+            Search
+          </ion-button>
+        </ion-col>
+        <ion-col size="12" size-lg="6" *ngIf="!isListEmpty()">
+          <ion-row>
+            <ion-col size="12" size-lg="6">
+              <ng-select class="nice-ng-select" [clearable]="false" placeholder="एक्सपोर्ट चुने"
+                [(ngModel)]="selectedExporetedType" [items]="listOfExportType" bindLabel="export_type_text"
+                bindValue="export_type" [searchable]="true" />
+            </ion-col>
+            <ion-col size="12" size-lg="6">
+              <ion-button expand="block" class="export-button" (click)="exportData()">
+                <ion-icon name="download-outline" slot="start"></ion-icon>
+                EXPORT
+              </ion-button>
+            </ion-col>
+          </ion-row>
+
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+
+  <!-- <div class="export-container" *ngIf="!isListEmpty()">
+    <ion-grid>
+      <ion-row>
+        <ion-col size="12" size-lg="6">
+          <ng-select class="nice-ng-select" [clearable]="false" placeholder="एक्सपोर्ट चुने"
+            [(ngModel)]="selectedExporetedType" [items]="listOfExportType" bindLabel="export_type_text"
+            bindValue="export_type" [searchable]="true" />
+        </ion-col>
+        <ion-col size="12" size-lg="6">
+          <ion-button expand="block" class="export-button" (click)="exportData()">
+            <ion-icon name="download-outline" slot="start"></ion-icon>
+            EXPORT
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div> -->
+
+  <div class="table-container" *ngIf="!isListEmpty()">
+    <ion-row>
+      <ion-col size-lg="9"></ion-col>
+      <ion-col size="12" size-lg="3">
+        <ion-input class="custom-input" [(ngModel)]="searchMobile" fill="outline"
+          placeholder="मोबाइल नंबर / हितग्राही नाम / पिता का नाम" (ngModelChange)="onSearchTextChanged()">
+        </ion-input>
+      </ion-col>
+      <ion-col size="12">
+        <p-table [value]="filteredAwedans" responsiveLayout="stack" class="custom-table" [rows]="10"
+          [showCurrentPageReport]="true">
+
+          <ng-template pTemplate="header">
+            <tr>
+              <th>आवेदन नंबर</th>
+              <th>हितग्राही का नाम</th>
+              <th>पिता का नाम</th>
+              <th>मोबाइल नंबर</th>
+              <th>वृत्त (वन मंडल)</th>
+            </tr>
+          </ng-template>
+
+          <ng-template pTemplate="body" let-item>
+            <tr>
+              <td>
+                <span class="p-column-title">आवेदन नंबर</span>
+                {{item.application_number}}
+              </td>
+              <td>
+                <span class="p-column-title">हितग्राही का नाम</span>
+                {{item.hitgrahi_name}}
+              </td>
+              <td>
+                <span class="p-column-title">पिता का नाम</span>
+                {{item.father_name}}
+              </td>
+              <td>
+                <span class="p-column-title">मोबाइल नंबर</span>
+                {{item.mobile_no}}
+              </td>
+              <td>
+                <span class="p-column-title">वृत्त (वन मंडल)</span>
+                {{item.circle_name}} ({{item.division_name}})
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </ion-col>
+    </ion-row>
+
+  </div>
+
+  <div class="no-data-container" *ngIf="isListEmpty()">
+    <ion-icon name="alert-circle-outline"></ion-icon>
+    <ion-label>कोई आवेदन प्राप्त नहीं</ion-label>
+  </div>
+
+</ion-content>

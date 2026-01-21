@@ -1,0 +1,201 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/officers-dashboard-ro"></ion-back-button>
+    </ion-buttons>
+    <ion-title>रोपित पौधों की संख्या दर्ज करें</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="content-wrapper">
+  <ion-loading [isOpen]="isLoading" [message]="loadingMessage" [backdropDismiss]="false"></ion-loading>
+
+  <div class="page-container">
+    <!-- Search Section -->
+    <ion-card class="search-card">
+      <ion-card-content>
+        <ion-row class="search-row">
+          <ion-col size="12" size-md="12" class="search-label-col">
+            <ion-input
+              [(ngModel)]="searchText"
+              fill="outline"
+              class="search-input"
+              placeholder="आवेदन नंबर, हितग्राही नाम, पिता का नाम, गाँव या ग्राम पंचायत से खोजें"
+              (ionInput)="onSearch()"
+              (keyup.enter)="onSearchEnter()">
+              <ion-icon name="search-outline" slot="start"></ion-icon>
+            </ion-input>
+          </ion-col>
+         
+        </ion-row>
+        <div class="results-info" *ngIf="filteredData.length > 0">
+          <ion-text color="medium">
+            <small>{{ filteredData.length }} परिणाम मिले</small>
+          </ion-text>
+          <h1>{{filteredData}}</h1>
+        </div>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Table Section -->
+    <div *ngIf="filteredData.length > 0" class="table-container">
+      <div class="table-responsive shadow-sm rounded-4">
+        <p-table 
+          [value]="filteredData" 
+          [paginator]="false" 
+          [responsiveLayout]="'scroll'"
+          class="bootstrap-table p-datatable-striped p-datatable-hoverable-rows custom-table"
+          styleClass="ropit-table">
+          
+          <!-- Header -->
+          <ng-template pTemplate="header">
+            <tr>
+              <th style="width: 50px;">#</th>
+              <th>आवेदन नंबर</th>
+              <th>हितग्राही का नाम</th>
+              <th>पिता का नाम</th>
+              <th>गाँव/शहर</th>
+              <th>ग्राम पंचायत/नगर</th>
+              <th>पता</th>
+              <th>पौधों की जानकारी एवं रोपित संख्या</th>
+              <th class="text-center" style="min-width: 120px;">क्रिया</th>
+            </tr>
+          </ng-template>
+
+          <!-- Body -->
+          <ng-template pTemplate="body" let-item let-i="rowIndex">
+            <tr>
+              <td>{{ (currentPage - 1) * pageSize + i + 1 }}</td>
+              <td>
+                <div class="app-number-cell">
+                  <strong>{{ item.ApplicationNumber }}</strong>
+                </div>
+              </td>
+              <td>
+                <div class="beneficiary-cell">
+                  <strong>{{ item.HitgrahiName || 'N/A' }}</strong>
+                </div>
+              </td>
+              <td>{{ item.FatherName || 'N/A' }}</td>
+              <td>{{ item.VillageCityName || 'N/A' }}</td>
+              <td>{{ item.GramPanchayatNagar || 'N/A' }}</td>
+              <td>
+                <div class="address-cell">
+                  {{ item.Address || 'N/A' }}
+                </div>
+              </td>
+              <td>
+                <div class="plants-cell" *ngIf="item.Plants && item.Plants.length > 0">
+                  <div class="plant-item" *ngFor="let plant of item.Plants; let plantIndex = index">
+                    <div class="plant-header-row">
+                      <div class="plant-name-row">
+                        <ion-icon name="leaf-outline" class="plant-icon-small"></ion-icon>
+                        <strong>{{ plant.PlantName || 'N/A' }}</strong>
+                        <span class="plant-details-inline">
+                          (क्षेत्र: {{ plant.TotalArea || 0 }} हे., पौधे: {{ plant.TotalTree || 0 }})
+                        </span>
+                      </div>
+                    </div>
+                    <div class="plant-input-row">
+                      <input
+                        type="number"
+                        [value]="getRopitSankhyaInput(item.ApplicationNumber, plantIndex)"
+                        (input)="onPlantInputChange($event, item.ApplicationNumber, plantIndex)"
+                        [readonly]="isPlantRopitReadonly(item.ApplicationNumber, plantIndex)"
+                        [max]="getPlantTotalTree(item.ApplicationNumber, plantIndex)"
+                        class="plant-input-native"
+                        [class.readonly-input]="isPlantRopitReadonly(item.ApplicationNumber, plantIndex)"
+                        placeholder="संख्या"
+                        min="0">
+                    </div>
+                  </div>
+                </div>
+                <div *ngIf="!item.Plants || item.Plants.length === 0" class="text-muted">
+                  <small>कोई जानकारी नहीं</small>
+                </div>
+              </td>
+              <td class="text-center">
+                <ion-button 
+                  fill="solid" 
+                  color="success" 
+                  size="small"
+                  class="submit-btn-table"
+                  (click)="submitRopitSankhya(item.ApplicationNumber)"
+                  [disabled]="!item.Plants || item.Plants.length === 0 || areAllPlantsReadonly(item.ApplicationNumber)">
+                  <ion-icon name="checkmark-circle-outline" slot="start"></ion-icon>
+                  जमा करें
+                </ion-button>
+              </td>
+            </tr>
+          </ng-template>
+
+        </p-table>
+      </div>
+    </div>
+
+    <!-- No Records Message -->
+    <ion-card *ngIf="filteredData.length === 0 && !isLoading" class="no-records-card">
+      <ion-card-content>
+        <div class="no-records-content">
+          <ion-icon name="document-text-outline" class="no-records-icon"></ion-icon>
+          <h3>कोई आवेदन प्राप्त नहीं</h3>
+          <p>कृपया खोज मानदंड बदलकर पुनः प्रयास करें</p>
+        </div>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Pagination -->
+    <ion-card *ngIf="totalPages > 1" class="pagination-card">
+      <ion-card-content>
+        <div class="pagination-container">
+          <ion-row class="align-items-center justify-content-center">
+            <ion-col size="auto">
+              <ion-button 
+                [disabled]="currentPage === 1" 
+                (click)="goToPreviousPage()"
+                fill="outline"
+                size="small"
+                class="pagination-btn">
+                <ion-icon name="chevron-back-outline" slot="start"></ion-icon>
+                पिछला
+              </ion-button>
+            </ion-col>
+            
+            <ion-col size="auto">
+              <div class="page-numbers">
+                <ion-button 
+                  *ngFor="let page of getPageNumbers()" 
+                  [color]="page === currentPage ? 'primary' : 'medium'"
+                  [fill]="page === currentPage ? 'solid' : 'outline'"
+                  size="small"
+                  (click)="goToPage(page)"
+                  class="page-btn">
+                  {{ page }}
+                </ion-button>
+              </div>
+            </ion-col>
+            
+            <ion-col size="auto">
+              <ion-button 
+                [disabled]="currentPage === totalPages" 
+                (click)="goToNextPage()"
+                fill="outline"
+                size="small"
+                class="pagination-btn">
+                अगला
+                <ion-icon name="chevron-forward-outline" slot="end"></ion-icon>
+              </ion-button>
+            </ion-col>
+            
+            <ion-col size="auto" class="pagination-info">
+              <div class="pagination-text">
+                <small>पृष्ठ <strong>{{ currentPage }}</strong> / <strong>{{ totalPages }}</strong></small>
+                <small class="total-records">(कुल {{ totalRecords }} रिकॉर्ड)</small>
+              </div>
+            </ion-col>
+          </ion-row>
+        </div>
+      </ion-card-content>
+    </ion-card>
+  </div>
+</ion-content>

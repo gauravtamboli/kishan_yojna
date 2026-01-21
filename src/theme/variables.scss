@@ -1,0 +1,13 @@
+// For information on how to create your own theme, please see:
+// http://ionicframework.com/docs/theming/
+:root{
+    --ion-color-primary : green;    
+    --ion-color-secondary : #90EE90;    
+    --ion-menu-button-background: #FF5733; /* Set background color */
+}
+ion-header {
+    margin-top: calc(env(safe-area-inset-top) + 15px); /* Adjust as needed */
+}
+// ion-content {
+//     --background: #f8fbe8;  /* Replace with your desired color */
+// } 

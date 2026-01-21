@@ -1,0 +1,415 @@
+::ng-deep .p-datatable-tbody>tr>td {
+  padding: 12px 8px;
+  transition: background-color 0.2s ease;
+
+  &:hover {
+    background-color: rgba(0, 128, 0, 0.05);
+  }
+}
+
+// Modern table styling
+::ng-deep .p-datatable {
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+
+  .p-datatable-header {
+    background: linear-gradient(to right, #4CAF50, #45a049);
+    color: white;
+    border-radius: 12px 12px 0 0;
+    padding: 16px;
+  }
+
+  table {
+    border-collapse: separate;
+    border-spacing: 0;
+  }
+
+  th {
+    background: #f8f9fa;
+    font-weight: 600;
+    color: #2c3e50;
+    padding: 16px 12px;
+    border-bottom: 2px solid #e0e0e0;
+  }
+
+  td {
+    padding: 14px 12px;
+    transition: all 0.2s ease;
+    
+    &:hover {
+      background-color: rgba(76, 175, 80, 0.08);
+    }
+  }
+}
+
+// Enhanced responsive design
+@media screen and (max-width: 768px) {
+  .p-column-title {
+    font-weight: 600;
+    display: block;
+    margin-bottom: 8px;
+    color: #2c3e50;
+    font-size: 0.9rem;
+  }
+}
+
+// Modern form elements with enhanced styling
+ion-input,
+ion-textarea {
+  --background: #ffffff;
+  --padding-start: 16px;
+  --padding-end: 16px;
+  --border-radius: 10px;
+  --border: 1px solid #e0e0e0;
+  --box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  margin: 12px 0;
+  transition: all 0.3s ease;
+
+  &:focus-within {
+    --border-color: #4CAF50;
+    --box-shadow: 0 4px 12px rgba(76, 175, 80, 0.15);
+  }
+}
+
+// Enhanced labels
+.responsive-label {
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  font-size: 14px;
+  color: #2c3e50;
+  align-items: center;
+  gap: 8px;
+  margin: 12px 0;
+  font-weight: 500;
+}
+
+// Modern select styling
+ng-select {
+  .ng-select-container {
+    height: 48px !important;
+    border-radius: 10px;
+    border: 1px solid #e0e0e0;
+    background: #ffffff;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+
+    &:hover {
+      border-color: #4CAF50;
+      box-shadow: 0 4px 12px rgba(76, 175, 80, 0.15);
+    }
+  }
+}
+
+// Enhanced grid layout with modern styling
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  padding: 1.5rem;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+// Modern button styling with gradient
+.search-button,
+.export-button {
+  --background: linear-gradient(to right, #4CAF50, #45a049);
+  --background-hover: linear-gradient(to right, #45a049, #3d8b40);
+  --background-activated: linear-gradient(to right, #3d8b40, #357935);
+  --border-radius: 10px;
+  --box-shadow: 0 4px 12px rgba(76, 175, 80, 0.2);
+  font-weight: 600;
+  height: 48px;
+  margin: 0;
+  transition: all 0.3s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    --box-shadow: 0 6px 16px rgba(76, 175, 80, 0.3);
+  }
+}
+
+// Enhanced grid-bordered with modern styling
+.grid-bordered {
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+
+  ion-row {
+    border-bottom: 1px solid #e0e0e0;
+    transition: all 0.2s ease;
+
+    &:hover {
+      background-color: rgba(76, 175, 80, 0.05);
+    }
+  }
+
+  ion-col {
+    padding: 16px;
+    border-right: 1px solid #e0e0e0;
+
+    &:last-child {
+      border-right: none;
+    }
+  }
+
+  .grid-header {
+    background: linear-gradient(to right, #4CAF50, #45a049);
+    color: white;
+    font-weight: 600;
+    padding: 16px;
+  }
+}
+
+// Modern button styling
+.custom-back-button {
+  color: #4CAF50;
+  font-weight: 500;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background-color: rgba(76, 175, 80, 0.1);
+  }
+}
+
+// Error message styling
+.responsive-label-for-error {
+  font-size: 12px;
+  color: #dc3545;
+  margin-top: 4px;
+
+  @media (min-width: 600px) {
+    font-size: 14px;
+  }
+
+  @media (min-width: 1024px) {
+    font-size: 16px;
+  }
+}
+
+// Required field indicator
+.required-label {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+
+  .asterisk {
+    color: #dc3545;
+    font-weight: bold;
+  }
+}
+
+// Title styling
+// .responsive-label-title {
+//   font-size: 14px;
+//   color: #2c3e50;
+//   font-weight: 600;
+//   margin: 12px 0;
+  
+//   @media (min-width: 600px) {
+//     font-size: 18px;
+//   }
+
+//   @media (min-width: 1024px) {
+//     font-size: 20px;
+//   }
+// }
+
+// Header with background
+.responsive-label-header-with-background {
+  background-color: #4CAF50;
+  color: white;
+  padding: 12px 16px;
+  border-radius: 8px;
+  font-weight: 600;
+  margin: 16px 0;
+
+  @media (min-width: 600px) {
+    font-size: 16px;
+  }
+
+  @media (min-width: 1024px) {
+    font-size: 18px;
+  }
+}
+
+/* Hide label on large screens */
+@media screen and (min-width: 769px) {
+  .p-column-title {
+    display: none;
+  }
+}
+
+::ng-deep .p-datatable table,
+::ng-deep .p-datatable th,
+::ng-deep .p-datatable td {
+  border: none !important;
+}
+
+.item-style-label {
+  margin-top: 10px;
+  font-size: 12px;
+  color: green;
+}
+
+.custom-ion-label-points {
+  background-color: green;
+  font-size: 15px;
+  font-weight: 700;
+  color: white;
+  font-style: bold;
+}
+
+.responsive-label-title {
+  font-size: 12px;
+  color: black;
+  font-weight: 700;
+  display: flex;
+  justify-content: center;
+  text-align: center;
+}
+
+/* Medium screens (tablets) */
+@media (min-width: 600px) {
+  .responsive-label-title {
+    font-size: 16px;
+  }
+}
+
+/* Large screens (desktops) */
+@media (min-width: 1024px) {
+  .responsive-label-title {
+    font-size: 18px;
+  }
+}
+
+ion-radio {
+  font-size: 12px;
+
+  @media (min-width: 600px) {
+    font-size: 14px;
+  }
+
+  @media (min-width: 1024px) {
+    font-size: 18px;
+  }
+
+}
+
+ion-label {
+  font-size: 12px;
+
+  @media (min-width: 600px) {
+    font-size: 14px;
+  }
+
+  @media (min-width: 1024px) {
+    font-size: 16px;
+  }
+
+}
+
+.left-align-column {
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: row;
+}
+
+.right-align-column {
+  display: flex;
+  justify-content: flex-end;
+  flex-direction: row;
+}
+
+.table_tr td {
+  text-align: left;
+  /* or center, depending on your preference */
+  padding: 10px;
+}
+
+@media (min-width: 768px) {
+  .table_tr {
+    th {
+      padding: 10px !important;
+      color: white;
+
+      ion-label {
+        text-align: center;
+        width: 100%;
+        padding: 0 !important;
+        margin: 0;
+        display: block;
+      }
+    }
+
+    td {
+      color: black;
+
+      ion-label {
+        text-align: center;
+        width: 100%;
+        padding: 0 !important;
+        margin: 0;
+        display: block;
+      }
+    }
+  }
+
+}
+
+.onlyonmobile {
+  display: none;
+
+  @media (max-width: 767px) {
+    display: table-row;
+  }
+
+}
+
+.onlyonlarge {
+
+  display: none;
+
+  @media (min-width: 992px) {
+    display: block;
+  }
+
+}
+
+
+@media (min-width: 600px) {
+  .responsive-label {
+    font-size: 16px;
+  }
+}
+
+/* Large screens (desktops) */
+@media (min-width: 1024px) {
+  .responsive-label {
+    font-size: 18px;
+  }
+}
+
+.responsive-toolbar-title {
+  font-size: 12px;
+  font-weight: 700;
+}
+
+/* Medium screens (tablets) */
+@media (min-width: 600px) {
+  .responsive-toolbar-title {
+    font-size: 16px;
+  }
+}
+
+/* Large screens (desktops) */
+@media (min-width: 1024px) {
+  .responsive-toolbar-title {
+    font-size: 20px;
+  }
+}

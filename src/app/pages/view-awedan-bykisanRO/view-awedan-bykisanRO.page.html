@@ -1,0 +1,244 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button class="custom-back-button" (click)="goBack()" defaultHref="/landigpage"></ion-back-button>
+    </ion-buttons>
+    <ion-title class="responsive-toolbar-title">
+      किसान आवेदन विवरण
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-content class="page-container">
+  <ion-loading [isOpen]="isLoading" [message]="loadingMessage" inert></ion-loading>
+
+  <ion-row>
+    <ion-col size="12" size-lg="12">
+
+
+      <div *ngIf="awedanData">
+
+        <!-- Application Number Header -->
+        <ion-card style="background-color: #4CAF50; color: white; margin-top: 20px;">
+          <ion-card-content>
+            <ion-row style="display: flex;align-items: center;justify-content: space-between;width: 100%;">
+              <!-- Application Number (Left Side) -->
+              <ion-col size="9" style="display: flex;align-items: center;font-weight: 700;font-size: 18px;">
+                आवेदन संख्या: {{ awedanData.application_number }}
+              </ion-col>
+              <ion-col size="3" style="display: flex;justify-content: flex-end;align-items: center;gap: 10px;">
+                <ion-button (click)="exportToPDF()" color="danger" style="height: 40px;">
+                  PDF
+                </ion-button>
+                <ion-button (click)="exportToExcel()" color="success" style="height: 40px;">
+                  Excel
+                </ion-button>
+              </ion-col>
+            </ion-row>
+
+          </ion-card-content>
+        </ion-card>
+
+        <!-- Basic Information -->
+        <ion-card style="margin-top: 20px;">
+          <ion-card-header>
+            <ion-card-title style="color: #4CAF50; font-weight: 700;">मूल जानकारी</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            <ion-row>
+              <ion-col size="12" size-md="6" size-lg="4">
+                <ion-label class="label-title">जिला</ion-label>
+                <ion-text class="label-value">{{ awedanData.dist_name }}</ion-text>
+              </ion-col>
+              <ion-col size="12" size-md="6" size-lg="4">
+                <ion-label class="label-title">वनमण्डल</ion-label>
+                <ion-text class="label-value">{{ awedanData.div_name }}</ion-text>
+              </ion-col>
+              <ion-col size="12" size-md="6" size-lg="4">
+                <ion-label class="label-title">परिक्षेत्र</ion-label>
+                <ion-text class="label-value">{{ awedanData.rang_name }}</ion-text>
+              </ion-col>
+            </ion-row>
+
+            <ion-row>
+              <ion-col size="12" size-md="6" size-lg="4">
+                <ion-label class="label-title">हितग्राही का नाम</ion-label>
+                <ion-text class="label-value">{{ awedanData.hitgrahi_name }}</ion-text>
+              </ion-col>
+              <ion-col size="12" size-md="6" size-lg="4">
+                <ion-label class="label-title">पिता/पति का नाम</ion-label>
+                <ion-text class="label-value">{{ awedanData.father_name }}</ion-text>
+              </ion-col>
+              <ion-col size="12" size-md="6" size-lg="4">
+                <ion-label class="label-title">जाति वर्ग</ion-label>
+                <ion-text class="label-value">{{ awedanData.cast_name }}</ion-text>
+              </ion-col>
+            </ion-row>
+
+            <ion-row>
+              <ion-col size="12" size-md="6" size-lg="4">
+                <ion-label class="label-title">मोबाइल नंबर</ion-label>
+                <ion-text class="label-value">{{ awedanData.mobile_no }}</ion-text>
+              </ion-col>
+            </ion-row>
+          </ion-card-content>
+        </ion-card>
+
+        <!-- Address Details -->
+        <ion-card style="margin-top: 20px;">
+          <ion-card-header>
+            <ion-card-title style="color: #4CAF50; font-weight: 700;">पता विवरण</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            <ion-row>
+              <ion-col size="12" size-md="6" size-lg="4">
+                <ion-label class="label-title">गांव/शहर</ion-label>
+                <ion-text class="label-value">{{ awedanData.village_name }}</ion-text>
+              </ion-col>
+              <ion-col size="12" size-md="6" size-lg="4">
+                <ion-label class="label-title">ग्राम पंचायत</ion-label>
+                <ion-text class="label-value">{{ awedanData.gram_panchayat_name }}</ion-text>
+              </ion-col>
+              <ion-col size="12" size-md="6" size-lg="4">
+                <ion-label class="label-title">कुल क्षेत्रफल (एकड़ में)</ion-label>
+                <ion-text class="label-value">{{ awedanData.area }}</ion-text>
+              </ion-col>
+              <ion-col size="12" size-md="6" size-lg="4">
+                <ion-label class="label-title">उपलब्ध भूमि (एकड़ में)</ion-label>
+                <ion-text class="label-value">{{ awedanData.available_area }}</ion-text>
+              </ion-col>
+              <ion-col size="12" size-md="6" size-lg="4">
+                <ion-label class="label-title">पूरा पता</ion-label>
+                <ion-text class="label-value">{{ awedanData.address }}</ion-text>
+              </ion-col>
+            </ion-row>
+          </ion-card-content>
+        </ion-card>
+
+        <!-- Plant Type Details -->
+        <ion-card style="margin-top: 20px;">
+          <ion-card-header>
+            <ion-card-title style="color: #4CAF50; font-weight: 700;">पौधों की प्रजाति</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            <ion-row>
+              <ion-col size="12">
+                <ion-label class="label-title">चयनित पौधों की प्रजातियाँ</ion-label>
+                <div style="margin-top: 10px;">
+                  <ion-chip *ngFor="let plantName of getPlantTypeNames()" color="success">
+                    <ion-label>{{ plantName }}</ion-label>
+                  </ion-chip>
+                </div>
+              </ion-col>
+            </ion-row>
+
+            <ion-row *ngIf="hasOtherPlant()">
+              <ion-col size="12">
+                <ion-label class="label-title">अन्य पौधों का विवरण</ion-label>
+                <ion-text class="label-value">{{ awedanData.other_plant }}</ion-text>
+              </ion-col>
+            </ion-row>
+          </ion-card-content>
+        </ion-card>
+
+        <!-- Additional Info Card -->
+        <ion-card style="margin-top: 20px; background-color: #e8f5e8; border-left: 4px solid #28a745;">
+          <ion-card-content>
+            <ion-text style="font-size: 13px; line-height: 1.4; color: #2d5a2d;">
+              <p style="margin: 0 0 8px 0; font-weight: 600; color: #1e7e34;">महत्वपूर्ण जानकारी:</p>
+              <p style="margin: 0;">यह आवेदन किसान वृक्ष मित्र योजना के अंतर्गत जमा किया गया है। सभी विवरण सत्यापन के
+                अधीन हैं।</p>
+            </ion-text>
+          </ion-card-content>
+        </ion-card>
+
+        <!-- Transfer Application Section -->
+        <ion-card *ngIf="isRangeOfficer" style="margin-top: 20px;">
+          <ion-card-header>
+            <ion-card-title style="color: #ff9800; font-weight: 700;">आवेदन अंतरण</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            <ion-row>
+              <ion-col size="12">
+                <ion-text style="font-size: 14px; color: #555;">
+                  नोट :- यदि यह आवेदन आपके परिक्षेत्र के अंतर्गत नहीं आता है, तो आप इसे अन्य परिक्षेत्र में स्थानांतरित
+                  कर सकते हैं।
+                </ion-text>
+              </ion-col>
+            </ion-row>
+            <ion-row style="margin-top: 15px;">
+              <ion-col size="12">
+
+                <ion-button class="cst-btn" expand="block" color="warning" (click)="toggleTransferSection()"
+                  style="margin-bottom: 15px;">
+                  {{ showTransferSection ? 'अंतरण रद्द करें' : 'आवेदन का स्थान अंतरण करें' }}
+                </ion-button>
+              </ion-col>
+            </ion-row>
+
+            <!-- Transfer Form (shown when button is clicked) -->
+            <div *ngIf="showTransferSection" style="margin-top: 20px;">
+              <ion-row>
+                <ion-col size="12" size-md="6" size-lg="3">
+                  <ion-label class="label-title">वृत्त *</ion-label>
+                  <ng-select [(ngModel)]="selectedCircleId" [items]="listOfCircle" bindLabel="name" bindValue="id"
+                    placeholder="वृत्त चुनें" (change)="onCircleChange($event)" [clearable]="false" [appendTo]="'body'"
+                    style="margin-top: 8px;">
+                  </ng-select>
+                </ion-col>
+
+                <ion-col size="12" size-md="6" size-lg="3">
+                  <ion-label class="label-title">जिला *</ion-label>
+                  <ng-select [(ngModel)]="selectedDistId" [items]="listOfDist" bindLabel="name" bindValue="id"
+                    placeholder="जिला चुनें" [disabled]="!selectedCircleId" (change)="onDistrictChange($event)"
+                    [clearable]="false" [appendTo]="'body'" style="margin-top: 8px;">
+                  </ng-select>
+                </ion-col>
+
+                <ion-col size="12" size-md="6" size-lg="3">
+                  <ion-label class="label-title">वनमण्डल *</ion-label>
+                  <ng-select [(ngModel)]="selectedDivId" [items]="listOfDivision" bindLabel="name" bindValue="id"
+                    placeholder="वनमण्डल चुनें" [disabled]="!selectedDistId" (change)="onDivisionChange($event)"
+                    [clearable]="false" [appendTo]="'body'" style="margin-top: 8px;">
+                  </ng-select>
+                </ion-col>
+
+                <ion-col size="12" size-md="6" size-lg="3">
+                  <ion-label class="label-title">परिक्षेत्र *</ion-label>
+                  <ng-select [(ngModel)]="selectedRangId" [items]="listOfRang" bindLabel="name" bindValue="id"
+                    placeholder="परिक्षेत्र चुनें" [disabled]="!selectedDivId" (change)="onRangeChange($event)"
+                    [clearable]="false" [appendTo]="'body'" style="margin-top: 8px;">
+                  </ng-select>
+                </ion-col>
+              </ion-row>
+
+              <ion-row style="margin-top: 20px;">
+                <ion-col size="12" >
+              
+                    <ion-button expand="block" class="cst-btn" color="success" (click)="submitTransfer()"
+                      [disabled]="!selectedCircleId || !selectedDistId || !selectedDivId || !selectedRangId">
+                      अंतरण करें
+                    </ion-button>
+                
+
+                </ion-col>
+              </ion-row>
+            </div>
+          </ion-card-content>
+        </ion-card>
+
+
+      </div>
+
+      <!-- No Data Message -->
+      <ion-card *ngIf="!awedanData && applicationNumber" style="margin-top: 20px;">
+        <ion-card-content>
+          <ion-text style="text-align: center; display: block; color: #666;">
+            कोई डेटा नहीं मिला। कृपया सही आवेदन संख्या दर्ज करें।
+          </ion-text>
+        </ion-card-content>
+      </ion-card>
+    </ion-col>
+  </ion-row>
+</ion-content>

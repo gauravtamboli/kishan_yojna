@@ -1,0 +1,103 @@
+/* --- Page Layout --- */
+.report-container {
+  text-align: center;
+  padding: 10px;
+}
+
+.report-title {
+  font-weight: 700;
+  font-size: 16px;
+  margin-bottom: 8px;
+}
+
+.report-date {
+  font-size: 13px;
+  margin-bottom: 12px;
+  color: #555;
+}
+
+.custom-back-button {
+  color: #388e3c;
+  font-weight: 600;
+}
+
+.responsive-toolbar-title {
+  font-size: 14px;
+  font-weight: 700;
+}
+
+/* --- Table Wrapper for Horizontal Scroll --- */
+.table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  margin-top: 10px;
+}
+
+/* --- Table Styling --- */
+.report-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 1200px; /* ensures scroll on small devices */
+  font-size: 13px;
+  background: #fff;
+}
+
+.report-table th,
+.report-table td {
+  border: 1px solid #999;
+  padding: 6px 8px;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.report-table th {
+  background-color: #f7f7f7;
+  font-weight: 600;
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+
+ion-button {
+  font-size: 13px;
+  font-weight: 600;
+  background: green;
+  color: #fff;
+  border-radius: 6px;
+  
+}
+
+.report-table tr:nth-child(even) {
+  background-color: #fafafa;
+}
+
+/* --- Responsive Behavior --- */
+@media (max-width: 1024px) {
+  .report-table {
+    font-size: 12px;
+    min-width: 1000px;
+  }
+}
+
+@media (max-width: 768px) {
+  .report-table {
+    font-size: 11px;
+    min-width: 900px;
+  }
+}
+
+@media (max-width: 480px) {
+  .report-table {
+    font-size: 10px;
+    min-width: 700px;
+  }
+
+  .report-title {
+    font-size: 14px;
+  }
+}

@@ -1,0 +1,656 @@
+.custom-back-button {
+  color: green;
+}
+
+.custom-ion-label {
+  font-size: 12px;
+  font-weight: 700;
+  color: black;
+  font-style: bold;
+}
+
+.custom-ion-label-points {
+  padding: 5px;
+  background-color: green;
+  font-size: 15px;
+  font-weight: 700;
+  color: white;
+  font-style: bold;
+  border-bottom-right-radius: 10px;
+}
+
+.item-style-label {
+  margin-top: 10px;
+  font-size: 12px;
+  color: green;
+}
+
+ion-title {
+  margin-left: -25px;
+  font-size: 12px;
+}
+
+ion-select {
+  font-size: 12px;
+}
+
+
+ion-text-area {
+  font-size: 14px;
+  outline-color: green;
+  margin-left: -3px;
+  size: 12px;
+}
+
+.radio-group-horizontal {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+ion-content {
+  --padding-bottom: 60px;
+  /* Adjust this value based on your needs */
+}
+
+
+
+.ion-grid-custom {
+  border: 1px solid #000;
+  /* Border around the grid */
+}
+
+.ion-row-custom {
+  display: flex;
+  border: 1px solid #000;
+  /* Border around the row */
+}
+
+.ion-col-custom {
+  border: 1px solid #000;
+  /* Border around each column */
+  padding: 10px;
+  /* Padding inside the column */
+  margin: 5px;
+  /* Optional: Margin between columns */
+}
+
+
+ion-select {
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  padding: 8px;
+  font-size: 16px;
+  --min-height: 45px;
+  background-color: #f9f9f9;
+}
+
+.title-ion-lable {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-weight: 500;
+  width: 100%;
+  font-size: 15px;
+}
+
+.content-ion-lable {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  font-size: 14px;
+}
+
+
+.status-approved {
+  color: green;
+  font-weight: bold;
+}
+
+.status-pending {
+  color: orange;
+  font-weight: bold;
+}
+
+.status-rejected {
+  color: red;
+  font-weight: bold;
+}
+
+.otp-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.otp-box {
+  text-align: center;
+  font-size: 24px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  height: 50px;
+  width: 50px;
+  --padding-start: 0;
+  --padding-end: 0;
+}
+
+
+.big-text-style {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-size: 25px;
+}
+
+
+.responsive-label {
+  font-size: 12px;
+}
+
+/* Medium screens (tablets) */
+@media (min-width: 600px) {
+  .responsive-label {
+    font-size: 16px;
+  }
+}
+
+/* Large screens (desktops) */
+@media (min-width: 1024px) {
+  .responsive-label {
+    font-size: 26px;
+  }
+}
+
+
+
+.custom-back-button {
+  color: green;
+}
+
+ion-menu-button {
+  color: green;
+}
+
+.custom-ion-label {
+  font-size: 12px;
+  font-weight: 700;
+  color: black;
+  font-style: bold;
+}
+
+.custom-ion-label-points {
+  padding: 5px;
+  background-color: green;
+  font-size: 15px;
+  font-weight: 700;
+  color: white;
+  font-style: bold;
+  border-bottom-right-radius: 10px;
+}
+
+.item-style-label {
+  margin-top: 10px;
+  font-size: 12px;
+  color: green;
+}
+
+ion-title {
+  margin-left: -25px;
+  font-size: 12px;
+}
+
+ion-select {
+  font-size: 12px;
+}
+
+
+ion-text-area {
+  font-size: 14px;
+  outline-color: green;
+  margin-left: -3px;
+  size: 12px;
+}
+
+.radio-group-horizontal {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+ion-content {
+  --padding-bottom: 60px;
+  /* Adjust this value based on your needs */
+}
+
+
+
+.ion-grid-custom {
+  border: 1px solid #000;
+  /* Border around the grid */
+}
+
+.ion-row-custom {
+  display: flex;
+  border: 1px solid #000;
+  /* Border around the row */
+}
+
+.ion-col-custom {
+  border: 1px solid #000;
+  /* Border around each column */
+  padding: 10px;
+  /* Padding inside the column */
+  margin: 5px;
+  /* Optional: Margin between columns */
+}
+
+
+ion-select {
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  padding: 8px;
+  font-size: 16px;
+  --min-height: 45px;
+  background-color: #f9f9f9;
+}
+
+.title-ion-lable {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-weight: 500;
+  width: 100%;
+  font-size: 15px;
+}
+
+.content-ion-lable {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  font-size: 14px;
+}
+
+
+.status-approved {
+  color: green;
+  font-weight: bold;
+}
+
+.status-pending {
+  color: orange;
+  font-weight: bold;
+}
+
+.status-rejected {
+  color: red;
+  font-weight: bold;
+}
+
+.otp-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.otp-box {
+  text-align: center;
+  font-size: 24px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  height: 50px;
+  width: 50px;
+  --padding-start: 0;
+  --padding-end: 0;
+}
+
+
+.big-text-style {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-size: 25px;
+}
+
+
+.responsive-label-title {
+  font-size: 12px;
+  text-align: center;
+
+  /* Medium screens (tablets) */
+  @media (min-width: 600px) {
+    font-size: 16px;
+  }
+
+  /* Large screens (desktops) */
+  @media (min-width: 1024px) {
+    font-size: 26px;
+  }
+}
+
+.responsive-label {
+  font-size: 12px;
+
+  /* Medium screens (tablets) */
+  @media (min-width: 600px) {
+    font-size: 16px;
+  }
+
+  /* Large screens (desktops) */
+  @media (min-width: 1024px) {
+    font-size: 26px;
+  }
+}
+
+.responsive-label-count {
+  font-size: 40px;
+
+  /* Medium screens (tablets) */
+  @media (min-width: 600px) {
+    font-size: 48px;
+  }
+
+  /* Large screens (desktops) */
+  @media (min-width: 1024px) {
+    font-size: 70px;
+  }
+}
+
+
+
+
+
+
+.center-content {
+  display: flex;
+  justify-content: center;
+  /* Horizontal center */
+  align-items: center;
+  /* Vertical center */
+  height: 100%;
+  /* Fill full screen height */
+}
+
+.login-grid {
+  width: 90%;
+  max-width: 400px; // Keep form narrow on large screens
+}
+
+
+
+.responsive-input {
+  font-size: 12px;
+
+  /* Medium screens (tablets) */
+  @media (min-width: 600px) {
+    .responsive-input {
+      font-size: 14px;
+    }
+  }
+
+  /* Large screens (desktops) */
+  @media (min-width: 1024px) {
+    .responsive-input {
+      font-size: 20px;
+    }
+  }
+
+
+}
+
+
+
+.responsive-img {
+  width: 100%;
+  height: 100%;
+  max-width: 100px;
+
+  @media (min-width: 768px) {
+    max-width: 400px;
+  }
+
+  @media (min-width: 1024px) {
+    max-width: 800px;
+  }
+}
+
+.responsive-label-count-for_item {
+  font-size: 15px;
+
+  /* Medium screens (tablets) */
+  @media (min-width: 600px) {
+    font-size: 20px;
+  }
+
+  /* Large screens (desktops) */
+  @media (min-width: 1024px) {
+    font-size: 30px;
+  }
+}
+
+
+
+.ion-header-class-for-menu {
+  height: 10rem;
+  // --border-width: 0
+
+  div.bg {
+    height: 110%;
+    width: 130%;
+    background: linear-gradient(90deg, var(--ion-color-primary) 0%, var(--ion-color-primary) 50%);
+    transform: rotate(-15deg);
+    border-radius: 10px 10px 10px 50px;
+    margin-top: -4rem;
+    margin-left: -1rem;
+    box-shadow: 0 1px 10px rgb(98, 255, 169, 0.5);
+  }
+
+  ion-item {
+    //         --inner-border-width: 0px !important;
+    //   --border-width: 0px !important;
+    --background: transparent;
+    position: absolute;
+    top: 1rem;
+    left: 0;
+
+
+    ion-avatar {
+      height: 5rem;
+      width: 5rem;
+      border-radius: 50%;
+      border: 3px solid #90EE90;
+      padding: 1px;
+    }
+
+    ion-label {
+      color: white;
+      font-size: 1.2rem;
+      font-weight: bold;
+      width: auto;
+      letter-spacing: .5px;
+
+      p {
+        color: white;
+        margin-top: 2px;
+        font-weight: normal;
+        font-size: 0.9rem;
+      }
+    }
+
+  }
+
+}
+
+// ::ng-deep .custom-table-row {
+//   margin-bottom: 100px; /* Adjust as needed */
+//   background: white; /* Optional for spacing visibility */
+//   border-radius: 4px; /* Optional for nice styling */
+//   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Optional for separation effect */
+// }
+
+::ng-deep .p-datatable-tbody>tr>td {
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+// ::ng-deep .custom-margin-table .p-datatable {
+//     margin-left: 10px ;
+//     margin-right: 10px ;
+//     margin-top: 10px;
+//     border-collapse: separate !important;
+//     border-spacing: 10px; /* 10px vertical margin between rows */
+//   }
+
+@media screen and (max-width: 768px) {
+  .p-column-title {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #666;
+  }
+}
+
+/* Hide label on large screens */
+@media screen and (min-width: 769px) {
+  .p-column-title {
+    display: none;
+  }
+}
+
+
+.responsive-toolbar-title {
+  font-size: 12px;
+  font-weight: 700;
+}
+
+/* Medium screens (tablets) */
+@media (min-width: 600px) {
+  .responsive-toolbar-title {
+    font-size: 16px;
+  }
+}
+
+/* Large screens (desktops) */
+@media (min-width: 1024px) {
+  .responsive-toolbar-title {
+    font-size: 20px;
+  }
+}
+
+ion-input {
+  --padding-start: 12px;
+  --padding-end: 12px;
+  --padding-bottom: 12px;
+  --background: #f8f9fa;
+  --border-radius: 8px;
+  --border-color: #e0e0e0;
+  --border-style: solid;
+  --border-width: 1px;
+  margin-bottom: 16px;
+
+  &:focus-within {
+    --border-color: var(--ion-color-primary);
+    --background: #ffffff;
+  }
+}
+
+
+
+
+
+
+::ng-deep .custom-margin-table {
+  .p-datatable {
+    margin: 20px;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+
+    .p-datatable-header {
+      background: #2E7D32;
+      color: white;
+      text-align: center;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 1rem;
+    }
+
+    .p-datatable-thead>tr>th {
+      background: #2E7D32;
+      color: white;
+      padding: 1rem;
+      font-weight: 600;
+      transition: background-color 0.3s ease;
+
+      &:hover {
+        background: #1B5E20;
+      }
+    }
+
+    .p-datatable-tbody>tr {
+      transition: all 0.3s ease;
+      border-bottom: 1px solid #e0e0e0;
+
+      &:hover {
+        background: #f5f5f5;
+        transform: translateY(-2px);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+      }
+
+      >td {
+        padding: 1rem;
+        border: none;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .p-column-title {
+    display: block;
+    font-weight: 600;
+    color: #2E7D32;
+    margin-bottom: 8px;
+  }
+
+  ::ng-deep .custom-margin-table {
+    .p-datatable {
+      margin: 10px;
+    }
+  }
+
+  .responsive-label {
+    font-size: 12px;
+  }
+
+  .page-title {
+    font-size: 20px;
+    margin: 1rem 0;
+  }
+}
+
+.custom-dialog-modal {
+  --width: 90vw;
+  --max-width: 400px;
+  --height: auto;
+  --border-radius: 16px;
+  --box-shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
+  --background: #fff;
+  --overflow: visible;
+
+  ion-modal {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}

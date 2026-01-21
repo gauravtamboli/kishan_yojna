@@ -1,0 +1,145 @@
+/* ================= GLOBAL ================= */
+ion-content {
+  --background: #f2f4f7;
+  font-family: 'Segoe UI', 'Noto Sans Devanagari', sans-serif;
+}
+
+/* ================= TABLE CONTAINER ================= */
+.table-responsive {
+  background: #ffffff;
+  margin: 14px;
+  border-radius: 8px;
+  border: 1px solid #d1d5db;
+  overflow-x: auto;
+}
+
+/* ================= TABLE ================= */
+.custom-dashboard-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 900px;
+  font-size: 13px;
+}
+
+/* ================= HEADER ================= */
+.custom-dashboard-table thead tr {
+  background-color: #1f4e79;
+}
+
+.custom-dashboard-table th {
+  padding: 10px;
+  font-weight: 600;
+  color: #ffffff;
+  text-align: center;
+  border: 1px solid #d1d5db;
+  white-space: nowrap;
+}
+
+/* ================= BODY ================= */
+.custom-dashboard-table td {
+  padding: 9px;
+  color: #111827;
+  border: 1px solid #d1d5db;
+  text-align: center;
+  vertical-align: middle;
+}
+
+/* Left aligned columns */
+.custom-dashboard-table td:nth-child(3),
+.custom-dashboard-table td:nth-child(4),
+.custom-dashboard-table td:nth-child(5) {
+  text-align: left;
+}
+
+/* ================= STRIPED ROWS ================= */
+.custom-dashboard-table tbody tr:nth-child(odd) {
+  background-color: #f8fafc;
+}
+
+.custom-dashboard-table tbody tr:nth-child(even) {
+  background-color: #ffffff;
+}
+
+/* ================= HOVER EFFECT ================= */
+.custom-dashboard-table tbody tr:hover {
+  background-color: #e2e8f0 !important;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+/* ================= ACTION BUTTON ================= */
+.custom-dashboard-table ion-button {
+  --border-radius: 6px;
+  font-size: 12px;
+  height: 28px;
+}
+
+/* ================= PAGINATION ================= */
+.pagination-container {
+  margin: 10px 14px 20px;
+  padding: 10px;
+  border-radius: 8px;
+  background: #ffffff;
+  border: 1px solid #d1d5db;
+}
+
+/* ================= CENTER MESSAGE ================= */
+.center-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: calc(100vh - 180px);
+}
+
+.center-message-item {
+  max-width: 360px;
+  border-radius: 10px;
+  border: 1px solid #d1d5db;
+  background: #ffffff;
+}
+
+.center-message-item ion-label {
+  font-size: 15px;
+  font-weight: 600;
+  text-align: center;
+  padding: 16px;
+}
+
+/* ================= MOBILE ================= */
+@media (max-width: 768px) {
+  .custom-dashboard-table {
+    min-width: 750px;
+  }
+}
+
+/* ================= PRINT ================= */
+@media print {
+  ion-header,
+  ion-item,
+  ion-button,
+  .pagination-container {
+    display: none !important;
+  }
+
+  ion-content {
+    --background: #ffffff;
+  }
+
+  .custom-dashboard-table th {
+    background: #000 !important;
+    color: #fff !important;
+  }
+
+  .custom-dashboard-table th,
+  .custom-dashboard-table td {
+    border: 1px solid #000 !important;
+  }
+}
+:host ::ng-deep .p-datatable .p-datatable-thead > tr > th {
+  background-color: #1f4e79;
+  color: #ffffff;
+  padding: 10px;
+  font-weight: 600;
+  text-align: center;
+  border: 1px solid #d1d5db;
+}

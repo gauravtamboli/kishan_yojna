@@ -1,0 +1,56 @@
+<!-- <ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button class="custom-back-button"></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{ getTranslation('officer_login') }}</ion-title>
+  </ion-toolbar>
+</ion-header> -->
+
+
+<ion-loading cssClass="custom-loading" [isOpen]="isLoading" [message]="loadingMessage"></ion-loading>
+
+<div class="login-container">
+
+
+  <div class="login-card">
+
+    <div style="position: relative;">
+      <ion-grid>
+          <ion-row class="ion-justify-content-center ion-align-items-center">
+          <img style="display: flex; flex-direction: column; justify-content: center; align-items: center;" src="assets/img/cg_image.jpg" alt="Logo" class="logo-image">
+        </ion-row>
+      </ion-grid>
+
+    </div>
+
+    <!-- <h2 class="login-title">Officer Login</h2> -->
+
+    <br>
+    <br>
+
+    <div class="form-group">
+      <ion-label class="input-label" position="stacked">User Name</ion-label>
+      <ion-input class="custom-input" [(ngModel)]="mobile" fill="outline"
+        placeholder="Enter user name" required>
+      </ion-input>
+      <ion-text *ngIf="isNotValidMobile" color="danger" class="error-message">{{error_mobile_no_msg}}</ion-text>
+    </div>
+
+    <div class="form-group">
+      <ion-label class="input-label" position="stacked">Password</ion-label>
+      <ion-input class="custom-input" [(ngModel)]="password" type="password" fill="outline"
+        placeholder="Enter your password" required>
+      </ion-input>
+      <ion-text *ngIf="isNotValidPassword" color="danger" class="error-message">{{error_password_no_msg}}</ion-text>
+    </div>
+
+    <ion-button expand="block" class="login-button" (click)="clickToLogin()">
+      Login
+    </ion-button>
+
+    <ion-text *ngIf="isNotValidLogin" color="danger" class="error-message server-error">
+      {{error_msg_from_server_if_not_login}}
+    </ion-text>
+  </div>
+</div>

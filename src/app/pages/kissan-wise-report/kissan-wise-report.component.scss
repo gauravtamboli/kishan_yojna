@@ -1,0 +1,320 @@
+// Professional color palette
+$primary-color: #2c3e50;
+$secondary-color: #3498db;
+$success-color: #27ae60;
+$error-color: #e74c3c;
+$warning-color: #f39c12;
+$background-light: #f8f9fa;
+$border-color: #e0e0e0;
+$text-primary: #2c3e50;
+$text-secondary: #7f8c8d;
+$shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.08);
+$shadow-md: 0 4px 12px rgba(0, 0, 0, 0.1);
+$shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.12);
+
+.container {
+  padding: 20px 16px;
+  max-width: 100%;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  min-height: 100%;
+
+  h2 {
+    margin: 0 0 24px 0;
+    font-size: 24px;
+    font-weight: 600;
+    color: $text-primary;
+    text-align: center;
+    padding: 16px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: $shadow-sm;
+    letter-spacing: 0.5px;
+  }
+}
+
+// Loading State
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 2rem;
+  background: white;
+  border-radius: 16px;
+  box-shadow: $shadow-md;
+  margin: 20px 0;
+  
+  ion-spinner {
+    margin-bottom: 1.5rem;
+    --color: #{$secondary-color};
+    width: 48px;
+    height: 48px;
+  }
+  
+  p {
+    color: $text-secondary;
+    font-size: 16px;
+    font-weight: 500;
+    margin: 0;
+  }
+}
+
+// Error State
+.error-container {
+  padding: 20px;
+  text-align: center;
+  color: $error-color;
+  background: linear-gradient(135deg, #fff5f5 0%, #ffe0e0 100%);
+  border-radius: 12px;
+  margin: 20px 0;
+  box-shadow: $shadow-sm;
+  border-left: 4px solid $error-color;
+  
+  p {
+    margin: 0;
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 1.6;
+  }
+}
+
+// Table Info Badge
+.table-info {
+  margin-bottom: 20px;
+  padding: 12px 20px;
+  background: linear-gradient(135deg, $secondary-color 0%, #2980b9 100%);
+  color: white;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 15px;
+  box-shadow: $shadow-sm;
+  display: inline-block;
+  
+  p {
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    
+    &::before {
+      content: '📊';
+      font-size: 18px;
+    }
+  }
+}
+
+// Table Container with Scroll
+.table-container {
+  overflow-x: auto;
+  overflow-y: auto;
+  max-height: 70vh;
+  border-radius: 12px;
+  box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.06);
+  background: white;
+  position: relative;
+  
+  // Custom scrollbar styling
+  &::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  
+  &::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+  }
+  
+  &::-webkit-scrollbar-thumb {
+    background: $secondary-color;
+    border-radius: 10px;
+    
+    // &:hover {
+    //   background: darken($secondary-color, 10%);
+    // }
+  }
+}
+
+// Professional Table Styling
+.farmer-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: 13px;
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+
+  thead {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    
+    tr {
+      background: linear-gradient(135deg, $primary-color 0%, #34495e 100%);
+      
+      th {
+        padding: 16px 12px;
+        text-align: left;
+        font-weight: 600;
+        color: white;
+        font-size: 13px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+        white-space: nowrap;
+        position: relative;
+        
+        &:not(:last-child)::after {
+          content: '';
+          position: absolute;
+          right: 0;
+          top: 20%;
+          height: 60%;
+          width: 1px;
+          background: rgba(255, 255, 255, 0.2);
+        }
+        
+        &:first-child {
+          padding-left: 16px;
+        }
+        
+        &:last-child {
+          padding-right: 16px;
+        }
+      }
+    }
+  }
+
+  tbody {
+    tr {
+      transition: all 0.2s ease;
+      border-bottom: 1px solid #f0f0f0;
+      
+      &:nth-child(even) {
+        background-color: #fafbfc;
+      }
+      
+      &:nth-child(odd) {
+        background-color: white;
+      }
+      
+      &:hover {
+        background-color: #e8f4f8 !important;
+        transform: scale(1.001);
+        box-shadow: 0 2px 8px rgba(52, 152, 219, 0.15);
+      }
+      
+      &:last-child {
+        border-bottom: none;
+      }
+      
+      td {
+        padding: 14px 12px;
+        color: $text-primary;
+        border-right: 1px solid #f0f0f0;
+        vertical-align: middle;
+        line-height: 1.5;
+        font-size: 13px;
+        
+        &:first-child {
+          padding-left: 16px;
+          font-weight: 600;
+          color: $primary-color;
+        }
+        
+        &:last-child {
+          padding-right: 16px;
+          border-right: none;
+        }
+      }
+    }
+  }
+}
+
+// Card Styling
+ion-card {
+  margin: 20px 0;
+  border-radius: 16px;
+  box-shadow: $shadow-md;
+  overflow: hidden;
+  background: white;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+  
+  &:hover {
+    box-shadow: $shadow-lg;
+    transform: translateY(-2px);
+  }
+  
+  ion-card-content {
+    padding: 24px;
+  }
+}
+
+// No Data State
+.no-data {
+  text-align: center;
+  padding: 3rem 2rem;
+  color: $text-secondary;
+  
+  &::before {
+    content: '📋';
+    display: block;
+    font-size: 48px;
+    margin-bottom: 16px;
+    opacity: 0.5;
+  }
+  
+  font-size: 16px;
+  font-weight: 500;
+}
+
+// Responsive Design
+@media (max-width: 768px) {
+  .container {
+    padding: 12px;
+    
+    h2 {
+      font-size: 20px;
+      padding: 12px;
+    }
+  }
+  
+  .table-container {
+    max-height: 60vh;
+  }
+  
+  .farmer-table {
+    font-size: 11px;
+    
+    thead tr th {
+      padding: 12px 8px;
+      font-size: 11px;
+    }
+    
+    tbody tr td {
+      padding: 10px 8px;
+      font-size: 11px;
+    }
+  }
+  
+  .table-info {
+    padding: 10px 16px;
+    font-size: 14px;
+  }
+}
+
+// Print Styles
+@media print {
+  .container {
+    background: white;
+  }
+  
+  .farmer-table {
+    thead tr {
+      background: $primary-color !important;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+  }
+}

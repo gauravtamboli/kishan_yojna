@@ -1,0 +1,30 @@
+<div>
+
+  <!-- Top-right close icon -->
+  <img src="assets/img/ic_cancel.png"
+    style="width: 25px; height: 25px; position: absolute; top: 10px; right: 10px; cursor: pointer; z-index: 10;"
+    (click)="closeModel()" />
+
+  <div style="text-align: center; margin-top: 30px; padding: 0 10px;">
+    <p style="font-size: 16px; font-weight: 500; color: #333;">
+      आप नीचे दिए गए दो विकल्पों से पंजीयन कर सकते हैं
+    </p>
+
+    <ion-grid>
+      <ion-row class="ion-justify-content-center" style="margin-top: 20px;">
+        <ion-col size="12" size-md="6" style="margin-bottom: 10px;">
+          <ion-button expand="block" color="primary" shape="round" (click)="offLineOrOnline('true')">
+            ऑनलाइन आवेदन
+          </ion-button>
+        </ion-col>
+
+        <ion-col size="12" size-md="6">
+          <ion-button expand="block" color="secondary" shape="round" (click)="offLineOrOnline('false')">
+            ऑफलाइन आवेदन
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+
+</div>

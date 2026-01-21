@@ -1,0 +1,470 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button (click)="goBack()"></ion-back-button>
+    </ion-buttons>
+    <ion-title>विवरण </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-loading
+    cssClass="custom-loading"
+    [isOpen]="isLoading"
+    [message]="loadingMessage"
+    [backdropDismiss]="false"
+  ></ion-loading>
+
+  <div *ngIf="registrationDetails" class="ion-padding">
+    <!-- Basic Information -->
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>मूलभूत जानकारी</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-grid>
+          <ion-row>
+            <ion-col size="6" size-md="6">
+              <ion-text
+                ><strong>आवेदन नंबर:</strong>
+                {{registrationDetails.ApplicationNumber}}</ion-text
+              >
+            </ion-col>
+            <ion-col size="12" size-md="6">
+              <ion-text
+                ><strong>हितग्राही का नाम:</strong>
+                {{registrationDetails.HitgrahiName}}</ion-text
+              >
+            </ion-col>
+            <ion-col size="12" size-md="6">
+              <ion-text
+                ><strong>पिता का नाम:</strong>
+                {{registrationDetails.FatherName}}</ion-text
+              >
+            </ion-col>
+            <ion-col size="12" size-md="6">
+              <ion-text
+                ><strong>मोबाइल नंबर:</strong>
+                {{registrationDetails.MobileNo}}</ion-text
+              >
+            </ion-col>
+            <ion-col size="12" size-md="6">
+              <ion-text
+                ><strong>आधार नंबर:</strong>
+                {{registrationDetails.AadharNo}}</ion-text
+              >
+            </ion-col>
+            <ion-col size="12" size-md="6">
+              <ion-text
+                ><strong>जाति श्रेणी:</strong>
+                {{registrationDetails.CastCategoryName}}</ion-text
+              >
+            </ion-col>
+            <ion-col size="12">
+              <ion-text
+                ><strong>पता:</strong> {{registrationDetails.Address}}</ion-text
+              >
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Location Information -->
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>स्थानिक जानकारी</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-grid>
+          <ion-row>
+            <ion-col size="12" size-md="6">
+              <ion-text
+                ><strong>गाँव का नाम:</strong>
+                {{registrationDetails.VillageName}}</ion-text
+              >
+            </ion-col>
+            <ion-col size="12" size-md="6">
+              <ion-text
+                ><strong>ग्राम पंचायत नाम:</strong>
+                {{registrationDetails.GramPanchayatName}}</ion-text
+              >
+            </ion-col>
+            <ion-col size="12" size-md="6">
+              <ion-text
+                ><strong>खसरा नंबर:</strong>
+                {{registrationDetails.KhasraNo}}</ion-text
+              >
+            </ion-col>
+            <ion-col size="12" size-md="6">
+              <ion-text
+                ><strong>कक्षा क्रमांक:</strong>
+                {{registrationDetails.KakshaKramank}}</ion-text
+              >
+            </ion-col>
+            <ion-col size="12" size-md="6">
+              <ion-text
+                ><strong>हल्का नंबर:</strong>
+                {{registrationDetails.HalkaNo}}</ion-text
+              >
+            </ion-col>
+            <ion-col size="12" size-md="6">
+              <ion-text
+                ><strong>बालू का प्रकार:</strong>
+                {{registrationDetails.SandType}}</ion-text
+              >
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Bank Information -->
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>बैंक जानकारी</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-grid>
+          <ion-row>
+            <ion-col size="12" size-md="6">
+              <ion-text
+                ><strong>बैंक का नाम:</strong>
+                {{registrationDetails.Bank_Name}}</ion-text
+              >
+            </ion-col>
+            <ion-col size="12" size-md="6">
+              <ion-text
+                ><strong>IFSC कोड:</strong>
+                {{registrationDetails.IfscCode}}</ion-text
+              >
+            </ion-col>
+            <ion-col size="12">
+              <ion-text
+                ><strong>खाता नंबर:</strong>
+                {{registrationDetails.AccountNo}}</ion-text
+              >
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Plantation Details Less Than 5 Acres -->
+    <ion-card
+      *ngIf="registrationDetails.TotalAreaLess5Acre && registrationDetails.TotalAreaLess5Acre > 0"
+    >
+      <ion-card-header>
+        <ion-card-title
+          >5 एकड़ से कम क्षेत्र की वृक्षारोपण जानकारी</ion-card-title
+        >
+      </ion-card-header>
+      <ion-card-content>
+        <ion-grid>
+          <ion-row>
+            <ion-col size="12" size-md="6">
+              <ion-text
+                ><strong>क्लोनल नीलगिरी पौधे की संख्या:</strong>
+                {{registrationDetails.KlonalNeelgiriNoOfPlantLess5Acre}}</ion-text
+              >
+            </ion-col>
+            <ion-col size="12" size-md="6">
+              <ion-text
+                ><strong>क्लोनल नीलगिरी क्षेत्र:</strong>
+                {{registrationDetails.KlonalNeelgiriPlantAreaLess5Acre}}
+                एकड़</ion-text
+              >
+            </ion-col>
+            <ion-col size="12" size-md="6">
+              <ion-text
+                ><strong>टिशू कल्चर सागवान पौधे की संख्या:</strong>
+                {{registrationDetails.TishuCultureSagonNoOfPlantLess5Acre}}</ion-text
+              >
+            </ion-col>
+            <ion-col size="12" size-md="6">
+              <ion-text
+                ><strong>टिशू कल्चर सागवान क्षेत्र:</strong>
+                {{registrationDetails.TishuCultureSagonPlantAreaLess5Acre}}
+                एकड़</ion-text
+              >
+            </ion-col>
+            <ion-col size="12" size-md="6">
+              <ion-text
+                ><strong>टिशू कल्चर बांस पौधे की संख्या:</strong>
+                {{registrationDetails.TishuCultureBanshNoOfPlantLess5Acre}}</ion-text
+              >
+            </ion-col>
+            <ion-col size="12" size-md="6">
+              <ion-text
+                ><strong>टिशू कल्चर बांस क्षेत्र:</strong>
+                {{registrationDetails.TishuCultureBanshPlantAreaLess5Acre}}
+                एकड़</ion-text
+              >
+            </ion-col>
+            <ion-col size="12" size-md="6">
+              <ion-text
+                ><strong>सामान्य सागवान पौधे की संख्या:</strong>
+                {{registrationDetails.NormalSagonNoOfPlantLess5Acre}}</ion-text
+              >
+            </ion-col>
+            <ion-col size="12" size-md="6">
+              <ion-text
+                ><strong>सामान्य सागवान क्षेत्र:</strong>
+                {{registrationDetails.NormalSagonPlantAreaLess5Acre}}
+                एकड़</ion-text
+              >
+            </ion-col>
+            <ion-col size="12" size-md="6">
+              <ion-text
+                ><strong>मिलिये डूबिया पौधे की संख्या:</strong>
+                {{registrationDetails.MiliyaDubiyaNoOfPlantLess5Acre}}</ion-text
+              >
+            </ion-col>
+            <ion-col size="12" size-md="6">
+              <ion-text
+                ><strong>मिलिये डूबिया क्षे वक्त:</strong>
+                {{registrationDetails.MiliyaDubiyaPlantAreaLess5Acre}}
+                एकड़</ion-text
+              >
+            </ion-col>
+            <ion-col size="12" size-md="6">
+              <ion-text
+                ><strong>चंदन पौधे की संख्या:</strong>
+                {{registrationDetails.ChandanNoOfPlantLess5Acre}}</ion-text
+              >
+            </ion-col>
+            <ion-col size="12" size-md="6">
+              <ion-text
+                ><strong>चंदन क्षेत्र:</strong>
+                {{registrationDetails.ChandanPlantAreaLess5Acre}} एकड़</ion-text
+              >
+            </ion-col>
+            <ion-col size="12" size-md="6">
+              <ion-text
+                ><strong>अन्य लाभकारी पौधे की संख्या:</strong>
+                {{registrationDetails.OtherLabhkariNoOfPlantLess5Acre}}</ion-text
+              >
+            </ion-col>
+            <ion-col size="12" size-md="6">
+              <ion-text
+                ><strong>अन्य लाभकारी क्षेत्र:</strong>
+                {{registrationDetails.OtherLabhkariPlantAreaLess5Acre}}
+                एकड़</ion-text
+              >
+            </ion-col>
+            <ion-col size="12" size-md="6">
+              <ion-text
+                ><strong>सामान्य बांस पौधे की संख्या:</strong>
+                {{registrationDetails.NormalBanshNoOfPlantLess5Acre}}</ion-text
+              >
+            </ion-col>
+            <ion-col size="12" size-md="6">
+              <ion-text
+                ><strong>सामान्य बांस क्षेत्र:</strong>
+                {{registrationDetails.NormalBanshPlantAreaLess5Acre}}
+                एकड़</ion-text
+              >
+            </ion-col>
+            <ion-col size="12" size-md="6">
+              <ion-text
+                ><strong>कुल पौधे की संख्या:</strong>
+                {{registrationDetails.TotalNumberOfPlantLess5Acre}}</ion-text
+              >
+            </ion-col>
+            <ion-col size="12" size-md="6">
+              <ion-text
+                ><strong>कुल क्षेत्र:</strong>
+                {{registrationDetails.TotalAreaLess5Acre}} एकड़</ion-text
+              >
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Plantation Details More Than 5 Acres -->
+    <ion-card
+      *ngIf="registrationDetails.TotalAreaMore5Acre && registrationDetails.TotalAreaMore5Acre > 0"
+    >
+      <ion-card-header>
+        <ion-card-title
+          >5 एकड़ से अधिक क्षेत्र की वृक्षारोपण जानकारी</ion-card-title
+        >
+      </ion-card-header>
+      <ion-card-content>
+        <ion-grid>
+          <ion-row>
+            <ion-col size="12" size-md="6">
+              <ion-text
+                ><strong>क्लोनल नीलगिरी पौधे की संख्या:</strong>
+                {{registrationDetails.KlonalNeelgiriNoOfPlantMore5Acre}}</ion-text
+              >
+            </ion-col>
+
+            <ion-col size="12" size-md="6">
+              <ion-text
+                ><strong>क्लोनल नीलगिरी क्षेत्र:</strong>
+                {{registrationDetails.KlonalNeelgiriPlantAreaMore5Acre}}
+                एकड़</ion-text
+              >
+            </ion-col>
+            <ion-col size="12" size-md="6">
+              <ion-text
+                ><strong>टिशू कल्चर सागवान पौधे की संख्या:</strong>
+                {{registrationDetails.TishuCultureSagonNoOfPlantMore5Acre}}</ion-text
+              >
+            </ion-col>
+            <ion-col size="12" size-md="6">
+              <ion-text
+                ><strong>टिशू कल्चर सागवान क्षेत्र:</strong>
+                {{registrationDetails.TishuCultureSagonPlantAreaMore5Acre}}
+                एकड़</ion-text
+              >
+            </ion-col>
+            <ion-col size="12" size-md="6">
+              <ion-text
+                ><strong>टिशू कल्चर बांस पौधे की संख्या:</strong>
+                {{registrationDetails.TishuCultureBanshNoOfPlantMore5Acre}}</ion-text
+              >
+            </ion-col>
+            <ion-col size="12" size-md="6">
+              <ion-text
+                ><strong>टिशू कल्चर बांस क्षेत्र:</strong>
+                {{registrationDetails.TishuCultureBanshPlantAreaMore5Acre}}
+                एकड़</ion-text
+              >
+            </ion-col>
+            <ion-col size="12" size-md="6">
+              <ion-text
+                ><strong>सामान्य सागवान पौधे की संख्या:</strong>
+                {{registrationDetails.NormalSagonNoOfPlantMore5Acre}}</ion-text
+              >
+            </ion-col>
+            <ion-col size="12" size-md="6">
+              <ion-text
+                ><strong>सामान्य सागवान क्षेत्र:</strong>
+                {{registrationDetails.NormalSagonPlantAreaMore5Acre}}
+                एकड़</ion-text
+              >
+            </ion-col>
+            <ion-col size="12" size-md="6">
+              <ion-text
+                ><strong>मिलिये डूबिया पौधे की संख्या:</strong>
+                {{registrationDetails.MiliyaDubiyaNoOfPlantMore5Acre}}</ion-text
+              >
+            </ion-col>
+            <ion-col size="12" size-md="6">
+              <ion-text
+                ><strong>मिलिये डूबिया क्षेत्र:</strong>
+                {{registrationDetails.MiliyaDubiyaPlantAreaMore5Acre}}
+                एकड़</ion-text
+              >
+            </ion-col>
+            <ion-col size="12" size-md="6">
+              <ion-text
+                ><strong>चंदन पौधे की संख्या:</strong>
+                {{registrationDetails.ChandanNoOfPlantMore5Acre}}</ion-text
+              >
+            </ion-col>
+            <ion-col size="12" size-md="6">
+              <ion-text
+                ><strong>चंदन क्षेत्र:</strong>
+                {{registrationDetails.ChandanPlantAreaMore5Acre}} एकड़</ion-text
+              >
+            </ion-col>
+            <ion-col size="12" size-md="6">
+              <ion-text
+                ><strong>अन्य लाभकारी पौधे की संख्या:</strong>
+                {{registrationDetails.OtherLabhkariNoOfPlantMore5Acre}}</ion-text
+              >
+            </ion-col>
+            <ion-col size="12" size-md="6">
+              <ion-text
+                ><strong>अन्य लाभकारी क्षेत्र:</strong>
+                {{registrationDetails.OtherLabhkariPlantAreaMore5Acre}}
+                एकड़</ion-text
+              >
+            </ion-col>
+            <ion-col size="12" size-md="6">
+              <ion-text
+                ><strong>सामान्य बांस पौधे की संख्या:</strong>
+                {{registrationDetails.NormalBanshNoOfPlantMore5Acre}}</ion-text
+              >
+            </ion-col>
+            <ion-col size="12" size-md="6">
+              <ion-text
+                ><strong>सामान्य बांस क्षेत्र:</strong>
+                {{registrationDetails.NormalBanshPlantAreaMore5Acre}}
+                एकड़</ion-text
+              >
+            </ion-col>
+            <ion-col size="12" size-md="6">
+              <ion-text
+                ><strong>कुल पौधे की संख्या:</strong>
+                {{registrationDetails.TotalNumberOfPlantMore5Acre}}</ion-text
+              >
+            </ion-col>
+            <ion-col size="12" size-md="6">
+              <ion-text
+                ><strong>कुल क्षेत्र:</strong>
+                {{registrationDetails.TotalAreaMore5Acre}} एकड़</ion-text
+              >
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Other Information -->
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>अन्य जानकारी</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-grid>
+          <ion-row>
+            <ion-col size="12" size-md="6">
+              <ion-text
+                ><strong>सिंचित/असिंचित:</strong>
+                {{registrationDetails.SinchitAsinchit}}</ion-text
+              >
+            </ion-col>
+            <ion-col size="12" size-md="6">
+              <ion-text hidden
+                ><strong>वृक्षारोपण अक्षांश:</strong>
+                {{registrationDetails.VrikharopanAkshansh}}</ion-text
+              >
+            </ion-col>
+            <ion-col size="12" size-md="6">
+              <ion-text hidden
+                ><strong>वृक्षारोपण दिक्षांश:</strong>
+                {{registrationDetails.VrikharopanDikshansh}}</ion-text
+              >
+            </ion-col>
+            <ion-col size="12" size-md="6">
+              <ion-text
+                ><strong>प्रारंभिक दिनांक:</strong>
+                {{registrationDetails.CreatedAt}}</ion-text
+              >
+            </ion-col>
+            <ion-col size="12" size-md="6">
+              <ion-text
+                ><strong>बनाया गया:</strong>
+                {{registrationDetails.Created_By}}</ion-text
+              >
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-card-content>
+    </ion-card>
+  </div>
+
+  <div
+    *ngIf="!registrationDetails && !isLoading"
+    class="ion-padding ion-text-center"
+  >
+    <ion-text color="medium">
+      <h3>कोई आवेदन विवरण नहीं मिला</h3>
+    </ion-text>
+  </div>
+</ion-content>

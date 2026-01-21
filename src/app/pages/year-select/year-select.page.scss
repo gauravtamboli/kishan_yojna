@@ -1,0 +1,94 @@
+:host {
+  ion-content {
+    --background: #f6f7fb;
+  }
+}
+
+.header-section {
+  background: linear-gradient(135deg, #0b6b3a 0%, #0d8a4f 100%);
+  padding: 1.5rem 1rem 2rem;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  margin-bottom: 1rem;
+
+  .logo-container {
+    margin-bottom: 1rem;
+
+    .app-logo {
+      width: 80px;
+      height: 80px;
+      object-fit: contain;
+      background: #fff;
+      border-radius: 50%;
+      padding: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    }
+  }
+
+  .main-heading {
+    color: #ffffff;
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 0;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    letter-spacing: 0.5px;
+  }
+}
+
+.intro {
+  text-align: center;
+  margin: 1.5rem 1rem;
+
+  h2 {
+    margin-bottom: 0.25rem;
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: #0b6b3a;
+  }
+
+  p {
+    color: #555;
+    margin: 0;
+    font-size: 0.95rem;
+  }
+}
+
+.year-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.year-card {
+   margin: 5px;                   // remove default margin
+  height: 50px;                     // fixed height
+  display: flex;                    // enable centering
+  align-items: center;              // vertical center
+  justify-content: center;          // horizontal center
+
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+  text-align: center;
+  cursor: pointer;
+  border-radius: 8px;
+
+  transition: transform 0.25s ease,
+              box-shadow 0.25s ease,
+              border-color 0.25s ease;
+
+  &:hover {
+    transform: translateY(-4px) scale(1.02);
+    box-shadow: 0 14px 28px rgba(11, 107, 58, 0.25);
+    border-color: #0b6b3a;
+  }
+
+  &:hover {
+    transform: scale(0.96);
+  }
+}
+
+.year-card ion-card-content {
+  padding: 0;           // remove default padding
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #0b6b3a;
+}
+

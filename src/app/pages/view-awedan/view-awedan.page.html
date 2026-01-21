@@ -1,0 +1,776 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button class="custom-back-button"></ion-back-button>
+    </ion-buttons>
+    <ion-title style="padding-inline: 0px;"
+      class="responsive-toolbar-title">{{getTranslation('view_application_detail')}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <!-- <div *ngIf="safePdfUrl" style="height: 100vh;">
+    <iframe [src]="safePdfUrl" type="application/pdf" width="100%" height="100%" style="border: none;"></iframe>
+  </div> -->
+
+  <ion-loading cssClass="custom-loading" [isOpen]="isLoading" [message]="loadingMessage"></ion-loading>
+
+  <ion-grid>
+
+    <ion-row style="display: flex; flex-direction: row; justify-content: center;">
+
+      <ion-col size="12" size-lg="9">
+        <ion-row style="display: flex; justify-content: center; align-items: center; background-color: green;">
+          <ion-label class="responsive-label"
+            style="font-weight: 700; color: white;  display: flex; justify-content: left; ">
+            आवेदन नंबर :
+          </ion-label>
+          <ion-label class="responsive-label"
+            style="color: white;  display: flex; align-items: center; justify-content: center; margin-left: 10px;">
+            {{getApplicationNumber()}}
+          </ion-label>
+        </ion-row>
+      </ion-col>
+
+      <ion-col size="12" size-lg="9">
+        <p-table [value]="[passedAwedanObject]" responsiveLayout="stack" class="custom-margin-table">
+
+          <ng-template pTemplate="header">
+            <tr class="ion-label-title">
+              <th style="align-items: center; text-align: center;">
+                <ion-label>
+                  हितग्राही का नाम
+                </ion-label>
+              </th>
+              <th style="align-items: center; text-align: center;">
+                <ion-label>
+                  पिता का नाम
+                </ion-label>
+              </th>
+              <th style="align-items: center; text-align: center;">
+                <ion-label>
+                  मोबाइल नंबर
+                </ion-label>
+              </th>
+              <th style="align-items: center; text-align: center;">
+                <ion-label>
+                  वृत्त (वन मंडल)
+                </ion-label>
+              </th>
+
+              <th style="align-items: center; text-align: center;">
+                <ion-label>
+                  जिले का नाम
+                </ion-label>
+              </th>
+
+              <th style="align-items: center; text-align: center;">
+                <ion-label>
+                  दस्तावेज
+                </ion-label>
+              </th>
+
+            </tr>
+          </ng-template>
+
+          <ng-template pTemplate="body" let-item>
+            <tr class="ion-label-title">
+              <td>
+                <span class="p-column-title">
+                  <ion-label>
+                    हितग्राही का नाम
+                  </ion-label>
+                </span>
+
+                <ion-label class="responsive-label"
+                  style="color: black; text-align: center; display: flex; justify-content: center;">
+                  {{item.hitgrahi_name}}
+                </ion-label>
+              </td>
+              <td>
+                <span class="p-column-title">
+                  <ion-label>
+                    पिता का नाम
+                  </ion-label>
+                </span>
+
+                <ion-label class="responsive-label"
+                  style="color: black; text-align: center; display: flex; justify-content: center;">
+                  {{item.father_name}}
+                </ion-label>
+              </td>
+              <td>
+                <span class="p-column-title">
+                  <ion-label>
+                    मोबाइल नंबर
+                  </ion-label>
+                </span>
+
+                <ion-label class="responsive-label"
+                  style="color: black; text-align: center; display: flex; justify-content: center;">
+                  {{ mobile_no ? mobile_no : item.mobile_no }}
+                </ion-label>
+              </td>
+              <td>
+                <span class="p-column-title">
+                  <ion-label>
+                    वृत्त (वन मंडल)
+                  </ion-label>
+                </span>
+
+                <ion-label class="responsive-label"
+                  style="color: black; text-align: center; display: flex; justify-content: center;">
+                  {{item.circle_name}} ({{item.division_name}})
+                </ion-label>
+              </td>
+
+              <td>
+                <span class="p-column-title">
+                  <ion-label>
+                    जिले का नाम
+                  </ion-label>
+                </span>
+
+                <ion-label class="responsive-label"
+                  style="color: black; text-align: center; display: flex; justify-content: center;">
+                  {{item.dist_name}}
+                </ion-label>
+              </td>
+
+              <td *ngIf="isDesktop()">
+                <span class="p-column-title">
+                  <ion-label class="responsive-label"
+                    style="font-weight: 700; color: black; text-align: center; display: flex; justify-content: center;">
+                    दस्तावेज
+                  </ion-label>
+                </span>
+
+                <ion-label (click)="openUploadedDocumentAdhar(item)" class="responsive-label"
+                  style="color: blue; text-align: center; display: flex; justify-content: center;">
+                  <u>आधार कार्ड</u>
+                </ion-label>
+
+                <ion-label (click)="openUploadedDocumentPassbook(item)" class="responsive-label"
+                  style="color: blue; text-align: center; display: flex; justify-content: center;">
+                  <u>बैंक पासबुक</u>
+                </ion-label>
+
+                <ion-label (click)="openUploadedDocumentb1p1(item)" class="responsive-label"
+                  style="color: blue; text-align: center; display: flex; justify-content: center;">
+                  <u>B1 और P1</u>
+                </ion-label>
+
+              </td>
+
+            </tr>
+          </ng-template>
+
+        </p-table>
+      </ion-col>
+
+      <ion-col size="12" size-lg="9">
+        <hr style="background-color: black; height: 1px;" />
+      </ion-col>
+
+      <ion-col size="12" size-lg="9">
+
+        <ion-grid *ngIf="singleAwedanResponseData">
+
+          <ion-col size="12">
+            <ion-label class="responsive-label-header-with-background">
+              व्यक्तिगत जानकारी :
+            </ion-label>
+          </ion-col>
+
+          <ion-row style="margin-top: 10px; margin-bottom: 10px;">
+
+            <ion-col size="12" size-lg="4">
+              <ion-row class="responsive-row">
+                <ion-col size="6" size-lg="12">
+                  <ion-label class="responsive-label-title">
+                    जाति वर्ग
+                  </ion-label>
+                </ion-col>
+
+                <ion-col size="6" size-lg="12">
+                  <ion-label class="responsive-label">
+                    {{ singleAwedanResponseData.cast_name }}
+                  </ion-label>
+                </ion-col>
+              </ion-row>
+            </ion-col>
+
+            <ion-col size="12" size-lg="4">
+              <ion-row class="responsive-row">
+                <ion-col size="6" size-lg="12">
+                  <ion-label class="responsive-label-title">
+                    आधार कार्ड नम्बर
+                  </ion-label>
+                </ion-col>
+
+                <ion-col size="6" size-lg="12">
+                  <ion-label class="responsive-label">
+                    {{ singleAwedanResponseData.aadhar_no }}
+                  </ion-label>
+                </ion-col>
+              </ion-row>
+            </ion-col>
+
+            <ion-col size="12" size-lg="4">
+              <ion-row class="responsive-row">
+                <ion-col size="6" size-lg="12">
+                  <ion-label class="responsive-label-title">
+                    पता
+                  </ion-label>
+                </ion-col>
+
+                <ion-col size="6" size-lg="12">
+                  <ion-label class="responsive-label">
+                    {{ singleAwedanResponseData.address }}
+                  </ion-label>
+                </ion-col>
+              </ion-row>
+            </ion-col>
+
+          </ion-row>
+
+          <ion-col size="12" style="margin-top: 10px;">
+            <ion-label class="responsive-label-header-with-background">
+              बैंक सम्बन्धी जानकारी :
+            </ion-label>
+          </ion-col>
+
+          <ion-row style="margin-top: 10px; margin-bottom: 10px;">
+
+            <ion-col size="12" size-lg="4">
+              <ion-row class="responsive-row">
+                <ion-col size="6" size-lg="12">
+                  <ion-label class="responsive-label-title">
+                    बैंक का नाम
+                  </ion-label>
+                </ion-col>
+
+                <ion-col size="6" size-lg="12">
+                  <ion-label class="responsive-label">
+                    {{ singleAwedanResponseData.bank_name }}
+                  </ion-label>
+                </ion-col>
+              </ion-row>
+            </ion-col>
+
+            <ion-col size="12" size-lg="4">
+              <ion-row>
+                <ion-col size="6" size-lg="12">
+                  <ion-label class="responsive-label-title">
+                    IFSC कोड़
+                  </ion-label>
+                </ion-col>
+
+                <ion-col size="6" size-lg="12">
+                  <ion-label class="responsive-label">
+                    {{ singleAwedanResponseData.ifsc_code }}
+                  </ion-label>
+                </ion-col>
+              </ion-row>
+            </ion-col>
+
+            <ion-col size="12" size-lg="4">
+              <ion-row class="responsive-row">
+                <ion-col size="6" size-lg="12">
+                  <ion-label class="responsive-label-title">
+                    बैंक खाता नम्बर
+                  </ion-label>
+                </ion-col>
+
+                <ion-col size="6" size-lg="12">
+                  <ion-label class="responsive-label">
+                    {{ singleAwedanResponseData.account_no }}
+                  </ion-label>
+                </ion-col>
+              </ion-row>
+            </ion-col>
+
+          </ion-row>
+
+          <ion-col size="12">
+            <ion-label class="responsive-label-header-with-background">
+              जमीन सम्बन्धी जानकारी :
+            </ion-label>
+          </ion-col>
+
+          <ion-row style="margin-top: 10px; margin-bottom: 10px;">
+
+            <ion-col size="12" size-lg="3">
+              <ion-row class="responsive-row">
+                <ion-col size="6" size-lg="12">
+                  <ion-label class="responsive-label-title">
+                    ग्राम का नाम
+                  </ion-label>
+                </ion-col>
+
+                <ion-col size="6" size-lg="12">
+                  <ion-label class="responsive-label">
+                    {{ singleAwedanResponseData.village_name }}
+                  </ion-label>
+                </ion-col>
+              </ion-row>
+            </ion-col>
+
+            <ion-col size="12" size-lg="3">
+              <ion-row class="responsive-row">
+                <ion-col size="6" size-lg="12">
+                  <ion-label class="responsive-label-title">
+                    ग्राम पंचायत का नाम
+                  </ion-label>
+                </ion-col>
+
+                <ion-col size="6" size-lg="12">
+                  <ion-label class="responsive-label">
+                    {{ singleAwedanResponseData.gram_panchayat_name }}
+                  </ion-label>
+                </ion-col>
+              </ion-row>
+            </ion-col>
+
+            <ion-col size="12" size-lg="3">
+              <ion-row class="responsive-row">
+                <ion-col size="6" size-lg="12">
+                  <ion-label class="responsive-label-title">
+                    पटवारी हल्का नम्बर
+                  </ion-label>
+                </ion-col>
+
+                <ion-col size="6" size-lg="12">
+                  <ion-label class="responsive-label">
+                    {{ singleAwedanResponseData.halka_no }}
+                  </ion-label>
+                </ion-col>
+              </ion-row>
+            </ion-col>
+
+            <ion-col size="12" size-lg="3">
+              <ion-row class="responsive-row">
+                <ion-col size="6" size-lg="12">
+                  <ion-label class="responsive-label-title">
+                    खसरा नम्बर
+                  </ion-label>
+                </ion-col>
+
+                <ion-col size="6" size-lg="12">
+                  <ion-label class="responsive-label">
+                    {{ singleAwedanResponseData.khasra_no }}
+                  </ion-label>
+                </ion-col>
+              </ion-row>
+            </ion-col>
+
+          </ion-row>
+
+          <ion-row>
+            <ion-col size="12" size-lg="3">
+              <ion-row class="responsive-row">
+                <ion-col size="6" size-lg="12">
+                  <ion-label class="responsive-label-title">
+                    कक्ष क्रमांक
+                  </ion-label>
+                </ion-col>
+
+                <ion-col size="6" size-lg="12">
+                  <ion-label class="responsive-label">
+                    {{ singleAwedanResponseData.kaksha_kramank }}
+                  </ion-label>
+                </ion-col>
+              </ion-row>
+            </ion-col>
+
+            <ion-col size="12" size-lg="6">
+              <ion-row class="responsive-row">
+                <ion-col size="6" size-lg="12">
+                  <ion-label class="responsive-label-title">
+                    वृक्षारोपण माॅडल का प्रकार (ब्लाॅक/खेत का मेड़/अंतरफसल)
+                  </ion-label>
+                </ion-col>
+
+                <ion-col size="6" size-lg="12">
+                  <ion-label class="responsive-label">
+                    {{ singleAwedanResponseData.plantation_type }}
+                  </ion-label>
+                </ion-col>
+              </ion-row>
+            </ion-col>
+
+            <ion-col size="12" size-lg="3">
+              <ion-row class="responsive-row">
+                <ion-col size="6" size-lg="12">
+                  <ion-label class="responsive-label-title">
+                    मिट्टी का प्रकार
+                  </ion-label>
+                </ion-col>
+
+                <ion-col size="6" size-lg="12">
+                  <ion-label class="responsive-label">
+                    {{ singleAwedanResponseData.sand_type }}
+                  </ion-label>
+                </ion-col>
+              </ion-row>
+            </ion-col>
+
+          </ion-row>
+
+          <ion-row>
+            <ion-col size="12" size-lg="3">
+              <ion-row class="responsive-row">
+                <ion-col size="6" size-lg="12">
+                  <ion-label class="responsive-label-title">
+                    भूमि सिंचित है या असिंचित ?
+                  </ion-label>
+                </ion-col>
+
+                <ion-col size="6" size-lg="12">
+                  <ion-label class="responsive-label">
+                    {{ singleAwedanResponseData.sinchit_asinchit === 'sinchit' ? 'सिंचित' : 'असिंचित' }}
+                  </ion-label>
+                </ion-col>
+              </ion-row>
+            </ion-col>
+
+            <!-- <ion-col size="12" size-lg="3">
+              <ion-row class="responsive-row">
+                <ion-col size="6" size-lg="12">
+                  <ion-label class="responsive-label-title">
+                    वृक्षारोपण क्षेत्र अक्षांश
+                  </ion-label>
+                </ion-col>
+
+                <ion-col size="6" size-lg="12">
+                  <ion-label class="responsive-label">
+                    {{ singleAwedanResponseData.vrikharopan_akshansh }}
+                  </ion-label>
+                </ion-col>
+              </ion-row>
+            </ion-col> -->
+
+            <!-- <ion-col size="12" size-lg="3">
+              <ion-row class="responsive-row">
+                <ion-col size="6" size-lg="12">
+                  <ion-label class="responsive-label-title">
+                    वृक्षारोपण क्षेत्र देक्षांश
+                  </ion-label>
+                </ion-col>
+
+                <ion-col size="6" size-lg="12">
+                  <ion-label class="responsive-label">
+                    {{ singleAwedanResponseData.vrikharopan_dikshansh }}
+                  </ion-label>
+                </ion-col>
+              </ion-row>
+            </ion-col> -->
+
+            <!-- <ion-col size="12" size-lg="3">
+              <ion-row class="responsive-row">
+                <ion-col size="6" size-lg="12">
+                  <ion-label class="responsive-label-title">
+                  </ion-label>
+                </ion-col>
+
+                <ion-col size="6" size-lg="12">
+                  <ion-label (click)="openMap()" class="responsive-label" style="color: blue;" >
+                    <u>गूगल मैप खोलें</u>
+                  </ion-label>
+                </ion-col>
+              </ion-row>
+            </ion-col> -->
+
+          </ion-row>
+
+        </ion-grid>
+
+        <!-- Show only in mobile screen -->
+        <!-- <ion-col *ngIf="!getIsLargeScreen()" size="12" size-lg="12" style="margin-top: 10px;">
+          <p-table [value]="listOfPlantationDetails" responsiveLayout="stack" class="custom-margin-table">
+            <ng-template pTemplate="header">
+              <tr style="background-color: green;" class="table_tr">
+                <th style="padding: 10px;">
+                  <ion-label>
+                    पौधों की प्रजाति नाम
+                  </ion-label>
+                </th>
+                <th style="padding: 10px;">
+                  <ion-label>
+                    पौधा संख्या
+                  </ion-label>
+                </th>
+                <th style="padding: 10px;">
+                  <ion-label>
+                    रकबा (एकड़ में)
+                  </ion-label>
+                </th>
+              </tr>
+            </ng-template>
+
+            <ng-template pTemplate="body" let-item>
+              <tr class="table_tr">
+                <td>
+                  <span class="p-column-title">
+                    <ion-label>
+                      पौधों की प्रजाति नाम
+                    </ion-label>
+                  </span>
+                  <ion-label>
+                    {{ item.prajatiName }}
+                  </ion-label>
+                </td>
+
+                <td>
+                  <span class="p-column-title">
+                    <ion-label>
+                      पौधा संख्या
+                    </ion-label>
+                  </span>
+                  <ion-label>
+                    {{ item.plant_count }}
+                  </ion-label>
+                </td>
+
+                <td>
+                  <span class="p-column-title">
+                    <ion-label>
+                      रकबा (एकड़ में)
+                    </ion-label>
+                  </span>
+                  <ion-label>
+                    {{ item.area_size }}
+                  </ion-label>
+                </td>
+
+
+              </tr>
+
+              <tr class="onlyonmobile">
+                <td colspan="3" style="padding: 0; background-color: black;">
+                  <hr style="background-color: black; height: 1px; border: none; margin: 0;" />
+                </td>
+              </tr>
+
+            </ng-template>
+
+          </p-table>
+
+        </ion-col>
+
+        <ion-col size="12" size-lg="9" *ngIf="singleAwedanResponseData">
+          <ion-row *ngIf="!getIsLargeScreen()">
+            <ion-row>
+              <ion-col size="12" size-lg="7.5">
+                <ion-label class="ion_col_for_total" style="font-weight: 700;">
+                  कुल (5 एकड़ से कम)
+                </ion-label>
+              </ion-col>
+              <ion-col size="12" size-lg="2">
+                <ion-row>
+                  <ion-col size="6">
+                    <ion-label class="ion_col_for_total" style="text-align: left; font-weight: 700;">
+                      पौधों की संख्या
+                    </ion-label>
+                  </ion-col>
+                  <ion-col size="6">
+                    <ion-label class="ion_col_for_total"
+                      style="text-align: right; width: 100%; display: flex; justify-content: right; font-weight: 700;">
+                      {{this.singleAwedanResponseData.total_number_of_plant_less_5_acre}}
+                    </ion-label>
+                  </ion-col>
+                </ion-row>
+
+              </ion-col>
+              <ion-col size="12" size-lg="2">
+                <ion-row>
+                  <ion-col size="6">
+                    <ion-label class="ion_col_for_total" style="text-align: left; font-weight: 700;">
+                      रकबा (एकड़ में)
+                    </ion-label>
+                  </ion-col>
+                  <ion-col size="6">
+                    <ion-label class="ion_col_for_total"
+                      style="text-align: right; width: 100%; display: flex; justify-content: right; font-weight: 700;">
+                      {{this.singleAwedanResponseData.total_area_less_5_acre}}
+                    </ion-label>
+                  </ion-col>
+                </ion-row>
+              </ion-col>
+            </ion-row>
+
+            <ion-row>
+              <ion-col size="12" size-lg="7.5">
+                <ion-label class="ion_col_for_total" style="font-weight: 700;">
+                  कुल (5 एकड़ से अधिक)
+                </ion-label>
+              </ion-col>
+              <ion-col size="12" size-lg="2">
+                <ion-row>
+                  <ion-col size="6">
+                    <ion-label class="ion_col_for_total" style="text-align: left; font-weight: 700;">
+                      पौधों की संख्या
+                    </ion-label>
+                  </ion-col>
+                  <ion-col size="6">
+                    <ion-label class="ion_col_for_total"
+                      style="text-align: right; width: 100%; display: flex; justify-content: right; font-weight: 700;">
+                      {{this.singleAwedanResponseData.total_number_of_plant_more_5_acre}}
+                    </ion-label>
+                  </ion-col>
+                </ion-row>
+
+              </ion-col>
+              <ion-col size="12" size-lg="2">
+                <ion-row>
+                  <ion-col size="6">
+                    <ion-label class="ion_col_for_total" style="text-align: left; font-weight: 700;">
+                      रकबा (एकड़ में)
+                    </ion-label>
+                  </ion-col>
+                  <ion-col size="6">
+                    <ion-label class="ion_col_for_total"
+                      style="text-align: right; width: 100%; display: flex; justify-content: right; font-weight: 700;">
+                      {{this.singleAwedanResponseData.total_area_more_5_acre}}
+                    </ion-label>
+                  </ion-col>
+                </ion-row>
+              </ion-col>
+            </ion-row>
+
+          </ion-row>
+        </ion-col>
+
+        <ion-col size="12" size-lg="9" *ngIf="singleAwedanResponseData">
+          <ion-row *ngIf="!getIsLargeScreen()">
+
+            <ion-col size="12" size-lg="7.5">
+              <ion-label class="ion_col_for_total"
+                style="display: flex; flex-direction: column; justify-content: center; text-align: center; font-weight: 700; ">
+                कुल (5 एकड़ से कम)
+              </ion-label>
+            </ion-col>
+
+            <ion-col size="12" size-lg="2.2">
+              <ion-label class="ion_col_for_total"
+                style="display: flex; flex-direction: column; justify-content: center; text-align: center; font-weight: 700;">
+                {{this.singleAwedanResponseData.total_number_of_plant_less_5_acre}}
+              </ion-label>
+            </ion-col>
+
+            <ion-col size="12" size-lg="2.2">
+              <ion-label class="ion_col_for_total"
+                style="display: flex; flex-direction: column; justify-content: center; text-align: center; font-weight: 700;">
+                {{this.singleAwedanResponseData.total_area_less_5_acre}}
+              </ion-label>
+            </ion-col>
+
+            <ion-col size="12" size-lg="7.5">
+              <ion-label class="ion_col_for_total"
+                style="display: flex; flex-direction: column; justify-content: center; text-align: center; font-weight: 700;">
+                कुल (5 एकड़ से अधिक)
+              </ion-label>
+            </ion-col>
+
+            <ion-col size="12" size-lg="2.2">
+              <ion-label class="ion_col_for_total"
+                style="display: flex; flex-direction: column; justify-content: center; text-align: center; font-weight: 700;">
+                {{this.singleAwedanResponseData.total_number_of_plant_more_5_acre}}
+              </ion-label>
+            </ion-col>
+
+            <ion-col size="12" size-lg="2.2">
+              <ion-label class="ion_col_for_total"
+                style="display: flex; flex-direction: column; justify-content: center; text-align: center; font-weight: 700;">
+                {{this.singleAwedanResponseData.total_area_more_5_acre}}
+              </ion-label>
+            </ion-col>
+
+          </ion-row>
+
+        </ion-col> -->
+        <!-- END -->
+
+        <!-- Show only on desktop screen -->
+        <ion-grid class="grid-bordered">
+          <ion-col size="12" size-lg="12" style="margin-top: 10px;">
+
+            <ion-row class="ion-padding ion-text-bold" style="background-color: green; color: white;">
+              <ion-col style="display: flex; flex-direction: row; justify-content: center;" size="2">पौधों की
+                प्रजाति</ion-col>
+              <ion-col size="5" style="display: flex; flex-direction: column;">
+                <ion-row style="display: flex; justify-content: center;">5 एकर से कम</ion-row>
+                <ion-row style="display: flex; justify-content: center;">
+                  <ion-col size="6" style="display: flex; flex-direction: row; justify-content: center;">पौधों की
+                    संख्या</ion-col>
+                  <ion-col style="display: flex; flex-direction: row; justify-content: center;" size="6">रकबा (एकर
+                    में)</ion-col>
+                </ion-row>
+              </ion-col>
+              <ion-col size="5">
+                <ion-row style="display: flex; justify-content: center;">5 एकर से अधिक</ion-row>
+                <ion-row style="display: flex; justify-content: center;">
+                  <ion-col style="display: flex; flex-direction: row; justify-content: center;" size="6">पौधों की
+                    संख्या</ion-col>
+                  <ion-col style="display: flex; flex-direction: row; justify-content: center;" size="6">रकबा (एकर
+                    में)</ion-col>
+                </ion-row>
+              </ion-col>
+            </ion-row>
+
+            <ion-row *ngFor="let item of listOfPlantationDetailsNew" class="ion-padding">
+              <ion-col size="6"
+                style="display: flex; flex-direction: row; justify-content: center; align-items: center;" size="2">
+                <ion-label style="text-align: center;">{{item.prajatiName }}</ion-label>
+              </ion-col>
+              <ion-col size="6" style="display: flex; flex-direction: row; justify-content: center;" size="2.5">{{
+                item.plant_count_less_5 }}</ion-col>
+              <ion-col size="6" style="display: flex; flex-direction: row; justify-content: center;" size="2.5">{{
+                item.area_size_less_5 }}</ion-col>
+              <ion-col size="6" style="display: flex; flex-direction: row; justify-content: center;" size="2.5">{{
+                item.plant_count_more_5 }}</ion-col>
+              <ion-col size="6" style="display: flex; flex-direction: row; justify-content: center;" size="2.5">{{
+                item.area_size_more_5 }}</ion-col>
+            </ion-row>
+
+
+            <ion-row style="background-color: green; color: white; font-weight: 1000;"
+              *ngFor="let item of listOfPlantationDetailsNewTotal" class="ion-padding">
+              <ion-col size="6" style="display: flex; flex-direction: row; justify-content: center;" size="2">{{
+                item.prajatiName }}</ion-col>
+              <ion-col size="6" style="display: flex; flex-direction: row; justify-content: center;" size="2.5">{{
+                item.plant_count_less_5 }}</ion-col>
+              <ion-col size="6" style="display: flex; flex-direction: row; justify-content: center;" size="2.5">{{
+                item.area_size_less_5 }}</ion-col>
+              <ion-col size="6" style="display: flex; flex-direction: row; justify-content: center;" size="2.5">{{
+                item.plant_count_more_5 }}</ion-col>
+              <ion-col size="6" style="display: flex; flex-direction: row; justify-content: center;" size="2.5">{{
+                item.area_size_more_5 }}</ion-col>
+            </ion-row>
+
+          </ion-col>
+        </ion-grid>
+        <!-- END -->
+
+      </ion-col>
+
+      <ion-col size="12" size-lg="9" style="margin-top: 10px;" *ngIf="isPendingApplication">
+        <ion-row *ngIf="shouldShowApproveRejectButton()">
+          <ion-col size="6">
+            <ion-button expand="block" class="search-button" (click)="approveReject(1)"
+              style="color: white;">स्वीकृत</ion-button>
+          </ion-col>
+          <ion-col ion-col size="6">
+            <ion-button expand="block" class="search-button" (click)="approveReject(2)"
+              style="color: white; --background : red;">
+              अस्वीकृत</ion-button>
+          </ion-col>
+        </ion-row>
+      </ion-col>
+
+    </ion-row>
+
+  </ion-grid>
+
+</ion-content>

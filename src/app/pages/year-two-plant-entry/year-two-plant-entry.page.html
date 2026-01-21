@@ -1,0 +1,169 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button (click)="goBack()"></ion-back-button>
+    </ion-buttons>
+    <ion-title>द्वितीय वर्ष का जीवित पौधा दर्ज करें</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-loading
+    cssClass="custom-loading"
+    [isOpen]="isLoading"
+    [message]="loadingMessage"
+    [backdropDismiss]="false"
+  ></ion-loading>
+
+  <div class="ion-padding" *ngIf="applicationNumber">
+    <!-- Application Number Header -->
+    <ion-card class="header-card">
+      <ion-card-header>
+        <ion-card-title>आवेदन नंबर: {{ applicationNumber }}</ion-card-title>
+      </ion-card-header>
+    </ion-card>
+
+    <!-- Plants List -->
+    <div *ngIf="plants.length > 0">
+      <ion-card *ngFor="let plant of plants; let i = index" class="plant-card">
+        <ion-card-header>
+          <ion-card-title>
+            {{ i + 1 }}. {{ plant.plant_name }}
+            <ion-badge *ngIf="plant.has_year2_data" color="success" style="margin-left: 10px;">
+              पहले से दर्ज
+            </ion-badge>
+          </ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          <ion-grid>
+            <ion-row>
+              <ion-col size="12" size-md="6">
+                <ion-item lines="none">
+                  <ion-label>
+                    <h3>कुल क्षेत्रफल</h3>
+                    <p>{{ plant.total_area }} एकड़</p>
+                  </ion-label>
+                </ion-item>
+              </ion-col>
+              <ion-col size="12" size-md="6">
+                <ion-item lines="none">
+                  <ion-label>
+                    <h3>प्रथम वर्ष में रोपित</h3>
+                    <p>{{ plant.total_ropit }} पौधे</p>
+                  </ion-label>
+                </ion-item>
+              </ion-col>
+            </ion-row>
+
+            <!-- Year 2 Data Input (Only show if data doesn't exist AND user is RO) -->
+            <ion-row *ngIf="!plant.has_year2_data && isRangeOfficer">
+              <ion-col size="12">
+                <ion-item>
+                  <ion-label position="stacked">
+                    द्वितीय वर्ष में जीवित पौधे की संख्या
+                    <span style="color: red;">*</span>
+                  </ion-label>
+                  <ion-input
+                    type="number"
+                    [value]="plantInputs[plant.plant_id]"
+                    (ionInput)="onPlantInputChange(plant.plant_id, $event)"
+                    [min]="0"
+                    [max]="plant.total_ropit"
+                    placeholder="0"
+                  ></ion-input>
+                </ion-item>
+                <ion-text *ngIf="plantInputs[plant.plant_id] !== null && plantInputs[plant.plant_id] !== undefined" 
+                  color="medium" style="font-size: 12px; margin-left: 16px;">
+                  अधिकतम: {{ plant.total_ropit }} पौधे
+                </ion-text>
+                <ion-text *ngIf="!validateInput(plant) && plantInputs[plant.plant_id] !== null && plantInputs[plant.plant_id] !== undefined" 
+                  color="danger" style="font-size: 12px; margin-left: 16px; display: block;">
+                  ⚠️ मान {{ plant.total_ropit }} से अधिक नहीं हो सकता
+                </ion-text>
+              </ion-col>
+            </ion-row>
+
+            <!-- Show read-only message for non-RO officers when data doesn't exist -->
+            <ion-row *ngIf="!plant.has_year2_data && !isRangeOfficer">
+              <ion-col size="12">
+                <ion-item lines="none">
+                  <ion-label>
+                    <h3 style="color: #f57c00;">द्वितीय वर्ष में जीवित पौधे की संख्या</h3>
+                    <p style="color: #666; font-style: italic;">
+                      केवल परिक्षेत्र अधिकारी (RO) ही डेटा दर्ज कर सकते हैं
+                    </p>
+                  </ion-label>
+                </ion-item>
+              </ion-col>
+            </ion-row>
+
+            <!-- Survival Percentage (Only show for RO entering new data) -->
+            <ion-row *ngIf="isRangeOfficer && !plant.has_year2_data && plantInputs[plant.plant_id] !== null && plantInputs[plant.plant_id] !== undefined && validateInput(plant)">
+              <ion-col size="12">
+                <ion-item lines="none">
+                  <ion-label>
+                    <h3>जीवित रहने का प्रतिशत</h3>
+                    <p style="color: #2e7d32; font-weight: bold;">
+                      {{ calculateSurvivalPercentage(plant) }}%
+                    </p>
+                  </ion-label>
+                </ion-item>
+              </ion-col>
+            </ion-row>
+
+            <!-- Existing Year 2 Data (Read-only) -->
+            <ion-row *ngIf="plant.has_year2_data">
+              <ion-col size="12">
+                <ion-item lines="none">
+                  <ion-label>
+                    <h3>वर्तमान में दर्ज जीवित पौधे</h3>
+                    <p>{{ plant.plants_remaining_two }} पौधे</p>
+                  </ion-label>
+                </ion-item>
+                <ion-item lines="none" *ngIf="plant.survival_percentage">
+                  <ion-label>
+                    <h3>जीवित रहने का प्रतिशत</h3>
+                    <p style="color: #2e7d32; font-weight: bold;">
+                      {{ plant.survival_percentage }}%
+                    </p>
+                  </ion-label>
+                </ion-item>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-card-content>
+      </ion-card>
+
+      <!-- Submit Button (Only show for RO) -->
+      <ion-button 
+        *ngIf="isRangeOfficer"
+        expand="block" 
+        color="success" 
+        size="large"
+        [disabled]="!canSubmit()"
+        (click)="submitData()"
+        style="margin-top: 20px;">
+        डेटा सबमिट करें
+      </ion-button>
+
+      <!-- Info message for non-RO officers -->
+      <div *ngIf="!isRangeOfficer" class="info-message" style="margin-top: 20px; padding: 16px; background-color: #fff8e1; border-radius: 8px; border-left: 4px solid #f57c00;">
+        <ion-text color="warning">
+          <p style="margin: 0; font-weight: 500;">
+            <strong>सूचना:</strong> केवल परिक्षेत्र अधिकारी (RO) ही द्वितीय वर्ष का जीवित पौधा डेटा दर्ज कर सकते हैं। आप केवल डेटा देख सकते हैं।
+          </p>
+        </ion-text>
+      </div>
+    </div>
+
+    <!-- No Plants Message -->
+    <ion-card *ngIf="plants.length === 0 && !isLoading">
+      <ion-card-content>
+        <ion-text color="medium">
+          <p style="text-align: center;">कोई पौधा डेटा नहीं मिला</p>
+        </ion-text>
+      </ion-card-content>
+    </ion-card>
+  </div>
+</ion-content>
+

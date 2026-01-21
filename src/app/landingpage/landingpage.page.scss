@@ -1,0 +1,580 @@
+// ion-menu-button {
+//     background-color: transparent !important;
+// }
+
+// Modern header styling
+ion-toolbar {
+  --background: linear-gradient(135deg, var(--ion-color-primary) 0%, #2ecc71 100%);
+  --color: white;
+  padding: 0.5rem;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+ion-content {
+  --background: #f8f9fa;
+  // width: 350px;
+}
+
+.div-color {
+  background: linear-gradient(135deg, var(--ion-color-primary) 0%, #2ecc71 100%);
+  padding-top: 10px;
+  color: green;
+}
+
+ion-menu-button {
+  --color: white;
+  font-size: 1.5rem;
+}
+
+ion-button {
+  background-color: white;
+  color: white;
+}
+
+.custom-button {
+  background-color: transparent;
+  /* Custom background color */
+  color: white;
+  /* Text color */
+}
+
+.custom-ion-lable {
+  margin-top: 8px;
+  color: var(--ion-color-primary);
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-align: center;
+  letter-spacing: 0.3px;
+}
+
+.custom-ion-lable-blue-color {
+  margin-top: 8px;
+  color: #2196f3;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-align: center;
+  letter-spacing: 0.3px;
+}
+
+.custom-ion-sub-lable {
+  font-size: 0.7rem;
+  color: #666;
+  text-align: center;
+  font-weight: 500;
+}
+
+.row-50 {
+  width: 100%;
+  /* 50% of the parent container's height */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* Optional: center the content vertically */
+}
+
+.custom-ion-item {
+  display: flex;
+  flex-direction: row;
+  /* Stack elements vertically */
+  gap: 10px;
+  /* Optional: adjust the space between the labels */
+}
+
+.img-style {
+  border: 3px solid var(--ion-color-primary);
+  border-radius: 100px;
+  padding: 3px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  // box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+  }
+}
+
+.stretched-img {
+  width: 100%;
+  /* Stretch image to fill the parent width */
+  height: 100%;
+  /* Stretch image to fill the parent height */
+  //object-fit: fill; /* Stretch image without preserving aspect ratio (distorts image) */
+}
+
+.responsive-label {
+  font-size: 12px;
+}
+
+/* Medium screens (tablets) */
+@media (min-width: 600px) {
+  .responsive-label {
+    font-size: 16px;
+  }
+}
+
+/* Large screens (desktops) */
+@media (min-width: 1024px) {
+  .responsive-label {
+    font-size: 26px;
+  }
+}
+
+
+// Enhanced menu styling
+.ion-header-class-for-menu {
+  height: 5.3rem;
+  background: linear-gradient(135deg, var(--ion-color-primary) 0%, #2ecc71 100%);
+
+  
+  div.bg {
+    height: 60%;
+    width: 140%;
+    // background: rgba(255, 255, 255, 0.1);
+    // transform: rotate(-5deg);
+    border-radius: 15px;
+    margin-top: -4rem;
+    margin-left: -1rem;
+    // box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    // backdrop-filter: blur(10px);
+  }
+
+  ion-item {
+    width: 100%;
+    --background: transparent;
+    position: absolute;
+    top: 1.5rem;
+    left: 0;
+    padding: 0 1rem;
+
+    ion-avatar {
+      height: 5rem;
+      width: 5rem;
+      border: 3px solid rgba(255, 255, 255, 0.3);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease;
+
+      &:hover {
+        transform: scale(1.05);
+      }
+    }
+
+    ion-label {
+      color: white;
+      font-size: 1.3rem;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+      p {
+        color: rgba(255, 255, 255, 0.9);
+        margin-top: 4px;
+        font-weight: 400;
+        font-size: 0.9rem;
+      }
+    }
+  }
+}
+
+// Enhanced content styling
+ion-grid {
+  padding: 1rem;
+}
+
+ion-row {
+  margin-bottom: 1.5rem;
+}
+
+// Menu items styling
+.responsive-menu-title {
+  width: 100%;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #333;
+  background-color: #b5f592; /* ✅ light grey background */
+  padding: 0.8rem 1rem;
+  transition: all 0.3s ease;
+  border-radius: 8px;
+  margin: 0.2rem 0;
+
+  // &:hover {
+  //   background: rgba(var(--ion-color-primary-rgb), 0.1);
+  //   color: var(--ion-color-primary);
+  //   transform: translateX(5px);
+  // }
+}
+
+// Modal styling
+.dialog-modal {
+  --height: auto;
+  --border-radius: 16px;
+  --box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+.no-shadow {
+  --box-shadow: none !important;
+  box-shadow: none !important;
+}
+
+// Content wrapper
+// .content-wrapper {
+//   display: flex;
+//   flex-direction: column;
+//   justify-content: center;
+//   align-items: center;
+//   padding: 1rem;
+// }
+
+// Officials row styling
+.officials-row {
+  margin-bottom: 2rem;
+}
+
+.official-card {
+  background: white;
+  border-radius: 12px;
+  padding: 1rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+  }
+}
+
+// .center-official {
+//   display: flex;
+//   flex-direction: column;
+//   align-items: center;
+//   justify-content: center;
+//   padding: 1rem;
+// }
+
+// Department and app name styling
+.department-row {
+  margin-bottom: 1rem;
+}
+
+.department-label {
+  font-size: 1.8rem;
+  color: #2196f3;
+  text-align: center;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+}
+
+.apply-button-row {
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.apply-button {
+  --background: linear-gradient(135deg, var(--ion-color-primary) 0%, #2ecc71 100%);
+  --color: white;
+  --border-radius: 12px;
+  --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  font-weight: 600;
+  font-size: 1.1rem;
+  letter-spacing: 0.5px;
+  max-width: 400px;
+  margin: 0 auto;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  
+  // Add blinking animation to catch user attention
+  animation: blink-attention 2s ease-in-out infinite;
+
+  &:hover {
+    transform: translateY(-2px);
+    --box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+    animation-play-state: paused; // Stop blinking on hover
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+}
+
+// Keyframe animation for blinking effect
+@keyframes blink-attention {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+    --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+  50% {
+    opacity: 0.7;
+    transform: scale(1.05);
+    --box-shadow: 0 6px 20px rgba(76, 175, 80, 0.5);
+  }
+}
+
+.app-name-row {
+  margin-bottom: 1.5rem;
+}
+
+.app-name-label {
+  font-size: 1.8rem;
+  color: var(--ion-color-primary);
+  text-align: center;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+// Background image styling
+.background-image-row {
+  height: 30vh;
+
+}
+
+.background-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+// Modal styling
+.modal-content {
+  padding: 1.5rem;
+  text-align: center;
+
+  h2 {
+    color: var(--ion-color-primary);
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+  }
+
+  p {
+    color: #666;
+    margin-bottom: 1.5rem;
+  }
+}
+
+.modal-buttons {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1.5rem;
+
+  ion-button {
+    flex: 1;
+    --border-radius: 8px;
+    font-weight: 500;
+  }
+}
+
+// Mobile-first responsive design
+@media (max-width: 768px) {
+  // .officials-row {
+  //   flex-direction: column;
+  //   gap: 1.5rem;
+  //   padding: 0.5rem;
+  // }
+
+  .official-card {
+    width: 100%;
+    padding: 0.8rem;
+    margin: 0;
+  }
+
+  .center-official {
+    order: -1;
+    width: 100%;
+    padding: 0.8rem;
+  }
+
+  .app-name-label {
+    font-size: 1.3rem;
+    padding: 0 0.5rem;
+  }
+
+  .department-label {
+    font-size: 1.4rem;
+    padding: 0 0.5rem;
+  }
+
+  .apply-button {
+    font-size: 1rem;
+    max-width: 100%;
+  }
+
+  .background-image-row {
+    height: 25vh;
+    margin-top: 0.5rem;
+  }
+
+  .background-image {
+    border-radius: 8px;
+  }
+
+  // Adjust menu for mobile
+  .ion-header-class-for-menu {
+    height: 5.3rem;
+
+    ion-item {
+      top: 1rem;
+      padding: 0 0.5rem;
+
+      ion-avatar {
+        height: 4rem;
+        width: 4rem;
+      }
+
+      ion-label {
+        font-size: 1.1rem;
+
+        p {
+          font-size: 0.8rem;
+        }
+      }
+    }
+  }
+
+  // Adjust grid padding
+  ion-grid {
+    padding: 0.5rem;
+  }
+
+  // Adjust row spacing
+  ion-row {
+    margin-bottom: 1rem;
+  }
+
+  // Adjust image sizes
+  .img-style {
+    max-width: 100%;
+    height: auto;
+  }
+
+  // Adjust modal for mobile
+  .modal-content {
+    padding: 1rem;
+
+    h2 {
+      font-size: 1.2rem;
+    }
+
+    p {
+      font-size: 0.9rem;
+    }
+  }
+
+  .modal-buttons {
+    flex-direction: column;
+    gap: 0.5rem;
+
+    ion-button {
+      margin: 0;
+    }
+  }
+}
+
+// Extra small devices
+@media (max-width: 360px) {
+  // .officials-row {
+  //   gap: 1rem;
+  // }
+
+  .official-card {
+    padding: 0.5rem;
+  }
+
+  .app-name-label {
+    font-size: 1.1rem;
+  }
+
+  .department-label {
+    font-size: 0.8rem;
+  }
+
+  .apply-button {
+    font-size: 0.9rem;
+  }
+
+  .background-image-row {
+    height: 20vh;
+  }
+
+  .ion-header-class-for-menu {
+    height: 7rem;
+
+    ion-item {
+      ion-avatar {
+        height: 3rem;
+        width: 3rem;
+      }
+
+      ion-label {
+        font-size: 1rem;
+
+        p {
+          font-size: 0.7rem;
+        }
+      }
+    }
+  }
+}
+
+
+.toolbar-logo {
+  display: block; // Use block for <img> for better layout control
+  height: 32px; // Consistent toolbar height
+  width: auto; // Maintain aspect ratio
+  margin-inline-start: auto; // Push to the right within ion-buttons
+  object-fit: contain;
+  padding-right: 8px;
+
+  @media (max-width: 600px) {
+    height: 50px; // Smaller height on small devices
+    padding-right: 4px;
+  }
+
+  @media (min-width: 768px) {
+    height: 50px; // Slightly larger on tablets+
+  }
+}
+
+
+ion-header {
+  position: relative; // make sure the ::before sits on top
+  z-index: 10; // keep it above content
+  margin-top: 0px;
+}
+
+.custom-dialog-modal {
+  --width: 90vw;
+  --max-width: 400px;
+  --height: auto;
+  --border-radius: 16px;
+  --box-shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
+  --background: #fff;
+  --overflow: visible;
+
+  ion-modal {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+
+// Menu items styling
+.responsive-sub-menu-title {
+  width: 100%;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #333;
+  padding: 0.8rem 1rem;
+  transition: all 0.3s ease;
+  border-radius: 8px;
+  margin: 0.2rem 0;
+  background-color: #b5f592; /* ✅ light grey background */
+  //margin-left: 20px;
+
+  // &:hover {
+  //   background: rgba(var(--ion-color-primary-rgb), 0.1);
+  //   color: var(--ion-color-primary);
+  //   transform: translateX(5px);
+  // }
+}

@@ -1,0 +1,211 @@
+.custom-back-button {
+    color: green;
+}
+
+.custom-ion-label{
+    font-size: 12px;
+    font-weight: 700;
+    color: black;
+    font-style: bold;
+}
+
+.custom-ion-label-points{
+    padding: 5px;
+    background-color: green;
+    font-size: 15px;
+    font-weight: 700;
+    color: white;
+    font-style: bold;
+    border-bottom-right-radius: 10px;
+}
+
+.item-style{
+    margin-top: 0px;
+    font-size: 12px;
+}
+
+.dot-item {
+    font-size: 12px;
+    position: relative;
+}
+
+.dot-separator {
+    font-size: 20px; /* Adjust the size of the dot */
+    margin: 0 10px;  /* Add spacing around the dot */
+    color: #000;     /* Adjust color of the dot */
+}
+
+.dot-label {
+    position: relative;
+    padding-left: 20px;  /* Space for the dot */
+  }
+  
+  .dot-label::before {
+    content: '•';  /* The dot symbol */
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 20px;   /* Adjust size of the dot */
+    color: #000;       /* Adjust color of the dot */
+  }
+
+  
+
+.item-style-table-header{
+    background-color: green;
+    border: .5px solid black;
+}
+
+
+
+ion-col {
+    border: .5px solid black; /* Black border */
+}
+
+.ion-row-style{
+    font-size: 8px;
+}
+
+ion-title{
+    margin-left: -25px;
+    font-size: 12px;
+}
+
+.responsive-label {
+    font-size: 8px;
+    color: white;
+    margin-top: 0px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  /* Medium screens (tablets) */
+  @media (min-width: 600px) {
+    .responsive-label {
+      font-size: 16px;
+    }
+  }
+  
+  /* Large screens (desktops) */
+  @media (min-width: 1024px) {
+    .responsive-label {
+      font-size: 26px;
+    }
+  }
+
+  .responsive-label-for-content {
+    font-size: 8px;
+    color: black;
+    margin-top: 0px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  /* Medium screens (tablets) */
+  @media (min-width: 600px) {
+    .responsive-label-for-content {
+      font-size: 16px;
+    }
+  }
+  
+  /* Large screens (desktops) */
+  @media (min-width: 1024px) {
+    .responsive-label-for-content {
+      font-size: 26px;
+    }
+  }
+
+  .custom-ion-label-points-center{
+    padding: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: green;
+    font-size: 18px;
+    font-weight: 700;
+    width: 100%;
+    font-style: bold;
+  }
+    /* Medium screens (tablets) */
+  @media (min-width: 600px) {
+    .custom-ion-label-points-center {
+      font-size: 16px;
+    }
+  }
+  
+  /* Large screens (desktops) */
+  @media (min-width: 1024px) {
+    .custom-ion-label-points-center {
+      font-size: 26px;
+    }
+
+}
+
+.item-style-center-align{
+    margin-top: 0px;
+    width: 100%;
+    font-size: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}  
+
+@media (min-width: 600px) {
+    .item-style-center-align {
+      font-size: 16px;
+    }
+  }
+
+
+  @media (min-width: 1024px) {
+    .item-style-center-align {
+      font-size: 26px;
+    }
+
+}
+
+.table-lable-style{
+    margin-top: 0px;
+    font-size: 8px;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+@media (min-width: 600px) {
+    .table-lable-style{
+      font-size: 16px;
+    }
+  }
+
+
+  @media (min-width: 1024px) {
+    .table-lable-style {
+      font-size: 26px;
+    }
+
+}
+
+.responsive-toolbar-title {
+    font-size: 12px;
+    font-weight: 700;
+}
+
+/* Medium screens (tablets) */
+@media (min-width: 600px) {
+    .responsive-toolbar-title {
+        font-size: 16px;
+    }
+}
+
+/* Large screens (desktops) */
+@media (min-width: 1024px) {
+    .responsive-toolbar-title {
+        font-size: 20px;
+    }
+}

@@ -1,0 +1,310 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button
+        class="custom-back-button"
+        (click)="goBack()"
+        defaultHref="/officers-dashboard-supreme"
+      ></ion-back-button>
+    </ion-buttons>
+    <ion-title class="responsive-toolbar-title">प्रजाति वार्ग गोस्वारा रिपोर्ट (हेड लेवल)</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <!-- Header Card -->
+  <ion-card>
+    <ion-card-content>
+      <div style="text-align: center;">
+        <strong>किसान वृक्ष मित्र योजना अन्तर्गत वर्ष 2025-2026 मे रोपण विवरण</strong>
+        <ion-button style="float: inline-end;" (click)="exportToExcel()">
+          <ion-icon slot="start" name="download-outline"></ion-icon>
+          Export To Excel
+        </ion-button>
+      </div>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Loader -->
+  <ion-card *ngIf="isLoading">
+    <ion-card-content style="text-align:center; padding: 40px;">
+      <ion-spinner name="crescent" style="margin-bottom: 20px;"></ion-spinner>
+      <div style="margin-top: 15px; font-size: 16px;">{{ loadingMessage }}</div>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Plant Species Filter -->
+  <ion-card *ngIf="!isLoading && plantTypes && plantTypes.length > 0" class="filter-card">
+    <ion-card-content class="filter-card-content">
+      <div class="filter-container">
+        <ion-select 
+          [(ngModel)]="selectedPlantFilter" 
+          (ionChange)="onPlantFilterChange($event)" 
+          placeholder="प्रजाति फ़िल्टर करें"
+          interface="popover"
+          class="custom-select"
+          [interfaceOptions]="selectOptions">
+          <ion-select-option value="all" class="select-option-all">सभी प्रजातियाँ</ion-select-option>
+          <ion-select-option *ngFor="let plant of plantTypes" [value]="plant.id" class="select-option">
+            {{ plant.plant_name }}
+          </ion-select-option>
+        </ion-select>
+      </div>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Dynamic Plant Reports -->
+  <div *ngIf="!isLoading && plantTypes && plantTypes.length > 0; else noData">
+    
+    <!-- Loop through organized plant groups -->
+    <div *ngFor="let group of getOrganizedPlantGroups(); let groupIndex = index" class="prapatra-section">
+      <h6 class="prapatra-title">प्रपत्र {{ group.letter }}</h6>
+      <h6>किसान वृक्ष मित्र योजना</h6>
+      
+      <!-- Individual plants in group -->
+      <div *ngFor="let plant of group.plants; let plantSubIndex = index">
+        <div>
+        <h6 class="species-title special">
+            {{ group.letter }}{{ plant.subIndex || '' }}. 
+          वित्तीय वर्ष 2025–26 हेतु लक्ष्य निर्धारण के संबंध में जिलावार वनमंडल {{ plant.plant_name }} पौधों की जानकारी
+        </h6>
+        <table class="report-table" border="1" cellspacing="0" cellpadding="5" style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
+          <thead>
+            <tr>
+              <th rowspan="3">क्र.</th>
+              <th rowspan="3">वृत्त का नाम</th>
+              <th rowspan="3">वनमंडल का नाम</th>
+              <th colspan="6">{{ plant.plant_name }}</th>
+              <th colspan="3" rowspan="2">कुलयोग</th>
+            </tr>
+            <tr>
+              <th colspan="3">05 एकड़ से कम</th>
+              <th colspan="3">05 एकड़ से ज्यादा</th>
+            </tr>
+            <tr>
+              <th>किसानों की संख्या</th>
+              <th>रकबा (एकड़)</th>
+              <th>पौधों की संख्या</th>
+              <th>किसानों की संख्या</th>
+              <th>रकबा (एकड़)</th>
+              <th>पौधों की संख्या</th>
+              <th>कुल किसानों की संख्या</th>
+              <th>कुल रकबा</th>
+              <th>कुल पौधों की संख्या</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let row of getPlantDivisions(plant.id); let i = index" 
+                [ngClass]="{'total-row': row.divisionName === 'कुल योग'}">
+              <td>{{ getRowIndex(i) }}</td>
+              <td>{{ row.circleName || '-' }}</td>
+              <td>{{ row.divisionName || '-' }}</td>
+              <td>{{ row.lessFarmers || 0 }}</td>
+              <td>{{ row.lessArea || 0 }}</td>
+              <td>{{ row.lessPlants || 0 }}</td>
+              <td>{{ row.moreFarmers || 0 }}</td>
+              <td>{{ row.moreArea || 0 }}</td>
+              <td>{{ row.morePlants || 0 }}</td>
+              <td>{{ row.totalFarmers || 0 }}</td>
+              <td>{{ row.totalArea || 0 }}</td>
+              <td>{{ row.totalPlants || 0 }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+      <!-- Combination totals for Sagon group (B) -->
+      <div *ngIf="selectedPlantFilter === 'all' && group.combination && group.combination.type === 'sagon' && group.plants.length === 2">
+        <h6 class="species-title special">
+          {{ getSagonCombinationTitle() }}
+        </h6>
+        <table class="report-table" border="1" cellspacing="0" cellpadding="5" style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
+          <thead>
+            <tr>
+              <th rowspan="3">क्र.</th>
+              <th rowspan="3">वृत्त का नाम</th>
+              <th rowspan="3">वनमंडल का नाम</th>
+              <th colspan="6">टिश्यू कल्चर सागौन कुल योग</th>
+              <th colspan="3" rowspan="2">कुलयोग</th>
+            </tr>
+            <tr>
+              <th colspan="3">05 एकड़ से कम</th>
+              <th colspan="3">05 एकड़ से ज्यादा</th>
+            </tr>
+            <tr>
+              <th>किसानों की संख्या</th>
+              <th>रकबा (एकड़)</th>
+              <th>पौधों की संख्या</th>
+              <th>किसानों की संख्या</th>
+              <th>रकबा (एकड़)</th>
+              <th>पौधों की संख्या</th>
+              <th>कुल किसानों की संख्या</th>
+              <th>कुल रकबा</th>
+              <th>कुल पौधों की संख्या</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let row of getCombinedPlantData(group.plants[0].id, group.plants[1].id); let i = index" 
+                [ngClass]="{'total-row': row.divisionName === 'कुल योग'}">
+              <td>{{ getRowIndex(i) }}</td>
+              <td>{{ row.circleName || '-' }}</td>
+              <td>{{ row.divisionName || '-' }}</td>
+              <td>{{ row.lessFarmers || 0 }}</td>
+              <td>{{ row.lessArea || 0 }}</td>
+              <td>{{ row.lessPlants || 0 }}</td>
+              <td>{{ row.moreFarmers || 0 }}</td>
+              <td>{{ row.moreArea || 0 }}</td>
+              <td>{{ row.morePlants || 0 }}</td>
+              <td>{{ row.totalFarmers || 0 }}</td>
+              <td>{{ row.totalArea || 0 }}</td>
+              <td>{{ row.totalPlants || 0 }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Combination totals for Bansh group (C) -->
+      <div *ngIf="selectedPlantFilter === 'all' && group.letter === 'C' && group.combination && group.combination.type === 'bansh' && group.plants.length === 2">
+        <h6 class="species-title special">
+          {{ getTissueCultureCombinationTitle() }}
+        </h6>
+        <table class="report-table" border="1" cellspacing="0" cellpadding="5" style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
+          <thead>
+            <tr>
+              <th rowspan="3">क्र.</th>
+              <th rowspan="3">वृत्त का नाम</th>
+              <th rowspan="3">वनमंडल का नाम</th>
+              <th colspan="6">टिश्यू कल्चर कुल योग</th>
+              <th colspan="3" rowspan="2">कुलयोग</th>
+            </tr>
+            <tr>
+              <th colspan="3">05 एकड़ से कम</th>
+              <th colspan="3">05 एकड़ से ज्यादा</th>
+            </tr>
+            <tr>
+              <th>किसानों की संख्या</th>
+              <th>रकबा (एकड़)</th>
+              <th>पौधों की संख्या</th>
+              <th>किसानों की संख्या</th>
+              <th>रकबा (एकड़)</th>
+              <th>पौधों की संख्या</th>
+              <th>कुल किसानों की संख्या</th>
+              <th>कुल रकबा</th>
+              <th>कुल पौधों की संख्या</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let row of getTissueCultureCombinationData(group); let i = index" 
+                [ngClass]="{'total-row': row.divisionName === 'कुल योग'}">
+              <td>{{ getRowIndex(i) }}</td>
+              <td>{{ row.circleName || '-' }}</td>
+              <td>{{ row.divisionName || '-' }}</td>
+              <td>{{ row.lessFarmers || 0 }}</td>
+              <td>{{ row.lessArea || 0 }}</td>
+              <td>{{ row.lessPlants || 0 }}</td>
+              <td>{{ row.moreFarmers || 0 }}</td>
+              <td>{{ row.moreArea || 0 }}</td>
+              <td>{{ row.morePlants || 0 }}</td>
+              <td>{{ row.totalFarmers || 0 }}</td>
+              <td>{{ row.totalArea || 0 }}</td>
+              <td>{{ row.totalPlants || 0 }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Grand Total Table - All Plants Combined -->
+    <div class="prapatra-section" style="margin-top: 30px;">
+      <h6 class="prapatra-title">कुल योग</h6>
+      <h6>किसान वृक्ष मित्र योजना</h6>
+      <h6 class="species-title special">
+        <span *ngIf="selectedPlantFilter === 'all'">सभी प्रजातियों का कुल योग (गोस्वारा मोहयोग)</span>
+        <span *ngIf="selectedPlantFilter !== 'all'">
+          {{ getSelectedPlantName() }} का कुल योग
+        </span>
+      </h6>
+      <table class="report-table" border="1" cellspacing="0" cellpadding="5" style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
+        <thead>
+          <tr>
+            <th rowspan="3">क्र.</th>
+            <th rowspan="3">वृत्त का नाम</th>
+            <th rowspan="3">वनमंडल का नाम</th>
+            <th colspan="6">
+              <span *ngIf="selectedPlantFilter === 'all'">सभी प्रजातियों का कुल योग</span>
+              <span *ngIf="selectedPlantFilter !== 'all'">
+                {{ getSelectedPlantName() }} का कुल योग
+              </span>
+            </th>
+            <th colspan="3" rowspan="2">कुलयोग</th>
+          </tr>
+          <tr>
+            <th colspan="3">05 एकड़ से कम</th>
+            <th colspan="3">05 एकड़ से ज्यादा</th>
+          </tr>
+          <tr>
+            <th>किसानों की संख्या</th>
+            <th>रकबा (एकड़)</th>
+            <th>पौधों की संख्या</th>
+            <th>किसानों की संख्या</th>
+            <th>रकबा (एकड़)</th>
+            <th>पौधों की संख्या</th>
+            <th>कुल किसानों की संख्या</th>
+            <th>कुल रकबा</th>
+            <th>कुल पौधों की संख्या</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let row of getAllPlantsGrandTotal(); let i = index" 
+              [ngClass]="{'total-row': row.divisionName === 'कुल योग'}">
+            <td>{{ getRowIndex(i) }}</td>
+            <td>{{ row.circleName || '-' }}</td>
+            <td>{{ row.divisionName || '-' }}</td>
+            <td>{{ row.lessFarmers || 0 }}</td>
+            <td>{{ row.lessArea || 0 }}</td>
+            <td>{{ row.lessPlants || 0 }}</td>
+            <td>{{ row.moreFarmers || 0 }}</td>
+            <td>{{ row.moreArea || 0 }}</td>
+            <td>{{ row.morePlants || 0 }}</td>
+            <td>{{ row.totalFarmers || 0 }}</td>
+            <td>{{ row.totalArea || 0 }}</td>
+            <td>{{ row.totalPlants || 0 }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+  
+  <!-- No Data -->
+  <ng-template #noData>
+    <ion-card>
+      <ion-card-content style="text-align:center;">
+        कोई डेटा उपलब्ध नहीं है।
+      </ion-card-content>
+    </ion-card>
+  </ng-template>
+</ion-content>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

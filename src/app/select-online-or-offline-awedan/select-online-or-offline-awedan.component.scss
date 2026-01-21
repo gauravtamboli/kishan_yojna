@@ -1,0 +1,15 @@
+.custom-center {
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Vertical center */
+  align-items: center;     /* Horizontal center */
+  height: 100%;
+}
+
+.center-text {
+  text-align: center;
+}
+
+ion-content{
+    margin-top: 50px;
+}

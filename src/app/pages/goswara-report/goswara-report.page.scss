@@ -1,0 +1,168 @@
+.header-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  justify-content: flex-end;
+  margin-bottom: 12px;
+}
+.table-responsive {
+  width: 100%;
+  overflow-x: auto; /* Horizontal scroll if table is too wide */
+}
+
+h6{
+  text-align: center;
+}
+#report-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+#report-table th,
+#report-table td {
+  white-space: nowrap; /* Prevent text wrapping */
+  text-align: center;
+}
+
+.report-grid {
+  ion-row.header {
+    background-color: #e0f0f0;
+    font-weight: bold;
+    border-bottom: 1px solid #ccc;
+  }
+  .data-row:nth-child(odd) {
+    background: #fafafa;
+  }
+  ion-col.center {
+    text-align: center;
+  }
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: center;
+  font-size: 12px;
+}
+
+th, td {
+  border: 1px solid black;
+  padding: 5px;
+}
+
+th {
+  background-color: #f2f2f2;
+}
+
+/* All Circles Report Table Styling (Designation 7/APCCF) */
+.circle-report-table {
+  width: 100%;
+  border-collapse: collapse;
+  border: 2px solid #000000;
+  background: #ffffff;
+  font-size: 12px;
+  margin-bottom: 20px;
+}
+
+.circle-report-table thead th {
+  background-color: #1f2937;
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 13px;
+  padding: 10px 8px;
+  text-align: center;
+  border: 1px solid #000000;
+  white-space: nowrap;
+  vertical-align: middle;
+}
+
+.circle-report-table tbody td {
+  border: 1px solid #000000;
+  padding: 8px 6px;
+  font-size: 12px;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+}
+
+.circle-report-table tbody tr:nth-child(even) {
+  background-color: #f9fafb;
+}
+
+.circle-report-table tbody tr:nth-child(odd) {
+  background-color: #ffffff;
+}
+
+.circle-report-table tbody tr:hover {
+  background-color: #f3f4f6;
+}
+
+.circle-report-table tfoot td {
+  background-color: #e5e7eb;
+  font-weight: 700;
+  font-size: 13px;
+  padding: 10px 8px;
+  text-align: center;
+  border: 2px solid #000000;
+  color: #111827;
+}
+
+.circle-report-table tfoot tr {
+  border-top: 3px solid #000000;
+}
+
+/* Grand total table styling for All Circles */
+.grand-total-table {
+  width: 100%;
+  border-collapse: collapse;
+  border: 2px solid #000000;
+  background: #ffffff;
+  font-size: 12px;
+  margin-top: 20px;
+}
+
+.grand-total-table thead th {
+  background-color: #1f2937;
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 13px;
+  padding: 10px 8px;
+  text-align: center;
+  border: 1px solid #000000;
+  white-space: nowrap;
+  vertical-align: middle;
+}
+
+.grand-total-table tbody td {
+  border: 1px solid #000000;
+  padding: 8px 6px;
+  font-size: 12px;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+}
+
+.grand-total-table tbody tr:nth-child(even) {
+  background-color: #f9fafb;
+}
+
+.grand-total-table tbody tr:nth-child(odd) {
+  background-color: #ffffff;
+}
+
+.grand-total-table tbody tr:hover {
+  background-color: #f3f4f6;
+}
+
+.grand-total-table tfoot td {
+  background-color: #d1d5db;
+  font-weight: 900;
+  font-size: 14px;
+  padding: 12px 8px;
+  text-align: center;
+  border: 2px solid #000000;
+  color: #000000;
+}
+
+.grand-total-table tfoot tr {
+  border-top: 3px solid #000000;
+}

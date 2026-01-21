@@ -1,0 +1,39 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/year-select"></ion-back-button>
+    </ion-buttons>
+    <ion-title>वर्ष चरण चयन</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content *ngIf="selectedYear as year">
+  <div class="header-section">
+    <div class="logo-container">
+      <img src="assets/img/app_logo.png" alt="Logo" class="app-logo" />
+    </div>
+    <h1 class="main-heading">किसान वृक्ष मित्र योजना</h1>
+  </div>
+
+  <div class="intro">
+    <h2>{{ year }} के लिए चरण चुनें</h2>
+    <p>अपनी आवश्यकता के अनुसार वर्ष का चरण चुनें</p>
+  </div>
+
+  <ion-list inset="true">
+    <ion-item
+      *ngFor="let option of stageOptions"
+      button
+      detail
+      (click)="selectStage(option.key)"
+    >
+      <ion-label>
+        <h2>{{ option.label }}</h2>
+        <p>{{ option.description }}</p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+</ion-content>
+
+
+

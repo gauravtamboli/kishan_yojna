@@ -1,0 +1,380 @@
+<ion-split-pane contentId="main-content" when="(min-width: 768px)">
+  <ion-menu class="custom-menu" side="start" content-id="main-content">
+    <ion-header class="ion-header-class-for-menu">
+      <div class="bg"></div>
+
+      <ion-item lines="none">
+        <ion-avatar slot="start">
+          <img src="assets/img/app_logo.png" />
+        </ion-avatar>
+        <ion-label class="ion-label" style=" text-wrap: nowrap;">
+          {{ getTranslation('app_name')}}
+          <p class="p">
+            <ion-text style="font-size: small ;"> ({{ getTranslation('state_name')}}) </ion-text>
+          </p>
+        </ion-label>
+      </ion-item>
+    </ion-header>
+
+    <ion-content>
+      <ion-list>
+        <ion-menu-toggle auto-hide="false">
+          <ion-item *ngFor="let page of pages; let i = index" class="no-gap-item" lines="none">
+            <ng-container *ngIf="page.is_submenu; else noSubMenu">
+              <ion-text class="responsive-menu-title" style="width: 100%; margin-left: 10px"
+                (click)="onMenuItemClick(page.url)">{{ page.title }}</ion-text>
+            </ng-container>
+
+            <ng-template #noSubMenu>
+              <ng-container>
+                <ion-text class="responsive-menu-title" style="font-weight: 900; width: 100%; margin-top: 5px"
+                  (click)="onMenuItemClick(page.url)"> * {{ page.title }}</ion-text>
+              </ng-container>
+            </ng-template>
+          </ion-item>
+        </ion-menu-toggle>
+      </ion-list>
+    </ion-content>
+  </ion-menu>
+
+  <div class="ion-page" id="main-content">
+    <ion-header>
+      <div class="div-color">
+        <ion-toolbar style="padding-top: 20px; color: white">
+          <ion-title class="ion-text-center">{{ getLoginedOfficerName() }}</ion-title>
+          <ion-menu-button style="color: white" slot="start"></ion-menu-button>
+          <ion-buttons slot="end">
+            <ion-icon (click)="logoutFunction()" name="log-out-outline" class="toolbar-icon"></ion-icon>
+          </ion-buttons>
+        </ion-toolbar>
+      </div>
+    </ion-header>
+
+    <ion-content>
+      <ion-loading cssClass="custom-loading" [isOpen]="isLoading" [message]="loadingMessage"
+        [backdropDismiss]="false"></ion-loading>
+      <ion-grid>
+        <ion-row>
+          <ion-col size="12" size-lg="12">
+            <ion-grid>
+              <ion-row style="
+                  display: flex;
+                  flex-direction: row;
+                  justify-content: center;
+                ">
+                <!-- कुल आवेदन -->
+                <ion-col size="6" size-lg="2">
+                  <ion-card class="custom-card" (click)="getListOfAwedanAfterClickOnBoxes(1)">
+                    <ion-grid style="
+                        background: linear-gradient(
+                          135deg,
+                          #198edb 0%,
+                          #1565c0 100%
+                        );
+                      ">
+                      <ion-row>
+                        <ion-col size="12" class="ion-text-center">
+                          <ion-label class="responsive-label-count">{{totalAwedan}}</ion-label>
+                          <hr style="
+                              border: none;
+                              border-top: 1px solid rgba(255, 255, 255, 0.3);
+                              margin: 8px 0;
+                            " />
+                          <ion-label class="responsive-label" style="color: white">कुल आवेदन</ion-label>
+                        </ion-col>
+                      </ion-row>
+                    </ion-grid>
+                  </ion-card>
+                </ion-col>
+
+                <!-- संपादन लंबित -->
+                <ion-col size="6" size-lg="2">
+                  <ion-card class="custom-card" (click)="getListOfAwedanAfterClickOnBoxes(2)">
+                    <ion-grid style="
+                        background: linear-gradient(
+                          135deg,
+                          #ff9800 0%,
+                          #f57c00 100%
+                        );
+                      ">
+                      <ion-row>
+                        <ion-col size="12" class="ion-text-center">
+                          <ion-label class="responsive-label-count">{{totalEditPending}}</ion-label>
+                          <hr style="
+                              border: none;
+                              border-top: 1px solid rgba(255, 255, 255, 0.3);
+                              margin: 8px 0;
+                            " />
+                          <ion-label class="responsive-label" style="color: white">संपादन लंबित</ion-label>
+                        </ion-col>
+                      </ion-row>
+                    </ion-grid>
+                  </ion-card>
+                </ion-col>
+
+                <!-- परिक्षेत्र अधिकारी स्तर पर लंबित -->
+                <ion-col size="6" size-lg="2">
+                  <ion-card class="custom-card" (click)="getListOfAwedanAfterClickOnBoxes(3)">
+                    <ion-grid style="
+                        background: linear-gradient(
+                          135deg,
+                          #2196f3 0%,
+                          #1976d2 100%
+                        );
+                      ">
+                      <ion-row>
+                        <ion-col size="12" class="ion-text-center">
+                          <ion-label class="responsive-label-count">{{totalROPending}}</ion-label>
+                          <hr style="
+                              border: none;
+                              border-top: 1px solid rgba(255, 255, 255, 0.3);
+                              margin: 8px 0;
+                            " />
+                          <ion-label class="responsive-label" style="color: white">परिक्षेत्र अधिकारी स्तर पर
+                            लंबित</ion-label>
+                        </ion-col>
+                      </ion-row>
+                    </ion-grid>
+                  </ion-card>
+                </ion-col>
+
+                <!-- उपवनमंडलाधिकारी स्तर पर लंबित -->
+                <ion-col size="6" size-lg="2">
+                  <ion-card class="custom-card" (click)="getListOfAwedanAfterClickOnBoxes(4)">
+                    <ion-grid style="
+                        background: linear-gradient(
+                          135deg,
+                          #9c27b0 0%,
+                          #7b1fa2 100%
+                        );
+                      ">
+                      <ion-row>
+                        <ion-col size="12" class="ion-text-center">
+                          <ion-label class="responsive-label-count">{{totalSDOPending}}</ion-label>
+                          <hr style="
+                              border: none;
+                              border-top: 1px solid rgba(255, 255, 255, 0.3);
+                              margin: 8px 0;
+                            " />
+                          <ion-label class="responsive-label" style="color: white">उपवनमंडलाधिकारी स्तर पर
+                            लंबित</ion-label>
+                        </ion-col>
+                      </ion-row>
+                    </ion-grid>
+                  </ion-card>
+                </ion-col>
+
+                <!-- वनमंडलाधिकारी स्तर पर लंबित -->
+                <ion-col size="6" size-lg="2">
+                  <ion-card class="custom-card" (click)="getListOfAwedanAfterClickOnBoxes(5)">
+                    <ion-grid style="
+                        background: linear-gradient(
+                          135deg,
+                          #673ab7 0%,
+                          #512da8 100%
+                        );
+                      ">
+                      <ion-row>
+                        <ion-col size="12" class="ion-text-center">
+                          <ion-label class="responsive-label-count">{{totalDFOPending}}</ion-label>
+                          <hr style="
+                              border: none;
+                              border-top: 1px solid rgba(255, 255, 255, 0.3);
+                              margin: 8px 0;
+                            " />
+                          <ion-label class="responsive-label" style="color: white">वनमंडलाधिकारी स्तर पर
+                            लंबित</ion-label>
+                        </ion-col>
+                      </ion-row>
+                    </ion-grid>
+                  </ion-card>
+                </ion-col>
+
+                <!-- स्वीकृत -->
+                <ion-col size="6" size-lg="2">
+                  <ion-card class="custom-card" (click)="getListOfAwedanAfterClickOnBoxes(6)">
+                    <ion-grid style="
+                        background: linear-gradient(
+                          135deg,
+                          #4caf50 0%,
+                          #388e3c 100%
+                        );
+                      ">
+                      <ion-row>
+                        <ion-col size="12" class="ion-text-center">
+                          <ion-label class="responsive-label-count">{{totalApproved}}</ion-label>
+                          <hr style="
+                              border: none;
+                              border-top: 1px solid rgba(255, 255, 255, 0.3);
+                              margin: 8px 0;
+                            " />
+                          <ion-label class="responsive-label" style="color: white">स्वीकृत</ion-label>
+                        </ion-col>
+                      </ion-row>
+                    </ion-grid>
+                  </ion-card>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+
+            <hr style="background-color: black; height: 1px" />
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+
+      <div class="ion-padding">
+        <ion-row>
+          <ion-col size="12" size-lg="6">
+            <ion-input class="custom-input" [(ngModel)]="searchMobile" fill="outline"
+              placeholder="मोबाइल नंबर / हितग्राही नाम / पिता का नाम" (ionInput)="onSearch($event)"
+              (keyup.enter)="onEnter()">
+            </ion-input>
+          </ion-col>
+          <ion-col size="6" size-lg="6">
+            <ion-button style="float: right;" (click)="export()">
+              <ion-icon name="download-outline" slot="start"></ion-icon>
+              Export To Excel
+            </ion-button>
+          </ion-col>
+        </ion-row>
+
+        <p-table [value]="filteredAwedans" [paginator]="false" responsiveLayout="stack" class="custom-dashboard-table" id="dashboard_table">
+          <ng-template pTemplate="header">
+            <tr>
+              <th>#</th>
+              <th>आवेदन नंबर</th>
+              <th>हितग्राही का नाम</th>
+              <th>पिता का नाम</th>
+              <th>वृत्त (वन मंडल)</th>
+              <th>आवेदन की स्थिति</th>
+              <th class="text-center">क्रियाएँ</th>
+            </tr>
+          </ng-template>
+
+          <ng-template pTemplate="body" let-item let-i="rowIndex">
+            <tr>
+              <td>{{ (currentPage - 1) * pageSize + i + 1 }}</td>
+              <td>{{ item.application_number }}</td>
+
+              <td>
+                <div class="beneficiary-cell">
+                  <strong>{{ item.hitgrahi_name }}</strong><br />
+                  <small class="text-muted">{{ item.mobile_no }}</small>
+                </div>
+              </td>
+
+              <td>{{ item.father_name }}</td>
+
+              <td>{{ item.circle_name }} ({{ item.division_name }})</td>
+
+              <td>
+                <span class="status-badge" [ngClass]="{
+            'status-approved': item.awedan_status == 6,
+            'status-pending': item.awedan_status == 2,
+            'status-draft': item.awedan_status < 1,
+            'status-rejected': item.awedan_status == 3
+          }">
+                  {{ getStatusText(item) }}
+                </span>
+              </td>
+
+              <td class="text-center">
+                <div class="action-buttons">
+                  <ion-button fill="outline" color="primary" size="small" (click)="viewApplication(item)">
+                    विवरण देखें
+                  </ion-button>
+
+                  <ion-button *ngIf="canViewEstimate(item)" fill="solid" color="tertiary" size="small"
+                    (click)="generateEstimateDynamic(item)">
+                    प्राक्कलन देखें
+                  </ion-button>
+                </div>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+
+        <!-- Custom Pagination -->
+        <div *ngIf="totalPages > 1" class="pagination-container mt-3">
+          <ion-row class="align-items-center justify-content-center">
+            <ion-col size="auto">
+              <ion-button 
+                [disabled]="currentPage === 1" 
+                (click)="goToPreviousPage()"
+                fill="outline"
+                size="small">
+                <ion-icon name="chevron-back-outline" slot="start"></ion-icon>
+                पिछला
+              </ion-button>
+            </ion-col>
+            
+            <ion-col size="auto">
+              <div class="page-numbers">
+                <ion-button 
+                  *ngFor="let page of getPageNumbers()" 
+                  [color]="page === currentPage ? 'primary' : 'medium'"
+                  [fill]="page === currentPage ? 'solid' : 'outline'"
+                  size="small"
+                  (click)="goToPage(page)"
+                  class="page-btn">
+                  {{ page }}
+                </ion-button>
+              </div>
+            </ion-col>
+            
+            <ion-col size="auto">
+              <ion-button 
+                [disabled]="currentPage === totalPages" 
+                (click)="goToNextPage()"
+                fill="outline"
+                size="small">
+                अगला
+                <ion-icon name="chevron-forward-outline" slot="end"></ion-icon>
+              </ion-button>
+            </ion-col>
+            
+            <ion-col size="auto" class="text-muted">
+              <small>पृष्ठ {{ currentPage }} / {{ totalPages }} (कुल {{ totalRecords }} रिकॉर्ड)</small>
+            </ion-col>
+          </ion-row>
+        </div>
+
+        <ion-label *ngIf="isNoRecordFound" class="responsive-label"
+          style="display: block; text-align: center; margin: 32px 0">
+          कोई आवेदन प्राप्त नहीं
+        </ion-label>
+      </div>
+    </ion-content>
+  </div>
+</ion-split-pane>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

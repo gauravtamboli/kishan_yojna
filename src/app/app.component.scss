@@ -1,0 +1,70 @@
+
+ion-content{
+    margin-top: 50rem;
+}
+
+ion-header{
+    height: 10rem;
+    div.bg{
+        height: 110%;
+        width: 130%;
+        background: linear-gradient(90deg, var(--ion-color-primary) 0%, var(--ion-color-primary) 50%);
+        transform: rotate(-15deg);
+        border-radius: 10px 10px 10px 50px;
+        margin-top: -4rem;
+        margin-left: -1rem;
+        box-shadow: 0 1px 10px rgb(98, 255, 169,0.5);
+    }
+
+    ion-item{
+        --background : transparent;
+        position : absolute;
+        top : 1rem;
+        left: 0;
+
+        ion-avatar{
+            height: 5rem;
+            width: 5rem;
+            border-radius: 50%;
+            border: 3px solid #90EE90;
+            padding: 1px;
+        }
+
+        ion-label {
+            color: white;
+            font-size: 1.2rem;
+            font-weight: bold;
+            width: auto;
+            letter-spacing: .5px;
+            p {
+                color: white;
+                margin-top: 2px;
+                font-weight: normal;
+                font-size: 0.9rem;
+            }
+        }
+
+    }
+
+}
+
+.no-gap-item {
+    display: flex;
+    align-items: center; /* Vertically align the items */
+    padding: 0; /* Remove default padding */
+}
+
+ion-text.dot-text::before {
+    content: '\2022'; /* Unicode for bullet/black dot */
+    font-size: 20px;   /* Adjust the size of the dot */
+    color: black;      /* Set the color of the dot */
+    margin-right: 10px; /* Space between the dot and the text */
+    vertical-align: middle; /* Align the dot with the text */
+}
+
+
+.my-custom-toast {
+    background-color: #ff0000; /* Example background color */
+    color: white;  /* Example text color */
+    font-size: 14px; /* Custom font size */
+}

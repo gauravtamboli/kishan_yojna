@@ -1,0 +1,428 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button (click)="goBack()"></ion-back-button>
+    </ion-buttons>
+    <ion-title>संपादित के बाद विवरण</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-loading
+    cssClass="custom-loading"
+    [isOpen]="isLoading"
+    [message]="loadingMessage"
+    [backdropDismiss]="false"
+  ></ion-loading>
+
+  <div *ngIf="registrationDetails" class="ion-padding">
+    <!-- Application Number Header -->
+    <ion-card class="header-card">
+      <ion-card-content>
+        <ion-grid>
+          <ion-row class="ion-align-items-center">
+            <ion-col size="12">
+              <ion-text class="application-number">
+                <strong>आवेदन नंबर: </strong>{{registrationDetails.applicationNumber}}
+              </ion-text>
+              <ion-badge 
+                [color]="getStatusColor(registrationDetails.awedanStatus)" 
+                class="status-badge">
+                {{getStatusText(registrationDetails.awedanStatus)}}
+              </ion-badge>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Basic Information -->
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>मूलभूत जानकारी</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-grid>
+          <ion-row>
+            <ion-col size="12" size-md="6">
+              <ion-text>
+                <strong>हितग्राही का नाम:</strong>
+                {{registrationDetails.hitgrahiName || 'N/A'}}
+              </ion-text>
+            </ion-col>
+            <ion-col size="12" size-md="6">
+              <ion-text>
+                <strong>पिता का नाम:</strong>
+                {{registrationDetails.fatherName || 'N/A'}}
+              </ion-text>
+            </ion-col>
+            <ion-col size="12" size-md="6">
+              <ion-text>
+                <strong>मोबाइल नंबर:</strong>
+                {{registrationDetails.mobileNo || 'N/A'}}
+              </ion-text>
+            </ion-col>
+            <ion-col size="12" size-md="6">
+              <ion-text>
+                <strong>आधार नंबर:</strong>
+                {{registrationDetails.aadharNo || 'N/A'}}
+              </ion-text>
+            </ion-col>
+            <ion-col size="12" size-md="6">
+              <ion-text>
+                <strong>जाति श्रेणी:</strong>
+                {{registrationDetails.castCategoryName || 'N/A'}}
+              </ion-text>
+            </ion-col>
+            <ion-col size="12">
+              <ion-text>
+                <strong>पता:</strong> {{registrationDetails.address || 'N/A'}}
+              </ion-text>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Administrative Information -->
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>प्रशासनिक जानकारी</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-grid>
+          <ion-row>
+            <ion-col size="12" size-md="6">
+              <ion-text>
+                <strong>वृत्त:</strong>
+                {{registrationDetails.circleName || 'N/A'}}
+              </ion-text>
+            </ion-col>
+            <ion-col size="12" size-md="6">
+              <ion-text>
+                <strong>विभाग:</strong>
+                {{registrationDetails.divisionName || 'N/A'}}
+              </ion-text>
+            </ion-col>
+            <ion-col size="12" size-md="6">
+              <ion-text>
+                <strong>जिला:</strong>
+                {{registrationDetails.distName || 'N/A'}}
+              </ion-text>
+            </ion-col>
+            <ion-col size="12" size-md="6">
+              <ion-text>
+                <strong>रेंज:</strong>
+                {{registrationDetails.rangName || 'N/A'}}
+              </ion-text>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Location Information -->
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>स्थानिक जानकारी</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-grid>
+          <ion-row>
+            <ion-col size="12" size-md="6">
+              <ion-text>
+                <strong>गाँव का नाम:</strong>
+                {{registrationDetails.villageName || 'N/A'}}
+              </ion-text>
+            </ion-col>
+            <ion-col size="12" size-md="6">
+              <ion-text>
+                <strong>ग्राम पंचायत नाम:</strong>
+                {{registrationDetails.gramPanchayatName || 'N/A'}}
+              </ion-text>
+            </ion-col>
+            <!-- Khasra Number - Show only for Revenue Land (2) -->
+            <ion-col size="12" size-md="6" *ngIf="registrationDetails.landType === 2">
+              <ion-text>
+                <strong>खसरा नंबर:</strong>
+                {{registrationDetails.khasraNo || 'N/A'}}
+              </ion-text>
+            </ion-col>
+            <ion-col size="12" size-md="6">
+              <ion-text>
+                <strong>कक्ष क्रमांक:</strong>
+                {{registrationDetails.kakshaKramank || 'N/A'}}
+              </ion-text>
+            </ion-col>
+            <ion-col size="12" size-md="6">
+              <ion-text>
+                <strong>हल्का नंबर एवं हल्का नाम:</strong>
+                {{registrationDetails.halkaNo || 'N/A'}}
+              </ion-text>
+            </ion-col>
+            <ion-col size="12" size-md="6">
+              <ion-text>
+                <strong>कुल एकड़:</strong>
+                {{registrationDetails.area || 'N/A'}}
+            
+              </ion-text>
+            </ion-col>
+            <ion-col size="12" size-md="6">
+              <ion-text>
+                <strong>किसान द्वारा रोपण योग्य भूमि</strong>
+                {{registrationDetails.availableArea || 'N/A'}}
+              </ion-text>
+            </ion-col>
+            <!-- <ion-col size="12" size-md="6">
+              <ion-text>
+                <strong>क्षेत्र:</strong>
+                {{registrationDetails.totalAcre || 'N/A'}}
+              </ion-text>
+            </ion-col> -->
+            <ion-col size="12" size-md="6">
+              <ion-text>
+                <strong>भूमि प्रकार:</strong>
+                {{getLandTypeText(registrationDetails.landType)}}
+              </ion-text>
+            </ion-col>
+            <!-- Compartment Number and Patta Number - Show only for FRA Land (1) -->
+            <ion-col size="12" size-md="6" *ngIf="registrationDetails.landType === 1">
+              <ion-text>
+                <strong>कम्पार्टमेंट नंबर:</strong>
+                {{registrationDetails.compartmentNo || 'N/A'}}
+              </ion-text>
+            </ion-col>
+            <ion-col size="12" size-md="6" *ngIf="registrationDetails.landType === 1">
+              <ion-text>
+                <strong>पट्टा नंबर:</strong>
+                {{registrationDetails.pattaNo || 'N/A'}}
+              </ion-text>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Bank Information -->
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>बैंक जानकारी</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-grid>
+          <ion-row>
+            <ion-col size="12" size-md="6">
+              <ion-text>
+                <strong>बैंक का नाम:</strong>
+                {{registrationDetails.bankName || 'N/A'}}
+              </ion-text>
+            </ion-col>
+            <ion-col size="12" size-md="6">
+              <ion-text>
+                <strong>IFSC कोड:</strong>
+                {{registrationDetails.ifscCode || 'N/A'}}
+              </ion-text>
+            </ion-col>
+            <ion-col size="12">
+              <ion-text>
+                <strong>खाता नंबर:</strong>
+                {{registrationDetails.accountNo || 'N/A'}}
+              </ion-text>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Plantation Information -->
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>वृक्षारोपण जानकारी</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-grid>
+          <ion-row>
+            <ion-col size="12" size-md="6">
+              <ion-text>
+                <strong>वृक्षारोपण वर्ष:</strong>
+                {{registrationDetails.vrikharopanYear || 'N/A'}}
+              </ion-text>
+            </ion-col>
+            <ion-col size="12" size-md="6">
+              <ion-text>
+                <strong>बालू का प्रकार:</strong>
+                {{registrationDetails.sandTypeName || 'N/A'}}
+              </ion-text>
+            </ion-col>
+            <ion-col size="12" size-md="6">
+              <ion-text>
+                <strong>वृक्षारोपण अंतराल:</strong>
+                {{registrationDetails.vrikharopanGap || 'N/A'}}
+              </ion-text>
+            </ion-col>
+            <ion-col size="12" size-md="6">
+              <ion-text>
+                <strong>सिंचित/असिंचित:</strong>
+                {{registrationDetails.sinchitAsinchit || 'N/A'}}
+              </ion-text>
+            </ion-col>
+            <ion-col size="12" size-md="6">
+              <ion-text>
+                <strong>वृक्षारोपण प्रकार:</strong>
+                {{registrationDetails.plantationType || 'N/A'}}
+              </ion-text>
+            </ion-col>
+            <ion-col size="12" size-md="6">
+              <ion-text>
+                <strong>अन्य पौधा:</strong>
+                {{registrationDetails.otherPlant || 'N/A'}}
+              </ion-text>
+            </ion-col>
+            <ion-col size="12">
+              <ion-text>
+                <strong>पौधा प्रकार (अंतिम):</strong>
+                {{registrationDetails.plantTypeFinal || 'N/A'}}
+              </ion-text>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Plant Details Table -->
+    <ion-card *ngIf="plants && plants.length > 0">
+      <ion-card-header>
+        <ion-card-title>पौधे की जानकारी</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <!-- Plants Less Than 5 Acres -->
+        <div *ngIf="getPlantsLessThan5Acre().length > 0" style="margin-bottom: 24px;">
+          <h3 style="margin-bottom: 12px; color: #333; font-weight: 600;">5 एकड़ से कम</h3>
+          <div style="overflow-x: auto;">
+            <table class="plant-table">
+              <thead>
+                <tr>
+                  <th>क्रमांक</th>
+                  <th>पौधे का नाम</th>
+                  <th>कुल क्षेत्र (एकड़)</th>
+                  <th>कुल पेड़</th>
+                  <th>कुल रोपित</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let plant of getPlantsLessThan5Acre(); let i = index">
+                  <td>{{i + 1}}</td>
+                  <td>{{plant.plantName || 'N/A'}}</td>
+                  <td>{{plant.totalArea || 'N/A'}}</td>
+                  <td>{{plant.totalTree || 'N/A'}}</td>
+                  <td>{{plant.totalRopit || 'N/A'}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Plants More Than or Equal to 5 Acres -->
+        <div *ngIf="getPlantsMoreThanOrEqual5Acre().length > 0">
+          <h3 style="margin-bottom: 12px; color: #333; font-weight: 600;">5 एकड़ या अधिक</h3>
+          <div style="overflow-x: auto;">
+            <table class="plant-table">
+              <thead>
+                <tr>
+                  <th>क्रमांक</th>
+                  <th>पौधे का नाम</th>
+                  <th>कुल क्षेत्र (एकड़)</th>
+                  <th>कुल पेड़</th>
+                  <th>कुल रोपित</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let plant of getPlantsMoreThanOrEqual5Acre(); let i = index">
+                  <td>{{i + 1}}</td>
+                  <td>{{plant.plantName || 'N/A'}}</td>
+                  <td>{{plant.totalArea || 'N/A'}}</td>
+                  <td>{{plant.totalTree || 'N/A'}}</td>
+                  <td>{{plant.totalRopit || 'N/A'}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- No Plants Message -->
+        <div *ngIf="getPlantsLessThan5Acre().length === 0 && getPlantsMoreThanOrEqual5Acre().length === 0" 
+             style="text-align: center; padding: 20px; color: #666;">
+          <p>कोई पौधे की जानकारी उपलब्ध नहीं है</p>
+        </div>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Document Information -->
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>दस्तावेज़ जानकारी</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-grid>
+          <ion-row>
+            <ion-col size="12" size-md="6">
+              <ion-text>
+                <strong>आधार PDF:</strong>
+                <span *ngIf="registrationDetails.adharPdfFile" 
+                      class="file-link" 
+                      (click)="downloadFile(registrationDetails.adharPdfFile, 'adhar')">
+                  {{registrationDetails.adharPdfFile}}
+                </span>
+                <span *ngIf="!registrationDetails.adharPdfFile">N/A</span>
+              </ion-text>
+            </ion-col>
+            <ion-col size="12" size-md="6">
+              <ion-text>
+                <strong>बैंक पासबुक PDF:</strong>
+                <span *ngIf="registrationDetails.bankpassbookPdfFile" 
+                      class="file-link" 
+                      (click)="downloadFile(registrationDetails.bankpassbookPdfFile, 'bankpassbook')">
+                  {{registrationDetails.bankpassbookPdfFile}}
+                </span>
+                <span *ngIf="!registrationDetails.bankpassbookPdfFile">N/A</span>
+              </ion-text>
+            </ion-col>
+            <ion-col size="12" size-md="6">
+              <ion-text>
+                <strong>B1P1 PDF:</strong>
+                <span *ngIf="registrationDetails.b1P1PdfFile" 
+                      class="file-link" 
+                      (click)="downloadFile(registrationDetails.b1P1PdfFile, 'b1p1')">
+                  {{registrationDetails.b1P1PdfFile}}
+                </span>
+                <span *ngIf="!registrationDetails.b1P1PdfFile">N/A</span>
+              </ion-text>
+            </ion-col>
+            <ion-col size="12" size-md="6">
+              <ion-text>
+                <strong>KML फ़ाइल:</strong>
+                <span *ngIf="registrationDetails.kmlFile" 
+                      class="file-link" 
+                      (click)="downloadFile(registrationDetails.kmlFile, 'kml')">
+                  {{registrationDetails.kmlFile}}
+                </span>
+                <span *ngIf="!registrationDetails.kmlFile">N/A</span>
+              </ion-text>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-card-content>
+    </ion-card>
+
+  </div>
+
+  <div
+    *ngIf="!registrationDetails && !isLoading"
+    class="ion-padding ion-text-center"
+  >
+    <ion-text color="medium">
+      <h3>कोई आवेदन विवरण नहीं मिला</h3>
+    </ion-text>
+  </div>
+</ion-content>
+

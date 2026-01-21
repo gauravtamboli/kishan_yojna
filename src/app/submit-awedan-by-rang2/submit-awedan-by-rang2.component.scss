@@ -1,0 +1,429 @@
+.custom-back-button {
+  color: green;
+}
+
+.custom-ion-label {
+  font-size: 12px;
+  font-weight: 700;
+  color: black;
+  font-style: bold;
+}
+
+.custom-ion-label-points {
+  padding: 5px;
+  background-color: green;
+  font-size: 15px;
+  font-weight: 700;
+  color: white;
+  font-style: bold;
+  border-bottom-right-radius: 10px;
+}
+
+.item-style-label {
+  margin-top: 10px;
+  font-size: 1rem;
+  color: green;
+}
+
+// table styling 
+
+.centered-cell {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 4px 0; /* Smaller height */
+  font-size: 14px; /* Optional: Make text a bit smaller */
+}
+
+.sub-header {
+  font-size: 13px;
+  padding: 2px 0;
+}
+
+.sub-header-divider {
+  border-bottom: 1px solid white;
+  margin-bottom: 2px;
+  padding-bottom: 2px;
+}
+
+
+
+ion-title {
+  margin-left: -25px;
+  font-size: 12px;
+}
+
+ion-select {
+  font-size: 12px;
+}
+
+ion-input {
+  font-size: 14px;
+  outline-color: green;
+  margin-left: -3px;
+  size: 12px;
+  --resize: true;
+}
+
+ion-text-area {
+  font-size: 14px;
+  outline-color: green;
+  margin-left: -3px;
+  size: 12px;
+}
+
+.radio-group-horizontal {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+ion-content {
+  --padding-top: 16px;
+  --padding-bottom: 16px;
+  --padding-start: 16px;
+  --padding-end: 16px;
+}
+
+.ion-grid-custom {
+  border: 1px solid #000;
+  /* Border around the grid */
+}
+
+.ion-row-custom {
+  display: flex;
+  border: 1px solid #000;
+  /* Border around the row */
+}
+
+.ion-col-custom {
+  border: 1px solid #000;
+  /* Border around each column */
+  padding: 10px;
+  /* Padding inside the column */
+  margin: 5px;
+  /* Optional: Margin between columns */
+}
+
+ion-select {
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  padding: 8px;
+  font-size: 16px;
+  --min-height: 45px;
+  background-color: #f9f9f9;
+}
+
+.custom-loading .loading-wrapper {
+  background-color: white;
+  color: black;
+}
+
+.custom-hyperlink-label {
+  font-size: 13px;
+  font-weight: 700;
+  color: blue;
+}
+
+.custom-divider {
+  border: none;
+  height: 1px;
+  /* Thickness */
+  background-color: black;
+  /* Ionic primary color or any custom color */
+  margin: 16px 0;
+  /* Optional spacing */
+  border-radius: 2px;
+  /* Optional rounded edges */
+}
+
+.grid-bordered {
+  border: 1px solid #ccc;
+
+  ion-row {
+    border-bottom: 1px solid #ccc;
+  }
+
+  ion-col {
+    border-right: 1px solid #ccc;
+    padding: 8px;
+
+    // Remove the last column's right border
+    &:last-child {
+      border-right: none;
+    }
+  }
+
+  // Optional: Bold header
+  .grid-header {
+    font-weight: bold;
+    background: #f0f0f0;
+  }
+
+  // Optional: Hover effect
+  .grid-row:hover {
+    background-color: #f9f9f9;
+  }
+}
+
+.responsive-img {
+  width: 60%; // Base width
+  max-width: 60px; // Prevents it from getting too large
+  height: auto;
+  cursor: pointer;
+
+  //filter: invert(36%) sepia(100%) saturate(1000%) hue-rotate(90deg); /* green tint example */
+
+  @media (max-width: 600px) {
+    width: 60%; // Smaller devices
+    max-width: 60px;
+  }
+
+  @media (min-width: 768px) {
+    width: 50px; // Tablets or larger
+    max-width: 50px;
+  }
+}
+
+.label-wrapper {
+  display: flex;
+  align-items: center; // Vertical center
+  justify-content: flex-start; // Horizontal left
+}
+
+.img-wrapper {
+  display: flex;
+  justify-content: flex-end;
+  /* Align horizontally right */
+  align-items: center;
+  /* Align vertically center */
+  /* Make sure it fills ion-col height */
+}
+
+.colored-img {
+  filter: invert(36%) sepia(100%) saturate(1000%) hue-rotate(90deg);
+  /* green tint example */
+}
+
+// Improve form field styling
+ion-input,
+ion-textarea {
+  --padding-start: 12px;
+  --padding-end: 12px;
+  --padding-bottom: 12px;
+  --background: #f8f9fa;
+  --border-radius: 8px;
+  --border-color: #e0e0e0;
+  --border-style: solid;
+  --border-width: 1px;
+  margin-bottom: 16px;
+
+  &:focus-within {
+    --border-color: var(--ion-color-primary);
+    --background: #ffffff;
+  }
+}
+
+// Improve select styling
+ng-select {
+  .ng-select-container {
+    border-radius: 8px;
+    border: 1px solid #e0e0e0;
+    background: #f8f9fa;
+    min-height: 48px;
+
+    &:hover {
+      border-color: var(--ion-color-primary);
+    }
+  }
+}
+
+// Improve button styling
+ion-button {
+  --border-radius: 8px;
+  --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin: 8px 0;
+
+  &.submit-button {
+    --background: var(--ion-color-success);
+    --background-hover: var(--ion-color-success-shade);
+  }
+
+  &.cancel-button {
+    --background: var(--ion-color-danger);
+    --background-hover: var(--ion-color-danger-shade);
+  }
+}
+
+// Improve grid layout
+ion-grid {
+  padding: 16px;
+
+  ion-row {
+    margin-bottom: 16px;
+  }
+}
+
+// Improve card-like sections
+.grid-bordered {
+  border-radius: 12px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background: #ffffff;
+  margin: 16px 0;
+
+  ion-row {
+    &:first-child {
+      border-top-left-radius: 12px;
+      border-top-right-radius: 12px;
+    }
+
+    &:last-child {
+      border-bottom-left-radius: 12px;
+      border-bottom-right-radius: 12px;
+    }
+  }
+}
+
+// Improve header styling
+// ion-header {
+//   ion-toolbar {
+//     color:green;
+
+//     ion-title {
+//       font-weight: 600;
+//     }
+//   }
+// }
+
+// Improve radio group styling
+.radio-group-horizontal {
+  ion-radio {
+    margin: 8px;
+    --color: var(--ion-color-medium);
+    --color-checked: var(--ion-color-primary);
+  }
+}
+
+// Improve file upload styling
+input[type="file"] {
+  background: #f8f9fa;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid #e0e0e0;
+  width: 100%;
+  margin: 8px 0;
+
+  &:hover {
+    border-color: var(--ion-color-primary);
+  }
+}
+
+// // Improve loading indicator
+// ion-loading {
+//   --background: rgba(255, 255, 255, 0.9);
+//   --spinner-color: var(--ion-color-primary);
+//   --min-width: 200px;
+//   --min-height: 200px;
+// }
+
+// Improve responsive design
+@media (max-width: 768px) {
+  ion-grid {
+    padding: 8px;
+  }
+
+  ion-col {
+    padding: 4px;
+  }
+}
+
+.responsive-toolbar-title {
+  font-size: 12px;
+  font-weight: 700;
+}
+
+/* Medium screens (tablets) */
+@media (min-width: 600px) {
+  .responsive-toolbar-title {
+    font-size: 16px;
+  }
+}
+
+/* Large screens (desktops) */
+@media (min-width: 1024px) {
+  .responsive-toolbar-title {
+    font-size: 20px;
+  }
+}
+
+
+.custom-dialog-modal {
+  --width: 90vw;
+  --max-width: 400px;
+  --height: auto;
+  --border-radius: 16px;
+  --box-shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
+  --background: #fff;
+  --overflow: visible;
+
+  ion-modal {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+ion-content {
+    --keyboard-offset: 150px; // optional tweak
+}
+
+.spin-animation {
+  animation: spin 1s infinite linear;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+
+  /* Make all ng-select boxes look like ion-input */
+::ng-deep ng-select.custom-select .ng-select-container {
+  height: 58px !important;
+  min-height: 58px !important;
+  border-radius: 8px !important;
+  border: 1px solid #e0e0e0 !important;
+  background: #f8f9fa !important;
+  display: flex;
+  align-items: center;
+  padding: 0 12px !important;
+  font-size: 14px !important;
+}
+
+::ng-deep ng-select.custom-select .ng-value-container {
+  padding: 0 !important;
+}
+
+::ng-deep ng-select.custom-select .ng-input > input {
+  height: 38px !important; /* vertically center text */
+}
+
+::ng-deep ng-select.custom-select.ng-select-focused .ng-select-container {
+  border-color: var(--ion-color-primary) !important;
+  background: #ffffff !important;
+}
+
+::ng-deep ng-select.custom-select .ng-select-container:hover {
+  border-color: var(--ion-color-primary) !important;
+}

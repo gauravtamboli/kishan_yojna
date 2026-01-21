@@ -1,0 +1,15 @@
+<div class="ion-padding custom-center" style="position: relative;" scroll-y="false">
+  <img src="assets/img/ic_cancel.png"
+    style="width: 30px; height: 30px; position: absolute; top: 0px; right: 0px; cursor: pointer;"
+    (click)=closeModel() />
+  <ion-datetime presentation="date" display-format="DD/MM/YYYY" [(ngModel)]="selectedDate" placeholder="दिनांक चुने" [max]="maxDate">
+  </ion-datetime>
+
+  <ion-grid>
+    <ion-col size="12">
+      <ion-button (click)="onSelectDate()"
+        style="display: flex; flex-direction: column; justify-content: center;">OK</ion-button>
+    </ion-col>
+  </ion-grid>
+
+</div>

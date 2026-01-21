@@ -1,0 +1,172 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button (click)="goBack()" class="custom-back-button"></ion-back-button>
+    </ion-buttons>
+    <ion-title class="responsive-toolbar-title">{{ getTranslation('important_contact') }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-loading cssClass="custom-loading" [isOpen]="isLoading" [message]="loadingMessage"></ion-loading>
+
+  <p-table [value]="listOfContacts" responsiveLayout="stack" class="custom-margin-table">
+    <ng-template pTemplate="header">
+      <tr>
+        <th>
+          <ion-label>
+            वृत्त का नाम
+          </ion-label>
+        </th>
+
+        <th>
+          <ion-label>
+            वन मंडल का नाम
+          </ion-label>
+        </th>
+
+        <th>
+          <ion-label>
+            अधिकारी का नाम
+          </ion-label>
+        </th>
+        <th>
+          <ion-label>
+            पद का नाम
+          </ion-label>
+        </th>
+        <th>
+          <ion-label>
+            मोबाइल नंबर
+          </ion-label>
+        </th>
+      </tr>
+    </ng-template>
+
+
+    <ng-template pTemplate="body" let-item>
+      <tr class="custom-table-row">
+
+        <td>
+          <span class="p-column-title">
+            <ion-label>
+              वृत्त का नाम
+            </ion-label>
+          </span>
+          <ion-label class="responsive-label" style="text-align: end;">
+            {{ item.circle_name }}
+          </ion-label>
+        </td>
+
+        <td>
+          <span class="p-column-title">
+            <ion-label>
+              वन मंडल का नाम
+            </ion-label>
+          </span>
+          <ion-label class="responsive-label" style="text-align: end;">
+            {{ item.division_name }}
+          </ion-label>
+        </td>
+
+        <td>
+          <span class="p-column-title">
+            <ion-label>
+              अधिकारी का नाम
+            </ion-label>
+          </span>
+          <ion-label class="responsive-label" style="text-align: end;">
+            {{ item.officer_name }}
+          </ion-label>
+        </td>
+
+        <td>
+          <span class="p-column-title">
+            <ion-label>
+              पद का नाम
+            </ion-label>
+          </span>
+          <ion-label class="responsive-label">
+            {{ item.designation }}
+          </ion-label>
+        </td>
+        <td>
+          <span class="p-column-title">
+            <ion-label>
+              मोबाइल नंबर
+            </ion-label>
+          </span>
+          <ion-label class="responsive-label">
+            {{ item.mobile }}
+          </ion-label>
+        </td>
+
+        <td *ngIf="!isWebPlatform()">
+          <div style="height: 1px; background-color: black; width: 100%;"></div>
+        </td>
+      </tr>
+    </ng-template>
+
+
+  </p-table>
+
+  <!-- <ion-grid *ngIf="!isLoading">
+
+    <ion-row>
+      
+        <ion-row class="responsive-label" style="background-color: green; width: 100%;">
+         
+          <ion-col  size="6">
+            <ion-label style="color: white; text-align: center; width: 100%; display: flex; flex-direction: column; justify-content: center; ">
+              Officer Name (Designation)
+            </ion-label>
+          </ion-col>
+          <ion-col size="3">
+            <ion-label style="color: white; text-align: center; width: 100%; display: flex; flex-direction: column; justify-content: center; ">
+              Mobile
+            </ion-label>
+          </ion-col>
+          <ion-col size="3">
+            <ion-label style="color: white; text-align: center; width: 100%; display: flex; flex-direction: column; justify-content: center; ">
+              Address
+            </ion-label>
+          </ion-col>
+        </ion-row>
+        <ion-list style="width: 100%; padding: 0; margin: 0;">
+        <ion-item *ngFor="let item of listOfContacts" lines="none" style="margin: 0; padding: 0; width: 100%;">
+          <ion-grid style="margin: 0; padding: 0; margin-left: -20px; margin-right: -20px;">
+              <ion-row class="responsive-label" style="margin: 0; padding: 0; width: 100%;">
+                <ion-col size="6" style="padding: 0; margin: 0;">
+                  <ion-label style="color: black; font-weight: 700; text-align: center; width: 100%; display: flex; flex-direction: column; justify-content: center; ">
+                    {{ item.officer_name }} ({{ item.designation }})
+                  </ion-label>
+                </ion-col>
+                <ion-col size="3" style="padding: 0; margin: 0;">
+                  <ion-label style="color: black; text-align: center; width: 100%; display: flex; flex-direction: column; justify-content: center; ">
+                    <div>
+                      <ion-icon *ngIf="showHideCallIcon(item.mobile)" name="call" style="margin-right: 5px; color: green;"></ion-icon>
+                      <a href="tel:{{ item.mobile }}" style="color: black; text-decoration: none;">{{ checkMobileNumberOfOffice(item.mobile) }}</a>
+                    </div>
+                    
+                  </ion-label>
+                </ion-col>
+                <ion-col size="3" style="padding: 0; margin: 0;">
+                  <ion-label style="color: black; text-align: center; width: 100%; display: flex; flex-direction: column; justify-content: center; ">
+                    {{ item.office_address }}
+                  </ion-label>
+                </ion-col>
+              </ion-row>
+            
+              <hr style="border: none; border-top: 1px solid #ccc; margin: 2px 0;" />
+
+          </ion-grid>
+        </ion-item>
+      </ion-list>
+      
+
+    </ion-row>
+
+  </ion-grid> -->
+
+</ion-content>

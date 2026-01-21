@@ -1,0 +1,26 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Login</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <form (ngSubmit)="onLogin()">
+    <ion-item>
+      <ion-label position="stacked">Mobile Number</ion-label>
+      <ion-input [(ngModel)]="mobile" name="mobile" type="text" required></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="stacked">Password</ion-label>
+      <ion-input [(ngModel)]="password" name="password" type="password" required></ion-input>
+    </ion-item>
+
+    <ion-button expand="full" type="submit">Login</ion-button>
+
+    <!-- Display error message if login fails -->
+    <div *ngIf="errorMessage" class="error-message">
+      <ion-text color="danger">{{ errorMessage }}</ion-text>
+    </div>
+  </form>
+</ion-content>

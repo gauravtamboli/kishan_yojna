@@ -1,0 +1,632 @@
+/* --------- Theme --------- */
+:root {
+  --card-bg: #ffffff;
+  --card-border: #e5e7eb; /* gray-200 */
+  --text-muted: #6b7280;  /* gray-500 */
+  --text-strong: #111827; /* gray-900 */
+  --brand: #2563eb;       /* blue-600 */
+  --brand-contrast: #ffffff;
+  --table-header: #f3f4f6; /* gray-100 */
+  --table-border: #000000; /* black borders for clear grid */
+  --row-alt: #fafafa;
+}
+
+ion-content {
+  --background: #f8fafc; /* slate-50 */
+}
+
+/* --------- Page Header --------- */
+
+
+.responsive-toolbar-title {
+  color: var(--text-strong);
+  font-size: 22px;
+  font-weight: 800;
+}
+
+/* --------- Applicant Section --------- */
+.estimate-container {
+  margin: 8px 0 16px 0;
+}
+
+.applicant-card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+  padding: 12px 14px;
+}
+
+.applicant-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.applicant-text {
+  color: var(--text-strong);
+  font-size: 15px;
+}
+
+.details-section ion-label {
+  display: inline-block;
+  color: var(--text-muted);
+  font-size: 14px;
+}
+
+/* --------- Species Header Card --------- */
+.species-card {
+  margin-top: 14px;
+  padding: 12px 14px;
+  background: linear-gradient(180deg, #ffffff, #fcfcfd);
+  border: 1px solid var(--card-border);
+  border-radius: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.species-title {
+  display: block;
+  font-size: 16px;
+  color: var(--text-strong);
+}
+
+.my-ion-button {
+  --background: var(--brand);
+  --background-focused: #1d4ed8; /* blue-700 */
+  --color: var(--brand-contrast);
+  border-radius: 10px;
+  height: 36px;
+  padding: 0 14px;
+}
+
+/* --------- Tables --------- */
+.table-wrapper {
+  margin-top: 12px;
+  overflow: hidden;
+  border-radius: 12px;
+  border: 1px solid var(--table-border);
+  background: var(--card-bg);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.05);
+}
+
+.custom-table {
+  width: 100%;
+  border-collapse: collapse; /* full grid borders */
+  border: 1px solid var(--table-border);
+}
+
+.custom-table thead th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: var(--table-header);
+  color: #111827;
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 0.3px;
+  border: 1px solid var(--table-border) !important;
+  padding: 10px 12px;
+  text-align: left;
+}
+
+.custom-table tbody td {
+  border: 1px solid var(--table-border) !important;
+  padding: 10px 12px;
+  font-size: 13px;
+}
+
+/* extra enforcement on all table cells */
+.custom-table, .custom-table * {
+  border-color: #000 !important;
+}
+
+.custom-table tbody tr:nth-child(even) {
+  background: var(--row-alt);
+}
+
+.year-label {
+  font-weight: 700;
+  text-align: center;
+  background: #eef2ff; /* indigo-50 */
+  color: #312e81;      /* indigo-900 */
+}
+
+.total-label {
+  font-weight: 800;
+  text-align: right;
+  color: var(--text-strong);
+}
+
+/* --------- Detail Table Styles (ng-container tables) --------- */
+.detail-table-wrapper {
+  margin-top: 12px;
+  overflow-x: auto;
+  border: 2px solid #000000 !important;
+  border-radius: 8px;
+  background: var(--card-bg);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.05);
+}
+
+.detail-table {
+  width: 100%;
+  border-collapse: collapse;
+  border: 2px solid #000000 !important;
+  background: var(--card-bg);
+}
+
+.detail-table thead th {
+  background: #1f2937; /* dark gray for header */
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 13px;
+  padding: 12px 16px;
+  text-align: center;
+  border: 2px solid #000000 !important;
+  border-bottom: 3px solid #000000 !important;
+}
+
+.detail-th-year {
+  width: 6%;
+}
+
+.detail-th {
+  font-weight: 700;
+  font-size: 13px;
+}
+
+.detail-table tbody td {
+  border: 1px solid #000000 !important;
+  padding: 10px 12px;
+  font-size: 13px;
+  text-align: center;
+  background-color: #ffffff;
+}
+
+.detail-year-cell {
+  background: #eef2ff !important;
+  color: #312e81 !important;
+  font-weight: 700 !important;
+  text-align: center !important;
+  border: 2px solid #000000 !important;
+  vertical-align: middle;
+}
+
+.detail-kramank {
+  text-align: center !important;
+  font-weight: 600;
+  color: #374151;
+}
+
+.detail-karya {
+  text-align: left !important;
+  color: #374151;
+}
+
+.detail-count {
+  text-align: center !important;
+  font-weight: 600;
+  color: #374151;
+}
+
+.detail-rate {
+  text-align: center !important;
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.detail-amount {
+  text-align: center !important;
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.detail-data-row:nth-child(even) {
+  background-color: #f9fafb;
+}
+
+.detail-data-row:nth-child(odd) {
+  background-color: #ffffff;
+}
+
+.detail-data-row:hover {
+  background-color: #f3f4f6;
+}
+
+.detail-year-total-row {
+  background-color: #e5e7eb !important;
+  border-top: 2px solid #000000 !important;
+}
+
+.detail-year-total-label {
+  text-align: right !important;
+  font-weight: 800 !important;
+  font-size: 13px !important;
+  color: #111827 !important;
+  background-color: #e5e7eb !important;
+  border: 2px solid #000000 !important;
+  padding: 10px 12px !important;
+}
+
+.detail-year-total-amount {
+  text-align: center !important;
+  font-weight: 900 !important;
+  font-size: 13px !important;
+  color: #000000 !important;
+  background-color: #e5e7eb !important;
+  border: 2px solid #000000 !important;
+  padding: 10px 12px !important;
+}
+
+.detail-grand-total-row {
+  background-color: #d1d5db !important;
+  border-top: 3px solid #000000 !important;
+}
+
+.detail-grand-total-label {
+  text-align: right !important;
+  font-weight: 900 !important;
+  font-size: 14px !important;
+  color: #111827 !important;
+  background-color: #d1d5db !important;
+  border: 2px solid #000000 !important;
+  padding: 12px 16px !important;
+}
+
+.detail-grand-total-amount {
+  text-align: center !important;
+  font-weight: 900 !important;
+  font-size: 15px !important;
+  color: #000000 !important;
+  background-color: #d1d5db !important;
+  border: 2px solid #000000 !important;
+  padding: 12px 16px !important;
+}
+
+.detail-words-row {
+  background-color: #fff9e6 !important;
+  border-top: 2px solid #000000 !important;
+}
+
+.detail-words-text {
+  text-align: center !important;
+  font-weight: bold !important;
+  font-size: 18px !important;
+  padding: 12px 16px !important;
+  color: #92400e !important;
+  border: 1px solid #000000 !important;
+}
+
+/* Ensure all borders are black for detail tables */
+.detail-table,
+.detail-table th,
+.detail-table td,
+.detail-table thead th,
+.detail-table tbody td,
+.detail-table tr {
+  border-color: #000000 !important;
+}
+
+/* --------- Dropdown Section --------- */
+.dropdown-section {
+  margin-top: 28px !important;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+  padding: 14px 12px;
+}
+
+.dropdown-label {
+  margin-top: 18px;
+  font-size: 14px;
+  color: var(--text-muted);
+}
+
+/* --------- Goswara Table Styles --------- */
+.goswara-card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+  padding: 16px;
+  margin-bottom: 20px;
+}
+
+.goswara-title {
+  font-weight: bold;
+  font-size: 18px;
+  color: var(--text-strong);
+  margin: 0;
+  padding: 10px 0;
+}
+
+.goswara-table-wrapper {
+  margin-top: 12px;
+  overflow-x: auto;
+}
+
+.goswara-table {
+  width: 100%;
+  border-collapse: collapse;
+  border: 2px solid #000000 !important;
+  background: var(--card-bg);
+}
+
+.goswara-table thead th {
+  background: #1f2937; /* dark gray for header */
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 14px;
+  padding: 12px 16px;
+  text-align: center;
+  border: 2px solid #000000 !important;
+  border-bottom: 3px solid #000000 !important;
+}
+
+.goswara-table tbody td {
+  border: 1px solid #000000 !important;
+  padding: 10px 16px;
+  font-size: 13px;
+  text-align: center;
+}
+
+.goswara-plant-name {
+  text-align: left !important;
+  font-weight: 600;
+  color: var(--text-strong);
+}
+
+.goswara-amount {
+  text-align: center !important;
+  color: #374151;
+}
+
+.goswara-grand-total {
+  font-weight: 700 !important;
+  color: #1f2937;
+}
+
+.goswara-data-row:nth-child(even) {
+  background-color: #f9fafb;
+}
+
+.goswara-data-row:nth-child(odd) {
+  background-color: #ffffff;
+}
+
+.goswara-data-row:hover {
+  background-color: #f3f4f6;
+}
+
+.goswara-total-row {
+  background-color: #e5e7eb !important;
+  border-top: 3px solid #000000 !important;
+}
+
+.goswara-total-label {
+  text-align: center !important;
+  font-weight: 900 !important;
+  font-size: 14px !important;
+  color: #111827 !important;
+  background-color: #e5e7eb !important;
+  border: 2px solid #000000 !important;
+}
+
+.goswara-total-amount {
+  text-align: center !important;
+  font-weight: 900 !important;
+  font-size: 14px !important;
+  color: #111827 !important;
+  background-color: #e5e7eb !important;
+  border: 2px solid #000000 !important;
+}
+
+.goswara-final-total {
+  font-weight: 900 !important;
+  font-size: 15px !important;
+  color: #000000 !important;
+}
+
+.goswara-words-row {
+  background-color: #fff9e6 !important;
+  border-top: 2px solid #000000 !important;
+}
+
+.goswara-words-text {
+  text-align: center !important;
+  font-weight: bold !important;
+  font-size: 18px !important;
+  padding: 12px 16px !important;
+  color: #92400e !important;
+  border: 1px solid #000000 !important;
+}
+
+/* Ensure all borders are black for goswara table */
+.goswara-table,
+.goswara-table th,
+.goswara-table td,
+.goswara-table thead th,
+.goswara-table tbody td,
+.goswara-table tr {
+  border-color: #000000 !important;
+}
+
+/* --------- Print Styles --------- */
+@media print {
+  ion-content { --background: #ffffff; }
+  .species-card, .dropdown-section, .applicant-card, .table-wrapper {
+    box-shadow: none !important;
+    border: 1px solid #000 !important;
+  }
+  .my-ion-button { display: none !important; }
+  
+  /* Ensure black borders in print for goswara table */
+  .goswara-table,
+  .goswara-table th,
+  .goswara-table td,
+  .goswara-table thead th,
+  .goswara-table tbody td {
+    border: 1px solid #000000 !important;
+  }
+  
+  .goswara-table thead th {
+    border: 2px solid #000000 !important;
+    border-bottom: 3px solid #000000 !important;
+  }
+  
+  .goswara-total-row td {
+    border-top: 3px solid #000000 !important;
+    border: 2px solid #000000 !important;
+  }
+  
+  /* Ensure black borders in print for detail tables */
+  .detail-table,
+  .detail-table th,
+  .detail-table td,
+  .detail-table thead th,
+  .detail-table tbody td {
+    border: 1px solid #000000 !important;
+  }
+  
+  .detail-table thead th {
+    border: 2px solid #000000 !important;
+    border-bottom: 3px solid #000000 !important;
+  }
+  
+  .detail-year-cell {
+    border: 2px solid #000000 !important;
+  }
+  
+  .detail-year-total-row td {
+    border-top: 2px solid #000000 !important;
+    border: 2px solid #000000 !important;
+  }
+  
+  .detail-grand-total-row td {
+    border-top: 3px solid #000000 !important;
+    border: 2px solid #000000 !important;
+  }
+}
+
+.details-section {
+  background: #fff;
+  border-radius: 8px;
+  padding: 10px; /* 👈 your requested padding */
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  margin-top: 10px;
+  border-left: 4px solid #3b82f6; // accent line
+}
+
+.detail-item {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 8px;
+}
+
+.detail-title {
+  font-weight: 600;
+  color: #2563eb;
+  font-size: 14.5px;
+}
+
+.detail-value {
+  color: #333;
+  font-size: 14px;
+  margin-top: 2px;
+  word-wrap: break-word;
+}
+
+@media (max-width: 768px) {
+  .details-section {
+    padding: 8px;
+  }
+}
+
+
+.print-button:hover {
+  transform: translateY(-1px);
+}
+
+.gradient-btn {
+  background: linear-gradient(45deg, #4e54c8, #8f94fb);
+  border-radius: 8px;
+  color: #fff;
+  font-weight: 600;
+  padding: 0 16px;
+  box-shadow: 0 4px 12px rgba(78, 84, 200, 0.4);
+}
+.center-columns {
+  justify-content: center;
+  text-align: center;
+}
+
+
+.swal2-container {
+  z-index: 99999 !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.swal2-popup {
+  margin-top: 0 !important;
+  transform: translate(0, 0) !important;
+}
+.one-big-card {
+  height: auto !important;
+  overflow-y: auto; /* scroll inside card */
+  padding-bottom: 20px;
+}
+.upload-wrapper {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  margin-top: 6px;
+}
+
+/* Input box (left side) */
+.file-input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #c8c7cc;
+  border-right: none;                 /* merge with button */
+  border-radius: 8px 0 0 8px;
+  background: #fff;
+  font-size: 14px;
+  color: #000;                        /* show file text */
+  text-indent: 0;                     /* reset any hidden text */
+  height: 40px;                       /* FIX HEIGHT */
+  box-sizing: border-box;
+}
+
+/* Upload button (right side) */
+.upload-btn {
+  margin: 0;
+  height: 40px;                       /* SAME HEIGHT AS INPUT */
+  border-radius: 0 8px 8px 0;
+  --padding-start: 14px;
+  --padding-end: 14px;
+  --border-radius: 0 8px 8px 0;
+  --box-shadow: none;
+}
+
+.custom-ngselect{
+  width: 93%;
+  margin-left: 15px !important;
+}
+.custom-textarea {
+  border: 1px solid rgba(0, 0, 0, 0.3); /* light border */
+  height: auto;
+  margin-top: 6px;
+  border-radius: 5px;
+
+  display: flex;
+  align-items: center;         /* center text vertically */
+  padding: 0 6px;              /* adjust padding for small height */
+  font-size: 14px;
+}
+.file-item{
+  margin-top: 10px !important;
+}

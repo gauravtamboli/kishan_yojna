@@ -1,0 +1,183 @@
+/*
+ * App Global CSS
+ * ----------------------------------------------------------------------------
+ * Put style rules here that you want to apply globally. These styles are for
+ * the entire app and not just one component. Additionally, this file can be
+ * used as an entry point to import other CSS/Sass files to be included in the
+ * output CSS.
+ * For more information on global stylesheets, visit the documentation:
+ * https://ionicframework.com/docs/layout/global-stylesheets
+ */
+
+/* Core CSS required for Ionic components to work properly */
+@import "@ionic/angular/css/core.css";
+
+/* Basic CSS for apps built with Ionic */
+@import "@ionic/angular/css/normalize.css";
+@import "@ionic/angular/css/structure.css";
+@import "@ionic/angular/css/typography.css";
+@import "@ionic/angular/css/display.css";
+
+/* Optional CSS utils that can be commented out */
+@import "@ionic/angular/css/padding.css";
+@import "@ionic/angular/css/float-elements.css";
+@import "@ionic/angular/css/text-alignment.css";
+@import "@ionic/angular/css/text-transformation.css";
+@import "@ionic/angular/css/flex-utils.css";
+
+/**
+ * Ionic Dark Mode
+ * -----------------------------------------------------
+ * For more info, please see:
+ * https://ionicframework.com/docs/theming/dark-mode
+ */
+
+/* @import "@ionic/angular/css/palettes/dark.always.css"; */
+/* @import "@ionic/angular/css/palettes/dark.class.css"; */
+// @import '@ionic/angular/css/palettes/dark.system.css';
+// @import '@ionic/angular/css/palettes/light.css';
+
+
+.my-custom-toast {
+  background-color: #3880ff;
+  /* Change background color */
+  color: white;
+  /* Text color */
+  border-radius: 10px;
+  /* Rounded corners */
+  padding: 10px;
+  /* Padding */
+  font-size: 16px;
+  /* Font size */
+}
+
+.alert-accept {
+  color: green !important;
+  font-weight: bold;
+}
+
+.alert-reject {
+  color: red !important;
+  font-weight: bold;
+}
+
+.custom-dialog-modal {
+  --width: 90vw;
+  --max-width: 400px;
+  --height: auto;
+  --border-radius: 16px;
+  --box-shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
+  --background: #fff;
+  --overflow: visible;
+
+  ion-modal {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+.custom-dialog-modal::part(content) {
+  z-index: 9999; // Try increasing
+  background: white;
+  border-radius: var(--border-radius);
+  padding: 1rem;
+  width: 90vw;
+  max-width: 400px;
+  height: auto;
+  max-height: 90vh;
+  overflow: auto; // Allows scrolling when content is too long
+  box-shadow: var(--box-shadow);
+  background: var(--background);
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+/* Optional: Add responsiveness for smaller devices */
+@media (max-width: 360px) {
+  .custom-dialog-modal::part(content) {
+    padding: 0.75rem;
+    max-width: 95vw;
+  }
+}
+
+:root {
+  --ion-safe-area-top: env(safe-area-inset-top);
+}
+
+.responsive-title {
+  font-size: 12px;
+
+  @media (min-width: 600px) {
+    font-size: 16px;
+  }
+
+  @media (min-width: 1024px) {
+    font-size: 20px;
+  }
+}
+
+/* ===================================== */
+/* SweetAlert2 PERFECT CENTER FIX (Ionic) */
+/* ===================================== */
+
+/* Remove Ionic transform that breaks fixed positioning */
+ion-content,
+ion-router-outlet,
+.inner-scroll {
+  transform: none !important;
+}
+
+/* Force Swal container to true viewport center */
+body > .swal2-container {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+
+  z-index: 1000000 !important;
+}
+
+/* Remove default Swal top margin */
+.swal2-popup {
+  margin: 0 !important;
+}
+
+
+
+// // LOADING CSS START //
+// .custom-loading::part(backdrop) {
+//   background: rgba(0, 0, 0, 0.5);
+//   backdrop-filter: blur(2px);
+// }
+
+// .custom-loading::part(loading-wrapper) {
+//   border-radius: 12px;
+//   background: white;
+//   padding: 24px;
+//   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+//   display: flex;
+//   flex-direction: column;
+//   align-items: center;
+//   text-align: center;
+//   color: #333;
+// }
+
+// .custom-loading::part(message) {
+//   font-size: 1rem;
+//   margin-top: 12px;
+//   color: #666;
+// }
+
+// /* Optional: Customize the spinner */
+// .custom-loading::part(spinner) {
+//   width: 36px;
+//   height: 36px;
+//   stroke: #3880ff; // primary Ionic blue
+// }
+
+// LOADING CSS END //

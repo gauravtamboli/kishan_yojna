@@ -1,0 +1,285 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button
+        class="custom-back-button"
+        (click)="goBack()"
+        defaultHref="/officers-dashboard"
+      ></ion-back-button>
+    </ion-buttons>
+    <ion-title class="responsive-toolbar-title">गोस्वारा रिपोर्ट</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <!-- Header Card -->
+  <ion-card>
+    <ion-card-content>
+      <div style="text-align: center;">
+        <strong>किसान वृक्ष मित्र योजना अन्तर्गत वर्ष 2025-2026 मे रोपण विवरण</strong>
+        <ion-button style="float: inline-end;" (click)="exportToExcel()">
+          <ion-icon slot="start" name="download-outline"></ion-icon>
+          Export To Excel
+        </ion-button>
+      </div>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Loader -->
+  <ion-card *ngIf="isLoading">
+    <ion-card-content style="text-align:center;">
+      {{ loadingMessage }}
+    </ion-card-content>
+  </ion-card>
+
+  <!-- All Circles Report (Designation 7) -->
+  <ng-container *ngIf="!isLoading && isAllCirclesLevel && allCirclesData.length">
+    <ion-card *ngFor="let circle of allCirclesData; let circleIndex = index" style="margin-bottom: 20px;">
+      <ion-card-content>
+        <h2 style="text-align: center; margin-bottom: 15px; color: #2d5aa0;">
+          <strong>वृत्त: {{ circle.circleName }}</strong>
+        </h2>
+        <div class="table-responsive" style="overflow-x: auto;">
+          <table [id]="'circle-table-' + circleIndex" class="circle-report-table" border="1" cellspacing="0" cellpadding="5" style="width: 100%; border-collapse: collapse;">
+            <thead>
+              <tr>
+                <th rowspan="2">क्र.</th>
+                <th rowspan="2">वनमंडल का नाम</th>
+                
+                <!-- Dynamic Plant Type Columns -->
+                <th *ngFor="let plant of plantTypes" [attr.colspan]="4">{{ plant.plant_name }}</th>
+                
+                <!-- Mahayog (Total) Column -->
+                <th colspan="4">महायोग</th>
+              </tr>
+              <tr>
+                <!-- Repeat 4 columns for each plant type -->
+                <ng-container *ngFor="let plant of plantTypes">
+                  <th>किसानों की संख्या</th>
+                  <th>रकबा (एकड़)</th>
+                  <th>पौधों की संख्या</th>
+                  <th>रोपित पौधों की संख्या</th>
+                </ng-container>
+                
+                <!-- Mahayog columns -->
+                <th>किसानों की संख्या</th>
+                <th>रकबा (एकड़)</th>
+                <th>पौधों की संख्या</th>
+                <th>रोपित पौधों की संख्या</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr *ngFor="let division of circle.divisions; let i = index">
+                <td>{{ i + 1 }}</td>
+                <td>{{ division.divisionName || 'N/A' }}</td>
+                
+                <!-- Dynamic Plant Data for each division row -->
+                <ng-container *ngFor="let plant of plantTypes">
+                  <td>{{ getPlantDataForDivision(division, plant.id).farmersCount || 0 }}</td>
+                  <td>{{ getPlantDataForDivision(division, plant.id).area || 0 }}</td>
+                  <td>{{ getPlantDataForDivision(division, plant.id).plantsCount || 0 }}</td>
+                  <td>{{ getPlantDataForDivision(division, plant.id).plantedCount || 0 }}</td>
+                </ng-container>
+                
+                <!-- Mahayog (Total) for each division row -->
+                <td>{{ division.totalFarmers || 0 }}</td>
+                <td>{{ division.totalArea || 0 }}</td>
+                <td>{{ division.totalPlants || 0 }}</td>
+                <td>{{ division.totalPlanted || 0 }}</td>
+              </tr>
+            </tbody>
+
+            <tfoot>
+              <tr>
+                <td [attr.colspan]="2" style="text-align:center; font-weight:bold;">कुल योग ({{ circle.circleName }})</td>
+                
+                <!-- Dynamic Plant Totals for this circle -->
+                <ng-container *ngFor="let plant of plantTypes">
+                  <td style="font-weight:bold;">{{ calculateCircleTotals(circle)[plant.id.toString()].farmersCount || 0 }}</td>
+                  <td style="font-weight:bold;">{{ calculateCircleTotals(circle)[plant.id.toString()].area || 0 }}</td>
+                  <td style="font-weight:bold;">{{ calculateCircleTotals(circle)[plant.id.toString()].plantsCount || 0 }}</td>
+                  <td style="font-weight:bold;">{{ calculateCircleTotals(circle)[plant.id.toString()].plantedCount || 0 }}</td>
+                </ng-container>
+                
+                <!-- Circle Total (Mahayog) -->
+                <td style="font-weight:bold;">{{ circle.totalFarmers || 0 }}</td>
+                <td style="font-weight:bold;">{{ circle.totalArea || 0 }}</td>
+                <td style="font-weight:bold;">{{ circle.totalPlants || 0 }}</td>
+                <td style="font-weight:bold;">{{ circle.totalPlanted || 0 }}</td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Overall Grand Total Table -->
+    <ion-card *ngIf="allCirclesData.length > 1">
+      <ion-card-content>
+        <h2 style="text-align: center; margin-bottom: 15px; color: #d32f2f;">
+          <strong>सम्पूर्ण महायोग (सभी वृत्तों का कुल योग)</strong>
+        </h2>
+        <div class="table-responsive" style="overflow-x: auto;">
+          <table class="grand-total-table" border="1" cellspacing="0" cellpadding="5" style="width: 100%; border-collapse: collapse;">
+            <thead>
+              <tr>
+                <th rowspan="2">वृत्त</th>
+                
+                <!-- Dynamic Plant Type Columns -->
+                <th *ngFor="let plant of plantTypes" [attr.colspan]="4">{{ plant.plant_name }}</th>
+                
+                <!-- Mahayog (Total) Column -->
+                <th colspan="4">महायोग</th>
+              </tr>
+              <tr>
+                <!-- Repeat 4 columns for each plant type -->
+                <ng-container *ngFor="let plant of plantTypes">
+                  <th>किसानों की संख्या</th>
+                  <th>रकबा (एकड़)</th>
+                  <th>पौधों की संख्या</th>
+                  <th>रोपित पौधों की संख्या</th>
+                </ng-container>
+                
+                <!-- Mahayog columns -->
+                <th>किसानों की संख्या</th>
+                <th>रकबा (एकड़)</th>
+                <th>पौधों की संख्या</th>
+                <th>रोपित पौधों की संख्या</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let circle of allCirclesData">
+                <td>{{ circle.circleName }}</td>
+                
+                <!-- Dynamic Plant Totals for each circle -->
+                <ng-container *ngFor="let plant of plantTypes">
+                  <td>{{ calculateCircleTotals(circle)[plant.id.toString()].farmersCount || 0 }}</td>
+                  <td>{{ calculateCircleTotals(circle)[plant.id.toString()].area || 0 }}</td>
+                  <td>{{ calculateCircleTotals(circle)[plant.id.toString()].plantsCount || 0 }}</td>
+                  <td>{{ calculateCircleTotals(circle)[plant.id.toString()].plantedCount || 0 }}</td>
+                </ng-container>
+                
+                <!-- Circle Total (Mahayog) -->
+                <td>{{ circle.totalFarmers || 0 }}</td>
+                <td>{{ circle.totalArea || 0 }}</td>
+                <td>{{ circle.totalPlants || 0 }}</td>
+                <td>{{ circle.totalPlanted || 0 }}</td>
+              </tr>
+            </tbody>
+            <tfoot>
+              <tr>
+                <td style="text-align:center; font-weight:bold;">सम्पूर्ण महायोग</td>
+                
+                <!-- Overall Plant Totals -->
+                <ng-container *ngFor="let plant of plantTypes">
+                  <td style="font-weight:bold;">{{ getPlantTotal(plant.id).farmersCount || 0 }}</td>
+                  <td style="font-weight:bold;">{{ getPlantTotal(plant.id).area || 0 }}</td>
+                  <td style="font-weight:bold;">{{ getPlantTotal(plant.id).plantsCount || 0 }}</td>
+                  <td style="font-weight:bold;">{{ getPlantTotal(plant.id).plantedCount || 0 }}</td>
+                </ng-container>
+                
+                <!-- Overall Total (Mahayog) -->
+                <td style="font-weight:bold;">{{ overallTotals.farmersCount || 0 }}</td>
+                <td style="font-weight:bold;">{{ overallTotals.area || 0 }}</td>
+                <td style="font-weight:bold;">{{ overallTotals.plantsCount || 0 }}</td>
+                <td style="font-weight:bold;">{{ overallTotals.plantedCount || 0 }}</td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </ion-card-content>
+    </ion-card>
+  </ng-container>
+
+  <!-- Regular Data Table (for other designations) -->
+  <ion-card *ngIf="!isLoading && !isAllCirclesLevel && reportData.length; else noData">
+    <ion-card-content>
+      <div class="table-responsive" style="overflow-x: auto;">
+        <table id="report-table" border="1" cellspacing="0" cellpadding="5" style="width: 100%; border-collapse: collapse;">
+          <thead>
+            <tr>
+              <th rowspan="2">क्र.</th>
+              <th rowspan="2">वृत्त का नाम</th>
+              <th rowspan="2">वनमंडल का नाम</th>
+              <th *ngIf="!isCircleLevel" rowspan="2">रेंज का नाम</th>
+              
+              <!-- Dynamic Plant Type Columns -->
+              <th *ngFor="let plant of plantTypes" [attr.colspan]="4">{{ plant.plant_name }}</th>
+              
+              <!-- Mahayog (Total) Column -->
+              <th colspan="4">महायोग</th>
+            </tr>
+            <tr>
+              <!-- Repeat 4 columns for each plant type -->
+              <ng-container *ngFor="let plant of plantTypes">
+                <th>किसानों की संख्या</th>
+                <th>रकबा (एकड़)</th>
+                <th>पौधों की संख्या</th>
+                <th>रोपित पौधों की संख्या</th>
+              </ng-container>
+              
+              <!-- Mahayog columns -->
+              <th>किसानों की संख्या</th>
+              <th>रकबा (एकड़)</th>
+              <th>पौधों की संख्या</th>
+              <th>रोपित पौधों की संख्या</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr *ngFor="let data of reportData; let i = index">
+              <td>{{ i + 1 }}</td>
+              <td>{{ data.circleName || 'N/A' }}</td>
+              <td>{{ data.divisionName || 'N/A' }}</td>
+              <td *ngIf="!isCircleLevel">{{ data.rangName || 'N/A' }}</td>
+              
+              <!-- Dynamic Plant Data for each row -->
+              <ng-container *ngFor="let plant of plantTypes">
+                <td>{{ getPlantDataForRow(data, plant.id).farmersCount || 0 }}</td>
+                <td>{{ getPlantDataForRow(data, plant.id).area || 0 }}</td>
+                <td>{{ getPlantDataForRow(data, plant.id).plantsCount || 0 }}</td>
+                <td>{{ getPlantDataForRow(data, plant.id).plantedCount || 0 }}</td>
+              </ng-container>
+              
+              <!-- Mahayog (Total) for each row -->
+              <td>{{ data.totalFarmers || 0 }}</td>
+              <td>{{ data.totalArea || 0 }}</td>
+              <td>{{ data.totalPlants || 0 }}</td>
+              <td>{{ data.totalPlanted || 0 }}</td>
+            </tr>
+          </tbody>
+
+          <tfoot>
+            <tr>
+              <td [attr.colspan]="isCircleLevel ? 3 : 4" style="text-align:center; font-weight:bold;">कुल योग</td>
+              
+              <!-- Dynamic Plant Totals -->
+              <ng-container *ngFor="let plant of plantTypes">
+                <td>{{ getPlantTotal(plant.id).farmersCount || 0 }}</td>
+                <td>{{ getPlantTotal(plant.id).area || 0 }}</td>
+                <td>{{ getPlantTotal(plant.id).plantsCount || 0 }}</td>
+                <td>{{ getPlantTotal(plant.id).plantedCount || 0 }}</td>
+              </ng-container>
+              
+              <!-- Overall Total (Mahayog) -->
+              <td style="font-weight:bold;">{{ overallTotals.farmersCount || 0 }}</td>
+              <td style="font-weight:bold;">{{ overallTotals.area || 0 }}</td>
+              <td style="font-weight:bold;">{{ overallTotals.plantsCount || 0 }}</td>
+              <td style="font-weight:bold;">{{ overallTotals.plantedCount || 0 }}</td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </ion-card-content>
+  </ion-card>
+ 
+  <ng-template #noData>
+    <ion-card>
+      <ion-card-content style="text-align:center;">
+        कोई डेटा उपलब्ध नहीं है।
+      </ion-card-content>
+    </ion-card>
+  </ng-template>
+
+</ion-content>

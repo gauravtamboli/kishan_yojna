@@ -1,0 +1,161 @@
+.center-grid {
+  align-items: center;
+  /* Vertically center the content */
+  height: 80%;
+  display: flex;
+  justify-content: center;
+  /* Make sure the grid takes full height of the viewport */
+}
+
+.splash-page-custom-label {
+  font-size: 25px;
+  font-weight: bold;
+  color: #4CAF50;
+  /* Custom color */
+  padding: 10px;
+  text-transform: uppercase;
+  /* Make the text uppercase */
+  letter-spacing: 2px;
+  /* Add letter spacing for a more elegant look */
+  justify-content: center;
+}
+
+.full-height-row {
+  display: flex;
+  /* Flexbox for alignment */
+  justify-content: center;
+  /* Centers the content horizontally */
+}
+
+.row-50 {
+  height: 50%;
+  /* 50% of the parent container's height */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* Optional: center the content vertically */
+}
+
+.centered-content-div {
+  display: flex;
+  justify-content: center;
+  /* Horizontally center */
+  align-items: center;
+  /* Vertically center */
+}
+
+.custom-spinner-only .loading-wrapper {
+  background: transparent !important;
+  box-shadow: none !important;
+  --background: transparent !important;
+  --box-shadow: none !important;
+  border: none !important;
+  padding: 0 !important;
+  min-width: unset !important;
+  min-height: unset !important;
+  width: auto !important;
+  height: auto !important;
+}
+
+.custom-spinner-only .loading-content {
+  display: none !important;
+}
+
+.custom-spinner-only .loading-spinner {
+  width: 40px;
+  height: 40px;
+}
+
+// ion-content {
+//   --background: linear-gradient(135deg, #f5f7fa 0%, #e4e8eb 100%);
+// }
+
+.splash-container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.logo-container {
+  margin-bottom: 2rem;
+  animation: fadeInDown 1s ease-out;
+}
+
+.app-logo {
+  max-width: 200px;
+  height: auto;
+  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.1));
+}
+
+.content-container {
+  text-align: center;
+  animation: fadeInUp 1s ease-out;
+}
+
+.app-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #2c3e50;
+  margin-bottom: 2rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.custom-spinner {
+  width: 48px;
+  height: 48px;
+  --color: #4CAF50;
+}
+
+.loading-text {
+  color: #666;
+  font-size: 1rem;
+  margin: 0;
+  font-weight: 500;
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// Responsive adjustments
+@media (max-width: 768px) {
+  .app-logo {
+    max-width: 150px;
+  }
+
+  .app-title {
+    font-size: 1.5rem;
+  }
+}

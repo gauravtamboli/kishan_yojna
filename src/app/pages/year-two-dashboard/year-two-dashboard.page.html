@@ -1,0 +1,344 @@
+<ion-split-pane contentId="main-content" when="(min-width: 768px)">
+  <ion-menu class="custom-menu" side="start" content-id="main-content">
+    <ion-header class="ion-header-class-for-menu">
+      <!-- <div class="bg"></div> -->
+      <ion-item lines="none">
+        <ion-avatar slot="start">
+          <img src="assets/img/app_logo.png" />
+        </ion-avatar>
+        <ion-label class="ion-label" style=" text-wrap: nowrap;">
+          {{ getTranslation('app_name')}}
+          <p class="p">
+            <ion-text style="font-size: small ;"> ({{ getTranslation('state_name')}}) </ion-text>
+          </p>
+        </ion-label>
+      </ion-item>
+    </ion-header>
+
+    <ion-content>
+      <ion-list>
+        <ion-menu-toggle auto-hide="false">
+          <ion-item *ngFor="let page of pages; let i = index" class="no-gap-item" lines="none">
+            <ng-container *ngIf="page.is_submenu; else noSubMenu">
+              <ion-text class="responsive-menu-title" style="width: 100%; margin-left: 10px"
+                (click)="onMenuItemClick(page.url)">{{ page.title }}</ion-text>
+            </ng-container>
+            <ng-template #noSubMenu>
+              <ng-container>
+                <ion-text class="responsive-menu-title" style="font-weight: 900; width: 100%; margin-top: 5px"
+                  (click)="onMenuItemClick(page.url)"> * {{ page.title }}</ion-text>
+              </ng-container>
+            </ng-template>
+          </ion-item>
+        </ion-menu-toggle>
+      </ion-list>
+    </ion-content>
+  </ion-menu>
+
+  <div class="ion-page" id="main-content">
+    <ion-header>
+      <div class="div-color">
+        <ion-toolbar style="padding-top: 10px; color: white">
+          <ion-title class="ion-text-center">{{ getLoginedOfficerName() }}</ion-title>
+          <ion-menu-button style="color: white" slot="start"></ion-menu-button>
+          <ion-buttons slot="end">
+            <ion-buttons slot="end">
+              <ion-button fill="clear" id="userMenuBtn" class="icon-btn-options">
+                <ion-icon name="options-outline"></ion-icon>
+              </ion-button>
+              <ion-popover trigger="userMenuBtn" side="bottom" alignment="end" dismissOnSelect="true">
+                <ng-template>
+                  <ion-list>
+                    <ion-item button (click)="onYearSelect(1)">प्रथम वर्ष</ion-item>
+                    <ion-item button (click)="onYearSelect(3)">तृतीय वर्ष</ion-item>
+                    <ion-item button (click)="goToProfile()">Profile</ion-item>
+                    <ion-item button (click)="changePassword()">Change Password</ion-item>
+                    <ion-item button color="danger" (click)="logoutFunction()">Logout</ion-item>
+                  </ion-list>
+                </ng-template>
+              </ion-popover>
+
+            </ion-buttons> </ion-buttons>
+        </ion-toolbar>
+      </div>
+    </ion-header>
+
+    <ion-content>
+      <ion-loading cssClass="custom-loading" [isOpen]="isLoading" [message]="loadingMessage"
+        [backdropDismiss]="false"></ion-loading>
+
+      <ion-grid>
+        <ion-row>
+          <ion-col size="12" size-lg="12">
+            <ion-grid>
+              <ion-row style="display: flex; flex-direction: row; justify-content: center;">
+                <!-- कुल आवेदन -->
+                <ion-col size="12" size-lg="4">
+                  <ion-card class="custom-card" (click)="onBoxClick(1)">
+                    <ion-grid style="background: linear-gradient(135deg, #198edb 0%, #1565c0 100%);">
+                      <ion-row>
+                        <ion-col size="9" class="ion-text-center">
+                          <ion-label class="responsive-label-count label-divider">
+                            <span class="label-text">कुल आवेदन</span>
+                            <span class="label-count">{{ totalCount }}</span>
+                          </ion-label>
+                        </ion-col>
+                      </ion-row>
+                    </ion-grid>
+                  </ion-card>
+                </ion-col>
+
+                <!-- द्वितीय वर्ष में डेटा दर्ज है -->
+                <ion-col size="12" size-lg="4">
+                  <ion-card class="custom-card" (click)="onBoxClick(2)">
+                    <ion-grid style="background: linear-gradient(135deg, #4caf50 0%, #388e3c 100%);">
+                      <ion-row>
+                        <ion-col size="9" class="ion-text-center">
+                          <ion-label class="responsive-label-count label-divider">
+                            <span class="label-text">द्वितीय वर्ष की पूर्ण प्रविष्टि</span>
+                            <span class="label-count">{{ countYes }}</span>
+                          </ion-label>
+                        </ion-col>
+                      </ion-row>
+                    </ion-grid>
+                  </ion-card>
+                </ion-col>
+
+                <!-- द्वितीय वर्ष में डेटा दर्ज नहीं है -->
+                <ion-col size="12" size-lg="4">
+                  <ion-card class="custom-card" (click)="onBoxClick(3)">
+                    <ion-grid style="background: linear-gradient(135deg, #ff9800 0%, #f57c00 100%);">
+                      <ion-row>
+                        <ion-col size="9" class="ion-text-center">
+                          <ion-label class="responsive-label-count label-divider">
+                            <span class="label-text">द्वितीय वर्ष की अपूर्ण प्रविष्टि</span>
+                            <span class="label-count">{{ countNo }}</span>
+                          </ion-label>
+                        </ion-col>
+                      </ion-row>
+                    </ion-grid>
+                  </ion-card>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+
+            <hr style="background-color: black; height: 1px; margin-top: 20px;" />
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+
+      <div class="ion-padding">
+        <!-- <ion-card>
+          <ion-card-content>
+            <div style="text-align: center; justify-content: center; justify-items: center; ">
+              <ion-row>
+                <ion-col size="12" size-lg="12" class="ion-text-start">
+                  <ion-text color="primary" style="font-size: 1.5rem; font-weight: 600;">
+                    {{ getCurrentFilterLabel() }}
+                  </ion-text>
+                </ion-col>
+              </ion-row>
+            </div>
+          </ion-card-content>
+        </ion-card> -->
+
+        <!-- Data Table -->
+
+        <div class="table-responsive shadow-sm rounded-4">
+          <ion-row class="d-flex align-items-center justify-content-between ion-gap" style="margin-bottom: 20px;">
+
+            <ion-col size="12" size-lg="6">
+              <ion-input class="custom-input shadow-sm search-input" [(ngModel)]="searchMobile" fill="outline"
+                placeholder="आवेदन नंबर / हितग्राही नाम / पिता का नाम / वन मंडल" (ionInput)="onSearch($event)"
+                (keyup.enter)="onEnter()">
+              </ion-input>
+            </ion-col>
+            <ion-col size="12" size-lg="6" class="ion-text-end">
+              <ion-button (click)="export()" fill="solid" color="success" class="export-button shadow-sm "
+                style="height: 50px;">
+                <ion-icon slot="start" name="download-outline"></ion-icon>
+                Export To Excel
+              </ion-button>
+
+            </ion-col>
+          </ion-row>
+          <p-table [value]="filteredAwedans" [paginator]="false" [responsiveLayout]="'scroll'"
+            class="bootstrap-table p-datatable-striped p-datatable-hoverable-rows custom-dashboard-table"
+            id="dashboard_table">
+            <!-- Header -->
+            <ng-template pTemplate="header">
+              <tr>
+                <th>#</th>
+                <th>आवेदन नंबर</th>
+                <th>हितग्राही का नाम</th>
+                <th>पिता का नाम</th>
+                <th>वन मंडल</th>
+                <th>रेंज</th>
+                <th>वृत्त</th>
+                <th>वर्ष 2 की प्रविष्टि</th>
+                <th>पौधा</th>
+                <th>क्षेत्रफल (एकड़)</th>
+                <th>रोपित</th>
+                <th>द्वितीय वर्ष जीवित</th>
+                <th>जीवित %</th>
+                <th class="text-center">क्रियाएँ</th>
+              </tr>
+            </ng-template>
+
+            <!-- Body -->
+            <ng-template pTemplate="body" let-item let-i="rowIndex">
+              <!-- Application Row (First Row) -->
+              <tr style="background-color: #f0f7ff; font-weight: bold;">
+                <td [attr.rowspan]="(item.plants && item.plants.length > 0) ? item.plants.length + 1 : 1">
+                  {{ (currentPage - 1) * pageSize + i + 1 }}
+                </td>
+                <td [attr.rowspan]="(item.plants && item.plants.length > 0) ? item.plants.length + 1 : 1">
+                  {{ item.application_number }}
+                </td>
+                <td [attr.rowspan]="(item.plants && item.plants.length > 0) ? item.plants.length + 1 : 1">
+                  <div class="beneficiary-cell">
+                    <strong>{{ item.hitgrahi_name }}</strong>
+                  </div>
+                </td>
+                <td [attr.rowspan]="(item.plants && item.plants.length > 0) ? item.plants.length + 1 : 1">
+                  {{ item.father_name }}
+                </td>
+                <td [attr.rowspan]="(item.plants && item.plants.length > 0) ? item.plants.length + 1 : 1">
+                  {{ item.van_mandal_name }}
+                </td>
+                <td [attr.rowspan]="(item.plants && item.plants.length > 0) ? item.plants.length + 1 : 1">
+                  {{ item.rang_name }}
+                </td>
+                <td [attr.rowspan]="(item.plants && item.plants.length > 0) ? item.plants.length + 1 : 1">
+                  {{ item.circle_name }}
+                </td>
+                <td [attr.rowspan]="(item.plants && item.plants.length > 0) ? item.plants.length + 1 : 1">
+                  <span class="status-badge" [ngClass]="{
+                    'status-approved': item.has_record_in_year2 === 'Yes',
+                    'status-pending': item.has_record_in_year2 === 'No'
+                  }">
+                    {{ item.has_record_in_year2 === 'Yes' ? 'हाँ' : 'नहीं' }}
+                  </span>
+                </td>
+                <td colspan="5" style="text-align: center; background-color: #e3f2fd; font-weight: bold;">
+                  आवेदन विवरण
+                </td>
+                <td [attr.rowspan]="(item.plants && item.plants.length > 0) ? item.plants.length + 1 : 1"
+                  class="text-center">
+                  <div class="action-buttons">
+                    <ion-button fill="outline" color="primary" size="small" (click)="viewApplication(item)">
+                      <span
+                        style="font-family: 'Noto Sans Devanagari', 'Mangal', sans-serif; font-size: 11px;">विवरण</span>
+                    </ion-button>
+                    <ion-button *ngIf="isRangeOfficer && hasPlantsNeedingData(item.application_number)" fill="outline"
+                      color="success" size="small" [disabled]="!canSubmitForApplication(item.application_number)"
+                      (click)="submitYearTwoData(item.application_number)" style="margin-top: 5px;">
+                      <span
+                        style="font-family: 'Noto Sans Devanagari', 'Mangal', sans-serif; font-size: 11px;">सबमिट</span>
+                    </ion-button>
+                  </div>
+                </td>
+              </tr>
+
+              <!-- Plant Rows (Subsequent Rows) -->
+              <ng-container *ngIf="item.plants && item.plants.length > 0">
+                <tr *ngFor="let plant of item.plants; let plantIndex = index" style="background-color: #fafafa;">
+                  <td style="padding-left: 20px;">
+                    {{ plantIndex + 1 }}. {{ plant.plant_name }}
+                    <ion-badge *ngIf="plant.has_year2_data" color="success"
+                      style="margin-left: 5px; font-size: 9px; padding: 2px 5px;">
+                      दर्ज
+                    </ion-badge>
+                  </td>
+                  <td>{{ plant.total_area }}</td>
+                  <td>{{ plant.total_ropit }}</td>
+                  <td>
+                    <!-- Input for Year 2 data if missing and user is RO -->
+                    <ng-container *ngIf="!plant.has_year2_data && isRangeOfficer">
+                      <ion-input type="number" [value]="getPlantInput(item.application_number, plant.plant_id)"
+                        (ionInput)="onPlantInputChange(item.application_number, plant.plant_id, $event)" [min]="0"
+                        [max]="plant.total_ropit" placeholder="0"
+                        style="width: 90px; display: inline-block; font-size: 12px;" size="small"></ion-input>
+                      <div
+                        *ngIf="!validatePlantInput(plant) && getPlantInput(item.application_number, plant.plant_id) !== null"
+                        style="color: #d32f2f; font-size: 9px; margin-top: 2px;">
+                        अधिकतम: {{ plant.total_ropit }}
+                      </div>
+                    </ng-container>
+                    <!-- Read-only for non-RO or if data exists -->
+                    <ng-container *ngIf="plant.has_year2_data">
+                      {{ plant.plants_remaining_two }}
+                    </ng-container>
+                    <ng-container *ngIf="!plant.has_year2_data && !isRangeOfficer">
+                      <span style="color: #f57c00; font-size: 10px;">RO द्वारा दर्ज करें</span>
+                    </ng-container>
+                  </td>
+                  <td>
+                    <ng-container *ngIf="plant.has_year2_data && plant.survival_percentage">
+                      <span style="color: #2e7d32; font-weight: bold; font-size: 12px;">{{ plant.survival_percentage
+                        }}%</span>
+                    </ng-container>
+                    <ng-container *ngIf="!plant.has_year2_data && isRangeOfficer && validatePlantInput(plant)">
+                      <span style="color: #2e7d32; font-weight: bold; font-size: 12px;">{{
+                        calculateSurvivalPercentage(plant) }}%</span>
+                    </ng-container>
+                    <ng-container *ngIf="!plant.has_year2_data && !isRangeOfficer">
+                      <span style="color: #999; font-size: 11px;">-</span>
+                    </ng-container>
+                  </td>
+                  <td></td>
+                </tr>
+              </ng-container>
+
+              <!-- No Plants Message Row -->
+              <tr *ngIf="!item.plants || item.plants.length === 0" style="background-color: #fafafa;">
+                <td colspan="5" style="text-align: center; color: #999; font-style: italic; padding: 10px;">
+                  कोई पौधा डेटा नहीं
+                </td>
+                <td></td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </div>
+
+        <!-- Custom Pagination -->
+        <div *ngIf="totalPages > 1" class="pagination-container mt-3">
+          <ion-row class="align-items-center justify-content-center">
+            <ion-col size="auto">
+              <ion-button [disabled]="currentPage === 1" (click)="goToPreviousPage()" fill="outline" size="small">
+                <ion-icon name="chevron-back-outline" slot="start"></ion-icon>
+                पिछला
+              </ion-button>
+            </ion-col>
+
+            <ion-col size="auto">
+              <div class="page-numbers">
+                <ion-button *ngFor="let page of getPageNumbers()" [color]="page === currentPage ? 'primary' : 'medium'"
+                  [fill]="page === currentPage ? 'solid' : 'outline'" size="small" (click)="goToPage(page)"
+                  class="page-btn">
+                  {{ page }}
+                </ion-button>
+              </div>
+            </ion-col>
+
+            <ion-col size="auto">
+              <ion-button [disabled]="currentPage === totalPages" (click)="goToNextPage()" fill="outline" size="small">
+                अगला
+                <ion-icon name="chevron-forward-outline" slot="end"></ion-icon>
+              </ion-button>
+            </ion-col>
+
+            <ion-col size="auto" class="text-muted">
+              <small>पृष्ठ {{ currentPage }} / {{ totalPages }} (कुल {{ totalRecords }} रिकॉर्ड)</small>
+            </ion-col>
+          </ion-row>
+        </div>
+
+        <!-- No record message -->
+        <div *ngIf="isNoRecordFound" class="no-record-found-box">
+          <ion-label>कोई आवेदन प्राप्त नहीं</ion-label>
+        </div>
+      </div>
+    </ion-content>
+  </div>
+</ion-split-pane>

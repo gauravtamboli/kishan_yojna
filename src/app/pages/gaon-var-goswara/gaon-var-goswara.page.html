@@ -1,0 +1,193 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button
+        class="custom-back-button"
+        (click)="goBack()"
+        defaultHref="/officers-dashboard"
+      ></ion-back-button>
+    </ion-buttons>
+    <ion-title class="responsive-toolbar-title">गाँव वार गोस्वारा रिपोर्ट</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <!-- Header Card -->
+  <ion-card class="header-card">
+    <ion-card-content class="header-card-content">
+      <div class="header-container">
+        <div class="header-title-section">
+          <h2 class="header-title">गाँव वार गोस्वारा रिपोर्ट</h2>
+          <p class="header-subtitle">किसान वृक्ष मित्र योजना</p>
+        </div>
+        <ion-button 
+          *ngIf="reportData.length > 0" 
+          class="export-button"
+          color="success"
+          (click)="exportToExcel()">
+          <ion-icon slot="start" name="download-outline"></ion-icon>
+          Export To Excel
+        </ion-button>
+      </div>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Loader -->
+  <ion-card *ngIf="isLoading" class="loader-card">
+    <ion-card-content class="loader-content">
+      <ion-spinner name="crescent" class="loader-spinner"></ion-spinner>
+      <div class="loader-text">{{ loadingMessage }}</div>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Search Section -->
+  <ion-card *ngIf="!isLoading" class="search-card">
+    <ion-card-content class="search-card-content">
+      <div class="search-header">
+        <h3 class="search-title">रिपोर्ट खोजें</h3>
+      </div>
+      <ion-grid class="search-grid">
+        <ion-row class="search-row">
+          <ion-col size="12" size-md="8" size-lg="9">
+            <div class="select-wrapper">
+              <ion-label class="select-label">पौधा चुनें</ion-label>
+              <ion-select 
+                [(ngModel)]="selectedPlantId" 
+                placeholder="कृपया पौधा चुनें"
+                interface="popover"
+                class="custom-select">
+                <ion-select-option *ngFor="let plant of plants" [value]="plant.id">
+                  {{ plant.plantName }}
+                </ion-select-option>
+              </ion-select>
+            </div>
+          </ion-col>
+          <ion-col size="12" size-md="4" size-lg="3">
+            <ion-button 
+              expand="block" 
+              class="search-button"
+              color="primary"
+              (click)="searchReport()" 
+              [disabled]="!selectedPlantId">
+              <ion-icon slot="start" name="search-outline"></ion-icon>
+              खोजें
+            </ion-button>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Report Table -->
+  <div *ngIf="!isLoading && reportData.length > 0" class="report-container">
+    <ion-card class="report-card">
+      <ion-card-content class="report-card-content">
+        <div class="report-header-section">
+          <h3 class="report-title">रिपोर्ट विवरण</h3>
+          <div class="header-right-section">
+            <ion-input 
+              class="search-input"
+              [(ngModel)]="searchText"
+              (ngModelChange)="onSearchTextChanged()"
+              placeholder="खोजें..."
+              fill="outline"
+              clearInput="true">
+              <ion-icon name="search-outline" slot="start"></ion-icon>
+            </ion-input>
+            <span class="record-count">कुल रिकॉर्ड: {{ filteredReportData.length }}</span>
+          </div>
+        </div>
+        <div class="table-wrapper" *ngIf="filteredReportData.length > 0">
+          <table id="report-table" class="professional-table">
+            <thead>
+              <tr class="table-header-row">
+                <th >क्र.</th>
+                <th>वनमंडल</th>
+                <th>उप-वनमंडल</th>
+                <th>परिक्षेत्र</th>
+                <th class="village-col">गाँव का नाम</th>
+                <th>पौधा</th>
+                <th class="sortable-header" (click)="sortTable('totalFarmers')">
+                  <div class="header-content">
+                    <span>कुल किसान</span>
+                    <ion-icon 
+                      [name]="getSortIcon('totalFarmers')" 
+                      [class.active-sort]="isColumnSorted('totalFarmers')"
+                      class="sort-icon">
+                    </ion-icon>
+                  </div>
+                </th>
+                <th class="sortable-header" (click)="sortTable('totalArea')">
+                  <div class="header-content">
+                    <span>कुल रकबा</span>
+                    <ion-icon 
+                      [name]="getSortIcon('totalArea')" 
+                      [class.active-sort]="isColumnSorted('totalArea')"
+                      class="sort-icon">
+                    </ion-icon>
+                  </div>
+                </th>
+                <th class="sortable-header" (click)="sortTable('totalPlants')">
+                  <div class="header-content">
+                    <span>कुल पौधे</span>
+                    <ion-icon 
+                      [name]="getSortIcon('totalPlants')" 
+                      [class.active-sort]="isColumnSorted('totalPlants')"
+                      class="sort-icon">
+                    </ion-icon>
+                  </div>
+                </th>
+                <th >रोपित पौधे</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of filteredReportData; let i = index" class="table-data-row">
+                <td class="serial-col">{{ i + 1 }}</td>
+                <td class="text-left">{{ item.divName || '-' }}</td>
+                <td class="text-left">{{ item.subDivisionName || '-' }}</td>
+                <td class="text-left">{{ item.rangeName || '-' }}</td>
+                <td class="village-col text-left">{{ item.villageName || '-' }}</td>
+                <td class="text-left">{{ item.plantName || '-' }}</td>
+                <td class="number-col">{{ item.totalFarmers || 0 }}</td>
+                <td class="number-col">{{ item.totalArea || 0 }}</td>
+                <td class="number-col">{{ item.totalPlants || 0 }}</td>
+                <td class="number-col">{{ item.totalPlanted || 0 }}</td>
+              </tr>
+            </tbody>
+            <tfoot>
+              <tr class="table-footer-row">
+                <td colspan="6" class="total-label">कुल योग:</td>
+                <td class="number-col total-value">{{ getTotalFarmers() }}</td>
+                <td class="number-col total-value">{{ getTotalArea() }}</td>
+                <td class="number-col total-value">{{ getTotalPlants() }}</td>
+                <td class="number-col total-value">{{ getTotalPlanted() }}</td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+        <div *ngIf="filteredReportData.length === 0 && searchText" class="no-search-results">
+          <p>खोज परिणाम नहीं मिले।</p>
+        </div>
+      </ion-card-content>
+    </ion-card>
+  </div>
+
+  <!-- No Search Results Message -->
+  <ion-card *ngIf="!isLoading && reportData.length > 0 && filteredReportData.length === 0 && searchText" class="no-data-card">
+    <ion-card-content class="no-data-content">
+      <ion-icon name="search-outline" class="no-data-icon"></ion-icon>
+      <p class="no-data-text">खोज परिणाम नहीं मिले।</p>
+      <p class="no-data-subtext">कृपया अन्य खोज शब्द का प्रयास करें।</p>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- No Data Message -->
+  <ion-card *ngIf="!isLoading && reportData.length === 0 && selectedPlantId" class="no-data-card">
+    <ion-card-content class="no-data-content">
+      <ion-icon name="document-outline" class="no-data-icon"></ion-icon>
+      <p class="no-data-text">कोई डेटा उपलब्ध नहीं है।</p>
+      <p class="no-data-subtext">कृपया अन्य पौधा चुनकर पुनः प्रयास करें।</p>
+    </ion-card-content>
+  </ion-card>
+</ion-content>
+
