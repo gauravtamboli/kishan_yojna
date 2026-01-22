@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonSplitPane, IonRouterOutlet, IonMenuToggle, IonMenu, IonMenuButton, IonList, IonAvatar, IonCardHeader, IonCardContent, IonCardTitle, IonCard, IonLoading, IonText, IonButton, IonInput, IonLabel, IonItem, IonGrid, IonRow, IonCol, IonButtons, IonBackButton, IonContent, IonHeader, IonTitle, IonToolbar, IonIcon } from '@ionic/angular/standalone';
+import { IonSplitPane, IonRouterOutlet, IonMenuToggle, IonMenu, IonMenuButton, IonList, IonAvatar, IonCardHeader, IonCardContent, IonCardTitle, IonCard, IonLoading, IonText, IonButton, IonInput, IonLabel, IonItem, IonGrid, IonRow, IonCol, IonButtons, IonBackButton, IonContent, IonHeader, IonTitle, IonToolbar, IonIcon, IonPopover } from '@ionic/angular/standalone';
 import { LanguageService } from '../../services/language.service';
 import { NavController, MenuController } from '@ionic/angular';
 import { Toast } from '@capacitor/toast';
@@ -10,7 +10,7 @@ import { ChangeDetectorRef } from '@angular/core';
 import { ApiService } from 'src/app/services/api.service';
 import { OfficersLoginResponseModel } from '../officer-login/OfficersLoginResponse.model';
 import { addIcons } from 'ionicons';
-import { appsOutline, homeOutline, informationOutline, informationCircle, buildOutline, logOutOutline, chevronBackOutline, chevronForwardOutline } from 'ionicons/icons';
+import { appsOutline, homeOutline, informationOutline, informationCircle, buildOutline, logOutOutline, chevronBackOutline, chevronForwardOutline, optionsOutline, reorderThreeOutline, downloadOutline, chevronDownOutline } from 'ionicons/icons';
 import { Browser } from '@capacitor/browser';
 import { Platform, AlertController } from '@ionic/angular';
 import { NetworkCheckService } from 'src/app/services/network-check.service';
@@ -22,6 +22,7 @@ import { SharedserviceService } from 'src/app/services/sharedservice.service';
 import { GetAwedanResponseModel } from '../registeration-status/AwedanResponseList.model';
 import { ModalController } from '@ionic/angular';
 import { MessageDialogComponent } from 'src/app/message-dialog/message-dialog.component';
+import { StorageService } from 'src/app/services/storage.service';
 
 
 
@@ -33,9 +34,33 @@ import * as FileSaver from 'file-saver';
   templateUrl: './officers-dashboard-sdo.page.html',
   styleUrls: ['./officers-dashboard-sdo.page.scss'],
   standalone: true,
-  imports: [IonSplitPane, IonMenuToggle, IonMenu, IonMenuButton, IonList, IonAvatar, IonCard, IonLoading, IonText, IonButton, IonInput, IonLabel, IonItem, IonGrid, IonRow, IonCol, IonButtons, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, IonIcon, TableModule]
+  imports: [IonPopover, IonSplitPane, IonMenuToggle, IonMenu, IonMenuButton, IonList, IonAvatar, IonCard, IonLoading, IonText, IonButton, IonInput, IonLabel, IonItem, IonGrid,
+    IonRow, IonCol, IonButtons, IonContent, IonHeader, IonToolbar, CommonModule, FormsModule, IonIcon, TableModule]
 })
 export class OfficersDashboardSDOPage implements OnInit {
+
+  isUserMenuOpen = false;
+  popoverEvent: any;
+
+
+  changePassword() {
+    throw new Error('Method not implemented.');
+  }
+  goToProfile // Total - all applications
+    () {
+    throw new Error('Method not implemented.');
+  }
+  onYearSelect(arg0: number) {
+    throw new Error('Method not implemented.');
+  }
+
+
+
+  openUserMenu($event: any) {
+
+    this.popoverEvent = $event;
+    this.isUserMenuOpen = true;
+  }
 
 
 
@@ -46,7 +71,15 @@ export class OfficersDashboardSDOPage implements OnInit {
 
   isNoRecordFound: boolean = true;
 
-  constructor(private modalCtrl: ModalController, private alertController: AlertController, private router: Router, private menuCtrl: MenuController, private networkCheckService: NetworkCheckService, private platform: Platform, private navController: NavController, private langService: LanguageService, private cdRef: ChangeDetectorRef,
+  constructor(
+    private storageService: StorageService,
+    private modalCtrl: ModalController,
+    private alertController: AlertController,
+    private router: Router,
+    private menuCtrl: MenuController,
+    private networkCheckService: NetworkCheckService,
+    private platform: Platform,
+    private navController: NavController, private langService: LanguageService, private cdRef: ChangeDetectorRef,
     private apiService: ApiService, private sharedPreference: SharedserviceService) {
     this.addAllIcon();
   }
@@ -77,6 +110,7 @@ export class OfficersDashboardSDOPage implements OnInit {
   pageSize: number = 10;
   totalRecords: number = 0;
   totalPages: number = 0;
+  curent_session: any;
 
   listOfAwedan: any[] = [];
 
@@ -96,6 +130,10 @@ export class OfficersDashboardSDOPage implements OnInit {
   }
 
   async ngOnInit() {
+
+    this.curent_session = await this.storageService.get('current_session');
+    const current_year = await this.storageService.get('current_year');
+
 
     this.updateTranslation();
     this.getDashboardDataFromServer();
@@ -117,7 +155,7 @@ export class OfficersDashboardSDOPage implements OnInit {
           url: 'goswara-report',
           is_submenu: false
         },
-          {
+        {
           title: 'प्रजातिवार गोस्वारा रिपोर्ट ',
           url: 'prajati-goswara-report',
           is_submenu: false
@@ -208,13 +246,13 @@ export class OfficersDashboardSDOPage implements OnInit {
         async (countsResponse) => {
           if (countsResponse.response.code === 200) {
             const counts = countsResponse.counts;
-            
+
             // Find counts from the array
             const findCount = (status: number) => {
               const item = counts.find((c: any) => c.status === status);
               return item ? item.count : 0;
             };
-            
+
             // Map counts from API response to component properties
             this.totalAwedan = findCount(99); // status 99 = कुल आवेदन
             // संपादन लंबित (0, 3, 5)
@@ -286,8 +324,8 @@ export class OfficersDashboardSDOPage implements OnInit {
 
   addAllIcon() {
     addIcons({
-      appsOutline, homeOutline, informationOutline, informationCircle, buildOutline, logOutOutline,
-      chevronBackOutline, chevronForwardOutline
+     appsOutline, homeOutline, informationOutline, informationCircle, buildOutline, logOutOutline, reorderThreeOutline,
+      chevronBackOutline, chevronForwardOutline, chevronDownOutline, optionsOutline, downloadOutline,
     });
   }
 
@@ -336,7 +374,7 @@ export class OfficersDashboardSDOPage implements OnInit {
     this.showDialog("कृपया प्रतीक्षा करें.....");
 
     const officersLoginModel = this.getOfficersSessionData() as OfficersLoginResponseModel;
-    
+
     // Map whichBoxClicked to which_data for API
     let whichData = 1; // default to total
     if (this.whichBoxClicked === 1) {
@@ -353,7 +391,7 @@ export class OfficersDashboardSDOPage implements OnInit {
     } else if (this.whichBoxClicked === 6) {
       whichData = 8; // Status 6 (स्वीकृत)
     }
-    
+
     // Calculate totalRecords based on which box is clicked
     if (this.whichBoxClicked === 1) {
       this.totalRecords = this.totalAwedan;
@@ -368,9 +406,9 @@ export class OfficersDashboardSDOPage implements OnInit {
     } else if (this.whichBoxClicked === 6) {
       this.totalRecords = this.totalApproved;
     }
-    
+
     this.totalPages = Math.ceil(this.totalRecords / this.pageSize);
-    
+
     this.apiService.getListOfAwedanAccordingToAwedanStatus(
       whichData,
       officersLoginModel.designation,
@@ -385,13 +423,13 @@ export class OfficersDashboardSDOPage implements OnInit {
         if (response.response.code === 200) {
           this.listOfAwedan = response.data || [];
           this.filteredAwedans = this.listOfAwedan;
-          
+
           if (this.listOfAwedan.length > 0) {
             this.isNoRecordFound = false;
           } else {
             this.isNoRecordFound = true;
           }
-          
+
           this.cdRef.detectChanges();
         } else {
           this.filteredAwedans = [];
@@ -430,7 +468,7 @@ export class OfficersDashboardSDOPage implements OnInit {
   getPageNumbers(): number[] {
     const pages: number[] = [];
     const maxPagesToShow = 5;
-    
+
     if (this.totalPages <= maxPagesToShow) {
       // Show all pages if total pages is less than max
       for (let i = 1; i <= this.totalPages; i++) {
@@ -440,16 +478,16 @@ export class OfficersDashboardSDOPage implements OnInit {
       // Show pages around current page
       let startPage = Math.max(1, this.currentPage - Math.floor(maxPagesToShow / 2));
       let endPage = Math.min(this.totalPages, startPage + maxPagesToShow - 1);
-      
+
       if (endPage - startPage < maxPagesToShow - 1) {
         startPage = Math.max(1, endPage - maxPagesToShow + 1);
       }
-      
+
       for (let i = startPage; i <= endPage; i++) {
         pages.push(i);
       }
     }
-    
+
     return pages;
   }
 
@@ -593,9 +631,9 @@ export class OfficersDashboardSDOPage implements OnInit {
 
   canEditApplication(item: GetAwedanResponseModel): boolean {
     // Can edit if status is 0 (pending), 3 (returned/withdraw), or 5 (DFO returned)
-    return item.awedan_status === "0" || 
-           item.awedan_status === "3" || 
-           item.awedan_status === "5";
+    return item.awedan_status === "0" ||
+      item.awedan_status === "3" ||
+      item.awedan_status === "5";
   }
 
   canGenerateEstimate(item: GetAwedanResponseModel): boolean {
@@ -760,7 +798,7 @@ export class OfficersDashboardSDOPage implements OnInit {
     modal.onDidDismiss().then((result) => {
       if (result.data?.confirmed) {
         sessionStorage.clear();
-        this.router.navigateByUrl('/splash', { replaceUrl: true });
+        this.router.navigateByUrl('/officer-login', { replaceUrl: true });
       }
     });
 
@@ -830,6 +868,12 @@ export class OfficersDashboardSDOPage implements OnInit {
       item.mobile_no.includes(this.searchMobile) ||
       item.application_number.toLowerCase().includes(this.searchMobile.toLowerCase())
     );
+  }
+
+  generateEstimateDynamic(item: GetAwedanResponseModel) {
+    this.router.navigate(['generate-estimate-dynamic'], {
+      state: { applicationNumber: item.application_number }
+    });
   }
 
 

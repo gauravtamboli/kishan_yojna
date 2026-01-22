@@ -1086,48 +1086,92 @@ export class GenerateEstimateDynamicComponent implements OnInit {
 
 
 
-  uploadRoFile() {
-    const input = document.getElementById("uploadFile") as HTMLInputElement | null;
+  // uploadRoFile() {
+  //   const input = document.getElementById("uploadFile") as HTMLInputElement | null;
 
-    if (!input || !input.files || input.files.length === 0) {
-      this.showToast("कृपया एक फ़ाइल चुनें।", "danger");
-      return;
-    }
+  //   if (!input || !input.files || input.files.length === 0) {
+  //     this.showToast("कृपया एक फ़ाइल चुनें।", "danger");
+  //     return;
+  //   }
 
-    const formData = new FormData();
-    formData.append("applicationNumber", this.singleData.applicationNumber);
-    formData.append("roFile", input.files[0]); // file is guaranteed now
+  //   const formData = new FormData();
+  //   formData.append("applicationNumber", this.singleData.applicationNumber);
+  //   formData.append("roFile", input.files[0]); // file is guaranteed now
 
-    this.showLoading();
+  //   this.showLoading();
 
-    this.api.uploadRo(formData).subscribe({
-      next: async (response: any) => {
-        await this.dismissLoading();
+  //   this.api.uploadRo(formData).subscribe({
+  //     next: async (response: any) => {
+  //       await this.dismissLoading();
 
-        const code = response?.response?.code;
-        const message = response?.response?.msg;
+  //       const code = response?.response?.code;
+  //       const message = response?.response?.msg;
 
-        if (code === 200) {
-          await this.showToast(message || "RO फ़ाइल सफलतापूर्वक अपलोड हुई", "success");
-          this.reloadPage();
-        }
-        else if (code === 101) {
-          await this.showToast(message || "Application number is required.", "danger");
-        }
-        else if (code === 102) {
-          await this.showToast(message || "RO file is required.", "danger");
-        }
-        else {
-          await this.showError(message || "फ़ाइल अपलोड असफल");
-        }
-      },
+  //       if (code === 200) {
+  //         await this.showToast(message || "RO फ़ाइल सफलतापूर्वक अपलोड हुई", "success");
+  //         this.reloadPage();
+  //       }
+  //       else if (code === 101) {
+  //         await this.showToast(message || "Application number is required.", "danger");
+  //       }
+  //       else if (code === 102) {
+  //         await this.showToast(message || "RO file is required.", "danger");
+  //       }
+  //       else {
+  //         await this.showError(message || "फ़ाइल अपलोड असफल");
+  //       }
+  //     },
 
-      error: async () => {
-        await this.dismissLoading();
-        await this.showError("Server Error");
-      }
-    });
+  //     error: async () => {
+  //       await this.dismissLoading();
+  //       await this.showError("Server Error");
+  //     }
+  //   });
+  // }
+uploadRoFile() {
+  const input = document.getElementById("uploadFile") as HTMLInputElement | null;
+
+  if (!input?.files?.length) {
+    this.showToast("कृपया एक फ़ाइल चुनें।", "danger");
+    return;
   }
+
+  const formData = new FormData();
+  formData.append("applicationNumber", this.singleData.applicationNumber);
+  formData.append("roFile", input.files[0]);
+
+  this.showLoading();
+
+  this.api.uploadRo(formData).subscribe({
+    next: async (response: any) => {
+      await this.dismissLoading();
+
+      const res = response?.response || response;
+      const code = res?.code;
+      const message = res?.msg;
+
+      if (code === 200) {
+        await this.showToast(message || "RO फ़ाइल सफलतापूर्वक अपलोड हुई", "success");
+        this.reloadPage();
+      } 
+      else if (code === 101) {
+        await this.showToast(message || "Application number is required.", "danger");
+      } 
+      else if (code === 102) {
+        await this.showToast(message || "RO file is required.", "danger");
+      } 
+      else {
+        await this.showError(message || "फ़ाइल अपलोड असफल");
+      }
+    },
+
+    error: async (err) => {
+      console.error("UPLOAD ERROR", err);
+      await this.dismissLoading();
+      await this.showError("Server Error");
+    }
+  });
+}
 
 
   uploadSdo() {
@@ -1341,10 +1385,7 @@ export class GenerateEstimateDynamicComponent implements OnInit {
 
 
     const signatureBlock = (divName: string, subdivName: string, rangName: string) => ([
-      { text: '', margin: [0, 10] },
-      { text: '', margin: [0, 10] },
-      { text: '', margin: [0, 10] },
-      { text: '', margin: [0, 10] },
+    
 
       {
         columns: [
@@ -1352,7 +1393,7 @@ export class GenerateEstimateDynamicComponent implements OnInit {
           { text: this.sdo_declaration, alignment: 'center' },
           { text: ro_declaration, alignment: 'center' }
         ],
-        margin: [40, 0, 40, 2]
+        margin: [40, 60, 40, 2]
       },
       {
         columns: [
@@ -1456,7 +1497,7 @@ export class GenerateEstimateDynamicComponent implements OnInit {
     this.categoriesToShow.forEach(cat => {
 
       const table = {
-        margin: [0, 20, 0, 0],
+        // margin: [0, 0, 0, 0],
         table: {
           widths: ['4%', '40%', '10%', '10%', '12%', '12%', '12%'],
           body: [
@@ -1505,7 +1546,7 @@ export class GenerateEstimateDynamicComponent implements OnInit {
     // GOSWARA TABLE (with 1 blank line spacing)
     // -----------------------------------------------------
     const goswaraTable = [
-      { text: "", margin: [0, 10] },   // ** One line spacing **
+      { text: "", margin: [0, 5] },   // ** One line spacing **
 
       {
         table: {
@@ -1637,20 +1678,20 @@ export class GenerateEstimateDynamicComponent implements OnInit {
           ]
         },
 
-        {
-          canvas: [
-            { type: 'line', x1: 0, y1: 0, x2: 515, y2: 0, lineWidth: 1, lineColor: '#000' }
-          ],
-          margin: [0, 20, 0, 40] // space below the line
+        // {
+        //   canvas: [
+        //     { type: 'line', x1: 0, y1: 0, x2: 515, y2: 0, lineWidth: 1, lineColor: '#000' }
+        //   ],
+        //   margin: [0, 15, 0, 25] // space below the line
 
-        },
+        // },
       ]
     });
 
     const footerSection = (currentPage: number, pageCount: number) => ({
       text: `पृष्ठ ${currentPage} / ${pageCount}`,
       alignment: "right",
-      margin: [0, 0, 40, 0]
+      margin: [0, 0, 40, 10]
     });
 
 
@@ -1661,7 +1702,7 @@ export class GenerateEstimateDynamicComponent implements OnInit {
       defaultStyle: { font: "NotoSansDevanagari", fontSize: 10 },
       header: headerSection,
       footer: footerSection,
-      pageMargins: [40, 120, 40, 60],
+      pageMargins: [40, 160, 40, 50],
       content: finalContent
     };
 
@@ -1669,6 +1710,10 @@ export class GenerateEstimateDynamicComponent implements OnInit {
   }
 
 
+
+
+
+  
   halfrate(rate: number, itemKramank: number): number {
     return [3, 4, 5].includes(itemKramank)
       ? Number(rate) / 2
