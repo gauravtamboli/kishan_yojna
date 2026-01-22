@@ -597,7 +597,7 @@ export class OfficersDashboardPage implements OnInit {
 
   generateEstimateDynamic(item: GetAwedanResponseModel) {
     this.router.navigate(['generate-estimate-dynamic'], {
-      queryParams: {
+      state: {
         applicationNumber: item.application_number,
       }
     });
