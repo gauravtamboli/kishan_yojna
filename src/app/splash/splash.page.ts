@@ -87,6 +87,7 @@ export class SplashPage implements OnInit {
           if (response.data.is_app_under_maintanance === "1") {
 
             try {
+              debugger;
               const modal = await this.modalCtrl.create({
                 component: MessageDialogComponent,
                 componentProps: {
@@ -99,12 +100,14 @@ export class SplashPage implements OnInit {
 
               modal.onDidDismiss().then((result) => {
                 if (result.data?.confirmed) {
+                  debugger;
                   App.exitApp();
                 }
               });
 
               await modal.present();
             } catch (err) {
+              debugger;
             }
 
           } else {
