@@ -6,7 +6,8 @@ import { routes } from './app/app.routes';
 import { AppComponent } from './app/app.component';
 
 import { HttpClientModule } from '@angular/common/http';  // Import HttpClientModule
-import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
+import { ngrokInterceptor } from './app/core/interceptors/ngrok.interceptor';
 import { IonicStorageModule } from '@ionic/storage-angular';
 import { importProvidersFrom } from '@angular/core';
 import { ModalController } from '@ionic/angular';
@@ -19,19 +20,19 @@ import { environment } from './environments/environment';
 bootstrapApplication(AppComponent, {
   providers: [
     {
-      provide: RouteReuseStrategy, useClass: IonicRouteStrategy 
+      provide: RouteReuseStrategy, useClass: IonicRouteStrategy
     },
-      provideIonicAngular(),
+    provideIonicAngular(),
 
-      importProvidersFrom( IonicStorageModule.forRoot()),
+    importProvidersFrom(IonicStorageModule.forRoot()),
 
-      provideRouter(routes, withPreloading(PreloadAllModules)),
+    provideRouter(routes, withPreloading(PreloadAllModules)),
 
-      HttpClientModule,
+    HttpClientModule,
 
-      provideHttpClient(),
+    provideHttpClient(withInterceptors([ngrokInterceptor])),
 
-      ModalController
+    ModalController
 
   ],
 });
