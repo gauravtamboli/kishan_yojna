@@ -9,6 +9,7 @@ ion-menu-button {
 .custom-ion-label {
   font-size: 12px;
   font-weight: 700;
+  
   color: black;
   font-style: bold;
 }
@@ -189,16 +190,16 @@ ion-select {
 }
 
 .responsive-label-count {
-  font-size: 40px;
+  font-size: 10px;
 
   /* Medium screens (tablets) */
   @media (min-width: 600px) {
-    font-size: 48px;
+    font-size: 20px;
   }
 
   /* Large screens (desktops) */
   @media (min-width: 1024px) {
-    font-size: 70px;
+    font-size: 10px;
   }
 }
 
@@ -437,7 +438,7 @@ ion-select {
 }
 
 .ion-header-class-for-menu {
-  height: 5.7rem;
+  height: 10rem;
   background: linear-gradient(135deg, var(--ion-color-primary) 0%, #2ecc71 100%);
 
   div.bg {
@@ -491,11 +492,11 @@ ion-select {
 
 // Adjust menu for mobile
 .ion-header-class-for-menu {
-  height: 5.7rem;
+  height: 4.6rem;
 
   ion-item {
-    top: 0.3rem;
-    padding: 0.1rem;
+    top: 0.8rem;
+    padding: 0 0.1rem;
 
     ion-avatar {
       height: 3rem;
@@ -535,7 +536,7 @@ ion-select {
   }
 
   .ion-header-class-for-menu {
-    height: 5.7rem;
+    height: 9rem;
 
     ion-item {
       ion-avatar {
@@ -554,14 +555,11 @@ ion-select {
   }
 }
 
-
-
 .custom-card {
   transition: transform 0.2s ease, box-shadow 0.2s ease;
   border: none;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   margin: 8px;
-
   &:hover {
     transform: translateY(-4px);
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
@@ -624,16 +622,16 @@ ion-select {
 }
 
 .responsive-label-count {
-  font-size: 32px;
+  font-size: 20px;
   font-weight: 700;
   color: white;
 
   @media (min-width: 600px) {
-    font-size: 40px;
+    font-size: 28px;
   }
 
   @media (min-width: 1024px) {
-    font-size: 48px;
+    font-size: 20px;
   }
 }
 
@@ -723,7 +721,11 @@ ion-menu-button {
 .div-color {
   background: linear-gradient(135deg, var(--ion-color-primary) 0%, #2ecc71 100%);
   padding-top: 10px;
-  color: green;
+  color: white;
+}
+.icon-btn-menu{
+  font-size: 30px;
+  color: white;
 }
 
 .responsive-align {
@@ -736,17 +738,66 @@ ion-menu-button {
 
 
 
+.bootstrap-table {
+  width: 100%;
+  border-collapse: collapse;
+  border-radius: 12px;
+  overflow: hidden;
+
+  th {
+    background-color: #f8f9fa;
+    color: #212529;
+    font-weight: 600;
+    padding: 12px;
+    text-align: center;
+    border-bottom: 2px solid #dee2e6;
+  }
+
+  td {
+    padding: 12px;
+    text-align: center;
+    vertical-align: middle;
+    border-bottom: 1px solid #e9ecef;
+  }
+
+  tr:hover {
+    background-color: #f1f3f5;
+    transition: background-color 0.2s ease-in-out;
+  }
+
+  ion-button {
+    margin: 4px;
+    font-size: 0.85rem;
+  }
+}
+
+.table-responsive {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  padding: 10px;
+}
+
+.custom-input {
+  border-radius: 8px;
+  --padding-start: 12px;
+  font-size: 0.95rem;
+}
+
+.text-end {
+  text-align: right !important;
+}
 .custom-dashboard-table {
   width: 100%;
-  border-radius: 10px;
+  border-radius: 12px;
   overflow: hidden;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
   background: #fff;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.07);
-  font-family: "Poppins", sans-serif;
+  font-family: 'Poppins', sans-serif;
 
   th {
     background-color: #004d40;
-    color: #fff;
+    color: white;
     text-align: center;
     padding: 12px;
     font-weight: 600;
@@ -757,12 +808,11 @@ ion-menu-button {
     text-align: center;
     vertical-align: middle;
     padding: 10px 8px;
-    color: #333;
   }
 
   tr:hover {
-    background-color: #f4f8f6;
-    transition: 0.2s ease-in-out;
+    background-color: #f1f8f6;
+    transition: background-color 0.2s ease-in-out;
   }
 
   .beneficiary-cell {
@@ -772,16 +822,15 @@ ion-menu-button {
     }
     .text-muted {
       color: #6c757d;
-      font-size: 0.85rem;
     }
   }
 
   .status-badge {
     display: inline-block;
-    padding: 6px 12px;
+    padding: 5px 10px;
     border-radius: 20px;
-    font-size: 13px;
     font-weight: 500;
+    font-size: 13px;
     text-transform: capitalize;
   }
 
@@ -789,14 +838,17 @@ ion-menu-button {
     background-color: #e8f5e9;
     color: #2e7d32;
   }
+
   .status-pending {
     background-color: #fff8e1;
     color: #f57c00;
   }
+
   .status-draft {
     background-color: #e3f2fd;
     color: #1565c0;
   }
+
   .status-rejected {
     background-color: #ffebee;
     color: #c62828;
@@ -804,95 +856,48 @@ ion-menu-button {
 
   .action-buttons {
     display: flex;
+    flex-wrap: wrap;
     justify-content: center;
     gap: 6px;
-    flex-wrap: wrap;
   }
 
   ion-button {
     font-size: 13px;
-    min-width: 100px;
-    transition: transform 0.2s ease;
-    &:hover {
-      transform: scale(1.05);
-    }
+    min-width: 90px;
   }
 }
-.gradient-btn {
-  --background: linear-gradient(45deg, #4b6cb7, #182848);
-  --background-hover: linear-gradient(45deg, #3553a2, #101a35);
-  --background-activated: linear-gradient(45deg, #2b478d, #0d152d);
-  --background-focused: linear-gradient(45deg, #4b6cb7, #182848);
-
-  --border-radius: 8px;
-  --color: white;
-  font-weight: 600;
-}
-.no-outline {
-  --border-width: 0;
-  --highlight-color-focused: transparent;
-  --highlight-color: transparent;
+ion-button {
+  transition: transform 0.2s ease;
+  &:hover {
+    transform: scale(1.05);
+  }
 }
 
-.small-input {
-  --padding-start: 8px;
-  --padding-end: 8px;
-  --padding-top: 4px;
-  --padding-bottom: 4px;
-
-  --min-height: 32px;
-  font-size: 13px;
-  border-radius: 6px;
-
-  /* Light background to make it look clean */
-  background: #f1f1f1;
-}
-.single-line-row {
+.no-record-found-box {
   display: flex;
   justify-content: center;
-  align-items: stretch;
-  flex-wrap: nowrap;   /* 💥 prevents wrapping — ONE LINE */
-  overflow-x: auto;    /* optional scroll on small screens */
-  padding-bottom: 8px;
-}
-
-/* Card styling */
-.stats-card {
-  padding: 12px;
+  align-items: center;
   text-align: center;
-  border-radius: 14px;
-  color: #fff;
-  min-height: 100px;
-  cursor: pointer;
-  transition: 0.25s ease;
-}
-
-.stats-card:hover {
-  transform: translateY(-4px);
-}
-
-.count {
-  font-size: 24px;
-  font-weight: 700;
-}
-
-.label {
-  font-size: 13px;
-  opacity: 0.9;
-}
-
-/* Colors */
-.blue { background: linear-gradient(135deg, #2196f3, #1565c0); }
-.orange { background: linear-gradient(135deg, #ff9800, #f57c00); }
-.sky { background: linear-gradient(135deg, #03a9f4, #0288d1); }
-.purple { background: linear-gradient(135deg, #9c27b0, #7b1fa2); }
-.deep-purple { background: linear-gradient(135deg, #673ab7, #512da8); }
-.green { background: linear-gradient(135deg, #4caf50, #2e7d32); }
-
-.divider {
+  border: 3px solid #ccc;
+  border-radius: 10px;
+  padding: 20px;
   margin-top: 20px;
-  height: 2px;
-  background: #333;
+  height: 100px;
+  font-weight: 600;
+  color: var(--ion-color-medium);
+  background-color: #fff;
+}
+
+.custom-paginator {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.custom-dashboard-table {
+  width: 100%;
+  border-radius: 10px;
+  overflow: hidden;
 }
 
 .pagination-container {
@@ -917,4 +922,92 @@ ion-menu-button {
 .text-muted {
   color: #6c757d;
   font-size: 0.875rem;
+}
+
+.icon-btn-options {
+  width: 50px;                // Button width
+  height: 50px;               // Button height
+  border-radius: 50%;         // Circular button
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+  border: none;
+
+  ion-icon {
+    font-size: 28px;          // Icon size
+    font-weight: bold;        // Bold icon
+    color: white;             // Icon color
+    transition: transform 0.2s ease, color 0.2s ease;
+  }
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.3); // Slightly brighter on hover
+    ion-icon {
+      transform: scale(1.1);   // Slight icon grow on hover
+      color: #ffffff;          // Optional: change color if needed
+    }
+  }
+
+}
+
+.ion-my-grid {
+  min-height: 10px;   // mobile
+  padding: 10px;
+  width: 100%;
+
+  @media (min-width: 768px) {
+    min-height: 80px; // tablet
+  }
+
+  @media (min-width: 1024px) {
+    min-height: 50px; // desktop
+  }
+}
+
+.label-divider {
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+}
+
+.label-text {
+  font-size: 15px;
+  padding: 15px;
+  opacity: 0.85;
+  white-space: nowrap;
+}
+
+.label-count {
+  font-size: small;
+  border-radius: 100%;
+  padding: 15px;
+  font-weight: 600;
+  border-left: 2px solid rgba(255, 214, 150, 0.4);
+}
+
+.header-label {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  color: #ffffff;          // white text
+  text-align: center;
+  line-height: 1.3;
+}
+
+.officer-name {
+  font-size: 1rem;
+  font-weight: 700;
+  padding: 0 12px;
+  white-space: normal;     // allow wrap on mobile
+}
+
+.session-text {
+  font-size: 0.85rem;
+  font-weight: 600;
+  opacity: 0.9;
 }
