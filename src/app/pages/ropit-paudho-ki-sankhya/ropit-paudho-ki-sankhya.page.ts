@@ -33,6 +33,9 @@ import {
 ]
 })
 export class RopitPaudhoKiSankhyaPage implements OnInit {
+addPlantRow(arg0: any,_t77: number) {
+throw new Error('Method not implemented.');
+}
   isLoading: boolean = false;
   loadingMessage: string = 'कृपया प्रतीक्षा करें.....';
   

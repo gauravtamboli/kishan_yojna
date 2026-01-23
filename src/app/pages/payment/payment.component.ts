@@ -6,6 +6,12 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { TableModule } from 'primeng/table';
 import { ApiService } from '../../services/api.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { addIcons } from 'ionicons';
+import { searchOutline } from 'ionicons/icons';
+
+addIcons({
+  'search-outline': searchOutline,
+});
 
 @Component({
   selector: 'app-payment',
@@ -31,9 +37,9 @@ export class PaymentComponent implements OnInit {
   totalPages = 0;
 
   paymentList: any[] = [];
-  allAwedans: any[] = [];     
-  awedans: any[] = [];          
-  filteredAwedans: any[] = [];  
+  allAwedans: any[] = [];
+  awedans: any[] = [];
+  filteredAwedans: any[] = [];
 
   searchText: string = '';
 
@@ -45,12 +51,12 @@ export class PaymentComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-   
-     const navigationState = history.state;
+
+    const navigationState = history.state;
 
     this.rangeId = navigationState.range_id;
     this.year = navigationState.year;
-
+    console.log('Navigation State:', navigationState);
     this.onLoadPayment((this.year ?? 1).toString());
     this.setSelectInterface();
     // const storedData = sessionStorage.getItem('logined_officer_data');
@@ -164,9 +170,9 @@ export class PaymentComponent implements OnInit {
         year: this.year
       }
     });
-    }
+  }
 
-        // state is working fine for testing of other 2 yeares i can put this code in comment after test other 2 year then un comment this code
+  // state is working fine for testing of other 2 yeares i can put this code in comment after test other 2 year then un comment this code
 
   //   viewApplication(item: any) {
   //   this.router.navigate(['/payment-create'], {
