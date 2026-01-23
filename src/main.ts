@@ -26,9 +26,10 @@ bootstrapApplication(AppComponent, {
 
     importProvidersFrom(IonicStorageModule.forRoot()),
 
+
     provideRouter(routes, withPreloading(PreloadAllModules)),
 
-    HttpClientModule,
+    // HttpClientModule, // Removed to avoid conflict with provideHttpClient
 
     provideHttpClient(withInterceptors([ngrokInterceptor])),
 

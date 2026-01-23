@@ -1,9 +1,11 @@
 import { HttpInterceptorFn } from '@angular/common/http';
 
 export const ngrokInterceptor: HttpInterceptorFn = (req, next) => {
+  console.log('NgrokInterceptor: Processing request', req.url);
   const clonedRequest = req.clone({
     setHeaders: {
-      'ngrok-skip-browser-warning': 'true'
+      'ngrok-skip-browser-warning': 'true',
+      'X-Ngrok-Skip-Browser-Warning': 'true'
     }
   });
   return next(clonedRequest);
