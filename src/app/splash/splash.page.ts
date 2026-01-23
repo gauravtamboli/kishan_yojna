@@ -56,7 +56,7 @@ export class SplashPage implements OnInit {
 
     //Preferences.set({ key: 'ngrok_url', value: "https://forest.cg.gov.in/KVMY" });
     // Preferences.set({ key: 'ngrok_url', value: "https://forest.cg.gov.in/KVMY" });
-    Preferences.set({ key: 'ngrok_url', value: "https://nonaristocratically-frettiest-ben.ngrok-free.dev/api/KissanMitraYojnaRegisteration/" });
+    Preferences.set({ key: 'ngrok_url', value: "https://nonaristocratically-frettiest-ben.ngrok-free.dev" });
     // Preferences.set({ key: 'ngrok_url', value: "https://fedda7b16e66.ngrok-free.app" });
     //Preferences.set({ key: 'ngrok_url', value: "https://3d64be92788d.ngrok-free.app" });
     //Preferences.set({ key: 'ngrok_url', value: "https://b2d751eb02c5.ngrok-free.app" });
