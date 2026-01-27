@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonLoading, IonText, IonButton, IonInput, IonLabel, IonItem, IonGrid, IonRow, IonCol, IonButtons, IonBackButton, IonContent, IonHeader, IonTitle, IonToolbar } from '@ionic/angular/standalone';
+import { IonLoading, IonText, IonButton, IonInput, IonLabel, IonGrid, IonRow } from '@ionic/angular/standalone';
 import { LanguageService } from '../../services/language.service';
 import { NavController } from '@ionic/angular';
 import { Toast } from '@capacitor/toast';
@@ -13,7 +13,6 @@ import { ModalController } from '@ionic/angular';
 import { MessageDialogComponent } from 'src/app/message-dialog/message-dialog.component';
 import { StorageService } from '../../services/storage.service';
 
-import { AlertController, Platform } from '@ionic/angular';
 
 @Component({
   selector: 'app-officer-login',
