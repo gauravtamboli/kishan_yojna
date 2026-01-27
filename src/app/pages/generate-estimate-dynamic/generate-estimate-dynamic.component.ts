@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef,NgZone  } from '@angular/core';
 import { CommonModule, Location } from '@angular/common';
 import { IonicModule, LoadingController, ToastController } from '@ionic/angular';
 import { FormsModule } from '@angular/forms';
@@ -147,7 +147,8 @@ export class GenerateEstimateDynamicComponent implements OnInit {
     private cdRef: ChangeDetectorRef,
     private loadingController: LoadingController,
     private toastController: ToastController,
-    private router: Router
+    private router: Router,
+    private zone: NgZone
   ) {
     addIcons({
       cloudUploadOutline    // ✅ correct syntax
@@ -1077,6 +1078,7 @@ export class GenerateEstimateDynamicComponent implements OnInit {
     const fileInput = document.getElementById('uploadFile') as HTMLInputElement;
     fileInput.click();
   }
+
   refreshPageData() {
     const appNo = this.singleData.applicationNumber;
 
@@ -1113,7 +1115,11 @@ export class GenerateEstimateDynamicComponent implements OnInit {
         if (code === 200) {
           await this.showToast(message || "RO फ़ाइल सफलतापूर्वक अपलोड हुई", "success");
           input.value = '';
-          this.refreshPageData();
+
+          this.zone.run(() => {
+            this.refreshPageData();
+            this.cdRef.detectChanges();
+          });
         }
         else if (code === 101) {
           await this.showToast(message || "Application number is required.", "danger");
