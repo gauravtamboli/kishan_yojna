@@ -47,7 +47,7 @@ export class ApiService {
   }
 
   private apiUrlGetKisanAwedanData: string = `/api/KissanMitraYojnaRegisteration/getKisanAwedanData`; 
-  private apiUrlLogin: string = `/api/KissanMitraYojnaRegisteration/api/KissanMitraYojnaRegisteration/login`;  
+  private apiUrlLogin: string = `/api/KissanMitraYojnaRegisteration/login`;  
   private apiUrlGetMaster: string = `/api/KissanMitraYojnaRegisteration/get_master_value`;  
   private apiUrlgetOTP: string = `/api/KissanMitraYojnaRegisteration/sentOTP`;  
   private apiUrlVerifyOTP: string = `/api/KissanMitraYojnaRegisteration/verifyOTP`;  
