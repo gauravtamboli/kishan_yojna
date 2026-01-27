@@ -1081,53 +1081,6 @@ export class GenerateEstimateDynamicComponent implements OnInit {
 
 
 
-
-
-
-
-
-  // uploadRoFile() {
-  //   const input = document.getElementById("uploadFile") as HTMLInputElement | null;
-
-  //   if (!input || !input.files || input.files.length === 0) {
-  //     this.showToast("कृपया एक फ़ाइल चुनें।", "danger");
-  //     return;
-  //   }
-
-  //   const formData = new FormData();
-  //   formData.append("applicationNumber", this.singleData.applicationNumber);
-  //   formData.append("roFile", input.files[0]); // file is guaranteed now
-
-  //   this.showLoading();
-
-  //   this.api.uploadRo(formData).subscribe({
-  //     next: async (response: any) => {
-  //       await this.dismissLoading();
-
-  //       const code = response?.response?.code;
-  //       const message = response?.response?.msg;
-
-  //       if (code === 200) {
-  //         await this.showToast(message || "RO फ़ाइल सफलतापूर्वक अपलोड हुई", "success");
-  //         this.reloadPage();
-  //       }
-  //       else if (code === 101) {
-  //         await this.showToast(message || "Application number is required.", "danger");
-  //       }
-  //       else if (code === 102) {
-  //         await this.showToast(message || "RO file is required.", "danger");
-  //       }
-  //       else {
-  //         await this.showError(message || "फ़ाइल अपलोड असफल");
-  //       }
-  //     },
-
-  //     error: async () => {
-  //       await this.dismissLoading();
-  //       await this.showError("Server Error");
-  //     }
-  //   });
-  // }
   uploadRoFile() {
     const input = document.getElementById("uploadFile") as HTMLInputElement | null;
 
@@ -1152,7 +1105,11 @@ export class GenerateEstimateDynamicComponent implements OnInit {
 
         if (code === 200) {
           await this.showToast(message || "RO फ़ाइल सफलतापूर्वक अपलोड हुई", "success");
-          this.reloadPage();
+          input.value = '';
+
+          this.loadBundle(this.singleData.applicationNumber);
+          this.loadExistingApprovalData(this.singleData.applicationNumber);
+          this.GetEstimateFile(this.singleData.applicationNumber);
         }
         else if (code === 101) {
           await this.showToast(message || "Application number is required.", "danger");
@@ -1264,6 +1221,8 @@ export class GenerateEstimateDynamicComponent implements OnInit {
     });
 
   }
+
+
 
   private GetEstimateFile(applicationNumber: string) {
 
