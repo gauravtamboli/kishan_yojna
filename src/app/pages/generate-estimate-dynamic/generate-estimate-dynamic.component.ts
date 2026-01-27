@@ -160,7 +160,6 @@ export class GenerateEstimateDynamicComponent implements OnInit {
 
   ngOnInit(): void {
 
-
     (pdfMake as any).fonts = {
       NotoSansDevanagari: {
         normal: "NotoSansDevanagari-Regular.ttf",
@@ -174,50 +173,41 @@ export class GenerateEstimateDynamicComponent implements OnInit {
       }
     };
 
-
-
-
-    // Step 5.1: Get application number from URL query params
-    // this.route.queryParams.subscribe(params => {
-    //   this.applicationNumber = params['applicationNumber'] || null;
-
-    const navigation = this.router.getCurrentNavigation();
-    this.applicationNumber = navigation?.extras?.state?.['applicationNumber'] || null;
-
-    if (this.applicationNumber) {
-      // Step 5.2: Show loading spinner, reset data tracker
-      this.isPageLoading = true;
-      this.dataLoadTracker = { bundle: false, approval: false };
-
-      // Step 5.3: Load data from API (two parallel calls)
-      this.loadBundle(this.applicationNumber);
-      this.loadExistingApprovalData(this.applicationNumber);
-      this.GetEstimateFile(this.applicationNumber);
-    } else {
-      this.isPageLoading = false;
-    }
-
-
-    // // Step 5.4: Get logged-in officer info from session storage
+    // Step 5.0: Get logged-in officer info from session storage FIRST
     this.storedData = sessionStorage.getItem('logined_officer_data');
-    let subdivName = '';
-    let rangName = '';
-    // console.log('Stored Data:', this.storedData);
     if (this.storedData) {
       try {
         const parsed = JSON.parse(this.storedData);
-        subdivName = parsed?.devision_id || ''; // Sub-division name
-        rangName = parsed?.rang_name || '';       // Range name 
+        // let subdivName = parsed?.devision_id || '';
+        // let rangName = parsed?.rang_name || '';
 
         this.officer_name = parsed?.officer_name || '';
         const dId = Number(parsed?.designation_id || parsed?.designation || parsed?.DesignationId);
         this.designationId = isNaN(dId) ? null : dId;
 
-        // Step 5.5: Set officer type flags (2=DFO, 3=SDO, 4=RO)
         this.isRO = this.designationId === 4;
         this.isSDO = this.designationId === 3;
         this.isDFO = this.designationId === 2;
       } catch { }
+    }
+
+    // Step 5.1: Get application number from State (during navigation) or Query Params (on refresh)
+    const navigation = this.router.getCurrentNavigation();
+    const stateAppNum = navigation?.extras?.state?.['applicationNumber'] || history.state?.['applicationNumber'];
+
+    if (stateAppNum) {
+      this.applicationNumber = stateAppNum;
+      this.reloadPage(); // Uses the new reloadPage logic to fetch data
+    } else {
+      // Fallback: Check query params
+      this.route.queryParams.subscribe(params => {
+        if (params['applicationNumber']) {
+          this.applicationNumber = params['applicationNumber'];
+          this.reloadPage();
+        } else {
+          this.isPageLoading = false;
+        }
+      });
     }
   }
 
@@ -566,7 +556,12 @@ export class GenerateEstimateDynamicComponent implements OnInit {
    */
   reloadPage() {
     if (this.applicationNumber) {
-      window.location.reload();
+      this.isPageLoading = true; // Show loading spinner
+      this.dataLoadTracker = { bundle: false, approval: false };
+
+      this.loadBundle(this.applicationNumber);
+      this.loadExistingApprovalData(this.applicationNumber);
+      this.GetEstimateFile(this.applicationNumber);
     }
   }
 
@@ -1128,50 +1123,50 @@ export class GenerateEstimateDynamicComponent implements OnInit {
   //     }
   //   });
   // }
-uploadRoFile() {
-  const input = document.getElementById("uploadFile") as HTMLInputElement | null;
+  uploadRoFile() {
+    const input = document.getElementById("uploadFile") as HTMLInputElement | null;
 
-  if (!input?.files?.length) {
-    this.showToast("कृपया एक फ़ाइल चुनें।", "danger");
-    return;
-  }
-
-  const formData = new FormData();
-  formData.append("applicationNumber", this.singleData.applicationNumber);
-  formData.append("roFile", input.files[0]);
-
-  this.showLoading();
-
-  this.api.uploadRo(formData).subscribe({
-    next: async (response: any) => {
-      await this.dismissLoading();
-
-      const res = response?.response || response;
-      const code = res?.code;
-      const message = res?.msg;
-
-      if (code === 200) {
-        await this.showToast(message || "RO फ़ाइल सफलतापूर्वक अपलोड हुई", "success");
-        this.reloadPage();
-      } 
-      else if (code === 101) {
-        await this.showToast(message || "Application number is required.", "danger");
-      } 
-      else if (code === 102) {
-        await this.showToast(message || "RO file is required.", "danger");
-      } 
-      else {
-        await this.showError(message || "फ़ाइल अपलोड असफल");
-      }
-    },
-
-    error: async (err) => {
-      console.error("UPLOAD ERROR", err);
-      await this.dismissLoading();
-      await this.showError("Server Error");
+    if (!input?.files?.length) {
+      this.showToast("कृपया एक फ़ाइल चुनें।", "danger");
+      return;
     }
-  });
-}
+
+    const formData = new FormData();
+    formData.append("applicationNumber", this.singleData.applicationNumber);
+    formData.append("roFile", input.files[0]);
+
+    this.showLoading();
+
+    this.api.uploadRo(formData).subscribe({
+      next: async (response: any) => {
+        await this.dismissLoading();
+
+        const res = response?.response || response;
+        const code = res?.code;
+        const message = res?.msg;
+
+        if (code === 200) {
+          await this.showToast(message || "RO फ़ाइल सफलतापूर्वक अपलोड हुई", "success");
+          this.reloadPage();
+        }
+        else if (code === 101) {
+          await this.showToast(message || "Application number is required.", "danger");
+        }
+        else if (code === 102) {
+          await this.showToast(message || "RO file is required.", "danger");
+        }
+        else {
+          await this.showError(message || "फ़ाइल अपलोड असफल");
+        }
+      },
+
+      error: async (err) => {
+        console.error("UPLOAD ERROR", err);
+        await this.dismissLoading();
+        await this.showError("Server Error");
+      }
+    });
+  }
 
 
   uploadSdo() {
@@ -1385,7 +1380,7 @@ uploadRoFile() {
 
 
     const signatureBlock = (divName: string, subdivName: string, rangName: string) => ([
-    
+
 
       {
         columns: [
@@ -1713,7 +1708,7 @@ uploadRoFile() {
 
 
 
-  
+
   halfrate(rate: number, itemKramank: number): number {
     return [3, 4, 5].includes(itemKramank)
       ? Number(rate) / 2
