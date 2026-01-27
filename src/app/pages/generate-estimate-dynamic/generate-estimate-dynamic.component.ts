@@ -11,7 +11,7 @@ import { tableData } from '../generate-estimate/estimate-table';
 import Swal from 'sweetalert2';
 import { addIcons } from 'ionicons';
 import { cloudUploadOutline } from 'ionicons/icons';
-
+import { NgZone } from '@angular/core';
 import * as pdfFontsBold from "../../../assets/fonts/vfs_fonts_bold_custom";
 import * as pdfFontsNormal from "../../../assets/fonts/vfs_fonts_custom";
 import pdfMake from 'pdfmake/build/pdfmake';
@@ -163,7 +163,8 @@ export class GenerateEstimateDynamicComponent implements OnInit {
     private cdRef: ChangeDetectorRef,
     private loadingController: LoadingController,
     private toastController: ToastController,
-    private router: Router
+    private router: Router,
+    private zone: NgZone
   ) {
     addIcons({
       cloudUploadOutline    // ✅ correct syntax
@@ -1091,65 +1092,145 @@ export class GenerateEstimateDynamicComponent implements OnInit {
 
 
 
+  // uploadRoFile() {
+
+
+
+  //   if (!this.selectedRoFile) {
+  //     Swal.fire({
+  //       title: 'त्रुटि',
+  //       text: 'कृपया एक फ़ाइल चुनें।',
+  //       icon: 'error',
+  //       confirmButtonText: 'ठीक है',
+  //       target: '#swal-portal',
+  //       heightAuto: false
+  //     });
+  //     //  this.showToast("कृपया एक फ़ाइल चुनें।", "danger");
+
+  //     return;
+  //   }
+
+  //   const formData = new FormData();
+  //   formData.append("applicationNumber", this.singleData.applicationNumber);
+  //   // formData.append("roFile", input.files[0]);
+  //   formData.append("roFile", this.selectedRoFile);
+
+  //   this.showLoading();
+
+  //   this.api.uploadRo(formData).subscribe({
+  //     next: async (response: any) => {
+
+
+  //       const res = response?.response || response;
+  //       const code = res?.code;
+  //       const message = res?.msg;
+
+  //       if (code === 200) {
+  //         await this.dismissLoading();
+  //         Swal.fire({
+  //           title: 'सफलता',
+  //           text: message || "RO फ़ाइल सफलतापूर्वक अपलोड हुई",
+  //           icon: 'success',
+  //           confirmButtonText: 'ठीक है',
+  //           target: '#swal-portal',
+  //           heightAuto: false
+  //         }).then(() => {
+  //           this.reloadPage();
+  //         });
+  //         //  
+  //         // await this.showToast(message || "RO फ़ाइल सफलतापूर्वक अपलोड हुई", "success");
+  //         this.selectedRoFile = null;
+  //         this.uploadFileRef.nativeElement.value = '';
+
+  //       }
+  //       else if (code === 101) {
+  //         Swal.fire("Application number is required.", "danger", 'error');
+  //         // await this.showToast(message || "Application number is required.", "danger");
+  //       }
+  //       else if (code === 102) {
+  //         Swal.fire("RO file is required.", "danger", 'error');
+
+  //         // await this.showToast(message || "RO file is required.", "danger");
+  //       }
+  //       else {
+  //         Swal.fire("फ़ाइल अपलोड असफल", "danger", 'error');
+
+  //         // await this.showError(message || "फ़ाइल अपलोड असफल");
+  //       }
+  //     },
+
+  //     error: async (err) => {
+  //       console.error("UPLOAD ERROR", err);
+  //       await this.dismissLoading();
+  //       await this.showError("Server Error");
+  //     }
+  //   });
+  // }
+
   uploadRoFile() {
 
-
-debugger;
-    if (!this.selectedRoFile) {
-      Swal.fire({
-        title: 'त्रुटि',
-        text: 'कृपया एक फ़ाइल चुनें।',
-        icon: 'error',
-        confirmButtonText: 'ठीक है',
-        target: '#swal-portal',
-        heightAuto: false
-      });
-      //  this.showToast("कृपया एक फ़ाइल चुनें।", "danger");
-
-      return;
-    }
-
-    const formData = new FormData();
-    formData.append("applicationNumber", this.singleData.applicationNumber);
-    // formData.append("roFile", input.files[0]);
-    formData.append("roFile", this.selectedRoFile);
-
-    this.showLoading();
-
-    this.api.uploadRo(formData).subscribe({
-      next: async (response: any) => {
-
-        debugger;
-        const res = response?.response || response;
-        const code = res?.code;
-        const message = res?.msg;
-
-        if (code === 200) {
-          await this.dismissLoading();
-
-          await this.showToast(message || "RO फ़ाइल सफलतापूर्वक अपलोड हुई", "success");
-          this.selectedRoFile = null;
-          this.uploadFileRef.nativeElement.value = '';
-
-        }
-        else if (code === 101) {
-          await this.showToast(message || "Application number is required.", "danger");
-        }
-        else if (code === 102) {
-          await this.showToast(message || "RO file is required.", "danger");
-        }
-        else {
-          await this.showError(message || "फ़ाइल अपलोड असफल");
-        }
-      },
-
-      error: async (err) => {
-        console.error("UPLOAD ERROR", err);
-        await this.dismissLoading();
-        await this.showError("Server Error");
-      }
+  if (!this.selectedRoFile) {
+    Swal.fire({
+      title: 'त्रुटि',
+      text: 'कृपया एक फ़ाइल चुनें।',
+      icon: 'error',
+      confirmButtonText: 'ठीक है',
+      target: '#swal-portal',
+      heightAuto: false
     });
+    return;
   }
+
+  const formData = new FormData();
+  formData.append("applicationNumber", this.singleData.applicationNumber);
+  formData.append("roFile", this.selectedRoFile);
+
+  this.showLoading();
+
+  this.api.uploadRo(formData).subscribe({
+    next: async (response: any) => {
+
+      const res = response?.response || response;
+      const code = res?.code;
+      const message = res?.msg;
+
+      await this.dismissLoading();
+
+      if (code === 200) {
+        Swal.fire({
+          title: 'सफलता',
+          text: message || "RO फ़ाइल सफलतापूर्वक अपलोड हुई",
+          icon: 'success',
+          confirmButtonText: 'ठीक है',
+          target: '#swal-portal',
+          heightAuto: false
+        }).then(() => {
+          this.zone.run(() => {
+            this.reloadPage();
+          });
+        });
+
+        this.selectedRoFile = null;
+        this.uploadFileRef.nativeElement.value = '';
+
+      } else if (code === 101) {
+        Swal.fire("Application number is required.", "", "error");
+
+      } else if (code === 102) {
+        Swal.fire("RO file is required.", "", "error");
+
+      } else {
+        Swal.fire("फ़ाइल अपलोड असफल", "", "error");
+      }
+    },
+
+    error: async (err) => {
+      console.error("UPLOAD ERROR", err);
+      await this.dismissLoading();
+      await this.showError("Server Error");
+    }
+  });
+}
 
 
   uploadSdo() {
