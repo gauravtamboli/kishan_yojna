@@ -53,8 +53,8 @@ export class GenerateEstimateDynamicComponent implements OnInit {
     this.selectedRoFile = input.files?.[0] || null;
   }
 
-  
-  
+
+
   applicationNumber: string | null = null;
   singleData: any;
   estimateRows: any[] = [];
@@ -1093,18 +1093,21 @@ export class GenerateEstimateDynamicComponent implements OnInit {
 
   uploadRoFile() {
 
-    // const input = document.getElementById("uploadFile") as HTMLInputElement | null;
 
-    // if (!input?.files?.length) {
-    //   this.showToast("कृपया एक फ़ाइल चुनें।", "danger");
-    //   return;
-    // }
 
     if (!this.selectedRoFile) {
-     this.showToast("कृपया एक फ़ाइल चुनें।", "danger");
+      Swal.fire({
+        title: 'त्रुटि',
+        text: 'कृपया एक फ़ाइल चुनें।',
+        icon: 'error',
+        confirmButtonText: 'ठीक है',
+        target: '#swal-portal',
+        heightAuto: false
+      });
+      //  this.showToast("कृपया एक फ़ाइल चुनें।", "danger");
 
-  return;
-}
+      return;
+    }
 
     const formData = new FormData();
     formData.append("applicationNumber", this.singleData.applicationNumber);
@@ -1125,8 +1128,8 @@ export class GenerateEstimateDynamicComponent implements OnInit {
           await this.dismissLoading();
 
           await this.showToast(message || "RO फ़ाइल सफलतापूर्वक अपलोड हुई", "success");
-    this.selectedRoFile = null;
-this.uploadFileRef.nativeElement.value = '';
+          this.selectedRoFile = null;
+          this.uploadFileRef.nativeElement.value = '';
 
         }
         else if (code === 101) {
