@@ -52,9 +52,9 @@ export class SplashPage implements OnInit {
 
   setMainURL() {
 
-    // Preferences.set({ key: 'ngrok_url', value: "http://localhost:5027" });
+    Preferences.set({ key: 'ngrok_url', value: "http://localhost:5027" });
 
-    Preferences.set({ key: 'ngrok_url', value: environment.apiUrl });
+    // Preferences.set({ key: 'ngrok_url', value: environment.apiUrl });
 
 
     setTimeout(() => {
