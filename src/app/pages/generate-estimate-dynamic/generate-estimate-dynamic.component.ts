@@ -1077,98 +1077,43 @@ export class GenerateEstimateDynamicComponent implements OnInit {
     const fileInput = document.getElementById('uploadFile') as HTMLInputElement;
     fileInput.click();
   }
+  refreshPageData() {
+    const appNo = this.singleData.applicationNumber;
 
-
-
-
-  // uploadRoFile() {
-  //   const input = document.getElementById("uploadFile") as HTMLInputElement | null;
-
-  //   if (!input?.files?.length) {
-  //     this.showToast("कृपया एक फ़ाइल चुनें।", "danger");
-  //     return;
-  //   }
-
-  //   const formData = new FormData();
-  //   formData.append("applicationNumber", this.singleData.applicationNumber);
-  //   formData.append("roFile", input.files[0]);
-
-  //   this.showLoading();
-
-  //   this.api.uploadRo(formData).subscribe({
-  //     next: async (response: any) => {
-  //       await this.dismissLoading();
-
-  //       const res = response?.response || response;
-  //       const code = res?.code;
-  //       const message = res?.msg;
-
-  //       if (code === 200) {
-  //         await this.showToast(message || "RO फ़ाइल सफलतापूर्वक अपलोड हुई", "success");
-  //         input.value = '';
-
-  //         this.loadBundle(this.singleData.applicationNumber);
-  //         this.loadExistingApprovalData(this.singleData.applicationNumber);
-  //         this.GetEstimateFile(this.singleData.applicationNumber);
-  //       }
-  //       else if (code === 101) {
-  //         await this.showToast(message || "Application number is required.", "danger");
-  //       }
-  //       else if (code === 102) {
-  //         await this.showToast(message || "RO file is required.", "danger");
-  //       }
-  //       else {
-  //         await this.showError(message || "फ़ाइल अपलोड असफल");
-  //       }
-  //     },
-
-  //     error: async (err) => {
-  //       console.error("UPLOAD ERROR", err);
-  //       await this.dismissLoading();
-  //       await this.showError("Server Error");
-  //     }
-  //   });
-  // }
-
-  
-uploadRoFile() {
-  const input = document.getElementById("uploadFile") as HTMLInputElement | null;
-
-  if (!input?.files?.length) {
-    this.showToast("कृपया एक फ़ाइल चुनें।", "danger");
-    return;
+    this.loadBundle(appNo);
+    this.loadExistingApprovalData(appNo);
+    this.GetEstimateFile(appNo);
   }
 
-  const formData = new FormData();
-  formData.append("applicationNumber", this.singleData.applicationNumber);
-  formData.append("roFile", input.files[0]);
 
-  this.showLoading();
 
-  this.api.uploadRo(formData)
-    .pipe(
-      finalize(async () => {
-        await this.dismissLoading(); // 🔥 always executes
-      })
-    )
-    .subscribe({
+
+  uploadRoFile() {
+    const input = document.getElementById("uploadFile") as HTMLInputElement | null;
+
+    if (!input?.files?.length) {
+      this.showToast("कृपया एक फ़ाइल चुनें।", "danger");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("applicationNumber", this.singleData.applicationNumber);
+    formData.append("roFile", input.files[0]);
+
+    this.showLoading();
+
+    this.api.uploadRo(formData).subscribe({
       next: async (response: any) => {
+        await this.dismissLoading();
 
         const res = response?.response || response;
         const code = res?.code;
         const message = res?.msg;
 
         if (code === 200) {
-          await this.showToast(
-            message || "RO फ़ाइल सफलतापूर्वक अपलोड हुई",
-            "success"
-          );
-
+          await this.showToast(message || "RO फ़ाइल सफलतापूर्वक अपलोड हुई", "success");
           input.value = '';
-
-          this.loadBundle(this.singleData.applicationNumber);
-          this.loadExistingApprovalData(this.singleData.applicationNumber);
-          this.GetEstimateFile(this.singleData.applicationNumber);
+          this.refreshPageData();
         }
         else if (code === 101) {
           await this.showToast(message || "Application number is required.", "danger");
@@ -1183,10 +1128,14 @@ uploadRoFile() {
 
       error: async (err) => {
         console.error("UPLOAD ERROR", err);
+        await this.dismissLoading();
         await this.showError("Server Error");
       }
     });
-}
+  }
+
+
+
 
   uploadSdo() {
 
