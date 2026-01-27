@@ -160,6 +160,7 @@ export class GenerateEstimateDynamicComponent implements OnInit {
 
   ngOnInit(): void {
 
+
     (pdfMake as any).fonts = {
       NotoSansDevanagari: {
         normal: "NotoSansDevanagari-Regular.ttf",
@@ -173,41 +174,50 @@ export class GenerateEstimateDynamicComponent implements OnInit {
       }
     };
 
-    // Step 5.0: Get logged-in officer info from session storage FIRST
+
+
+
+    // Step 5.1: Get application number from URL query params
+    // this.route.queryParams.subscribe(params => {
+    //   this.applicationNumber = params['applicationNumber'] || null;
+
+    const navigation = this.router.getCurrentNavigation();
+    this.applicationNumber = navigation?.extras?.state?.['applicationNumber'] || null;
+
+    if (this.applicationNumber) {
+      // Step 5.2: Show loading spinner, reset data tracker
+      this.isPageLoading = true;
+      this.dataLoadTracker = { bundle: false, approval: false };
+
+      // Step 5.3: Load data from API (two parallel calls)
+      this.loadBundle(this.applicationNumber);
+      this.loadExistingApprovalData(this.applicationNumber);
+      this.GetEstimateFile(this.applicationNumber);
+    } else {
+      this.isPageLoading = false;
+    }
+
+
+    // // Step 5.4: Get logged-in officer info from session storage
     this.storedData = sessionStorage.getItem('logined_officer_data');
+    let subdivName = '';
+    let rangName = '';
+    // console.log('Stored Data:', this.storedData);
     if (this.storedData) {
       try {
         const parsed = JSON.parse(this.storedData);
-        // let subdivName = parsed?.devision_id || '';
-        // let rangName = parsed?.rang_name || '';
+        subdivName = parsed?.devision_id || ''; // Sub-division name
+        rangName = parsed?.rang_name || '';       // Range name 
 
         this.officer_name = parsed?.officer_name || '';
         const dId = Number(parsed?.designation_id || parsed?.designation || parsed?.DesignationId);
         this.designationId = isNaN(dId) ? null : dId;
 
+        // Step 5.5: Set officer type flags (2=DFO, 3=SDO, 4=RO)
         this.isRO = this.designationId === 4;
         this.isSDO = this.designationId === 3;
         this.isDFO = this.designationId === 2;
       } catch { }
-    }
-
-    // Step 5.1: Get application number from State (during navigation) or Query Params (on refresh)
-    const navigation = this.router.getCurrentNavigation();
-    const stateAppNum = navigation?.extras?.state?.['applicationNumber'] || history.state?.['applicationNumber'];
-
-    if (stateAppNum) {
-      this.applicationNumber = stateAppNum;
-      this.reloadPage(); // Uses the new reloadPage logic to fetch data
-    } else {
-      // Fallback: Check query params
-      this.route.queryParams.subscribe(params => {
-        if (params['applicationNumber']) {
-          this.applicationNumber = params['applicationNumber'];
-          this.reloadPage();
-        } else {
-          this.isPageLoading = false;
-        }
-      });
     }
   }
 
@@ -556,12 +566,7 @@ export class GenerateEstimateDynamicComponent implements OnInit {
    */
   reloadPage() {
     if (this.applicationNumber) {
-      this.isPageLoading = true; // Show loading spinner
-      this.dataLoadTracker = { bundle: false, approval: false };
-
-      this.loadBundle(this.applicationNumber);
-      this.loadExistingApprovalData(this.applicationNumber);
-      this.GetEstimateFile(this.applicationNumber);
+      window.location.reload();
     }
   }
 
