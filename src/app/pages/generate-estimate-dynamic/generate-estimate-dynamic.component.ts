@@ -1,4 +1,6 @@
-import { Component, OnInit, ChangeDetectorRef,NgZone  } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { ElementRef, ViewChild } from '@angular/core';
+
 import { CommonModule, Location } from '@angular/common';
 import { IonicModule, LoadingController, ToastController } from '@ionic/angular';
 import { FormsModule } from '@angular/forms';
@@ -9,12 +11,10 @@ import { tableData } from '../generate-estimate/estimate-table';
 import Swal from 'sweetalert2';
 import { addIcons } from 'ionicons';
 import { cloudUploadOutline } from 'ionicons/icons';
-import { finalize } from 'rxjs/operators';
+
 import * as pdfFontsBold from "../../../assets/fonts/vfs_fonts_bold_custom";
 import * as pdfFontsNormal from "../../../assets/fonts/vfs_fonts_custom";
 import pdfMake from 'pdfmake/build/pdfmake';
-import { ViewChild, ElementRef } from '@angular/core';
-
 (pdfMake as any).vfs = {
   ...pdfFontsBold.vfs,
   ...pdfFontsNormal.vfs
@@ -42,8 +42,8 @@ type DisplayCategory = {
 })
 export class GenerateEstimateDynamicComponent implements OnInit {
 
-  
-  // ✅ PUT IT HERE
+
+
   @ViewChild('uploadFile') uploadFileRef!: ElementRef<HTMLInputElement>;
 
   selectedRoFile: File | null = null;
@@ -53,6 +53,8 @@ export class GenerateEstimateDynamicComponent implements OnInit {
     this.selectedRoFile = input.files?.[0] || null;
   }
 
+  
+  
   applicationNumber: string | null = null;
   singleData: any;
   estimateRows: any[] = [];
@@ -86,8 +88,6 @@ export class GenerateEstimateDynamicComponent implements OnInit {
   existingSDODeclaration: boolean = false;
   existingDFODeclaration: boolean = false;
 
-
-  
   // वनमंडलाधिकारी (DFO)
   vanMandalOptions = [
     { label: 'वन परिक्षेत्र अधिकारी,त्रुटि सुधार कर प्राक्कलन पुनः प्रस्तुत करें |', value: '5' },
@@ -163,8 +163,7 @@ export class GenerateEstimateDynamicComponent implements OnInit {
     private cdRef: ChangeDetectorRef,
     private loadingController: LoadingController,
     private toastController: ToastController,
-    private router: Router,
-    private zone: NgZone
+    private router: Router
   ) {
     addIcons({
       cloudUploadOutline    // ✅ correct syntax
@@ -1090,117 +1089,64 @@ export class GenerateEstimateDynamicComponent implements OnInit {
     });
   }
 
-  triggerFileInput() {
-    const fileInput = document.getElementById('uploadFile') as HTMLInputElement;
-    fileInput.click();
-  }
-
-  refreshPageData() {
-    const appNo = this.singleData.applicationNumber;
-
-    this.loadBundle(appNo);
-    this.loadExistingApprovalData(appNo);
-    this.GetEstimateFile(appNo);
-  }
 
 
+  uploadRoFile() {
 
+    // const input = document.getElementById("uploadFile") as HTMLInputElement | null;
 
-  // uploadRoFile() {
-  //   const input = document.getElementById("uploadFile") as HTMLInputElement | null;
+    // if (!input?.files?.length) {
+    //   this.showToast("कृपया एक फ़ाइल चुनें।", "danger");
+    //   return;
+    // }
 
-  //   if (!input?.files?.length) {
-  //     this.showToast("कृपया एक फ़ाइल चुनें।", "danger");
-  //     return;
-  //   }
+    if (!this.selectedRoFile) {
+     this.showToast("कृपया एक फ़ाइल चुनें।", "danger");
 
-  //   const formData = new FormData();
-  //   formData.append("applicationNumber", this.singleData.applicationNumber);
-  //   formData.append("roFile", input.files[0]);
-
-  //   this.showLoading();
-
-  //   this.api.uploadRo(formData).subscribe({
-  //     next: async (response: any) => {
-  //       await this.dismissLoading();
-
-  //       const res = response?.response || response;
-  //       const code = res?.code;
-  //       const message = res?.msg;
-
-  //       if (code === 200) {
-  //         await this.showToast(message || "RO फ़ाइल सफलतापूर्वक अपलोड हुई", "success");
-  //         input.value = '';
-
-  //         this.zone.run(() => {
-  //           this.refreshPageData();
-  //           this.cdRef.detectChanges();
-  //         });
-  //       }
-  //       else if (code === 101) {
-  //         await this.showToast(message || "Application number is required.", "danger");
-  //       }
-  //       else if (code === 102) {
-  //         await this.showToast(message || "RO file is required.", "danger");
-  //       }
-  //       else {
-  //         await this.showError(message || "फ़ाइल अपलोड असफल");
-  //       }
-  //     },
-
-  //     error: async (err) => {
-  //       console.error("UPLOAD ERROR", err);
-  //       await this.dismissLoading();
-  //       await this.showError("Server Error");
-  //     }
-  //   });
-  // }
-
-uploadRoFile() {
-  if (!this.selectedRoFile) {
-    this.showToast("कृपया एक फ़ाइल चुनें।", "danger");
-    return;
-  }
-
-  const formData = new FormData();
-  formData.append("applicationNumber", this.singleData.applicationNumber);
-  formData.append("roFile", this.selectedRoFile);
-
-  this.showLoading();
-
-  this.api.uploadRo(formData).subscribe({
-    next: async (response: any) => {
-
-      const res = response?.response || response;
-      const code = res?.code;
-      const message = res?.msg;
-
-      if (code === 200) {
-
-      await this.dismissLoading();
-
-        await this.showToast(
-          message || "RO फ़ाइल सफलतापूर्वक अपलोड हुई",
-          "success"
-        );
-
-        // ✅ RESET FILE INPUT SAFELY
-        this.selectedRoFile = null;
-        this.uploadFileRef.nativeElement.value = '';
-
-        // ✅ NOW PAGE WILL REFRESH IN PROD
-        this.refreshPageData();
-      } else {
-        await this.showError(message || "फ़ाइल अपलोड असफल");
-      }
-    },
-    error: async () => {
-      await this.dismissLoading();
-      await this.showError("Server Error");
-    }
-  });
+  return;
 }
 
+    const formData = new FormData();
+    formData.append("applicationNumber", this.singleData.applicationNumber);
+    // formData.append("roFile", input.files[0]);
+    formData.append("roFile", this.selectedRoFile);
+
+    this.showLoading();
+
+    this.api.uploadRo(formData).subscribe({
+      next: async (response: any) => {
+
+        debugger;
+        const res = response?.response || response;
+        const code = res?.code;
+        const message = res?.msg;
+
+        if (code === 200) {
+          await this.dismissLoading();
+
+          await this.showToast(message || "RO फ़ाइल सफलतापूर्वक अपलोड हुई", "success");
+    this.selectedRoFile = null;
+this.uploadFileRef.nativeElement.value = '';
+
+        }
+        else if (code === 101) {
+          await this.showToast(message || "Application number is required.", "danger");
+        }
+        else if (code === 102) {
+          await this.showToast(message || "RO file is required.", "danger");
+        }
+        else {
+          await this.showError(message || "फ़ाइल अपलोड असफल");
+        }
+      },
+
+      error: async (err) => {
+        console.error("UPLOAD ERROR", err);
+        await this.dismissLoading();
+        await this.showError("Server Error");
+      }
+    });
+  }
 
 
   uploadSdo() {
