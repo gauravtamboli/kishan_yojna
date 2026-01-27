@@ -1170,13 +1170,15 @@ uploadRoFile() {
 
   this.api.uploadRo(formData).subscribe({
     next: async (response: any) => {
-      await this.dismissLoading();
 
       const res = response?.response || response;
       const code = res?.code;
       const message = res?.msg;
 
       if (code === 200) {
+
+      await this.dismissLoading();
+
         await this.showToast(
           message || "RO फ़ाइल सफलतापूर्वक अपलोड हुई",
           "success"
