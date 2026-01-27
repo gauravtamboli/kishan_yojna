@@ -470,7 +470,7 @@
                         <div class="upload-wrapper">
 
                           <!-- <input type="file" id="uploadFile" accept="application/pdf" class="file-input" /> -->
-                          <input type="file" #uploadFile (change)="onRoFileSelected($event)" />
+                          <input type="file" class="file-input" #uploadFile (change)="onRoFileSelected($event)" />
 
 
                           <ion-button class="upload-btn" (click)="uploadRoFile()">
