@@ -4,21 +4,15 @@ import { addIcons } from 'ionicons';
 import { buildSharp, homeOutline, informationOutline, informationCircle, buildOutline } from 'ionicons/icons';
 import { CommonModule } from '@angular/common'; // Import CommonModule
 import { Platform, AlertController, IonicModule } from '@ionic/angular';
-import { Router, NavigationEnd } from '@angular/router';
-import {
-  IonToolbar, IonTitle, IonButtons, IonRouterOutlet, IonText, IonMenu, IonHeader, IonItem, IonAvatar, IonLabel, IonContent, IonList, IonIcon,
-  IonMenuButton, IonMenuToggle
-} from '@ionic/angular/standalone';
+import { Router } from '@angular/router';
 import { MenuController } from '@ionic/angular';  // Import MenuController
 
 import { App } from '@capacitor/app';
-import { filter } from 'rxjs/operators';
 import { ToastController, LoadingController } from '@ionic/angular';
 import { } from '@ionic/angular';
 import { Location } from '@angular/common';
 import { NetworkCheckService } from './services/network-check.service';
 import { Toast } from '@capacitor/toast';
-import { ErrorHandler, Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { Preferences } from '@capacitor/preferences';
 
