@@ -4,21 +4,24 @@ import { addIcons } from 'ionicons';
 import { buildSharp, homeOutline, informationOutline, informationCircle, buildOutline } from 'ionicons/icons';
 import { CommonModule } from '@angular/common'; // Import CommonModule
 import { Platform, AlertController, IonicModule } from '@ionic/angular';
-import { Router,  NavigationEnd } from '@angular/router';
- import {IonToolbar, IonTitle, IonButtons, IonRouterOutlet, IonText, IonMenu, IonHeader, IonItem, IonAvatar, IonLabel, IonContent, IonList,IonIcon,
-   IonMenuButton, IonMenuToggle
-  } from '@ionic/angular/standalone';
- import { MenuController } from '@ionic/angular';  // Import MenuController
- 
- import { App } from '@capacitor/app';
- import { filter } from 'rxjs/operators';
- import { ToastController, LoadingController } from '@ionic/angular';
- import {  } from '@ionic/angular';
- import { Location } from '@angular/common';
- import { NetworkCheckService } from './services/network-check.service';
- import { Toast } from '@capacitor/toast';
+import { Router, NavigationEnd } from '@angular/router';
+import {
+  IonToolbar, IonTitle, IonButtons, IonRouterOutlet, IonText, IonMenu, IonHeader, IonItem, IonAvatar, IonLabel, IonContent, IonList, IonIcon,
+  IonMenuButton, IonMenuToggle
+} from '@ionic/angular/standalone';
+import { MenuController } from '@ionic/angular';  // Import MenuController
+
+import { App } from '@capacitor/app';
+import { filter } from 'rxjs/operators';
+import { ToastController, LoadingController } from '@ionic/angular';
+import { } from '@ionic/angular';
+import { Location } from '@angular/common';
+import { NetworkCheckService } from './services/network-check.service';
+import { Toast } from '@capacitor/toast';
 import { ErrorHandler, Injectable } from '@angular/core';
- 
+import { environment } from 'src/environments/environment';
+import { Preferences } from '@capacitor/preferences';
+
 @Component({
   standalone: true,
   selector: 'app-root',
@@ -28,16 +31,16 @@ import { ErrorHandler, Injectable } from '@angular/core';
 })
 
 export class AppComponent implements OnInit {
-  pages: { title: string, icon: string, active: boolean, url : string, is_sub_menu:boolean }[] = [];
+  pages: { title: string, icon: string, active: boolean, url: string, is_sub_menu: boolean }[] = [];
   languageData: any = {};
   isMenuClosed = true;
 
   private lastBackPress: number = 0; // To store the timestamp of the last back button press
   private exitDuration: number = 2000; // Time duration (in ms) for double press detection
 
-  constructor(private languageService: LanguageService,private platform: Platform,
-    private router:Router, private menuCtrl:MenuController, private toastController: ToastController, private location: Location, private alertController: AlertController,
-    private loadingController:LoadingController, private networkCheckService : NetworkCheckService
+  constructor(private languageService: LanguageService, private platform: Platform,
+    private router: Router, private menuCtrl: MenuController, private toastController: ToastController, private location: Location, private alertController: AlertController,
+    private loadingController: LoadingController, private networkCheckService: NetworkCheckService
   ) {
     this.addAllIcon();
     this.platform.ready().then(() => {
@@ -68,101 +71,102 @@ export class AppComponent implements OnInit {
 
   addAllIcon() {
     addIcons({
-      buildSharp, homeOutline, informationOutline,informationCircle,buildOutline
+      buildSharp, homeOutline, informationOutline, informationCircle, buildOutline
     });
   }
 
   ngOnInit(): void {
+    Preferences.set({ key: 'ngrok_url', value: environment.apiUrl });
 
     this.updateTranslation();
 
     this.languageService.language$.subscribe(() => {
       this.pages = [
         {
-        title: this.getTranslation('about_yojna'),
-        icon: 'information',
-        active: true,
-        url : 'about-yojna',
-        is_sub_menu:false
+          title: this.getTranslation('about_yojna'),
+          icon: 'information',
+          active: true,
+          url: 'about-yojna',
+          is_sub_menu: false
         },
         {
           title: this.getTranslation('tree_techniques_and_expensed'),
           icon: 'build',
           active: true,
-          url : 'tree-techniques-and-expenses',
-          is_sub_menu:true
+          url: 'tree-techniques-and-expenses',
+          is_sub_menu: true
         },
         {
           title: this.getTranslation('tissu_cultuer_beema_bansh'),
           icon: 'build',
           active: true,
-          url : 'tissu-culture-bima-bans',
-          is_sub_menu:true
+          url: 'tissu-culture-bima-bans',
+          is_sub_menu: true
         },
         {
           title: this.getTranslation('clonal_nilgiri'),
           icon: 'build',
           active: true,
-          url : 'clonal-nilgiri',
-          is_sub_menu:true
+          url: 'clonal-nilgiri',
+          is_sub_menu: true
         },
         {
           title: this.getTranslation('miliya_dubiya_malabar_neem'),
           icon: 'build',
           active: true,
-          url : 'milia-dubiya-malabar-neem',
-          is_sub_menu:true
+          url: 'milia-dubiya-malabar-neem',
+          is_sub_menu: true
         },
         {
           title: this.getTranslation('tissue_cluture_sagon'),
           icon: 'build',
           active: true,
-          url : 'tissu-culture-sagon',
-          is_sub_menu:true
+          url: 'tissu-culture-sagon',
+          is_sub_menu: true
         },
         {
           title: this.getTranslation('safed_chandan'),
           icon: 'build',
           active: true,
-          url : 'safed-chanddan',
-          is_sub_menu:true
+          url: 'safed-chanddan',
+          is_sub_menu: true
         },
         {
           title: this.getTranslation('uplabdhiya'),
           icon: 'build',
           active: true,
-          url : 'uplabdhiya',
-          is_sub_menu:true
+          url: 'uplabdhiya',
+          is_sub_menu: true
         },
         {
           title: this.getTranslation('kisan_registeratino'),
           icon: 'build',
           active: true,
-          url : 'registeration',
-          is_sub_menu:false
+          url: 'registeration',
+          is_sub_menu: false
         },
         {
           title: this.getTranslation('kisan_registeratino_status'),
           icon: 'build',
           active: true,
-          url : 'registeration-status',
-          is_sub_menu:false
+          url: 'registeration-status',
+          is_sub_menu: false
         },
         {
           title: this.getTranslation('important_contact'),
           icon: 'build',
           active: true,
-          url : 'important-contact',
-          is_sub_menu:false
+          url: 'important-contact',
+          is_sub_menu: false
         },
         {
           title: this.getTranslation('officer_login'),
           icon: 'build',
           active: true,
-          url : 'officer-login',
-          is_sub_menu:false
+          url: 'officer-login',
+          is_sub_menu: false
         }
-    ];
+      ];
     });
 
   }
@@ -182,20 +186,20 @@ export class AppComponent implements OnInit {
   }
 
   loadingDialog!: HTMLIonLoadingElement;
-  async showLoadingController(){
+  async showLoadingController() {
     this.loadingDialog = await this.loadingController.create({
-        message: 'Loading, please wait...',
-        spinner: 'crescent', // You can choose other spinners like 'dots', 'lines', etc.
-        backdropDismiss: false,
-      });
-  
+      message: 'Loading, please wait...',
+      spinner: 'crescent', // You can choose other spinners like 'dots', 'lines', etc.
+      backdropDismiss: false,
+    });
 
-     // await this.loadingController.present(); // Show the loading spinner
+
+    // await this.loadingController.present(); // Show the loading spinner
   }
 
   isConnected: boolean = false;
 
-  async longToast(msg:string) {
+  async longToast(msg: string) {
     await Toast.show({
       text: msg,
       duration: 'long', // 'short' (2s) or 'long' (3.5s)
@@ -207,22 +211,22 @@ export class AppComponent implements OnInit {
 
     this.isConnected = await this.networkCheckService.getCurrentStatus();
 
-    if(this.isConnected){
+    if (this.isConnected) {
       this.menuCtrl.close();
       setTimeout(() => {
-        if(page === "registeration"){
+        if (page === "registeration") {
           this.openDialogForRegisterationOption();
-        }else{
+        } else {
           this.router.navigate([page]); // Navigate after closing the menu
         }
       }, 200); // 200ms delay (adjust as needed)      
-    }else{
+    } else {
       this.longToast(this.getTranslation("no_internet"));
       return;
     }
 
   }
-  
+
   getIconName(index: number): string {
     if (index === 0) {
       return 'information-circle'; // Icon for the first page
@@ -235,7 +239,7 @@ export class AppComponent implements OnInit {
 
   async openDialogForRegisterationOption() {
     const alert = await this.alertController.create({
-      message : "आप निचे दिए गए दो विकल्पों से पंजीयन कर सकते हैं ",
+      message: "आप निचे दिए गए दो विकल्पों से पंजीयन कर सकते हैं ",
       buttons: [
         {
           text: 'ऑनलाइन आवेदन',
@@ -250,7 +254,7 @@ export class AppComponent implements OnInit {
         {
           text: 'ऑफलाइन आवेदन',
           handler: () => {
-            this.router.navigate(['registeration'],{
+            this.router.navigate(['registeration'], {
               queryParams: {
                 isOnline: 'false'
               }
@@ -263,15 +267,15 @@ export class AppComponent implements OnInit {
     await alert.present();
   }
 
-  isWebPlatform(url:string): boolean {
-    if(url === "officer-login" && this.platform.is('desktop')){
+  isWebPlatform(url: string): boolean {
+    if (url === "officer-login" && this.platform.is('desktop')) {
       return true;
-    }else if(url === "officer-login" && this.platform.is('mobile')){
+    } else if (url === "officer-login" && this.platform.is('mobile')) {
       return false;
     }
 
     return true;
-    
+
   }
 
 
