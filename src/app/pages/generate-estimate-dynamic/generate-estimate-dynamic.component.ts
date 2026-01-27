@@ -13,6 +13,8 @@ import { finalize } from 'rxjs/operators';
 import * as pdfFontsBold from "../../../assets/fonts/vfs_fonts_bold_custom";
 import * as pdfFontsNormal from "../../../assets/fonts/vfs_fonts_custom";
 import pdfMake from 'pdfmake/build/pdfmake';
+import { ViewChild, ElementRef } from '@angular/core';
+
 (pdfMake as any).vfs = {
   ...pdfFontsBold.vfs,
   ...pdfFontsNormal.vfs
@@ -39,6 +41,18 @@ type DisplayCategory = {
   imports: [IonicModule, CommonModule, FormsModule, NgSelectModule],
 })
 export class GenerateEstimateDynamicComponent implements OnInit {
+
+  
+  // ✅ PUT IT HERE
+  @ViewChild('uploadFile') uploadFileRef!: ElementRef<HTMLInputElement>;
+
+  selectedRoFile: File | null = null;
+
+  onRoFileSelected(event: Event) {
+    const input = event.target as HTMLInputElement;
+    this.selectedRoFile = input.files?.[0] || null;
+  }
+
   applicationNumber: string | null = null;
   singleData: any;
   estimateRows: any[] = [];
@@ -72,6 +86,8 @@ export class GenerateEstimateDynamicComponent implements OnInit {
   existingSDODeclaration: boolean = false;
   existingDFODeclaration: boolean = false;
 
+
+  
   // वनमंडलाधिकारी (DFO)
   vanMandalOptions = [
     { label: 'वन परिक्षेत्र अधिकारी,त्रुटि सुधार कर प्राक्कलन पुनः प्रस्तुत करें |', value: '5' },
@@ -1090,56 +1106,98 @@ export class GenerateEstimateDynamicComponent implements OnInit {
 
 
 
-  uploadRoFile() {
-    const input = document.getElementById("uploadFile") as HTMLInputElement | null;
+  // uploadRoFile() {
+  //   const input = document.getElementById("uploadFile") as HTMLInputElement | null;
 
-    if (!input?.files?.length) {
-      this.showToast("कृपया एक फ़ाइल चुनें।", "danger");
-      return;
-    }
+  //   if (!input?.files?.length) {
+  //     this.showToast("कृपया एक फ़ाइल चुनें।", "danger");
+  //     return;
+  //   }
 
-    const formData = new FormData();
-    formData.append("applicationNumber", this.singleData.applicationNumber);
-    formData.append("roFile", input.files[0]);
+  //   const formData = new FormData();
+  //   formData.append("applicationNumber", this.singleData.applicationNumber);
+  //   formData.append("roFile", input.files[0]);
 
-    this.showLoading();
+  //   this.showLoading();
 
-    this.api.uploadRo(formData).subscribe({
-      next: async (response: any) => {
-        await this.dismissLoading();
+  //   this.api.uploadRo(formData).subscribe({
+  //     next: async (response: any) => {
+  //       await this.dismissLoading();
 
-        const res = response?.response || response;
-        const code = res?.code;
-        const message = res?.msg;
+  //       const res = response?.response || response;
+  //       const code = res?.code;
+  //       const message = res?.msg;
 
-        if (code === 200) {
-          await this.showToast(message || "RO फ़ाइल सफलतापूर्वक अपलोड हुई", "success");
-          input.value = '';
+  //       if (code === 200) {
+  //         await this.showToast(message || "RO फ़ाइल सफलतापूर्वक अपलोड हुई", "success");
+  //         input.value = '';
 
-          this.zone.run(() => {
-            this.refreshPageData();
-            this.cdRef.detectChanges();
-          });
-        }
-        else if (code === 101) {
-          await this.showToast(message || "Application number is required.", "danger");
-        }
-        else if (code === 102) {
-          await this.showToast(message || "RO file is required.", "danger");
-        }
-        else {
-          await this.showError(message || "फ़ाइल अपलोड असफल");
-        }
-      },
+  //         this.zone.run(() => {
+  //           this.refreshPageData();
+  //           this.cdRef.detectChanges();
+  //         });
+  //       }
+  //       else if (code === 101) {
+  //         await this.showToast(message || "Application number is required.", "danger");
+  //       }
+  //       else if (code === 102) {
+  //         await this.showToast(message || "RO file is required.", "danger");
+  //       }
+  //       else {
+  //         await this.showError(message || "फ़ाइल अपलोड असफल");
+  //       }
+  //     },
 
-      error: async (err) => {
-        console.error("UPLOAD ERROR", err);
-        await this.dismissLoading();
-        await this.showError("Server Error");
-      }
-    });
+  //     error: async (err) => {
+  //       console.error("UPLOAD ERROR", err);
+  //       await this.dismissLoading();
+  //       await this.showError("Server Error");
+  //     }
+  //   });
+  // }
+
+uploadRoFile() {
+  if (!this.selectedRoFile) {
+    this.showToast("कृपया एक फ़ाइल चुनें।", "danger");
+    return;
   }
 
+  const formData = new FormData();
+  formData.append("applicationNumber", this.singleData.applicationNumber);
+  formData.append("roFile", this.selectedRoFile);
+
+  this.showLoading();
+
+  this.api.uploadRo(formData).subscribe({
+    next: async (response: any) => {
+      await this.dismissLoading();
+
+      const res = response?.response || response;
+      const code = res?.code;
+      const message = res?.msg;
+
+      if (code === 200) {
+        await this.showToast(
+          message || "RO फ़ाइल सफलतापूर्वक अपलोड हुई",
+          "success"
+        );
+
+        // ✅ RESET FILE INPUT SAFELY
+        this.selectedRoFile = null;
+        this.uploadFileRef.nativeElement.value = '';
+
+        // ✅ NOW PAGE WILL REFRESH IN PROD
+        this.refreshPageData();
+      } else {
+        await this.showError(message || "फ़ाइल अपलोड असफल");
+      }
+    },
+    error: async () => {
+      await this.dismissLoading();
+      await this.showError("Server Error");
+    }
+  });
+}
 
 
 

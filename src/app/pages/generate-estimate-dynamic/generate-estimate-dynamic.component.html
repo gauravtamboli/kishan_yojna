@@ -468,7 +468,9 @@
                         <ion-label position="stacked">अग्रेषण पत्र अपलोड करे</ion-label>
 
                         <div class="upload-wrapper">
-                          <input type="file" id="uploadFile" accept="application/pdf" class="file-input" />
+                          <!-- <input type="file" id="uploadFile" accept="application/pdf" class="file-input" /> -->
+
+                          <input type="file" #uploadFile accept="application/pdf" class="file-input" (change)="onRoFileSelected($event)" />
 
                           <ion-button class="upload-btn" (click)="uploadRoFile()">
                             <ion-icon name="cloud-upload-outline" slot="start"></ion-icon>
