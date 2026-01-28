@@ -1242,7 +1242,7 @@ export class GenerateEstimateDynamicComponent implements OnInit {
     if (!this.selectedSdoFile) {
       Swal.fire({
         title: 'त्रुटि',
-        text: 'कृपया एक फ़ाइल चुनें।',
+        text: 'कृपया एक फ़ाइल चुनें।(SDO)',
         icon: 'error',
         confirmButtonText: 'ठीक है',
         target: '#swal-portal',
