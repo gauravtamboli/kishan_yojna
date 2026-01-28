@@ -307,7 +307,7 @@
                 <ion-row class="center-columns">
 
                   <!--DFO COLUMN -->
-                  <ion-col size="12" size-md="4" size-lg="4">
+                  <ion-col size="12" style="border: 2px dashed black;" size-md="4" size-lg="4">
 
                     <!-- When DFO Can Take Action -->
                     <div *ngIf="singleData.awedan_status === '4' && isDFO">
@@ -322,7 +322,9 @@
                         </ion-label>
 
                         <div class="upload-wrapper">
-                          <input type="file" id="uploadFile2" accept="application/pdf" class="file-input" />
+                          <!-- <input type="file" id="uploadFile2" accept="application/pdf" class="file-input" /> -->
+                          <input type="file" class="file-input" #uploadFile (change)="onDfoFileSelected($event)" />
+
 
                           <ion-button class="upload-btn" (click)="uploadDfo()">
                             <ion-icon name="cloud-upload-outline" slot="start"></ion-icon>
@@ -377,7 +379,7 @@
                   </ion-col>
 
                   <!--SDO COLUMN-->
-                  <ion-col size="12" size-md="4" size-lg="4">
+                  <ion-col size="12" style="border: 2px dashed black;" size-md="4" size-lg="4">
 
                     <!-- When SDO Can Take Action -->
                     <div *ngIf="singleData.awedan_status === '2' && isSDO">
@@ -392,7 +394,9 @@
                         </ion-label>
 
                         <div class="upload-wrapper">
-                          <input type="file" id="uploadFile1" accept="application/pdf" class="file-input" />
+                          <!-- <input type="file" id="uploadFile1" accept="application/pdf" class="file-input" /> -->
+                          <input type="file" class="file-input" #uploadFile (change)="onDfoFileSelected($event)" />
+
 
                           <ion-button class="upload-btn" (click)="uploadSdo()">
                             <ion-icon name="cloud-upload-outline" slot="start"></ion-icon>
@@ -453,7 +457,7 @@
                   </ion-col>
 
                   <!--RO COLUMN-->
-                  <ion-col size="12" size-md="4" size-lg="4">
+                  <ion-col size="12"  style="border: 2px dashed black;" size-md="4" size-lg="4">
 
                     <!-- When RO Can Take Action -->
                     <div *ngIf="singleData.awedan_status === '1' && isRO">
@@ -520,6 +524,7 @@
                     </div>
 
                   </ion-col>
+
                 </ion-row>
                 <!-- Buttons Row -->
                 <ion-row>
