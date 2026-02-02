@@ -6,7 +6,7 @@ import { LanguageService } from '../../services/language.service';
 import { NavController } from '@ionic/angular';
 import { Toast } from '@capacitor/toast';
 import { ChangeDetectorRef } from '@angular/core';
-
+import { MenuController } from '@ionic/angular';
 
 import { ApiService } from 'src/app/services/api.service';
 import { OfficersLoginResponseModel } from '../officer-login/OfficersLoginResponse.model';
@@ -68,6 +68,7 @@ export class OfficersDashboardROPage implements OnInit {
   isNoRecordFound: boolean = true;
 
   constructor(
+    private menuCtrl: MenuController,
     private storageService: StorageService,
     private modalCtrl: ModalController,
     private alertController: AlertController,
@@ -128,6 +129,14 @@ export class OfficersDashboardROPage implements OnInit {
       // Also refresh data when entering the page to ensure fresh data
       this.getDashboardDataFromServer();
     }
+  }
+  ionViewDidEnter() {
+    setTimeout(() => {
+      if (this.platform.is('mobile') || this.platform.is('hybrid')) {
+        this.menuCtrl.enable(true);
+        this.menuCtrl.close(); // force collapse on mobile
+      }
+    }, 100);
   }
 
   async ngOnInit() {
