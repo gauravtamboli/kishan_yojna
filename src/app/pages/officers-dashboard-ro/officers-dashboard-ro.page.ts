@@ -132,10 +132,8 @@ export class OfficersDashboardROPage implements OnInit {
   }
   ionViewDidEnter() {
     setTimeout(() => {
-      if (this.platform.is('mobile') || this.platform.is('hybrid')) {
-        this.menuCtrl.enable(true);
-        this.menuCtrl.close(); // force collapse on mobile
-      }
+      this.menuCtrl.enable(true, 'ro-menu');
+      this.menuCtrl.close();
     }, 100);
   }
 
