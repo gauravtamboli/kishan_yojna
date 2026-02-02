@@ -1,5 +1,5 @@
-<ion-split-pane contentId="main-content" when="(min-width: 768px)">
-  <ion-menu class="custom-menu" side="start" content-id="main-content">
+<ion-split-pane contentId="main-content" when="md">
+  <ion-menu menuId="sdo-menu" class="custom-menu" side="start" content-id="main-content">
     <ion-header class="ion-header-class-for-menu">
       <div class="bg"></div>
 
@@ -47,7 +47,7 @@
 
           <!-- START : MENU BUTTON -->
           <ion-buttons slot="start">
-            <ion-menu-button class="icon-btn-menu"></ion-menu-button>
+            <ion-menu-button menu="sdo-menu" class="icon-btn-menu"></ion-menu-button>
           </ion-buttons>
 
           <!-- CENTER : OFFICER NAME -->

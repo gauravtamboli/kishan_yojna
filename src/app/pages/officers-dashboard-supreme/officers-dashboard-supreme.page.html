@@ -1,5 +1,5 @@
-<ion-split-pane contentId="main-content" when="(min-width: 768px)">
-  <ion-menu class="custom-menu" side="start" content-id="main-content">
+<ion-split-pane contentId="main-content" when="md">
+  <ion-menu menuId="supreme-menu" class="custom-menu" side="start" content-id="main-content">
     <ion-header class="ion-header-class-for-menu">
       <div class="bg"></div>
 
@@ -42,7 +42,7 @@
       <div class="div-color">
         <ion-toolbar style="padding-top: 20px; color: white">
           <ion-title class="ion-text-center">{{ getLoginedOfficerName() }}</ion-title>
-          <ion-menu-button style="color: white" slot="start"></ion-menu-button>
+          <ion-menu-button menu="supreme-menu" style="color: white" slot="start"></ion-menu-button>
           <ion-buttons slot="end">
             <ion-icon (click)="logoutFunction()" name="log-out-outline" class="toolbar-icon"></ion-icon>
           </ion-buttons>
@@ -53,17 +53,14 @@
     <ion-content>
       <ion-loading cssClass="custom-loading" [isOpen]="isLoading" [message]="loadingMessage"
         [backdropDismiss]="false"></ion-loading>
-      
+
       <!-- Circle Selection for Supreme Hierarchy -->
       <ion-grid style="padding: 16px; background: #f5f5f5;">
         <ion-row>
           <ion-col size="12" size-md="6" size-lg="4">
             <ion-item>
               <ion-label position="stacked" class="item-style-label">वृत्त चुनें</ion-label>
-              <ion-select 
-                [(ngModel)]="selectedCircleId" 
-                (ionChange)="onCircleChange($event)" 
-                placeholder="वृत्त चुनें"
+              <ion-select [(ngModel)]="selectedCircleId" (ionChange)="onCircleChange($event)" placeholder="वृत्त चुनें"
                 interface="popover">
                 <ion-select-option value="all">सभी वृत्त</ion-select-option>
                 <ion-select-option *ngFor="let circle of listOfCircles" [value]="circle.id.toString()">
@@ -265,7 +262,8 @@
           </ion-col>
         </ion-row>
 
-        <p-table [value]="filteredAwedans" [paginator]="false" responsiveLayout="stack" class="custom-dashboard-table" id="dashboard_table">
+        <p-table [value]="filteredAwedans" [paginator]="false" responsiveLayout="stack" class="custom-dashboard-table"
+          id="dashboard_table">
           <ng-template pTemplate="header">
             <tr>
               <th>#</th>
@@ -325,41 +323,29 @@
         <div *ngIf="totalPages > 1" class="pagination-container mt-3">
           <ion-row class="align-items-center justify-content-center">
             <ion-col size="auto">
-              <ion-button 
-                [disabled]="currentPage === 1" 
-                (click)="goToPreviousPage()"
-                fill="outline"
-                size="small">
+              <ion-button [disabled]="currentPage === 1" (click)="goToPreviousPage()" fill="outline" size="small">
                 <ion-icon name="chevron-back-outline" slot="start"></ion-icon>
                 पिछला
               </ion-button>
             </ion-col>
-            
+
             <ion-col size="auto">
               <div class="page-numbers">
-                <ion-button 
-                  *ngFor="let page of getPageNumbers()" 
-                  [color]="page === currentPage ? 'primary' : 'medium'"
-                  [fill]="page === currentPage ? 'solid' : 'outline'"
-                  size="small"
-                  (click)="goToPage(page)"
+                <ion-button *ngFor="let page of getPageNumbers()" [color]="page === currentPage ? 'primary' : 'medium'"
+                  [fill]="page === currentPage ? 'solid' : 'outline'" size="small" (click)="goToPage(page)"
                   class="page-btn">
                   {{ page }}
                 </ion-button>
               </div>
             </ion-col>
-            
+
             <ion-col size="auto">
-              <ion-button 
-                [disabled]="currentPage === totalPages" 
-                (click)="goToNextPage()"
-                fill="outline"
-                size="small">
+              <ion-button [disabled]="currentPage === totalPages" (click)="goToNextPage()" fill="outline" size="small">
                 अगला
                 <ion-icon name="chevron-forward-outline" slot="end"></ion-icon>
               </ion-button>
             </ion-col>
-            
+
             <ion-col size="auto" class="text-muted">
               <small>पृष्ठ {{ currentPage }} / {{ totalPages }} (कुल {{ totalRecords }} रिकॉर्ड)</small>
             </ion-col>
@@ -374,7 +360,3 @@
     </ion-content>
   </div>
 </ion-split-pane>
-
-
-
-

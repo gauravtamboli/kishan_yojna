@@ -1,5 +1,5 @@
-<ion-split-pane contentId="main-content" when="(min-width: 768px)">
-  <ion-menu class="custom-menu" side="start" content-id="main-content">
+<ion-split-pane contentId="main-content" when="md">
+  <ion-menu menuId="year-three-menu" class="custom-menu" side="start" content-id="main-content">
     <ion-header class="ion-header-class-for-menu">
       <div class="bg"></div>
 
@@ -22,7 +22,7 @@
       <div class="div-color">
         <ion-toolbar>
           <ion-buttons slot="start">
-            <ion-menu-button class="icon-btn-menu"></ion-menu-button>
+            <ion-menu-button menu="year-three-menu" class="icon-btn-menu"></ion-menu-button>
           </ion-buttons>
 
           <ion-title class="ion-text-center">
@@ -98,10 +98,10 @@
                     <ion-grid style="background: linear-gradient(135deg, #ff9800 0%, #f57c00 100%);">
                       <ion-row>
                         <ion-col size="9" class="ion-text-center">
-                         <ion-label class="responsive-label-count label-divider">
+                          <ion-label class="responsive-label-count label-divider">
                             <span class="label-text">तृतीय वर्ष की अपूर्ण प्रविष्टि</span>
                             <span class="label-count">{{ countNo }}</span>
-                          </ion-label>                      
+                          </ion-label>
                         </ion-col>
                       </ion-row>
                     </ion-grid>

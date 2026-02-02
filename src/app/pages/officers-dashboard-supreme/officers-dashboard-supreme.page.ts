@@ -95,6 +95,13 @@ export class OfficersDashboardSupremePage implements OnInit {
     }
   }
 
+  ionViewDidEnter() {
+    setTimeout(() => {
+      this.menuCtrl.enable(true, 'supreme-menu');
+      this.menuCtrl.close();
+    }, 100);
+  }
+
   async ngOnInit() {
     this.updateTranslation();
     await this.loadCircles();
@@ -159,7 +166,7 @@ export class OfficersDashboardSupremePage implements OnInit {
 
   onCircleChange(event: any) {
     const selectedValue = event.detail.value;
-    
+
     if (selectedValue === 'all') {
       // Handle "All" selection
       this.selectedCircleId = 'all';
@@ -232,7 +239,7 @@ export class OfficersDashboardSupremePage implements OnInit {
     if (officersLoginModel != null) {
       // For "All" selection, pass 99 to get all circles data (backend uses 99 for "All")
       const circleIdForApi = this.selectedCircleId === 'all' ? '99' : this.selectedCircleId;
-      
+
       // For supreme hierarchy (designation 7), use selected circle or 99 for all
       this.apiService.getAwedanStatusCounts(
         officersLoginModel.designation,
@@ -244,12 +251,12 @@ export class OfficersDashboardSupremePage implements OnInit {
         async (countsResponse) => {
           if (countsResponse.response.code === 200) {
             const counts = countsResponse.counts;
-            
+
             const findCount = (status: number) => {
               const item = counts.find((c: any) => c.status === status);
               return item ? item.count : 0;
             };
-            
+
             this.totalAwedan = findCount(99);
             this.totalEditPending = findCount(0) + findCount(3) + findCount(5);
             this.totalROPending = findCount(1);
@@ -355,13 +362,13 @@ export class OfficersDashboardSupremePage implements OnInit {
     this.showDialog("कृपया प्रतीक्षा करें.....");
 
     const officersLoginModel = this.getOfficersSessionData() as OfficersLoginResponseModel;
-    
+
     if (!officersLoginModel) {
       this.dismissDialog();
       this.shortToast('Officer session data not found');
       return;
     }
-    
+
     let whichData = 1;
     if (this.whichBoxClicked === 1) {
       whichData = 1;
@@ -376,7 +383,7 @@ export class OfficersDashboardSupremePage implements OnInit {
     } else if (this.whichBoxClicked === 6) {
       whichData = 8;
     }
-    
+
     if (this.whichBoxClicked === 1) {
       this.totalRecords = this.totalAwedan;
     } else if (this.whichBoxClicked === 2) {
@@ -390,15 +397,15 @@ export class OfficersDashboardSupremePage implements OnInit {
     } else if (this.whichBoxClicked === 6) {
       this.totalRecords = this.totalApproved;
     }
-    
+
     this.totalPages = Math.ceil(this.totalRecords / this.pageSize);
-    
+
     // For "All" selection, pass 99 to get all circles data (backend uses 99 for "All")
     const circleIdForApi = this.selectedCircleId === 'all' ? '99' : this.selectedCircleId;
-    
+
     // Debug: Log the circle ID being sent to API
     console.log('Calling getListOfAwedanAccordingToAwedanStatus with circleId:', circleIdForApi, 'selectedCircleId:', this.selectedCircleId);
-    
+
     // For supreme hierarchy, use selected circle or 99 for all
     this.apiService.getListOfAwedanAccordingToAwedanStatus(
       whichData,
@@ -414,13 +421,13 @@ export class OfficersDashboardSupremePage implements OnInit {
         if (response.response.code === 200) {
           this.listOfAwedan = response.data || [];
           this.filteredAwedans = this.listOfAwedan;
-          
+
           if (this.listOfAwedan.length > 0) {
             this.isNoRecordFound = false;
           } else {
             this.isNoRecordFound = true;
           }
-          
+
           this.cdRef.detectChanges();
         } else {
           this.filteredAwedans = [];
@@ -459,7 +466,7 @@ export class OfficersDashboardSupremePage implements OnInit {
   getPageNumbers(): number[] {
     const pages: number[] = [];
     const maxPagesToShow = 5;
-    
+
     if (this.totalPages <= maxPagesToShow) {
       for (let i = 1; i <= this.totalPages; i++) {
         pages.push(i);
@@ -467,16 +474,16 @@ export class OfficersDashboardSupremePage implements OnInit {
     } else {
       let startPage = Math.max(1, this.currentPage - Math.floor(maxPagesToShow / 2));
       let endPage = Math.min(this.totalPages, startPage + maxPagesToShow - 1);
-      
+
       if (endPage - startPage < maxPagesToShow - 1) {
         startPage = Math.max(1, endPage - maxPagesToShow + 1);
       }
-      
+
       for (let i = startPage; i <= endPage; i++) {
         pages.push(i);
       }
     }
-    
+
     return pages;
   }
 

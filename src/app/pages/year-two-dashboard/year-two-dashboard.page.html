@@ -1,5 +1,5 @@
-<ion-split-pane contentId="main-content" when="(min-width: 768px)">
-  <ion-menu class="custom-menu" side="start" content-id="main-content">
+<ion-split-pane contentId="main-content" when="md">
+  <ion-menu menuId="year-two-menu" class="custom-menu" side="start" content-id="main-content">
     <ion-header class="ion-header-class-for-menu">
       <!-- <div class="bg"></div> -->
       <ion-item lines="none">
@@ -40,7 +40,7 @@
       <div class="div-color">
         <ion-toolbar style="padding-top: 10px; color: white">
           <ion-title class="ion-text-center">{{ getLoginedOfficerName() }}</ion-title>
-          <ion-menu-button style="color: white" slot="start"></ion-menu-button>
+          <ion-menu-button menu="year-two-menu" style="color: white" slot="start"></ion-menu-button>
           <ion-buttons slot="end">
             <ion-buttons slot="end">
               <ion-button fill="clear" id="userMenuBtn" class="icon-btn-options">

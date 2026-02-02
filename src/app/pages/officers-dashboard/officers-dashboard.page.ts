@@ -41,7 +41,7 @@ export class OfficersDashboardPage implements OnInit {
 
   export() {
 
-  const filteredData = this.filteredAwedans.filter(item => item.awedan_status_text === 'लंबित');
+    const filteredData = this.filteredAwedans.filter(item => item.awedan_status_text === 'लंबित');
 
 
     const exportData = filteredData.map((item, index) => ({
@@ -132,6 +132,13 @@ export class OfficersDashboardPage implements OnInit {
     }
   }
 
+  ionViewDidEnter() {
+    setTimeout(() => {
+      this.menuCtrl.enable(true, 'officer-menu');
+      this.menuCtrl.close();
+    }, 100);
+  }
+
   async ngOnInit() {
 
     this.updateTranslation();
@@ -211,13 +218,13 @@ export class OfficersDashboardPage implements OnInit {
         async (countsResponse) => {
           if (countsResponse.response.code === 200) {
             const counts = countsResponse.counts;
-            
+
             // Find counts from the array
             const findCount = (status: number) => {
               const item = counts.find((c: any) => c.status === status);
               return item ? item.count : 0;
             };
-            
+
             // Map counts from API response to component properties
             this.totalAwedan = findCount(99); // status 99 = कुल आवेदन
             // संपादन लंबित (0, 3, 5)
@@ -339,7 +346,7 @@ export class OfficersDashboardPage implements OnInit {
     this.showDialog("कृपया प्रतीक्षा करें.....");
 
     const officersLoginModel = this.getOfficersSessionData() as OfficersLoginResponseModel;
-    
+
     // Map whichBoxClicked to which_data for API
     let whichData = 1; // default to total
     if (this.whichBoxClicked === 1) {
@@ -356,7 +363,7 @@ export class OfficersDashboardPage implements OnInit {
     } else if (this.whichBoxClicked === 6) {
       whichData = 8; // Status 6 (स्वीकृत)
     }
-    
+
     // Calculate totalRecords based on which box is clicked
     if (this.whichBoxClicked === 1) {
       this.totalRecords = this.totalAwedan;
@@ -371,9 +378,9 @@ export class OfficersDashboardPage implements OnInit {
     } else if (this.whichBoxClicked === 6) {
       this.totalRecords = this.totalApproved;
     }
-    
+
     this.totalPages = Math.ceil(this.totalRecords / this.pageSize);
-    
+
     this.apiService.getListOfAwedanAccordingToAwedanStatus(
       whichData,
       officersLoginModel.designation,
@@ -388,13 +395,13 @@ export class OfficersDashboardPage implements OnInit {
         if (response.response.code === 200) {
           this.listOfAwedan = response.data || [];
           this.filteredAwedans = this.listOfAwedan;
-          
+
           if (this.listOfAwedan.length > 0) {
             this.isNoRecordFound = false;
           } else {
             this.isNoRecordFound = true;
           }
-          
+
           this.cdRef.detectChanges();
         } else {
           this.filteredAwedans = [];
@@ -433,7 +440,7 @@ export class OfficersDashboardPage implements OnInit {
   getPageNumbers(): number[] {
     const pages: number[] = [];
     const maxPagesToShow = 5;
-    
+
     if (this.totalPages <= maxPagesToShow) {
       // Show all pages if total pages is less than max
       for (let i = 1; i <= this.totalPages; i++) {
@@ -443,16 +450,16 @@ export class OfficersDashboardPage implements OnInit {
       // Show pages around current page
       let startPage = Math.max(1, this.currentPage - Math.floor(maxPagesToShow / 2));
       let endPage = Math.min(this.totalPages, startPage + maxPagesToShow - 1);
-      
+
       if (endPage - startPage < maxPagesToShow - 1) {
         startPage = Math.max(1, endPage - maxPagesToShow + 1);
       }
-      
+
       for (let i = startPage; i <= endPage; i++) {
         pages.push(i);
       }
     }
-    
+
     return pages;
   }
 

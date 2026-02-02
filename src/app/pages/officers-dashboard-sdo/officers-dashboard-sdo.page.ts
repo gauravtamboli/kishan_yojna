@@ -129,6 +129,13 @@ export class OfficersDashboardSDOPage implements OnInit {
     }
   }
 
+  ionViewDidEnter() {
+    setTimeout(() => {
+      this.menuCtrl.enable(true, 'sdo-menu');
+      this.menuCtrl.close();
+    }, 100);
+  }
+
   async ngOnInit() {
 
     this.curent_session = await this.storageService.get('current_session');
@@ -324,7 +331,7 @@ export class OfficersDashboardSDOPage implements OnInit {
 
   addAllIcon() {
     addIcons({
-     appsOutline, homeOutline, informationOutline, informationCircle, buildOutline, logOutOutline, reorderThreeOutline,
+      appsOutline, homeOutline, informationOutline, informationCircle, buildOutline, logOutOutline, reorderThreeOutline,
       chevronBackOutline, chevronForwardOutline, chevronDownOutline, optionsOutline, downloadOutline,
     });
   }

@@ -1,6 +1,6 @@
-<ion-split-pane contentId="main-content" when="(min-width: 768px)">
+<ion-split-pane contentId="main-content" when="md">
 
-  <ion-menu class="custom-menu" side="start" content-id="main-content">
+  <ion-menu menuId="officer-menu" class="custom-menu" side="start" content-id="main-content">
     <ion-header class="ion-header-class-for-menu">
       <div class="bg"></div>
 
@@ -49,7 +49,7 @@
       <div class="div-color">
         <ion-toolbar style="padding-top: 20px; color: white;">
           <ion-title class="ion-text-center">{{ getLoginedOfficerName() }}</ion-title>
-          <ion-menu-button style="color: white;" slot="start"></ion-menu-button>
+          <ion-menu-button menu="officer-menu" style="color: white;" slot="start"></ion-menu-button>
           <!-- <ion-buttons slot="end">
             <img src="assets/img/cg_image.png" alt="Logo" class="toolbar-logo" />
           </ion-buttons> -->
@@ -75,129 +75,122 @@
                 ">
 
 
-                <!-- कुल आवेदन -->
-                <ion-col size="6" size-lg="3">
-                  <ion-card class="custom-card" (click)="getListOfAwedanAfterClickOnBoxes(1)">
-                    <ion-grid class="ion-my-grid"
-                      style="background: linear-gradient(135deg, #198edb 0%, #1565c0 100%);">
-                      <ion-row>
-                        <ion-col size="12" class="ion-text-center">
-                          <ion-label class="responsive-label-count label-divider">
-                            <span class="label-text">कुल आवेदन</span>
-                            <span class="label-count">{{ totalAwedan }}</span>
-                          </ion-label>
-                        </ion-col>
-                      </ion-row>
-                    </ion-grid>
-                  </ion-card>
-                </ion-col>
+          <!-- कुल आवेदन -->
+          <ion-col size="6" size-lg="3">
+            <ion-card class="custom-card" (click)="getListOfAwedanAfterClickOnBoxes(1)">
+              <ion-grid class="ion-my-grid" style="background: linear-gradient(135deg, #198edb 0%, #1565c0 100%);">
+                <ion-row>
+                  <ion-col size="12" class="ion-text-center">
+                    <ion-label class="responsive-label-count label-divider">
+                      <span class="label-text">कुल आवेदन</span>
+                      <span class="label-count">{{ totalAwedan }}</span>
+                    </ion-label>
+                  </ion-col>
+                </ion-row>
+              </ion-grid>
+            </ion-card>
+          </ion-col>
 
-                <!-- संपादन लंबित -->
-                <ion-col size="6" size-lg="3">
-                  <ion-card class="custom-card" (click)="getListOfAwedanAfterClickOnBoxes(2)">
-                    <ion-grid class="ion-my-grid"
-                      style="background: linear-gradient(135deg, #bcf420 0%, #319d27 100%);">
-                      <ion-row>
-                        <ion-col size="12" class="ion-text-center">
-                          <ion-label class="responsive-label-count label-divider">
-                            <span class="label-text">संपादन लंबित</span>
-                            <span class="label-count">{{ totalEditPending }}</span>
-                          </ion-label>
-                        </ion-col>
-                      </ion-row>
-                    </ion-grid>
-                  </ion-card>
-                </ion-col>
+          <!-- संपादन लंबित -->
+          <ion-col size="6" size-lg="3">
+            <ion-card class="custom-card" (click)="getListOfAwedanAfterClickOnBoxes(2)">
+              <ion-grid class="ion-my-grid" style="background: linear-gradient(135deg, #bcf420 0%, #319d27 100%);">
+                <ion-row>
+                  <ion-col size="12" class="ion-text-center">
+                    <ion-label class="responsive-label-count label-divider">
+                      <span class="label-text">संपादन लंबित</span>
+                      <span class="label-count">{{ totalEditPending }}</span>
+                    </ion-label>
+                  </ion-col>
+                </ion-row>
+              </ion-grid>
+            </ion-card>
+          </ion-col>
 
-                <!-- स्वीकृत -->
-                <ion-col size="6" size-lg="3">
-                  <ion-card class="custom-card" (click)="getListOfAwedanAfterClickOnBoxes(6)">
-                    <ion-grid class="ion-my-grid"
-                      style="background: linear-gradient(135deg, #4caf50 0%, #388e3c 100%);">
-                      <ion-row>
-                        <ion-col size="12" class="ion-text-center">
-                          <ion-label class="responsive-label-count label-divider">
-                            <span class="label-text">स्वीकृत</span>
-                            <span class="label-count">{{ totalApproved }}</span>
-                          </ion-label>
-                        </ion-col>
-                      </ion-row>
-                    </ion-grid>
-                  </ion-card>
-                </ion-col>
+          <!-- स्वीकृत -->
+          <ion-col size="6" size-lg="3">
+            <ion-card class="custom-card" (click)="getListOfAwedanAfterClickOnBoxes(6)">
+              <ion-grid class="ion-my-grid" style="background: linear-gradient(135deg, #4caf50 0%, #388e3c 100%);">
+                <ion-row>
+                  <ion-col size="12" class="ion-text-center">
+                    <ion-label class="responsive-label-count label-divider">
+                      <span class="label-text">स्वीकृत</span>
+                      <span class="label-count">{{ totalApproved }}</span>
+                    </ion-label>
+                  </ion-col>
+                </ion-row>
+              </ion-grid>
+            </ion-card>
+          </ion-col>
 
-                <!-- अस्वीकृत -->
-                <ion-col size="6" size-lg="3">
-                  <ion-card class="custom-card" (click)="getListOfAwedanAfterClickOnBoxes(7)">
-                    <ion-grid class="ion-my-grid"
-                      style="background: linear-gradient(135deg, #aa0f0f 0%, #8de22c 100%);">
-                      <ion-row>
-                        <ion-col size="12" class="ion-text-center">
-                          <ion-label class="responsive-label-count label-divider">
-                            <span class="label-text">अस्वीकृत</span>
-                            <span class="label-count">{{ totalApproved }}</span>
-                          </ion-label>
-                        </ion-col>
-                      </ion-row>
-                    </ion-grid>
-                  </ion-card>
-                </ion-col>
+          <!-- अस्वीकृत -->
+          <ion-col size="6" size-lg="3">
+            <ion-card class="custom-card" (click)="getListOfAwedanAfterClickOnBoxes(7)">
+              <ion-grid class="ion-my-grid" style="background: linear-gradient(135deg, #aa0f0f 0%, #8de22c 100%);">
+                <ion-row>
+                  <ion-col size="12" class="ion-text-center">
+                    <ion-label class="responsive-label-count label-divider">
+                      <span class="label-text">अस्वीकृत</span>
+                      <span class="label-count">{{ totalApproved }}</span>
+                    </ion-label>
+                  </ion-col>
+                </ion-row>
+              </ion-grid>
+            </ion-card>
+          </ion-col>
 
 
 
-                <!-- परिक्षेत्र अधिकारी स्तर पर लंबित -->
-                <ion-col size="12" size-lg="4">
-                  <ion-card class="custom-card" (click)="getListOfAwedanAfterClickOnBoxes(3)">
-                    <ion-grid class="ion-my-grid"
-                      style="background: linear-gradient(135deg, #2196f3 0%, #1976d2 100%);">
-                      <ion-row>
-                        <ion-col size="12" class="ion-text-center">
-                          <ion-label class="responsive-label-count label-divider">
-                            <span class="label-text">परिक्षेत्र अधिकारी स्तर पर लंबित</span>
-                            <span class="label-count">{{ totalROPending }}</span>
-                          </ion-label>
-                        </ion-col>
-                      </ion-row>
-                    </ion-grid>
-                  </ion-card>
-                </ion-col>
+          <!-- परिक्षेत्र अधिकारी स्तर पर लंबित -->
+          <ion-col size="12" size-lg="4">
+            <ion-card class="custom-card" (click)="getListOfAwedanAfterClickOnBoxes(3)">
+              <ion-grid class="ion-my-grid" style="background: linear-gradient(135deg, #2196f3 0%, #1976d2 100%);">
+                <ion-row>
+                  <ion-col size="12" class="ion-text-center">
+                    <ion-label class="responsive-label-count label-divider">
+                      <span class="label-text">परिक्षेत्र अधिकारी स्तर पर लंबित</span>
+                      <span class="label-count">{{ totalROPending }}</span>
+                    </ion-label>
+                  </ion-col>
+                </ion-row>
+              </ion-grid>
+            </ion-card>
+          </ion-col>
 
-                <!-- उपवनमंडलाधिकारी स्तर पर लंबित -->
-                <ion-col size="12" size-lg="4">
-                  <ion-card class="custom-card" (click)="getListOfAwedanAfterClickOnBoxes(4)">
-                    <ion-grid class="ion-my-grid"
-                      style="background: linear-gradient(135deg, #9c27b0 0%, #7b1fa2 100%);">
-                      <ion-row>
-                        <ion-col size="12" class="ion-text-center">
-                          <ion-label class="responsive-label-count label-divider">
-                            <span class="label-text">उपवनमंडलाधिकारी स्तर पर लंबित</span>
-                            <span class="label-count">{{ totalSDOPending }}</span>
-                          </ion-label>
-                        </ion-col>
-                      </ion-row>
-                    </ion-grid>
-                  </ion-card>
-                </ion-col>
+          <!-- उपवनमंडलाधिकारी स्तर पर लंबित -->
+          <ion-col size="12" size-lg="4">
+            <ion-card class="custom-card" (click)="getListOfAwedanAfterClickOnBoxes(4)">
+              <ion-grid class="ion-my-grid" style="background: linear-gradient(135deg, #9c27b0 0%, #7b1fa2 100%);">
+                <ion-row>
+                  <ion-col size="12" class="ion-text-center">
+                    <ion-label class="responsive-label-count label-divider">
+                      <span class="label-text">उपवनमंडलाधिकारी स्तर पर लंबित</span>
+                      <span class="label-count">{{ totalSDOPending }}</span>
+                    </ion-label>
+                  </ion-col>
+                </ion-row>
+              </ion-grid>
+            </ion-card>
+          </ion-col>
 
-                <!-- वनमंडलाधिकारी स्तर पर लंबित -->
-                <ion-col size="12" size-lg="4">
-                  <ion-card class="custom-card" (click)="getListOfAwedanAfterClickOnBoxes(5)">
-                    <ion-grid class="ion-my-grid"
-                      style="background: linear-gradient(135deg, #673ab7 0%, #512da8 100%);">
-                      <ion-row>
-                        <ion-col size="12" class="ion-text-center">
-                          <ion-label class="responsive-label-count label-divider">
-                            <span class="label-text">वनमंडलाधिकारी स्तर पर लंबित</span>
-                            <span class="label-count">{{ totalDFOPending }}</span>
-                          </ion-label>
-                        </ion-col>
-                      </ion-row>
-                    </ion-grid>
-                  </ion-card>
-                </ion-col>
+          <!-- वनमंडलाधिकारी स्तर पर लंबित -->
+          <ion-col size="12" size-lg="4">
+            <ion-card class="custom-card" (click)="getListOfAwedanAfterClickOnBoxes(5)">
+              <ion-grid class="ion-my-grid" style="background: linear-gradient(135deg, #673ab7 0%, #512da8 100%);">
+                <ion-row>
+                  <ion-col size="12" class="ion-text-center">
+                    <ion-label class="responsive-label-count label-divider">
+                      <span class="label-text">वनमंडलाधिकारी स्तर पर लंबित</span>
+                      <span class="label-count">{{ totalDFOPending }}</span>
+                    </ion-label>
+                  </ion-col>
+                </ion-row>
+              </ion-grid>
+            </ion-card>
+          </ion-col>
 
 
-              </ion-row>
+        </ion-row>
       </ion-grid>
 
       <hr class="divider">

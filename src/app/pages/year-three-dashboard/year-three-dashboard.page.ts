@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonSplitPane, IonMenuToggle, IonMenu, IonMenuButton, IonList, IonAvatar, IonCard, IonLoading, IonText, IonButton, IonInput, IonLabel, IonItem, IonGrid, IonRow, IonCol, IonButtons, IonContent, IonHeader, IonTitle, IonToolbar, IonIcon, IonBadge, IonPopover, IonCardContent } from '@ionic/angular/standalone';
 import { LanguageService } from '../../services/language.service';
+import { NavController, MenuController } from '@ionic/angular';
 import { Toast } from '@capacitor/toast';
 import { ChangeDetectorRef } from '@angular/core';
 import { ApiService } from 'src/app/services/api.service';
@@ -57,6 +58,7 @@ export class YearThreeDashboardPage implements OnInit {
     private platform: Platform,
     private langService: LanguageService,
     private cdRef: ChangeDetectorRef,
+    private menuCtrl: MenuController,
     private apiService: ApiService,
     private sharedPreference: SharedserviceService
   ) {
@@ -108,6 +110,13 @@ export class YearThreeDashboardPage implements OnInit {
       this.getYearThreeAwedanCounts();
       this.getYearThreeAwedanList();
     }
+  }
+
+  ionViewDidEnter() {
+    setTimeout(() => {
+      this.menuCtrl.enable(true, 'year-three-menu');
+      this.menuCtrl.close();
+    }, 100);
   }
 
   getOfficersSessionData() {

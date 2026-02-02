@@ -9,7 +9,7 @@ import { ChangeDetectorRef } from '@angular/core';
 import { ApiService } from 'src/app/services/api.service';
 import { OfficersLoginResponseModel } from '../officer-login/OfficersLoginResponse.model';
 import { addIcons } from 'ionicons';
-import { appsOutline, homeOutline, informationOutline, informationCircle, buildOutline, logOutOutline, downloadOutline, chevronBackOutline, chevronForwardOutline, reorderThreeOutline,optionsOutline  } from 'ionicons/icons';
+import { appsOutline, homeOutline, informationOutline, informationCircle, buildOutline, logOutOutline, downloadOutline, chevronBackOutline, chevronForwardOutline, reorderThreeOutline, optionsOutline } from 'ionicons/icons';
 import { Platform, AlertController } from '@ionic/angular';
 import { NetworkCheckService } from 'src/app/services/network-check.service';
 import { Router } from '@angular/router';
@@ -98,6 +98,13 @@ export class YearTwoDashboardPage implements OnInit {
       this.getYearTwoAwedanCounts();
       this.getYearTwoAwedanList();
     }
+  }
+
+  ionViewDidEnter() {
+    setTimeout(() => {
+      this.menuCtrl.enable(true, 'year-two-menu');
+      this.menuCtrl.close();
+    }, 100);
   }
 
   getOfficersSessionData() {
@@ -231,21 +238,21 @@ export class YearTwoDashboardPage implements OnInit {
   addAllIcon() {
     addIcons({
       appsOutline, homeOutline, informationOutline, informationCircle, buildOutline, logOutOutline,
-      chevronBackOutline, chevronForwardOutline, downloadOutline,reorderThreeOutline,optionsOutline   
+      chevronBackOutline, chevronForwardOutline, downloadOutline, reorderThreeOutline, optionsOutline
     });
   }
 
   onBoxClick(boxNumber: number) {
     this.whichBoxClicked = boxNumber;
     this.currentPage = 1;
-    
+
     let filter: string | null = null;
     if (boxNumber === 2) {
       filter = "Yes";
     } else if (boxNumber === 3) {
       filter = "No";
     }
-    
+
     this.getYearTwoAwedanList(1, filter);
   }
 
@@ -558,19 +565,19 @@ export class YearTwoDashboardPage implements OnInit {
   isWebPlatform(): boolean {
     return this.platform.is('desktop');
   }
-  
-  
-onYearSelect(year: number) {
-  const routes: Record<number, string> = {
-    1: '/officers-dashboard-ro',
-    2: '/year-two-dashboard',
-    3: '/year-three-dashboard'
-  };
 
-  this.router.navigateByUrl(routes[year] ?? '/officers-dashboard-ro', {
-    state: { year }
-  });
-}
+
+  onYearSelect(year: number) {
+    const routes: Record<number, string> = {
+      1: '/officers-dashboard-ro',
+      2: '/year-two-dashboard',
+      3: '/year-three-dashboard'
+    };
+
+    this.router.navigateByUrl(routes[year] ?? '/officers-dashboard-ro', {
+      state: { year }
+    });
+  }
 
 
   goToProfile() {
