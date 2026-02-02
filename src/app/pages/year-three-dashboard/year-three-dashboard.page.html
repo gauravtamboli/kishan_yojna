@@ -1,6 +1,6 @@
 <ion-split-pane contentId="main-content" when="md">
   <ion-menu menuId="year-three-menu" class="custom-menu" side="start" content-id="main-content">
-    <ion-header class="ion-header-class-for-menu">
+    <ion-header class="ion-header-class-for-menu dashboard-menu-header">
       <div class="bg"></div>
 
       <ion-item lines="none">
@@ -19,36 +19,35 @@
 
   <div class="ion-page" id="main-content">
     <ion-header>
-      <div>
-        <ion-toolbar color="primary" style="padding-top: 18px; color: white">
-          <ion-buttons slot="start">
-            <ion-menu-button menu="year-three-menu" class="icon-btn-menu"></ion-menu-button>
-          </ion-buttons>
+      <ion-toolbar color="primary" class="dashboard-toolbar">
+        <ion-buttons slot="start">
+          <ion-menu-button menu="year-three-menu" class="icon-btn-menu"></ion-menu-button>
+        </ion-buttons>
 
-          <ion-title class="ion-text-center">
-            {{ getLoginedOfficerName() }}
-          </ion-title>
+        <ion-title class="ion-text-center">
+          {{ getLoginedOfficerName() }}
+        </ion-title>
 
-          <ion-buttons slot="end">
-            <ion-button fill="clear" class="icon-btn-options" (click)="openUserMenu($event)">
-              <ion-icon name="options-outline"></ion-icon>
-            </ion-button>
-          </ion-buttons>
+        <ion-buttons slot="end">
+          <ion-button fill="clear" class="icon-btn-options" (click)="openUserMenu($event)">
+            <ion-icon name="options-outline"></ion-icon>
+          </ion-button>
+        </ion-buttons>
 
-          <ion-popover [event]="popoverEvent" side="bottom" alignment="end" dismiss-on-select="true"
-            [isOpen]="isUserMenuOpen" (didDismiss)="isUserMenuOpen = false">
-            <ng-template>
-              <ion-list>
-                <ion-item button (click)="onYearSelect(1)">प्रथम वर्ष</ion-item>
-                <ion-item button (click)="onYearSelect(2)">द्वितीय वर्ष</ion-item>
-                <ion-item button (click)="goToProfile()">Profile</ion-item>
-                <ion-item button (click)="changePassword()">Change Password</ion-item>
-                <ion-item button color="danger" (click)="logoutFunction()">Logout</ion-item>
-              </ion-list>
-            </ng-template>
-          </ion-popover>
-        </ion-toolbar>
-      </div>
+        <ion-popover [event]="popoverEvent" side="bottom" alignment="end" dismiss-on-select="true"
+          [isOpen]="isUserMenuOpen" (didDismiss)="isUserMenuOpen = false">
+          <ng-template>
+            <ion-list>
+              <ion-item button (click)="onYearSelect(1)">प्रथम वर्ष</ion-item>
+              <ion-item button (click)="onYearSelect(2)">द्वितीय वर्ष</ion-item>
+              <ion-item button (click)="goToProfile()">Profile</ion-item>
+              <ion-item button (click)="changePassword()">Change Password</ion-item>
+              <ion-item button color="danger" (click)="logoutFunction()">Logout <ion-icon slot="start"
+                  name="log-out-outline"></ion-icon> </ion-item>
+            </ion-list>
+          </ng-template>
+        </ion-popover>
+      </ion-toolbar>
     </ion-header>
 
     <ion-content>

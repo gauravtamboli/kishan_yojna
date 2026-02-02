@@ -9,7 +9,7 @@ ion-menu-button {
 .custom-ion-label {
   font-size: 12px;
   font-weight: 700;
-  
+
   color: black;
   font-style: bold;
 }
@@ -363,81 +363,7 @@ ion-select {
   }
 }
 
-.ion-header-class-for-menu {
-  height: 10rem;
-  background: linear-gradient(135deg, var(--ion-color-primary) 0%, #2ecc71 100%);
-
-  div.bg {
-    height: 60%;
-    width: 140%;
-    // background: rgba(255, 255, 255, 0.1);
-    // transform: rotate(-5deg);
-    border-radius: 15px;
-    margin-top: -4rem;
-    margin-left: -1rem;
-    // box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-    // backdrop-filter: blur(10px);
-  }
-
-  ion-item {
-    width: 100%;
-    --background: transparent;
-    position: absolute;
-    top: 1.5rem;
-    left: 0;
-    padding: 0 1rem;
-
-    ion-avatar {
-      height: 5rem;
-      width: 5rem;
-      border: 3px solid rgba(255, 255, 255, 0.3);
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-      transition: transform 0.3s ease;
-
-      &:hover {
-        transform: scale(1.05);
-      }
-    }
-
-    ion-label {
-      color: white;
-      font-size: 1.3rem;
-      font-weight: 600;
-      letter-spacing: 0.5px;
-      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-
-      p {
-        color: rgba(255, 255, 255, 0.9);
-        margin-top: 4px;
-        font-weight: 400;
-        font-size: 0.9rem;
-      }
-    }
-  }
-}
-
-// Adjust menu for mobile
-.ion-header-class-for-menu {
-  height: 5.2rem;
-
-  ion-item {
-    top: 0.6rem;
-    padding: 0 0.1rem;
-
-    ion-avatar {
-      height: 3rem;
-      width: 3rem;
-    }
-
-    ion-label {
-      font-size: 1.1rem;
-
-      p {
-        font-size: 0.8rem;
-      }
-    }
-  }
-}
+// Header styles are now handled globally via .dashboard-menu-header and .dashboard-toolbar
 
 // Extra small devices
 @media (max-width: 360px) {
@@ -591,18 +517,7 @@ ion-select {
 
 
 // Modern header styling
-ion-toolbar {
-  --background: linear-gradient(135deg, var(--ion-color-primary) 0%, #2ecc71 100%);
-  --color: white;
-  padding: 0.5rem;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-}
-
-ion-header {
-  position: relative; // make sure the ::before sits on top
-  z-index: 10; // keep it above content
-  margin-top: 0px;
-}
+// Header and toolbar styles handled globally
 
 .toolbar-icon {
   display: block; // Ensures predictable sizing and spacing
@@ -645,12 +560,8 @@ ion-menu-button {
   font-size: 1.5rem;
 }
 
-.div-color {
-  background: linear-gradient(135deg, var(--ion-color-primary) 0%, #2ecc71 100%);
-  padding-top: 10px;
-  color: white;
-}
-.icon-btn-menu{
+// .div-color removed
+.icon-btn-menu {
   font-size: 30px;
   color: white;
 }
@@ -714,6 +625,7 @@ ion-menu-button {
 .text-end {
   text-align: right !important;
 }
+
 .custom-dashboard-table {
   width: 100%;
   border-radius: 12px;
@@ -744,9 +656,11 @@ ion-menu-button {
 
   .beneficiary-cell {
     text-align: left;
+
     strong {
       color: #222;
     }
+
     .text-muted {
       color: #6c757d;
     }
@@ -793,8 +707,10 @@ ion-menu-button {
     min-width: 90px;
   }
 }
+
 ion-button {
   transition: transform 0.2s ease;
+
   &:hover {
     transform: scale(1.05);
   }
@@ -831,7 +747,7 @@ ion-button {
   padding: 1rem;
   background: white;
   border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   margin-top: 1rem;
 }
 
@@ -852,9 +768,9 @@ ion-button {
 }
 
 .icon-btn-options {
-  width: 50px;                // Button width
-  height: 50px;               // Button height
-  border-radius: 50%;         // Circular button
+  width: 50px; // Button width
+  height: 50px; // Button height
+  border-radius: 50%; // Circular button
   display: flex;
   justify-content: center;
   align-items: center;
@@ -862,17 +778,18 @@ ion-button {
   border: none;
 
   ion-icon {
-    font-size: 28px;          // Icon size
-    font-weight: bold;        // Bold icon
-    color: white;             // Icon color
+    font-size: 28px; // Icon size
+    font-weight: bold; // Bold icon
+    color: white; // Icon color
     transition: transform 0.2s ease, color 0.2s ease;
   }
 
   &:hover {
     background: rgba(255, 255, 255, 0.3); // Slightly brighter on hover
+
     ion-icon {
-      transform: scale(1.1);   // Slight icon grow on hover
-      color: #ffffff;          // Optional: change color if needed
+      transform: scale(1.1); // Slight icon grow on hover
+      color: #ffffff; // Optional: change color if needed
     }
   }
 

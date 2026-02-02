@@ -53,9 +53,7 @@ export class OfficersDashboardPage implements OnInit {
   }
 
   onYearSelect(year: number) {
-    if (year == 1) {
-      this.router.navigate(['officers-dashboard']);
-    } else if (year == 2) {
+    if (year == 2) {
       this.router.navigateByUrl('/year-two-dashboard', { state: { year } });
     } else if (year == 3) {
       this.router.navigateByUrl('/year-three-dashboard', { state: { year } });

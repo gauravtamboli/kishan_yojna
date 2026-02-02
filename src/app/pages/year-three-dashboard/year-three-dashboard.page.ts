@@ -625,7 +625,10 @@ export class YearThreeDashboardPage implements OnInit {
         state: { year }
       });
     } else {
-      this.router.navigateByUrl('/officers-dashboard-ro');
+
+      this.router.navigateByUrl('/');
+
+
     }
   }
 

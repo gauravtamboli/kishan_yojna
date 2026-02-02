@@ -568,15 +568,18 @@ export class YearTwoDashboardPage implements OnInit {
 
 
   onYearSelect(year: number) {
-    const routes: Record<number, string> = {
-      1: '/officers-dashboard-ro',
-      2: '/year-two-dashboard',
-      3: '/year-three-dashboard'
-    };
-
-    this.router.navigateByUrl(routes[year] ?? '/officers-dashboard-ro', {
-      state: { year }
-    });
+    if (year == 2) {
+      this.router.navigateByUrl('/year-two-dashboard', {
+        state: { year }
+      });
+    } else if (year == 3) {
+      this.router.navigateByUrl('/year-three-dashboard', {
+        state: { year }
+      });
+    }
+    else {
+      this.router.navigateByUrl('/');
+    }
   }
 
 
