@@ -9,6 +9,12 @@
   width: 100%;
   overflow-x: auto; /* Horizontal scroll if table is too wide */
 }
+.filter-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
 
 h6{
   text-align: center;

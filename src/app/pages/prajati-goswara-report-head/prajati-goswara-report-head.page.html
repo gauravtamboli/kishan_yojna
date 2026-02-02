@@ -7,7 +7,7 @@
         defaultHref="/officers-dashboard-supreme"
       ></ion-back-button>
     </ion-buttons>
-    <ion-title class="responsive-toolbar-title">प्रजाति वार्ग गोस्वारा रिपोर्ट (हेड लेवल)</ion-title>
+    <ion-title class="responsive-toolbar-title">प्रजाति वार गोस्वारा रिपोर्ट (हेड लेवल)</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -17,10 +17,6 @@
     <ion-card-content>
       <div style="text-align: center;">
         <strong>किसान वृक्ष मित्र योजना अन्तर्गत वर्ष 2025-2026 मे रोपण विवरण</strong>
-        <ion-button style="float: inline-end;" (click)="exportToExcel()">
-          <ion-icon slot="start" name="download-outline"></ion-icon>
-          Export To Excel
-        </ion-button>
       </div>
     </ion-card-content>
   </ion-card>
@@ -34,24 +30,36 @@
   </ion-card>
 
   <!-- Plant Species Filter -->
-  <ion-card *ngIf="!isLoading && plantTypes && plantTypes.length > 0" class="filter-card">
-    <ion-card-content class="filter-card-content">
-      <div class="filter-container">
-        <ion-select 
-          [(ngModel)]="selectedPlantFilter" 
-          (ionChange)="onPlantFilterChange($event)" 
-          placeholder="प्रजाति फ़िल्टर करें"
-          interface="popover"
-          class="custom-select"
-          [interfaceOptions]="selectOptions">
-          <ion-select-option value="all" class="select-option-all">सभी प्रजातियाँ</ion-select-option>
-          <ion-select-option *ngFor="let plant of plantTypes" [value]="plant.id" class="select-option">
-            {{ plant.plant_name }}
-          </ion-select-option>
-        </ion-select>
-      </div>
-    </ion-card-content>
-  </ion-card>
+<ion-card *ngIf="!isLoading && plantTypes?.length" class="filter-card">
+  <ion-card-content class="filter-card-content">
+    <div class="filter-row">
+      <ion-select
+        [(ngModel)]="selectedPlantFilter"
+        (ionChange)="onPlantFilterChange($event)"
+        placeholder="प्रजाति फ़िल्टर करें"
+        interface="popover"
+        class="custom-select"
+        [interfaceOptions]="selectOptions">
+
+        <ion-select-option value="all">
+          सभी प्रजातियाँ
+        </ion-select-option>
+
+        <ion-select-option
+          *ngFor="let plant of plantTypes"
+          [value]="plant.id">
+          {{ plant.plant_name }}
+        </ion-select-option>
+      </ion-select>
+
+      <ion-button (click)="exportToExcel()">
+        <ion-icon slot="start" name="download-outline"></ion-icon>
+        Export To Excel
+      </ion-button>
+    </div>
+  </ion-card-content>
+</ion-card>
+
 
   <!-- Dynamic Plant Reports -->
   <div *ngIf="!isLoading && plantTypes && plantTypes.length > 0; else noData">
