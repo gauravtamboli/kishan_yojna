@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonSplitPane, IonRouterOutlet, IonMenuToggle, IonMenu, IonMenuButton, IonList, IonAvatar, IonCardHeader, IonCardContent, IonCardTitle, IonCard, IonLoading, IonText, IonButton, IonInput, IonLabel, IonItem, IonGrid, IonRow, IonCol, IonButtons, IonBackButton, IonContent, IonHeader, IonTitle, IonToolbar, IonIcon, IonSpinner, IonSelect, IonSelectOption } from '@ionic/angular/standalone';
+import { IonSplitPane, IonRouterOutlet, IonMenuToggle, IonMenu, IonMenuButton, IonList, IonAvatar, IonCardHeader, IonCardContent, IonCardTitle, IonCard, IonLoading, IonText, IonButton, IonInput, IonLabel, IonItem, IonGrid, IonRow, IonCol, IonButtons, IonBackButton, IonContent, IonHeader, IonTitle, IonToolbar, IonIcon, IonSpinner, IonSelect, IonSelectOption, IonPopover } from '@ionic/angular/standalone';
 import { LanguageService } from '../../services/language.service';
 import { NavController, MenuController } from '@ionic/angular';
 import { Toast } from '@capacitor/toast';
@@ -32,9 +32,34 @@ import * as FileSaver from 'file-saver';
   templateUrl: './officers-dashboard-supreme.page.html',
   styleUrls: ['./officers-dashboard-supreme.page.scss'],
   standalone: true,
-  imports: [IonSplitPane, IonMenuToggle, IonMenu, IonMenuButton, IonList, IonAvatar, IonCard, IonLoading, IonText, IonButton, IonInput, IonLabel, IonItem, IonGrid, IonRow, IonCol, IonButtons, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, IonIcon, TableModule, IonSelect, IonSelectOption]
+  imports: [IonSplitPane, IonMenuToggle, IonMenu, IonMenuButton, IonList, IonAvatar, IonCard, IonLoading, IonText, IonButton, IonInput, IonLabel, IonItem, IonGrid, IonRow, IonCol, IonButtons, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, IonIcon, TableModule, IonSelect, IonSelectOption, IonPopover]
 })
 export class OfficersDashboardSupremePage implements OnInit {
+  isUserMenuOpen = false;
+  popoverEvent: any;
+
+  openUserMenu($event: any) {
+    this.popoverEvent = $event;
+    this.isUserMenuOpen = true;
+  }
+
+  goToProfile() {
+    this.router.navigate(['profile']);
+  }
+
+  changePassword() {
+    this.router.navigate(['change-password']);
+  }
+
+  onYearSelect(year: number) {
+    if (year == 1) {
+      this.router.navigate(['officers-dashboard-supreme']);
+    } else if (year == 2) {
+      this.router.navigateByUrl('/year-two-dashboard', { state: { year } });
+    } else if (year == 3) {
+      this.router.navigateByUrl('/year-three-dashboard', { state: { year } });
+    }
+  }
 
   pages: { title: string, url: string, is_submenu: boolean }[] = [];
 

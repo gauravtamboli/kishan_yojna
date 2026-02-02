@@ -1,5 +1,5 @@
 <ion-header>
-  <ion-toolbar>
+  <ion-toolbar color="primary">
     <ion-buttons slot="start">
       <ion-back-button [defaultHref]="'/officers-dashboard-ro'" (click)="goBack()" class="custom-back-button">
       </ion-back-button>
@@ -31,14 +31,19 @@
     <!-- Data Table -->
     <ion-card *ngIf="!isLoading && !errorMessage && farmers.length > 0">
       <ion-card-content>
+        <div class="table-header">
+          <p class="table-info">
+            Total Record: <strong>{{ totalCount }}</strong>
+          </p>
 
-        <p class="table-info">कुल रिकॉर्ड: <strong>{{ totalCount }}</strong></p>
+          <ion-button *ngIf="!isLoading && !errorMessage && farmers.length" (click)="exportToExcel()" color="success">
+            <ion-icon slot="start" name="download-outline"></ion-icon>
+            Export To Excel
+          </ion-button>
+        </div>
 
-        <ion-button *ngIf="!isLoading && !errorMessage && farmers.length > 0"
-          style="margin-bottom: 15px; text-align: right;" (click)="exportToExcel()" color="success">
-          <ion-icon slot="start" name="download-outline"></ion-icon>
-          एक्सेल डाउनलोड करें
-        </ion-button>
+
+
 
         <div class="table-container">
           <table class="farmer-table">

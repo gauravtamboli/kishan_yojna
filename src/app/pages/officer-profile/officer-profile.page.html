@@ -1,0 +1,82 @@
+<ion-header [translucent]="true">
+    <ion-toolbar color="primary">
+        <ion-buttons slot="start">
+            <ion-back-button defaultHref="/"></ion-back-button>
+        </ion-buttons>
+        <ion-title>Officer Profile</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding">
+    <div class="profile-container" *ngIf="officerData">
+        <ion-grid>
+            <ion-row>
+                <ion-col size="12" size-md="12">
+                    <ion-card class="info-card">
+                        <ion-card-header>
+                            <ion-card-title>Contact Information</ion-card-title>
+                        </ion-card-header>
+                        <ion-card-content>
+                            <ion-list lines="none">
+                                <ion-item>
+                                    <ion-icon name="person-outline" slot="start" color="primary"></ion-icon>
+                                    <ion-label>
+                                        <h3>Officer Name</h3>
+                                        <p>{{ officerData.officer_name }}</p>
+                                    </ion-label>
+                                </ion-item>
+                                <ion-item>
+                                    <ion-icon name="call-outline" slot="start" color="primary"></ion-icon>
+                                    <ion-label>
+                                        <h3>Phone Number</h3>
+                                        <p>{{ officerData.mobile_no }}</p>
+                                    </ion-label>
+                                </ion-item>
+                                <ion-item>
+                                    <ion-icon name="mail-outline" slot="start" color="primary"></ion-icon>
+                                    <ion-label>
+                                        <h3>Email</h3>
+                                        <p>{{ officerData.email || 'N/A' }}</p>
+                                    </ion-label>
+                                </ion-item>
+                            </ion-list>
+                        </ion-card-content>
+                    </ion-card>
+                </ion-col>
+
+                <ion-col size="12" size-md="12">
+                    <ion-card class="info-card">
+                        <ion-card-header>
+                            <ion-card-title>Posting Details</ion-card-title>
+                        </ion-card-header>
+                        <ion-card-content>
+                            <ion-list lines="none">
+                                <ion-item *ngIf="officerData.circle_name">
+                                    <ion-icon name="business-outline" slot="start" color="secondary"></ion-icon>
+                                    <ion-label>
+                                        <h3>Circle</h3>
+                                        <p>{{ officerData.circle_name }}</p>
+                                    </ion-label>
+                                </ion-item>
+                                <ion-item *ngIf="officerData.div_name">
+                                    <ion-icon name="business-outline" slot="start" color="secondary"></ion-icon>
+                                    <ion-label>
+                                        <h3>Division</h3>
+                                        <p>{{ officerData.div_name }}</p>
+                                    </ion-label>
+                                </ion-item>
+                                <ion-item *ngIf="officerData.rang_name">
+                                    <ion-icon name="business-outline" slot="start" color="secondary"></ion-icon>
+                                    <ion-label>
+                                        <h3>Range</h3>
+                                        <p>{{ officerData.rang_name }}</p>
+                                    </ion-label>
+                                </ion-item>
+                            </ion-list>
+                        </ion-card-content>
+                    </ion-card>
+                </ion-col>
+            </ion-row>
+        </ion-grid>
+    </div>
+</ion-content>

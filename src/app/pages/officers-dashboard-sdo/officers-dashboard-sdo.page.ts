@@ -44,14 +44,19 @@ export class OfficersDashboardSDOPage implements OnInit {
 
 
   changePassword() {
-    throw new Error('Method not implemented.');
+    this.router.navigate(['change-password']);
   }
-  goToProfile // Total - all applications
-    () {
-    throw new Error('Method not implemented.');
+
+  goToProfile() {
+    this.router.navigate(['profile']);
   }
-  onYearSelect(arg0: number) {
-    throw new Error('Method not implemented.');
+
+  onYearSelect(year: number) {
+    if (year == 2) {
+      this.router.navigateByUrl('/year-two-dashboard', { state: { year } });
+    } else if (year == 3) {
+      this.router.navigateByUrl('/year-three-dashboard', { state: { year } });
+    }
   }
 
 

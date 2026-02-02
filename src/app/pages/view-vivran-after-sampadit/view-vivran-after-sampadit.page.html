@@ -1,19 +1,15 @@
 <ion-header>
-  <ion-toolbar>
+  <ion-toolbar color="primary">
     <ion-buttons slot="start">
-      <ion-back-button (click)="goBack()"></ion-back-button>
+      <ion-back-button (click)="goBack()" defaultHref="/splash"></ion-back-button>
     </ion-buttons>
     <ion-title>संपादित के बाद विवरण</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <ion-loading
-    cssClass="custom-loading"
-    [isOpen]="isLoading"
-    [message]="loadingMessage"
-    [backdropDismiss]="false"
-  ></ion-loading>
+  <ion-loading cssClass="custom-loading" [isOpen]="isLoading" [message]="loadingMessage"
+    [backdropDismiss]="false"></ion-loading>
 
   <div *ngIf="registrationDetails" class="ion-padding">
     <!-- Application Number Header -->
@@ -21,16 +17,17 @@
       <ion-card-content>
         <ion-grid>
           <ion-row class="ion-align-items-center">
-            <ion-col size="12">
+            <ion-col size="12" class="app-row">
               <ion-text class="application-number">
-                <strong>आवेदन नंबर: </strong>{{registrationDetails.applicationNumber}}
+                <strong>आवेदन नंबर:</strong> {{ registrationDetails.applicationNumber }}
               </ion-text>
-              <ion-badge 
-                [color]="getStatusColor(registrationDetails.awedanStatus)" 
-                class="status-badge">
-                {{getStatusText(registrationDetails.awedanStatus)}}
+
+              <ion-badge [color]="getStatusColor(registrationDetails.awedanStatus)" class="status-badge">
+                {{ getStatusText(registrationDetails.awedanStatus) }}
               </ion-badge>
             </ion-col>
+
+
           </ion-row>
         </ion-grid>
       </ion-card-content>
@@ -164,7 +161,7 @@
               <ion-text>
                 <strong>कुल एकड़:</strong>
                 {{registrationDetails.area || 'N/A'}}
-            
+
               </ion-text>
             </ion-col>
             <ion-col size="12" size-md="6">
@@ -350,8 +347,8 @@
         </div>
 
         <!-- No Plants Message -->
-        <div *ngIf="getPlantsLessThan5Acre().length === 0 && getPlantsMoreThanOrEqual5Acre().length === 0" 
-             style="text-align: center; padding: 20px; color: #666;">
+        <div *ngIf="getPlantsLessThan5Acre().length === 0 && getPlantsMoreThanOrEqual5Acre().length === 0"
+          style="text-align: center; padding: 20px; color: #666;">
           <p>कोई पौधे की जानकारी उपलब्ध नहीं है</p>
         </div>
       </ion-card-content>
@@ -368,9 +365,8 @@
             <ion-col size="12" size-md="6">
               <ion-text>
                 <strong>आधार PDF:</strong>
-                <span *ngIf="registrationDetails.adharPdfFile" 
-                      class="file-link" 
-                      (click)="downloadFile(registrationDetails.adharPdfFile, 'adhar')">
+                <span *ngIf="registrationDetails.adharPdfFile" class="file-link"
+                  (click)="downloadFile(registrationDetails.adharPdfFile, 'adhar')">
                   {{registrationDetails.adharPdfFile}}
                 </span>
                 <span *ngIf="!registrationDetails.adharPdfFile">N/A</span>
@@ -379,9 +375,8 @@
             <ion-col size="12" size-md="6">
               <ion-text>
                 <strong>बैंक पासबुक PDF:</strong>
-                <span *ngIf="registrationDetails.bankpassbookPdfFile" 
-                      class="file-link" 
-                      (click)="downloadFile(registrationDetails.bankpassbookPdfFile, 'bankpassbook')">
+                <span *ngIf="registrationDetails.bankpassbookPdfFile" class="file-link"
+                  (click)="downloadFile(registrationDetails.bankpassbookPdfFile, 'bankpassbook')">
                   {{registrationDetails.bankpassbookPdfFile}}
                 </span>
                 <span *ngIf="!registrationDetails.bankpassbookPdfFile">N/A</span>
@@ -390,9 +385,8 @@
             <ion-col size="12" size-md="6">
               <ion-text>
                 <strong>B1P1 PDF:</strong>
-                <span *ngIf="registrationDetails.b1P1PdfFile" 
-                      class="file-link" 
-                      (click)="downloadFile(registrationDetails.b1P1PdfFile, 'b1p1')">
+                <span *ngIf="registrationDetails.b1P1PdfFile" class="file-link"
+                  (click)="downloadFile(registrationDetails.b1P1PdfFile, 'b1p1')">
                   {{registrationDetails.b1P1PdfFile}}
                 </span>
                 <span *ngIf="!registrationDetails.b1P1PdfFile">N/A</span>
@@ -401,9 +395,8 @@
             <ion-col size="12" size-md="6">
               <ion-text>
                 <strong>KML फ़ाइल:</strong>
-                <span *ngIf="registrationDetails.kmlFile" 
-                      class="file-link" 
-                      (click)="downloadFile(registrationDetails.kmlFile, 'kml')">
+                <span *ngIf="registrationDetails.kmlFile" class="file-link"
+                  (click)="downloadFile(registrationDetails.kmlFile, 'kml')">
                   {{registrationDetails.kmlFile}}
                 </span>
                 <span *ngIf="!registrationDetails.kmlFile">N/A</span>
@@ -416,13 +409,9 @@
 
   </div>
 
-  <div
-    *ngIf="!registrationDetails && !isLoading"
-    class="ion-padding ion-text-center"
-  >
+  <div *ngIf="!registrationDetails && !isLoading" class="ion-padding ion-text-center">
     <ion-text color="medium">
       <h3>कोई आवेदन विवरण नहीं मिला</h3>
     </ion-text>
   </div>
 </ion-content>
-

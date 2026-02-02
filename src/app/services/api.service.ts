@@ -46,26 +46,27 @@ export class ApiService {
     throw new Error('Method not implemented.');
   }
 
-  private apiUrlGetKisanAwedanData: string = `/api/KissanMitraYojnaRegisteration/getKisanAwedanData`; 
-  private apiUrlLogin: string = `/api/KissanMitraYojnaRegisteration/login`;  
-  private apiUrlGetMaster: string = `/api/KissanMitraYojnaRegisteration/get_master_value`;  
-  private apiUrlgetOTP: string = `/api/KissanMitraYojnaRegisteration/sentOTP`;  
-  private apiUrlVerifyOTP: string = `/api/KissanMitraYojnaRegisteration/verifyOTP`;  
-  private apiUrlGetCircle: string = `/api/KissanMitraYojnaRegisteration/getCircle`;  
-  private apiUrlGetDivision: string = `/api/KissanMitraYojnaRegisteration/getDivision`;  
-  private apiUrlGetRang: string = `/api/KissanMitraYojnaRegisteration/getRang`;  
-  private apiUrlSubmitAwedanInfo: string = `/api/KissanMitraYojnaRegisteration/submitRegisterationForm`;  
-  private apiUrlSubmitAwedanInfo2: string = `/api/KissanMitraYojnaRegisteration/submitRegisterationForm2`;  
-  private apiUrlGetAwedanList: string = `/api/KissanMitraYojnaRegisteration/getMyAwedanList`;  
-  private apiUrlSubmitOfflineRegisterationForm: string = `/api/KissanMitraYojnaRegisteration/submitOfflineRegisterationForm`;  
-  private apiUrlToGetImportantContacts: string = `/api/KissanMitraYojnaRegisteration/getImpContacts`;  
-  private apiUrlgetOTPToKnowAwedanStatus: string = `/api/KissanMitraYojnaRegisteration/sentOTPForAwedanStatus`;  
-  private apiUrlToOfficersLogin: string = `/api/KissanMitraYojnaRegisteration/officerLogin`;  
-  private apiUrlToGetDashboardData: string = `/api/KissanMitraYojnaRegisteration/officersDashboardData`;  
-  private apiUrlGetAwedanListAccordingToAwedanStatus: string = `/api/KissanMitraYojnaRegisteration/getAwedanListAccordingToAwedanStatus`;  
-  private apiUrlToGetStateName: string = `https://nominatim.openstreetmap.org/reverse`;  
-  private apiUrlGetOfflineAwedanList: string = `/api/KissanMitraYojnaRegisteration/getOfflineAwedanList`;  
-  private apiUrlMakeOfflineAwedanInfoToOnline: string = `/api/KissanMitraYojnaRegisteration/makeOfflineDataToOnline`;  
+  private apiUrlGetKisanAwedanData: string = `/api/KissanMitraYojnaRegisteration/getKisanAwedanData`;
+  private apiUrlLogin: string = `/api/KissanMitraYojnaRegisteration/login`;
+  private apiUrlGetMaster: string = `/api/KissanMitraYojnaRegisteration/get_master_value`;
+  private apiUrlgetOTP: string = `/api/KissanMitraYojnaRegisteration/sentOTP`;
+  private apiUrlVerifyOTP: string = `/api/KissanMitraYojnaRegisteration/verifyOTP`;
+  private apiUrlGetCircle: string = `/api/KissanMitraYojnaRegisteration/getCircle`;
+  private apiUrlGetDivision: string = `/api/KissanMitraYojnaRegisteration/getDivision`;
+  private apiUrlGetRang: string = `/api/KissanMitraYojnaRegisteration/getRang`;
+  private apiUrlSubmitAwedanInfo: string = `/api/KissanMitraYojnaRegisteration/submitRegisterationForm`;
+  private apiUrlSubmitAwedanInfo2: string = `/api/KissanMitraYojnaRegisteration/submitRegisterationForm2`;
+  private apiUrlGetAwedanList: string = `/api/KissanMitraYojnaRegisteration/getMyAwedanList`;
+  private apiUrlSubmitOfflineRegisterationForm: string = `/api/KissanMitraYojnaRegisteration/submitOfflineRegisterationForm`;
+  private apiUrlToGetImportantContacts: string = `/api/KissanMitraYojnaRegisteration/getImpContacts`;
+  private apiUrlgetOTPToKnowAwedanStatus: string = `/api/KissanMitraYojnaRegisteration/sentOTPForAwedanStatus`;
+  private apiUrlToOfficersLogin: string = `/api/KissanMitraYojnaRegisteration/officerLogin`;
+  private apiUrlToChangePassword: string = `/api/KissanMitraYojnaRegisteration/changePassword`;
+  private apiUrlToGetDashboardData: string = `/api/KissanMitraYojnaRegisteration/officersDashboardData`;
+  private apiUrlGetAwedanListAccordingToAwedanStatus: string = `/api/KissanMitraYojnaRegisteration/getAwedanListAccordingToAwedanStatus`;
+  private apiUrlToGetStateName: string = `https://nominatim.openstreetmap.org/reverse`;
+  private apiUrlGetOfflineAwedanList: string = `/api/KissanMitraYojnaRegisteration/getOfflineAwedanList`;
+  private apiUrlMakeOfflineAwedanInfoToOnline: string = `/api/KissanMitraYojnaRegisteration/makeOfflineDataToOnline`;
   private apiUrlGetAwedanStatusCounts: string = `/api/KissanMitraYojnaRegisteration/getAwedanStatusCounts`;
   private apiUrlGetRopitKisanAwedanListByRange: string = `/api/KissanMitraYojnaRegisteration/getRopitKisanAwedanListByRange`;
   private apiUrlUpdateRopitCount: string = `/api/KissanMitraYojnaRegisteration/UpdateRopitCount`;
@@ -76,27 +77,27 @@ export class ApiService {
   private apiUrlSubmitYearThreePlants: string = `/api/KissanMitraYojnaRegisteration/SubmitPlantRequestYearThree`;
   private apiUrlGetYearThreeAwedanList: string = `/api/KissanMitraYojnaRegisteration/getYearThreeAwedanList`;
   private apiUrlGetYearThreeAwedanCounts: string = `/api/KissanMitraYojnaRegisteration/getYearThreeAwedanCounts`;
-  
-  private apiUrlToAcceptRejectApplication: string = `/api/KissanMitraYojnaRegisteration/awedanApproveReject`;  
 
-  private apiUrlToGetSingleApplicationDetail: string = `/api/KissanMitraYojnaRegisteration/getSingleAwedanDetail`;  
-  private apiUrlGetAllDistricts: string = `/api/KissanMitraYojnaRegisteration/getAllDistricts`;  
-  private apiUrlGetDivisionsByDistrict: string = `/api/KissanMitraYojnaRegisteration/getDivisionsByDistrict`;  
-  private apiUrlGetRangesByDivision: string = `/api/KissanMitraYojnaRegisteration/getRangeByDivision`;  
-  private apiUrlSubmitKisanAwedan: string = `/api/KissanMitraYojnaRegisteration/submitKisanAwedan`;  
-  
+  private apiUrlToAcceptRejectApplication: string = `/api/KissanMitraYojnaRegisteration/awedanApproveReject`;
 
-  private apiUrlGetDataForReport: string = `/api/KissanMitraYojnaRegisteration/getAwedanListForReport`;  
+  private apiUrlToGetSingleApplicationDetail: string = `/api/KissanMitraYojnaRegisteration/getSingleAwedanDetail`;
+  private apiUrlGetAllDistricts: string = `/api/KissanMitraYojnaRegisteration/getAllDistricts`;
+  private apiUrlGetDivisionsByDistrict: string = `/api/KissanMitraYojnaRegisteration/getDivisionsByDistrict`;
+  private apiUrlGetRangesByDivision: string = `/api/KissanMitraYojnaRegisteration/getRangeByDivision`;
+  private apiUrlSubmitKisanAwedan: string = `/api/KissanMitraYojnaRegisteration/submitKisanAwedan`;
+
+
+  private apiUrlGetDataForReport: string = `/api/KissanMitraYojnaRegisteration/getAwedanListForReport`;
 
   private apiUrlGetAppDetails: string = `/api/KissanMitraYojnaRegisteration/getAppDetail`; // Ensure no 
 
   public apiGetSecurePath: string = "https://forest.cg.gov.in/KVMY/api/KissanMitraYojnaRegisteration/get-secure-pdf";
 
-  private apiUrlGetDistList: string = `/api/KissanMitraYojnaRegisteration/getDist`;  
+  private apiUrlGetDistList: string = `/api/KissanMitraYojnaRegisteration/getDist`;
 
-  private check_mobile_already_exist_in_pending_awedan: string = `/api/KissanMitraYojnaRegisteration/check_mobile_already_exist_in_pending_awedan`;  
-   ////new api by kiran 
-     private apiUrlToGetAllRegistrationDetails: string = `/api/KissanMitraYojnaRegisteration/GetAllRegistrationDetails`;
+  private check_mobile_already_exist_in_pending_awedan: string = `/api/KissanMitraYojnaRegisteration/check_mobile_already_exist_in_pending_awedan`;
+  ////new api by kiran 
+  private apiUrlToGetAllRegistrationDetails: string = `/api/KissanMitraYojnaRegisteration/GetAllRegistrationDetails`;
   // private apiUrlTransferApplication: string = `/api/ApplicationTransferController/transferApplication`;
   private apiUrlTransferApplication: string = `/api/KissanMitraYojnaRegisteration/transferApplication`;
   constructor(private storageService: StorageService, private http: HttpClient, private alertController: AlertController, private checkNetworkService: NetworkCheckService) { }
@@ -117,11 +118,11 @@ export class ApiService {
 
   getKisanAwedanByNumber(applicationNumber: string): Observable<any> {
     const request = { ApplicationId: applicationNumber };
-    const headers = { 
+    const headers = {
       'Content-Type': 'application/json',
       'ngrok-skip-browser-warning': 'true'
     };
-    
+
     return from(this.buildApiUrl('/api/KissanMitraYojnaRegisteration/getKisanAwedanDataByNumber')).pipe(
       switchMap((url) => {
         if (!url) return throwError(() => new Error('No API URL configured'));
@@ -160,106 +161,107 @@ export class ApiService {
   // start
   // Add these new API methods to your ApiService class
 
-// Get all districts (for initial load)
-getAllDistricts(): Observable<any> {
-  const headers = { 
-    'Content-Type': 'application/json',
-    'ngrok-skip-browser-warning': 'true' // Add this header to skip ngrok warning
-  };
-  
-  return from(this.buildApiUrl(this.apiUrlGetAllDistricts)).pipe(
-    switchMap((url) => {
-      if (!url) return throwError(() => new Error('No API URL configured'));
-      console.log('Calling getAllDistricts API:', url); // Debug log
-      return this.http.get<any>(url, { headers });
-    }),
-    catchError((error) => {
-      console.error('Error in getAllDistricts:', error); // Debug log
-      console.error('Error details:', error.error); // Log the actual error response
-      return throwError(() => new Error('Error fetching districts'));
-    })
-  );
-}
+  // Get all districts (for initial load)
+  getAllDistricts(): Observable<any> {
+    const headers = {
+      'Content-Type': 'application/json',
+      'ngrok-skip-browser-warning': 'true' // Add this header to skip ngrok warning
+    };
 
-// Get divisions by district ID
-getDivisionsByDistrict(districtId: string): Observable<GetMastersResponse> {
-  const headers = { 'Content-Type': 'application/json',
-     'ngrok-skip-browser-warning': 'true'
-   };
-  
-  const body = {
-    dist_id: districtId.toString()  // Use 'id' parameter as expected by existing getDivision API
-  };
-  
-  return from(this.buildApiUrl(this.apiUrlGetDivisionsByDistrict)).pipe(
-    switchMap((url) => {
-      if (!url) return throwError(() => new Error('No API URL configured'));
-      return this.http.post<GetMastersResponse>(url, body, { headers });
-    }),
-    catchError((error) => {
-      return throwError(() => new Error('Error fetching divisions'));
-    })
-  );
-}
-
-// Get ranges by division ID
-// getRangesByDivision(divisionId: string): Observable<GetMastersResponse> {
-//   const headers = { 'Content-Type': 'application/json',
-//     'ngrok-skip-browser-warning': 'true'
-//    };
-  
-//   const body = {
-//     id: divisionId.toString()
-//   };
-  
-//   return from(this.buildApiUrl(this.apiUrlGetRangesByDivision)).pipe(
-//     switchMap((url) => {
-//       if (!url) return throwError(() => new Error('No API URL configured'));
-//       return this.http.post<GetMastersResponse>(url, body, { headers });
-//     }),
-//     catchError((error) => {
-//       return throwError(() => new Error('Error fetching ranges'));
-//     })
-//   );
-// } 
-
-// Get ranges by division ID (+ optional district filter)
-getRangesByDivision(divisionId: string, districtId?: string): Observable<GetMastersResponse> {
-  const headers = {
-    'Content-Type': 'application/json',
-    'ngrok-skip-browser-warning': 'true'
-  };
-
-  const body: any = { id: divisionId.toString() };
-  if (districtId) {
-    body.dist_id = districtId.toString();
+    return from(this.buildApiUrl(this.apiUrlGetAllDistricts)).pipe(
+      switchMap((url) => {
+        if (!url) return throwError(() => new Error('No API URL configured'));
+        console.log('Calling getAllDistricts API:', url); // Debug log
+        return this.http.get<any>(url, { headers });
+      }),
+      catchError((error) => {
+        console.error('Error in getAllDistricts:', error); // Debug log
+        console.error('Error details:', error.error); // Log the actual error response
+        return throwError(() => new Error('Error fetching districts'));
+      })
+    );
   }
 
-  return from(this.buildApiUrl(this.apiUrlGetRangesByDivision)).pipe(
-    switchMap((url) => {
-      if (!url) return throwError(() => new Error('No API URL configured'));
-      return this.http.post<GetMastersResponse>(url, body, { headers });
-    }),
-    catchError(() => throwError(() => new Error('Error fetching ranges')))
-  );
-}
+  // Get divisions by district ID
+  getDivisionsByDistrict(districtId: string): Observable<GetMastersResponse> {
+    const headers = {
+      'Content-Type': 'application/json',
+      'ngrok-skip-browser-warning': 'true'
+    };
 
-submitKisanAwedan(formData: any): Observable<any> {
-  const headers = { 
-    'Content-Type': 'application/json',
-    'ngrok-skip-browser-warning': 'true'
-  };
-  
-  return from(this.buildApiUrl(this.apiUrlSubmitKisanAwedan)).pipe(
-    switchMap((url) => {
-      if (!url) return throwError(() => new Error('No API URL configured'));
-      return this.http.post<any>(url, formData, { headers });
-    }),
-    catchError((error) => {
-      return throwError(() => new Error('Error submitting Kisan Awedan'));
-    })
-  );
-}
+    const body = {
+      dist_id: districtId.toString()  // Use 'id' parameter as expected by existing getDivision API
+    };
+
+    return from(this.buildApiUrl(this.apiUrlGetDivisionsByDistrict)).pipe(
+      switchMap((url) => {
+        if (!url) return throwError(() => new Error('No API URL configured'));
+        return this.http.post<GetMastersResponse>(url, body, { headers });
+      }),
+      catchError((error) => {
+        return throwError(() => new Error('Error fetching divisions'));
+      })
+    );
+  }
+
+  // Get ranges by division ID
+  // getRangesByDivision(divisionId: string): Observable<GetMastersResponse> {
+  //   const headers = { 'Content-Type': 'application/json',
+  //     'ngrok-skip-browser-warning': 'true'
+  //    };
+
+  //   const body = {
+  //     id: divisionId.toString()
+  //   };
+
+  //   return from(this.buildApiUrl(this.apiUrlGetRangesByDivision)).pipe(
+  //     switchMap((url) => {
+  //       if (!url) return throwError(() => new Error('No API URL configured'));
+  //       return this.http.post<GetMastersResponse>(url, body, { headers });
+  //     }),
+  //     catchError((error) => {
+  //       return throwError(() => new Error('Error fetching ranges'));
+  //     })
+  //   );
+  // } 
+
+  // Get ranges by division ID (+ optional district filter)
+  getRangesByDivision(divisionId: string, districtId?: string): Observable<GetMastersResponse> {
+    const headers = {
+      'Content-Type': 'application/json',
+      'ngrok-skip-browser-warning': 'true'
+    };
+
+    const body: any = { id: divisionId.toString() };
+    if (districtId) {
+      body.dist_id = districtId.toString();
+    }
+
+    return from(this.buildApiUrl(this.apiUrlGetRangesByDivision)).pipe(
+      switchMap((url) => {
+        if (!url) return throwError(() => new Error('No API URL configured'));
+        return this.http.post<GetMastersResponse>(url, body, { headers });
+      }),
+      catchError(() => throwError(() => new Error('Error fetching ranges')))
+    );
+  }
+
+  submitKisanAwedan(formData: any): Observable<any> {
+    const headers = {
+      'Content-Type': 'application/json',
+      'ngrok-skip-browser-warning': 'true'
+    };
+
+    return from(this.buildApiUrl(this.apiUrlSubmitKisanAwedan)).pipe(
+      switchMap((url) => {
+        if (!url) return throwError(() => new Error('No API URL configured'));
+        return this.http.post<any>(url, formData, { headers });
+      }),
+      catchError((error) => {
+        return throwError(() => new Error('Error submitting Kisan Awedan'));
+      })
+    );
+  }
 
   //end
 
@@ -613,16 +615,16 @@ submitKisanAwedan(formData: any): Observable<any> {
   async shortToast(msg: string) {
     await Toast.show({
       text: msg,
-      duration: 'short', 
-      position: 'bottom', 
+      duration: 'short',
+      position: 'bottom',
     });
   }
 
   async longToast(msg: string) {
     await Toast.show({
       text: msg,
-      duration: 'long', 
-      position: 'bottom', 
+      duration: 'long',
+      position: 'bottom',
     });
   }
 
@@ -647,6 +649,25 @@ submitKisanAwedan(formData: any): Observable<any> {
       })
     );
 
+  }
+
+  changePassword(officerId: number, oldPassword: string, newPassword: string): Observable<any> {
+    const headers = { 'Content-Type': 'application/json' };
+    const body = {
+      officer_id: officerId,
+      old_password: oldPassword,
+      new_password: newPassword
+    };
+
+    return from(this.buildApiUrl(this.apiUrlToChangePassword)).pipe(
+      switchMap((url) => {
+        if (!url) return throwError(() => new Error('No API URL configured'));
+        return this.http.post<any>(url, body, { headers });
+      }),
+      catchError((error) => {
+        return throwError(() => new Error('Error changing password'));
+      })
+    );
   }
 
   // GET DASHBOARD DATAT //
@@ -683,302 +704,302 @@ submitKisanAwedan(formData: any): Observable<any> {
 
 
   // Get Awedan List according to clicked data on dashboard
-getListOfAwedanAccordingToAwedanStatus(
-  whichData: number,
-  designation_id: string,
-  circle_id: string,
-  devision_id: string,
-  rang_id: string,
-  officers_id: string,
-  page: number = 1,
-  pageSize: number = 10
-): Observable<GetAwedanResponse> {
+  getListOfAwedanAccordingToAwedanStatus(
+    whichData: number,
+    designation_id: string,
+    circle_id: string,
+    devision_id: string,
+    rang_id: string,
+    officers_id: string,
+    page: number = 1,
+    pageSize: number = 10
+  ): Observable<GetAwedanResponse> {
 
-  const headers = { 'Content-Type': 'application/json' };
- //debugger;  
-  const body = {
-    which_data: whichData.toString(),
-    designation_id: designation_id.toString(),
-    circle_id: circle_id.toString(),
-    division_id: devision_id ? devision_id.toString() : null,
-    rang_id: rang_id ? rang_id.toString() : null,
-    officers_id: officers_id.toString(),
-    page: page,
-    pageSize: pageSize
-  };
-  console.log(body);
-  ////debugger;
-  return from(this.buildApiUrl(this.apiUrlGetAwedanListAccordingToAwedanStatus)).pipe(
-    switchMap((url) => {
-      if (!url) return throwError(() => new Error('No API URL configured'));
-      return this.http.post<GetAwedanResponse>(url, body, { headers });
-    }),
-    catchError((error) => {
+    const headers = { 'Content-Type': 'application/json' };
+    //debugger;  
+    const body = {
+      which_data: whichData.toString(),
+      designation_id: designation_id.toString(),
+      circle_id: circle_id.toString(),
+      division_id: devision_id ? devision_id.toString() : null,
+      rang_id: rang_id ? rang_id.toString() : null,
+      officers_id: officers_id.toString(),
+      page: page,
+      pageSize: pageSize
+    };
+    console.log(body);
+    ////debugger;
+    return from(this.buildApiUrl(this.apiUrlGetAwedanListAccordingToAwedanStatus)).pipe(
+      switchMap((url) => {
+        if (!url) return throwError(() => new Error('No API URL configured'));
+        return this.http.post<GetAwedanResponse>(url, body, { headers });
+      }),
+      catchError((error) => {
 
-      return throwError(() => new Error('Error logging in'));
-    })
-  );
+        return throwError(() => new Error('Error logging in'));
+      })
+    );
 
-}
+  }
 
 
-// Get Awedan Status Counts for dashboard
-getAwedanStatusCounts(
-  designation_id: string,
-  circle_id: string,
-  devision_id: string,
-  rang_id: string,
-  officers_id: string
-): Observable<any> {
-  const headers = { 'Content-Type': 'application/json' };
-  
-  const body = {
-    designation_id: designation_id.toString(),
-    circle_id: circle_id.toString(),
-    division_id: devision_id ? devision_id.toString() : null,
-    rang_id: rang_id ? rang_id.toString() : null,
-    officers_id: officers_id.toString(),
-  };
+  // Get Awedan Status Counts for dashboard
+  getAwedanStatusCounts(
+    designation_id: string,
+    circle_id: string,
+    devision_id: string,
+    rang_id: string,
+    officers_id: string
+  ): Observable<any> {
+    const headers = { 'Content-Type': 'application/json' };
 
-  return from(this.buildApiUrl(this.apiUrlGetAwedanStatusCounts)).pipe(
-    switchMap((url) => {
-      if (!url) return throwError(() => new Error('No API URL configured'));
-      return this.http.post<any>(url, body, { headers });
-    }),
-    catchError((error) => {
-      return throwError(() => new Error('Error getting status counts'));
-    })
-  );
-}
+    const body = {
+      designation_id: designation_id.toString(),
+      circle_id: circle_id.toString(),
+      division_id: devision_id ? devision_id.toString() : null,
+      rang_id: rang_id ? rang_id.toString() : null,
+      officers_id: officers_id.toString(),
+    };
 
-// Get Year Two Awedan Counts
-getYearTwoAwedanCounts(
-  designation_id: string,
-  circle_id: string,
-  devision_id: string | null,
-  rang_id: string | null,
-  officers_id: string
-): Observable<YearTwoAwedanCountsResponse> {
-  const headers = { 'Content-Type': 'application/json' };
-  
-  const body = {
-    which_data: 1, // Not used but required
-    designation_id: designation_id.toString(),
-    circle_id: circle_id.toString(),
-    division_id: devision_id ? devision_id.toString() : null,
-    rang_id: rang_id ? rang_id.toString() : null,
-    officers_id: officers_id.toString(),
-    page: 1,
-    pageSize: 10
-  };
-  
-  return from(this.buildApiUrl(this.apiUrlGetYearTwoAwedanCounts)).pipe(
-    switchMap((url) => {
-      if (!url) return throwError(() => new Error('No API URL configured'));
-      return this.http.post<YearTwoAwedanCountsResponse>(url, body, { headers });
-    }),
-    catchError((error) => {
-      return throwError(() => new Error('Error getting year two awedan counts'));
-    })
-  );
-}
+    return from(this.buildApiUrl(this.apiUrlGetAwedanStatusCounts)).pipe(
+      switchMap((url) => {
+        if (!url) return throwError(() => new Error('No API URL configured'));
+        return this.http.post<any>(url, body, { headers });
+      }),
+      catchError((error) => {
+        return throwError(() => new Error('Error getting status counts'));
+      })
+    );
+  }
 
-// Get Year Two Awedan List (only status 6 - DFO Approved)
-getYearTwoAwedanList(
-  whichData: number,
-  designation_id: string,
-  circle_id: string,
-  devision_id: string | null,
-  rang_id: string | null,
-  officers_id: string,
-  page: number = 1,
-  pageSize: number = 10,
-  filter_year2: string | null = null // "Yes", "No", or null for all
-): Observable<YearTwoAwedanResponse> {
-  const headers = { 'Content-Type': 'application/json' };
-  
-  const body = {
-    which_data: whichData,
-    designation_id: designation_id.toString(),
-    circle_id: circle_id.toString(),
-    division_id: devision_id ? devision_id.toString() : null,
-    rang_id: rang_id ? rang_id.toString() : null,
-    officers_id: officers_id.toString(),
-    page: page,
-    pageSize: pageSize,
-    filter_year2: filter_year2 // Add filter parameter
-  };
-  
-  return from(this.buildApiUrl(this.apiUrlGetYearTwoAwedanList)).pipe(
-    switchMap((url) => {
-      if (!url) return throwError(() => new Error('No API URL configured'));
-      return this.http.post<YearTwoAwedanResponse>(url, body, { headers });
-    }),
-    catchError((error) => {
-      return throwError(() => new Error('Error getting year two awedan list'));
-    })
-  );
-}
+  // Get Year Two Awedan Counts
+  getYearTwoAwedanCounts(
+    designation_id: string,
+    circle_id: string,
+    devision_id: string | null,
+    rang_id: string | null,
+    officers_id: string
+  ): Observable<YearTwoAwedanCountsResponse> {
+    const headers = { 'Content-Type': 'application/json' };
 
-// Get Plant Requests with Year Two Data
-getPlantRequestsWithYearTwo(applicationNumber: string): Observable<YearTwoPlantResponse> {
-  const headers = { 'Content-Type': 'application/json' };
-  
-  return from(this.buildApiUrl(this.apiUrlGetPlantRequestsWithYearTwo)).pipe(
-    switchMap((url) => {
-      if (!url) return throwError(() => new Error('No API URL configured'));
-      return this.http.get<YearTwoPlantResponse>(url + `?applicationNumber=${encodeURIComponent(applicationNumber)}`, { headers });
-    }),
-    catchError((error) => {
-      return throwError(() => new Error('Error getting plant requests with year two data'));
-    })
-  );
-}
+    const body = {
+      which_data: 1, // Not used but required
+      designation_id: designation_id.toString(),
+      circle_id: circle_id.toString(),
+      division_id: devision_id ? devision_id.toString() : null,
+      rang_id: rang_id ? rang_id.toString() : null,
+      officers_id: officers_id.toString(),
+      page: 1,
+      pageSize: 10
+    };
 
-// Submit Year Two Plants
-submitYearTwoPlants(request: SubmitPlantRequestYearTwoModel): Observable<any> {
-  const headers = { 'Content-Type': 'application/json' };
-  
-  return from(this.buildApiUrl(this.apiUrlSubmitYearTwoPlants)).pipe(
-    switchMap((url) => {
-      if (!url) return throwError(() => new Error('No API URL configured'));
-      return this.http.post<any>(url, request, { headers });
-    }),
-    catchError((error) => {
-      return throwError(() => new Error('Error submitting year two plants'));
-    })
-  );
-}
+    return from(this.buildApiUrl(this.apiUrlGetYearTwoAwedanCounts)).pipe(
+      switchMap((url) => {
+        if (!url) return throwError(() => new Error('No API URL configured'));
+        return this.http.post<YearTwoAwedanCountsResponse>(url, body, { headers });
+      }),
+      catchError((error) => {
+        return throwError(() => new Error('Error getting year two awedan counts'));
+      })
+    );
+  }
 
-// Submit Year Three Plants
-submitYearThreePlants(request: SubmitPlantRequestYearThreeModel): Observable<any> {
-  const headers = { 'Content-Type': 'application/json' };
-  
-  return from(this.buildApiUrl(this.apiUrlSubmitYearThreePlants)).pipe(
-    switchMap((url) => {
-      if (!url) return throwError(() => new Error('No API URL configured'));
-      return this.http.post<any>(url, request, { headers });
-    }),
-    catchError((error) => {
-      return throwError(() => new Error('Error submitting year three plants'));
-    })
-  );
-}
+  // Get Year Two Awedan List (only status 6 - DFO Approved)
+  getYearTwoAwedanList(
+    whichData: number,
+    designation_id: string,
+    circle_id: string,
+    devision_id: string | null,
+    rang_id: string | null,
+    officers_id: string,
+    page: number = 1,
+    pageSize: number = 10,
+    filter_year2: string | null = null // "Yes", "No", or null for all
+  ): Observable<YearTwoAwedanResponse> {
+    const headers = { 'Content-Type': 'application/json' };
 
-// Get Year Three Awedan Counts
-getYearThreeAwedanCounts(
-  designation_id: string,
-  circle_id: string,
-  devision_id: string | null,
-  rang_id: string | null,
-  officers_id: string
-): Observable<YearThreeAwedanCountsResponse> {
-  const headers = { 'Content-Type': 'application/json' };
-  
-  const body = {
-    which_data: 1, // Not used but required
-    designation_id: designation_id.toString(),
-    circle_id: circle_id.toString(),
-    division_id: devision_id ? devision_id.toString() : null,
-    rang_id: rang_id ? rang_id.toString() : null,
-    officers_id: officers_id.toString(),
-    page: 1,
-    pageSize: 10
-  };
-  
-  return from(this.buildApiUrl(this.apiUrlGetYearThreeAwedanCounts)).pipe(
-    switchMap((url) => {
-      if (!url) return throwError(() => new Error('No API URL configured'));
-      return this.http.post<YearThreeAwedanCountsResponse>(url, body, { headers });
-    }),
-    catchError((error) => {
-      return throwError(() => new Error('Error getting year three awedan counts'));
-    })
-  );
-}
+    const body = {
+      which_data: whichData,
+      designation_id: designation_id.toString(),
+      circle_id: circle_id.toString(),
+      division_id: devision_id ? devision_id.toString() : null,
+      rang_id: rang_id ? rang_id.toString() : null,
+      officers_id: officers_id.toString(),
+      page: page,
+      pageSize: pageSize,
+      filter_year2: filter_year2 // Add filter parameter
+    };
 
-// Get Year Three Awedan List
-getYearThreeAwedanList(
-  whichData: number,
-  designation_id: string,
-  circle_id: string,
-  devision_id: string | null,
-  rang_id: string | null,
-  officers_id: string,
-  page: number = 1,
-  pageSize: number = 10,
-  filter_year3: string | null = null // "Yes", "No", or null for all
-): Observable<YearThreeAwedanResponse> {
-  const headers = { 'Content-Type': 'application/json' };
-  
-  const body = {
-    which_data: whichData,
-    designation_id: designation_id.toString(),
-    circle_id: circle_id.toString(),
-    division_id: devision_id ? devision_id.toString() : null,
-    rang_id: rang_id ? rang_id.toString() : null,
-    officers_id: officers_id.toString(),
-    page: page,
-    pageSize: pageSize,
-    filter_year3: filter_year3 // Add filter parameter
-  };
-  
-  return from(this.buildApiUrl(this.apiUrlGetYearThreeAwedanList)).pipe(
-    switchMap((url) => {
-      if (!url) return throwError(() => new Error('No API URL configured'));
-      return this.http.post<YearThreeAwedanResponse>(url, body, { headers });
-    }),
-    catchError((error) => {
-      return throwError(() => new Error('Error getting year three awedan list'));
-    })
-  );
-}
+    return from(this.buildApiUrl(this.apiUrlGetYearTwoAwedanList)).pipe(
+      switchMap((url) => {
+        if (!url) return throwError(() => new Error('No API URL configured'));
+        return this.http.post<YearTwoAwedanResponse>(url, body, { headers });
+      }),
+      catchError((error) => {
+        return throwError(() => new Error('Error getting year two awedan list'));
+      })
+    );
+  }
 
-// Get Ropit Kisan Awedan List By Range
-getRopitKisanAwedanListByRange(
-  rangeId: number,
-  pageNumber: number = 1,
-  pageSize: number = 10
-): Observable<any> {
-  const headers = { 
-    'Content-Type': 'application/json',
-    'ngrok-skip-browser-warning': 'true'
-  };
-  
-  const body = {
-    RangeId: rangeId,
-    PageNumber: pageNumber,
-    PageSize: pageSize
-  };
+  // Get Plant Requests with Year Two Data
+  getPlantRequestsWithYearTwo(applicationNumber: string): Observable<YearTwoPlantResponse> {
+    const headers = { 'Content-Type': 'application/json' };
 
-  return from(this.buildApiUrl(this.apiUrlGetRopitKisanAwedanListByRange)).pipe(
-    switchMap((url) => {
-      if (!url) return throwError(() => new Error('No API URL configured'));
-      return this.http.post<any>(url, body, { headers });
-    }),
-    catchError((error) => {
-      return throwError(() => new Error('Error getting ropit kisan awedan list'));
-    })
-  );
-}
+    return from(this.buildApiUrl(this.apiUrlGetPlantRequestsWithYearTwo)).pipe(
+      switchMap((url) => {
+        if (!url) return throwError(() => new Error('No API URL configured'));
+        return this.http.get<YearTwoPlantResponse>(url + `?applicationNumber=${encodeURIComponent(applicationNumber)}`, { headers });
+      }),
+      catchError((error) => {
+        return throwError(() => new Error('Error getting plant requests with year two data'));
+      })
+    );
+  }
 
-// Update Ropit Count
-updateRopitCount(requestModel: any): Observable<any> {
-  const headers = { 
-    'Content-Type': 'application/json',
-    'ngrok-skip-browser-warning': 'true'
-  };
+  // Submit Year Two Plants
+  submitYearTwoPlants(request: SubmitPlantRequestYearTwoModel): Observable<any> {
+    const headers = { 'Content-Type': 'application/json' };
 
-  return from(this.buildApiUrl(this.apiUrlUpdateRopitCount)).pipe(
-    switchMap((url) => {
-      if (!url) return throwError(() => new Error('No API URL configured'));
-      return this.http.post<any>(url, requestModel, { headers });
-    }),
-    catchError((error) => {
-      return throwError(() => new Error('Error updating ropit count'));
-    })
-  );
-}
+    return from(this.buildApiUrl(this.apiUrlSubmitYearTwoPlants)).pipe(
+      switchMap((url) => {
+        if (!url) return throwError(() => new Error('No API URL configured'));
+        return this.http.post<any>(url, request, { headers });
+      }),
+      catchError((error) => {
+        return throwError(() => new Error('Error submitting year two plants'));
+      })
+    );
+  }
+
+  // Submit Year Three Plants
+  submitYearThreePlants(request: SubmitPlantRequestYearThreeModel): Observable<any> {
+    const headers = { 'Content-Type': 'application/json' };
+
+    return from(this.buildApiUrl(this.apiUrlSubmitYearThreePlants)).pipe(
+      switchMap((url) => {
+        if (!url) return throwError(() => new Error('No API URL configured'));
+        return this.http.post<any>(url, request, { headers });
+      }),
+      catchError((error) => {
+        return throwError(() => new Error('Error submitting year three plants'));
+      })
+    );
+  }
+
+  // Get Year Three Awedan Counts
+  getYearThreeAwedanCounts(
+    designation_id: string,
+    circle_id: string,
+    devision_id: string | null,
+    rang_id: string | null,
+    officers_id: string
+  ): Observable<YearThreeAwedanCountsResponse> {
+    const headers = { 'Content-Type': 'application/json' };
+
+    const body = {
+      which_data: 1, // Not used but required
+      designation_id: designation_id.toString(),
+      circle_id: circle_id.toString(),
+      division_id: devision_id ? devision_id.toString() : null,
+      rang_id: rang_id ? rang_id.toString() : null,
+      officers_id: officers_id.toString(),
+      page: 1,
+      pageSize: 10
+    };
+
+    return from(this.buildApiUrl(this.apiUrlGetYearThreeAwedanCounts)).pipe(
+      switchMap((url) => {
+        if (!url) return throwError(() => new Error('No API URL configured'));
+        return this.http.post<YearThreeAwedanCountsResponse>(url, body, { headers });
+      }),
+      catchError((error) => {
+        return throwError(() => new Error('Error getting year three awedan counts'));
+      })
+    );
+  }
+
+  // Get Year Three Awedan List
+  getYearThreeAwedanList(
+    whichData: number,
+    designation_id: string,
+    circle_id: string,
+    devision_id: string | null,
+    rang_id: string | null,
+    officers_id: string,
+    page: number = 1,
+    pageSize: number = 10,
+    filter_year3: string | null = null // "Yes", "No", or null for all
+  ): Observable<YearThreeAwedanResponse> {
+    const headers = { 'Content-Type': 'application/json' };
+
+    const body = {
+      which_data: whichData,
+      designation_id: designation_id.toString(),
+      circle_id: circle_id.toString(),
+      division_id: devision_id ? devision_id.toString() : null,
+      rang_id: rang_id ? rang_id.toString() : null,
+      officers_id: officers_id.toString(),
+      page: page,
+      pageSize: pageSize,
+      filter_year3: filter_year3 // Add filter parameter
+    };
+
+    return from(this.buildApiUrl(this.apiUrlGetYearThreeAwedanList)).pipe(
+      switchMap((url) => {
+        if (!url) return throwError(() => new Error('No API URL configured'));
+        return this.http.post<YearThreeAwedanResponse>(url, body, { headers });
+      }),
+      catchError((error) => {
+        return throwError(() => new Error('Error getting year three awedan list'));
+      })
+    );
+  }
+
+  // Get Ropit Kisan Awedan List By Range
+  getRopitKisanAwedanListByRange(
+    rangeId: number,
+    pageNumber: number = 1,
+    pageSize: number = 10
+  ): Observable<any> {
+    const headers = {
+      'Content-Type': 'application/json',
+      'ngrok-skip-browser-warning': 'true'
+    };
+
+    const body = {
+      RangeId: rangeId,
+      PageNumber: pageNumber,
+      PageSize: pageSize
+    };
+
+    return from(this.buildApiUrl(this.apiUrlGetRopitKisanAwedanListByRange)).pipe(
+      switchMap((url) => {
+        if (!url) return throwError(() => new Error('No API URL configured'));
+        return this.http.post<any>(url, body, { headers });
+      }),
+      catchError((error) => {
+        return throwError(() => new Error('Error getting ropit kisan awedan list'));
+      })
+    );
+  }
+
+  // Update Ropit Count
+  updateRopitCount(requestModel: any): Observable<any> {
+    const headers = {
+      'Content-Type': 'application/json',
+      'ngrok-skip-browser-warning': 'true'
+    };
+
+    return from(this.buildApiUrl(this.apiUrlUpdateRopitCount)).pipe(
+      switchMap((url) => {
+        if (!url) return throwError(() => new Error('No API URL configured'));
+        return this.http.post<any>(url, requestModel, { headers });
+      }),
+      catchError((error) => {
+        return throwError(() => new Error('Error updating ropit count'));
+      })
+    );
+  }
 
   // Get offline Awedan List
   getListOfOfflineAwedanList(
@@ -1083,21 +1104,21 @@ updateRopitCount(requestModel: any): Observable<any> {
 
   // }
   getSingleAwedanData(applicationNumber: string): Observable<SingleAwedanDataResponse> {
-  return from(this.buildApiUrl(this.apiUrlToGetAllRegistrationDetails)).pipe(
-    switchMap((baseUrl) => {
-      if (!baseUrl) {
-        return throwError(() => new Error('No API URL configured'));
-      }
+    return from(this.buildApiUrl(this.apiUrlToGetAllRegistrationDetails)).pipe(
+      switchMap((baseUrl) => {
+        if (!baseUrl) {
+          return throwError(() => new Error('No API URL configured'));
+        }
 
-      const url = `${baseUrl}/${encodeURIComponent(applicationNumber)}`;
-      return this.http.get<SingleAwedanDataResponse>(url);
-    }),
-    catchError((error) => {
-      console.error('Error fetching application data:', error);
-      return throwError(() => new Error('Error loading application data'));
-    })
-  );
-}
+        const url = `${baseUrl}/${encodeURIComponent(applicationNumber)}`;
+        return this.http.get<SingleAwedanDataResponse>(url);
+      }),
+      catchError((error) => {
+        console.error('Error fetching application data:', error);
+        return throwError(() => new Error('Error loading application data'));
+      })
+    );
+  }
 
 
   getAwedanListForReport(
@@ -1166,176 +1187,177 @@ updateRopitCount(requestModel: any): Observable<any> {
 
   // ... existing code ...
 
-// Get All Registration Details
-getAllRegistrationDetails(id: number): Observable<RegistrationDetailsResponse> {
-  const headers = { 
-    'Content-Type': 'application/json',
-    'ngrok-skip-browser-warning': 'true'
-  };
-  
-  return from(this.buildApiUrl(`/api/KissanMitraYojnaRegisteration/getAllRegistrationDetails/${id}`)).pipe(
-    switchMap((url) => {
-      if (!url) return throwError(() => new Error('No API URL configured'));
-      return this.http.get<RegistrationDetailsResponse>(url, { headers });
-    }),
-    catchError((error) => {
-      return throwError(() => new Error('Error fetching registration details'));
-    })
-  );
-}
+  // Get All Registration Details
+  getAllRegistrationDetails(id: number): Observable<RegistrationDetailsResponse> {
+    const headers = {
+      'Content-Type': 'application/json',
+      'ngrok-skip-browser-warning': 'true'
+    };
 
-getAllRegistrationDetailsForVivran(applicationNumber: string): Observable<VivranRegistrationDetailsResponse> {
-  const headers = { 
-    'Content-Type': 'application/json',
-    'ngrok-skip-browser-warning': 'true'
-  };
-  
-  return from(this.buildApiUrl(`/api/KissanMitraYojnaRegisteration/getAllRegistrationDetailsForVivran/${applicationNumber}`)).pipe(
-    switchMap((url) => {
-      if (!url) return throwError(() => new Error('No API URL configured'));
-      return this.http.get<VivranRegistrationDetailsResponse>(url, { headers });
-    }),
-    catchError((error) => {
-      return throwError(() => new Error('Error fetching vivran registration details'));
-    })
-  );
-}
+    return from(this.buildApiUrl(`/api/KissanMitraYojnaRegisteration/getAllRegistrationDetails/${id}`)).pipe(
+      switchMap((url) => {
+        if (!url) return throwError(() => new Error('No API URL configured'));
+        return this.http.get<RegistrationDetailsResponse>(url, { headers });
+      }),
+      catchError((error) => {
+        return throwError(() => new Error('Error fetching registration details'));
+      })
+    );
+  }
 
-getBankDetails(): Observable<Bankresponse> {
-  const headers = { 
-    'Content-Type': 'application/json',
-    'ngrok-skip-browser-warning': 'true'
-  };
-  
-  return from(this.buildApiUrl(`/api/KissanMitraYojnaRegisteration/getBankDetails`)).pipe(
-    switchMap((url) => {
-      if (!url) return throwError(() => new Error('No API URL configured'));
-      return this.http.get<Bankresponse>(url, { headers });
-    }),
-    catchError((error) => {
-      return throwError(() => new Error('Error fetching registration details'));
-    })
-  );
-}
+  getAllRegistrationDetailsForVivran(applicationNumber: string): Observable<VivranRegistrationDetailsResponse> {
+    const headers = {
+      'Content-Type': 'application/json',
+      'ngrok-skip-browser-warning': 'true'
+    };
 
-  getSandType() : Observable<Sandresponse> {
- const headers = { 
-    'Content-Type': 'application/json',
-    'ngrok-skip-browser-warning': 'true'
-  };
-  
-  return from(this.buildApiUrl(`/api/KissanMitraYojnaRegisteration/getSandTypeDetails`)).pipe(
-    switchMap((url) => {
-      if (!url) return throwError(() => new Error('No API URL configured'));
-      return this.http.get<Sandresponse>(url, { headers });
-    }),
-    catchError((error) => {
-      return throwError(() => new Error('Error fetching registration details'));
-    })
-  );  }
+    return from(this.buildApiUrl(`/api/KissanMitraYojnaRegisteration/getAllRegistrationDetailsForVivran/${applicationNumber}`)).pipe(
+      switchMap((url) => {
+        if (!url) return throwError(() => new Error('No API URL configured'));
+        return this.http.get<VivranRegistrationDetailsResponse>(url, { headers });
+      }),
+      catchError((error) => {
+        return throwError(() => new Error('Error fetching vivran registration details'));
+      })
+    );
+  }
 
+  getBankDetails(): Observable<Bankresponse> {
+    const headers = {
+      'Content-Type': 'application/json',
+      'ngrok-skip-browser-warning': 'true'
+    };
 
+    return from(this.buildApiUrl(`/api/KissanMitraYojnaRegisteration/getBankDetails`)).pipe(
+      switchMap((url) => {
+        if (!url) return throwError(() => new Error('No API URL configured'));
+        return this.http.get<Bankresponse>(url, { headers });
+      }),
+      catchError((error) => {
+        return throwError(() => new Error('Error fetching registration details'));
+      })
+    );
+  }
 
-//16 10 25 ss start
-//s
+  getSandType(): Observable<Sandresponse> {
+    const headers = {
+      'Content-Type': 'application/json',
+      'ngrok-skip-browser-warning': 'true'
+    };
 
-GetAllSpeciesReportByDivision(divisionId: number): Observable<any> {
-  const headers = { 
-    'Content-Type': 'application/json',
-    'ngrok-skip-browser-warning': 'true'
-  };
-  
-  return from(this.buildApiUrl(`/api/KissanMitraYojnaRegisteration/GetAllSpeciesReportByDivision/${divisionId}`)).pipe(
-    switchMap((url) => {
-      if (!url) return throwError(() => new Error('No API URL configured'));
-      return this.http.get<any>(url, { headers });
-    }),
-    catchError((error) => {
-      console.error('❌ Error fetching species division report by division:', error);
-      return throwError(() => new Error('Error fetching species division report by division'));
-    })
-  );
-}
+    return from(this.buildApiUrl(`/api/KissanMitraYojnaRegisteration/getSandTypeDetails`)).pipe(
+      switchMap((url) => {
+        if (!url) return throwError(() => new Error('No API URL configured'));
+        return this.http.get<Sandresponse>(url, { headers });
+      }),
+      catchError((error) => {
+        return throwError(() => new Error('Error fetching registration details'));
+      })
+    );
+  }
 
 
-GetAllSpeciesReportByRange(rangId: number): Observable<any> {
-  const headers = { 
-    'Content-Type': 'application/json',
-    'ngrok-skip-browser-warning': 'true'
-  };
-  
-  return from(this.buildApiUrl(`/api/KissanMitraYojnaRegisteration/GetAllSpeciesReportByRange/${rangId}`)).pipe(
-    switchMap((url) => {
-      if (!url) return throwError(() => new Error('No API URL configured'));
-      return this.http.get<any>(url, { headers });
-    }),
-    catchError((error) => {
-      console.error('❌ Error fetching species division report by range:', error);
-      return throwError(() => new Error('Error fetching species division report by range'));
-    })
-  );
-}
 
-///
-GetMahayogSummaryByRange(rangId: number): Observable<any> {
-  const headers = { 
-    'Content-Type': 'application/json',
-    'ngrok-skip-browser-warning': 'true'
-  };
-  
-  // Note: This uses route parameter, not query parameter
-  return from(this.buildApiUrl(`/api/KissanMitraYojnaRegisteration/GetMahayogSummaryByRange/${rangId}`)).pipe(
-    switchMap((url) => {
-      if (!url) return throwError(() => new Error('No API URL configured'));
-      return this.http.get<any>(url, { headers });
-    }),
-    catchError((error) => {
-      return throwError(() => new Error('Error fetching Mahayog Summary by Range data'));
-    })
-  );
-}
+  //16 10 25 ss start
+  //s
+
+  GetAllSpeciesReportByDivision(divisionId: number): Observable<any> {
+    const headers = {
+      'Content-Type': 'application/json',
+      'ngrok-skip-browser-warning': 'true'
+    };
+
+    return from(this.buildApiUrl(`/api/KissanMitraYojnaRegisteration/GetAllSpeciesReportByDivision/${divisionId}`)).pipe(
+      switchMap((url) => {
+        if (!url) return throwError(() => new Error('No API URL configured'));
+        return this.http.get<any>(url, { headers });
+      }),
+      catchError((error) => {
+        console.error('❌ Error fetching species division report by division:', error);
+        return throwError(() => new Error('Error fetching species division report by division'));
+      })
+    );
+  }
 
 
-GetMahayogSummaryByDivision(divisionId: number): Observable<any> {
-  return from(this.buildApiUrl(`/api/KissanMitraYojnaRegisteration/GetMahayogSummaryByDivision/${divisionId}`)).pipe(
-    switchMap((url) => {
-      if (!url) return throwError(() => new Error('No API URL configured'));
-      return this.http.get<any>(url);
-    }),
-    catchError((error) => {
-      console.error('❌ Error fetching Mahayog summary by division:', error);
-      return throwError(() => new Error('Error fetching Mahayog summary by division'));
-    })
-  );
-}
+  GetAllSpeciesReportByRange(rangId: number): Observable<any> {
+    const headers = {
+      'Content-Type': 'application/json',
+      'ngrok-skip-browser-warning': 'true'
+    };
 
-//s
-//16 10 25 ss end
+    return from(this.buildApiUrl(`/api/KissanMitraYojnaRegisteration/GetAllSpeciesReportByRange/${rangId}`)).pipe(
+      switchMap((url) => {
+        if (!url) return throwError(() => new Error('No API URL configured'));
+        return this.http.get<any>(url, { headers });
+      }),
+      catchError((error) => {
+        console.error('❌ Error fetching species division report by range:', error);
+        return throwError(() => new Error('Error fetching species division report by range'));
+      })
+    );
+  }
 
-//27 10 25 ss start
-getSecurePDF(filename: string): Observable<Blob> {
-  const headers = { 
-    'Content-Type': 'application/json',
-    'ngrok-skip-browser-warning': 'true'
-  };
-  
-  return from(this.buildApiUrl(`/api/KissanMitraYojnaRegisteration/get-secure-pdf?filename=${encodeURIComponent(filename)}`)).pipe(
-    switchMap((url) => {
-      if (!url) return throwError(() => new Error('No API URL configured'));
-      return this.http.get(url, { 
-        headers,
-        responseType: 'blob' // Important: set responseType to 'blob' for file downloads
-      });
-    }),
-    catchError((error) => {
-      console.error('Error fetching secure PDF:', error);
-      return throwError(() => new Error('Error downloading PDF'));
-    })
-  );
-}
+  ///
+  GetMahayogSummaryByRange(rangId: number): Observable<any> {
+    const headers = {
+      'Content-Type': 'application/json',
+      'ngrok-skip-browser-warning': 'true'
+    };
 
-//27 10 25 ss end
-//27 10 25 ss end
+    // Note: This uses route parameter, not query parameter
+    return from(this.buildApiUrl(`/api/KissanMitraYojnaRegisteration/GetMahayogSummaryByRange/${rangId}`)).pipe(
+      switchMap((url) => {
+        if (!url) return throwError(() => new Error('No API URL configured'));
+        return this.http.get<any>(url, { headers });
+      }),
+      catchError((error) => {
+        return throwError(() => new Error('Error fetching Mahayog Summary by Range data'));
+      })
+    );
+  }
+
+
+  GetMahayogSummaryByDivision(divisionId: number): Observable<any> {
+    return from(this.buildApiUrl(`/api/KissanMitraYojnaRegisteration/GetMahayogSummaryByDivision/${divisionId}`)).pipe(
+      switchMap((url) => {
+        if (!url) return throwError(() => new Error('No API URL configured'));
+        return this.http.get<any>(url);
+      }),
+      catchError((error) => {
+        console.error('❌ Error fetching Mahayog summary by division:', error);
+        return throwError(() => new Error('Error fetching Mahayog summary by division'));
+      })
+    );
+  }
+
+  //s
+  //16 10 25 ss end
+
+  //27 10 25 ss start
+  getSecurePDF(filename: string): Observable<Blob> {
+    const headers = {
+      'Content-Type': 'application/json',
+      'ngrok-skip-browser-warning': 'true'
+    };
+
+    return from(this.buildApiUrl(`/api/KissanMitraYojnaRegisteration/get-secure-pdf?filename=${encodeURIComponent(filename)}`)).pipe(
+      switchMap((url) => {
+        if (!url) return throwError(() => new Error('No API URL configured'));
+        return this.http.get(url, {
+          headers,
+          responseType: 'blob' // Important: set responseType to 'blob' for file downloads
+        });
+      }),
+      catchError((error) => {
+        console.error('Error fetching secure PDF:', error);
+        return throwError(() => new Error('Error downloading PDF'));
+      })
+    );
+  }
+
+  //27 10 25 ss end
+  //27 10 25 ss end
 
   // ADD ALL THESE NEW METHODS FOR ANYA PLANTS
   getSpeciesMaster(): Observable<any> {
@@ -1456,7 +1478,7 @@ getSecurePDF(filename: string): Observable<Blob> {
 
   // Generate estimate (plant-wise) for a specific application number
   getEstimateByApplication(applicationNumber: string): Observable<any> {
-    const headers = { 
+    const headers = {
       'Content-Type': 'application/json',
       'ngrok-skip-browser-warning': 'true'
     };
@@ -1475,7 +1497,7 @@ getSecurePDF(filename: string): Observable<Blob> {
 
   // Unified bundle for dynamic estimate page: rows + totals + singleData + officers
   getEstimateBundle(applicationNumber: string): Observable<any> {
-    const headers = { 
+    const headers = {
       'Content-Type': 'application/json',
       'ngrok-skip-browser-warning': 'true'
     };
@@ -1493,21 +1515,21 @@ getSecurePDF(filename: string): Observable<Blob> {
   }
 
   // Get Goswara Report based on plant_request_new, online_awedan_request, plant_master
-  getGoswaraReport(divisionId?: number, rangId?: number,sdoId?: number): Observable<any> {
-    const headers = { 
+  getGoswaraReport(divisionId?: number, rangId?: number, sdoId?: number): Observable<any> {
+    const headers = {
       'Content-Type': 'application/json',
       'ngrok-skip-browser-warning': 'true'
     };
-    
+
     let urlPath = '/api/KissanMitraYojnaRegisteration/GetGoswaraReport';
     if (rangId) {
       urlPath += `?rangId=${rangId}`;
     } else if (divisionId) {
       urlPath += `?divisionId=${divisionId}`;
-    }else if (sdoId) {
+    } else if (sdoId) {
       urlPath += `?sdoId=${sdoId}`;
     }
-    
+
     return from(this.buildApiUrl(urlPath)).pipe(
       switchMap((url) => {
         if (!url) return throwError(() => new Error('No API URL configured'));
@@ -1522,16 +1544,16 @@ getSecurePDF(filename: string): Observable<Blob> {
 
   // Get Goswara Report Circle (grouped by Circle and Division only, no Range)
   getGoswaraReportCircle(circleId?: number): Observable<any> {
-    const headers = { 
+    const headers = {
       'Content-Type': 'application/json',
       'ngrok-skip-browser-warning': 'true'
     };
-    
+
     let urlPath = '/api/KissanMitraYojnaRegisteration/GetGoswaraReportCircle';
     if (circleId) {
       urlPath += `?circleId=${circleId}`;
     }
-    
+
     return from(this.buildApiUrl(urlPath)).pipe(
       switchMap((url) => {
         if (!url) return throwError(() => new Error('No API URL configured'));
@@ -1546,13 +1568,13 @@ getSecurePDF(filename: string): Observable<Blob> {
 
   // Get Goswara Report All Circles (for designation 7 - Head level)
   getGoswaraReportAllCircles(): Observable<any> {
-    const headers = { 
+    const headers = {
       'Content-Type': 'application/json',
       'ngrok-skip-browser-warning': 'true'
     };
-    
+
     const urlPath = '/api/KissanMitraYojnaRegisteration/GetGoswaraReportAllCircles';
-    
+
     return from(this.buildApiUrl(urlPath)).pipe(
       switchMap((url) => {
         if (!url) return throwError(() => new Error('No API URL configured'));
@@ -1567,20 +1589,20 @@ getSecurePDF(filename: string): Observable<Blob> {
 
   // Get Prajati Goswara Report with <5 and >=5 acres breakdown
   getPrajatiGoswaraReport(divisionId?: number, rangId?: number, sdoId?: number): Observable<any> {
-    const headers = { 
+    const headers = {
       'Content-Type': 'application/json',
       'ngrok-skip-browser-warning': 'true'
     };
-    
+
     let urlPath = '/api/KissanMitraYojnaRegisteration/GetPrajatiGoswaraReport';
     if (rangId) {
       urlPath += `?rangId=${rangId}`;
     } else if (divisionId) {
       urlPath += `?divisionId=${divisionId}`;
-    }else if (sdoId) {
+    } else if (sdoId) {
       urlPath += `?sdoId=${sdoId}`;
     }
-    
+
     return from(this.buildApiUrl(urlPath)).pipe(
       switchMap((url) => {
         if (!url) return throwError(() => new Error('No API URL configured'));
@@ -1595,16 +1617,16 @@ getSecurePDF(filename: string): Observable<Blob> {
 
   // Get Prajati Goswara Report Circle (grouped by Division only)
   getPrajatiGoswaraReportCircle(circleId?: number): Observable<any> {
-    const headers = { 
+    const headers = {
       'Content-Type': 'application/json',
       'ngrok-skip-browser-warning': 'true'
     };
-    
+
     let urlPath = '/api/KissanMitraYojnaRegisteration/GetPrajatiGoswaraReportCircle';
     if (circleId) {
       urlPath += `?circleId=${circleId}`;
     }
-    
+
     return from(this.buildApiUrl(urlPath)).pipe(
       switchMap((url) => {
         if (!url) return throwError(() => new Error('No API URL configured'));
@@ -1619,13 +1641,13 @@ getSecurePDF(filename: string): Observable<Blob> {
 
   // Get Prajati Goswara Report All Circles (Head/Supreme level)
   getPrajatiGoswaraReportAllCircles(): Observable<any> {
-    const headers = { 
+    const headers = {
       'Content-Type': 'application/json',
       'ngrok-skip-browser-warning': 'true'
     };
-    
+
     const urlPath = '/api/KissanMitraYojnaRegisteration/GetPrajatiGoswaraReportAllCircles';
-    
+
     return from(this.buildApiUrl(urlPath)).pipe(
       switchMap((url) => {
         if (!url) return throwError(() => new Error('No API URL configured'));
@@ -1640,7 +1662,7 @@ getSecurePDF(filename: string): Observable<Blob> {
 
   // Save estimate approval workflow (RO/SDO/DFO)
   saveEstimateApproval(payload: any): Observable<any> {
-    const headers = { 
+    const headers = {
       'Content-Type': 'application/json',
       'ngrok-skip-browser-warning': 'true'
     };
@@ -1653,21 +1675,21 @@ getSecurePDF(filename: string): Observable<Blob> {
   }
 
   updateEstimateApproval(payload: any): Observable<any> {
-  const headers = { 
-    'Content-Type': 'application/json',
-    'ngrok-skip-browser-warning': 'true'
-  };
-  return from(this.buildApiUrl('/api/KissanMitraYojnaRegisteration/UpdateEstimateApproval')).pipe(
-    switchMap((url) => {
-      if (!url) return throwError(() => new Error('No API URL configured'));
-      return this.http.post<any>(url, payload, { headers });
-    })
-  );
-}
+    const headers = {
+      'Content-Type': 'application/json',
+      'ngrok-skip-browser-warning': 'true'
+    };
+    return from(this.buildApiUrl('/api/KissanMitraYojnaRegisteration/UpdateEstimateApproval')).pipe(
+      switchMap((url) => {
+        if (!url) return throwError(() => new Error('No API URL configured'));
+        return this.http.post<any>(url, payload, { headers });
+      })
+    );
+  }
 
   // Fetch saved estimate approval rows for an application
   getEstimateApprovalByApplication(applicationNumber: string): Observable<any> {
-    const headers = { 
+    const headers = {
       'Content-Type': 'application/json',
       'ngrok-skip-browser-warning': 'true'
     };
@@ -1681,7 +1703,7 @@ getSecurePDF(filename: string): Observable<Blob> {
 
   // Soft delete estimate approval
   softDeleteEstimateApproval(applicationNumber: string): Observable<any> {
-    const headers = { 
+    const headers = {
       'Content-Type': 'application/json',
       'ngrok-skip-browser-warning': 'true'
     };
@@ -1701,15 +1723,15 @@ getSecurePDF(filename: string): Observable<Blob> {
     rangId?: number,
     officerId?: number
   ): Observable<any> {
-    const headers = { 
+    const headers = {
       'Content-Type': 'application/json',
       'ngrok-skip-browser-warning': 'true'
     };
-    
+
     // Build query parameters
     let queryParams = '';
     const params: string[] = [];
-    
+
     if (circleId && circleId > 0) {
       params.push(`circleId=${circleId}`);
     }
@@ -1725,11 +1747,11 @@ getSecurePDF(filename: string): Observable<Blob> {
     if (officerId && officerId > 0) {
       params.push(`officerId=${officerId}`);
     }
-    
+
     if (params.length > 0) {
       queryParams = '?' + params.join('&');
     }
-    
+
     return from(this.buildApiUrl(`/api/KisanReport/kissan-wise-report${queryParams}`)).pipe(
       switchMap((url) => {
         if (!url) return throwError(() => new Error('No API URL configured'));
@@ -1744,11 +1766,11 @@ getSecurePDF(filename: string): Observable<Blob> {
 
   // Transfer application to new location
   transferApplication(transferData: any): Observable<any> {
-    const headers = { 
+    const headers = {
       'Content-Type': 'application/json',
       'ngrok-skip-browser-warning': 'true'
     };
-    
+
     return from(this.buildApiUrl(this.apiUrlTransferApplication)).pipe(
       switchMap((url) => {
         if (!url) return throwError(() => new Error('No API URL configured'));
@@ -1792,42 +1814,42 @@ getSecurePDF(filename: string): Observable<Blob> {
   GetEstimateFile(applicationNumber: string): Observable<any> {
     return from(
       this.buildApiUrl(`/api/KissanMitraYojnaRegisteration/GetEstimateFile?applicationNumber=${encodeURIComponent(applicationNumber)}`)).pipe(
-      switchMap((url) => {
-        if (!url) return throwError(() => new Error("No API URL configured"));
-        return this.http.get<any>(url);
-      })
-    );
+        switchMap((url) => {
+          if (!url) return throwError(() => new Error("No API URL configured"));
+          return this.http.get<any>(url);
+        })
+      );
   }
 
-   paymentlistdata(selectedPaymentYear: string, rangeId: number): Observable<any> {
+  paymentlistdata(selectedPaymentYear: string, rangeId: number): Observable<any> {
     return from(
       this.buildApiUrl(`/api/KissanMitraYojnaRegisteration/paymentlistdata?selectedPaymentYear=${encodeURIComponent(selectedPaymentYear)}&rangeId=${rangeId}`)).pipe(
-      switchMap((url) => {
-        if (!url) return throwError(() => new Error("No API URL configured"));
-        return this.http.get<any>(url);
-      })
-    );
+        switchMap((url) => {
+          if (!url) return throwError(() => new Error("No API URL configured"));
+          return this.http.get<any>(url);
+        })
+      );
   }
 
-   getPaymentBundel(application_number: string): Observable<any> {
+  getPaymentBundel(application_number: string): Observable<any> {
     return from(
       this.buildApiUrl(`/api/KissanMitraYojnaRegisteration/paymentbundel?applicationNumber=${encodeURIComponent(application_number)}`)).pipe(
-      switchMap((url) => {
-        if (!url) return throwError(() => new Error("No API URL configured"));
-        return this.http.get<any>(url);
-      })
-    );
+        switchMap((url) => {
+          if (!url) return throwError(() => new Error("No API URL configured"));
+          return this.http.get<any>(url);
+        })
+      );
   }
 
- // Get Division Report with Village Name (for DFO - Division Officer)
+  // Get Division Report with Village Name (for DFO - Division Officer)
   getDivisionReportWithVillage(divisionId: number, plantId: number): Observable<any> {
-    const headers = { 
+    const headers = {
       'Content-Type': 'application/json',
       'ngrok-skip-browser-warning': 'true'
     };
-    
+
     const urlPath = `/api/KissanMitraYojnaRegisteration/get-division-plant-report?divisionId=${divisionId}&plantId=${plantId}`;
-    
+
     return from(this.buildApiUrl(urlPath)).pipe(
       switchMap((url) => {
         if (!url) return throwError(() => new Error('No API URL configured'));
@@ -1842,13 +1864,13 @@ getSecurePDF(filename: string): Observable<Blob> {
 
   // Get Range Report with Village Name (for RO - Range Officer)
   getRangeReportWithVillage(rangeId: number, plantId: number): Observable<any> {
-    const headers = { 
+    const headers = {
       'Content-Type': 'application/json',
       'ngrok-skip-browser-warning': 'true'
     };
-    
+
     const urlPath = `/api/KissanMitraYojnaRegisteration/get-range-plant-report?rangeId=${rangeId}&plantId=${plantId}`;
-    
+
     return from(this.buildApiUrl(urlPath)).pipe(
       switchMap((url) => {
         if (!url) return throwError(() => new Error('No API URL configured'));
@@ -1863,13 +1885,13 @@ getSecurePDF(filename: string): Observable<Blob> {
 
   // Get Sub-Division Report with Village Name (for SDO - Sub-Division Officer)
   getSubDivisionReportWithVillage(subDivisionId: number, plantId: number): Observable<any> {
-    const headers = { 
+    const headers = {
       'Content-Type': 'application/json',
       'ngrok-skip-browser-warning': 'true'
     };
-    
+
     const urlPath = `/api/KissanMitraYojnaRegisteration/get-subdivision-plant-report?subDivisionId=${subDivisionId}&plantId=${plantId}`;
-    
+
     return from(this.buildApiUrl(urlPath)).pipe(
       switchMap((url) => {
         if (!url) return throwError(() => new Error('No API URL configured'));

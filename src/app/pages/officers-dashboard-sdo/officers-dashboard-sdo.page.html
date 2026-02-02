@@ -43,7 +43,7 @@
   <div class="ion-page" id="main-content">
     <ion-header>
       <div class="div-color">
-        <ion-toolbar style="color: white">
+        <ion-toolbar color="primary" style="color: white">
 
           <!-- START : MENU BUTTON -->
           <ion-buttons slot="start">
@@ -279,47 +279,47 @@
             </tr>
           </ng-template>
 
-         <ng-template pTemplate="body" let-item let-i="rowIndex">
-              <tr>
-                <td>{{ (currentPage - 1) * pageSize + i + 1 }}</td>
-                <td>{{ item.application_number }}</td>
-                <td>
-                  <div class="beneficiary-cell">
-                    <strong>{{ item.hitgrahi_name }}</strong>
-                    <div class="text-muted small">{{ item.mobile_no }}</div>
-                  </div>
-                </td>
-                <td>{{ item.father_name }}</td>
-                <td>{{ item.circle_name }} ({{ item.division_name }})</td>
-                <td>
-                  <span class="status-badge" [ngClass]="{
+          <ng-template pTemplate="body" let-item let-i="rowIndex">
+            <tr>
+              <td>{{ (currentPage - 1) * pageSize + i + 1 }}</td>
+              <td>{{ item.application_number }}</td>
+              <td>
+                <div class="beneficiary-cell">
+                  <strong>{{ item.hitgrahi_name }}</strong>
+                  <div class="text-muted small">{{ item.mobile_no }}</div>
+                </div>
+              </td>
+              <td>{{ item.father_name }}</td>
+              <td>{{ item.circle_name }} ({{ item.division_name }})</td>
+              <td>
+                <span class="status-badge" [ngClass]="{
               'status-approved': item.awedan_status == 6,
               'status-pending': item.awedan_status == 2,
               'status-draft': item.awedan_status < 1,
               'status-rejected': item.awedan_status == 3
             }">
-                    {{ getStatusText(item) }}
-                  </span>
-                </td>
+                  {{ getStatusText(item) }}
+                </span>
+              </td>
 
-                <td class="text-center">
-                  <div class="action-buttons">
-                    <ion-button fill="outline" color="primary" size="small" (click)="viewApplication(item)">
-                      विवरण देखें
-                    </ion-button>
+              <td class="text-center">
+                <div class="action-buttons">
+                  <ion-button fill="outline" color="primary" size="small" (click)="viewApplication(item)">
+                    विवरण देखें
+                  </ion-button>
 
-                    <ion-button *ngIf="item.awedan_status < 1" fill="outline" color="warning" size="small"
-                      (click)="editAwedan(item)">
-                      संपादित करें
-                    </ion-button>
+                  <ion-button *ngIf="item.awedan_status < 1" fill="outline" color="warning" size="small"
+                    (click)="editAwedan(item)">
+                    संपादित करें
+                  </ion-button>
 
-                    <ion-button *ngIf="canViewEstimate(item)" fill="solid" color="tertiary" size="small"
-                      (click)="generateEstimateDynamic(item)">
-                      {{ item.awedan_status < 2 ? 'प्राक्कलन बनाएं ' : 'प्राक्कलन देखें' }} </ion-button>
-                  </div>
-                </td>
-              </tr>
-            </ng-template>
+                  <ion-button *ngIf="canViewEstimate(item)" fill="solid" color="tertiary" size="small"
+                    (click)="generateEstimateDynamic(item)">
+                    {{ item.awedan_status < 2 ? 'प्राक्कलन बनाएं ' : 'प्राक्कलन देखें' }} </ion-button>
+                </div>
+              </td>
+            </tr>
+          </ng-template>
         </p-table>
 
         <!-- Custom Pagination -->

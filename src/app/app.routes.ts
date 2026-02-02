@@ -140,7 +140,7 @@ export const routes: Routes = [
     path: 'submit-awedan-by-ro2',
     loadComponent: () => import('./submit-awedan-by-rang2/submit-awedan-by-rang2.component').then(m => m.SubmitAwedanByRang2Component)
   },
-   {
+  {
     path: 'kissan-wise-report',
     loadComponent: () => import('./pages/kissan-wise-report/kissan-wise-report.component').then(m => m.KissanWiseReportComponent)
   },
@@ -158,28 +158,28 @@ export const routes: Routes = [
 
   {
     path: 'goswara-report',
-    loadComponent: () => import('./pages/goswara-report/goswara-report.page').then( m => m.GoswaraReportPage)
+    loadComponent: () => import('./pages/goswara-report/goswara-report.page').then(m => m.GoswaraReportPage)
   },
   {
     path: 'pragati-prativedan',
-    loadComponent: () => import('./pages/pragati-prativedan/pragati-prativedan.component').then( m => m.PragatiPrativedanComponent)
+    loadComponent: () => import('./pages/pragati-prativedan/pragati-prativedan.component').then(m => m.PragatiPrativedanComponent)
   },
-    
+
   {
     path: 'generate-estimate-dynamic',
     loadComponent: () => import('./pages/generate-estimate-dynamic/generate-estimate-dynamic.component').then(m => m.GenerateEstimateDynamicComponent)
   },
-   {
+  {
     path: 'prajati-goswara-report',
-    loadComponent: () => import('./pages/prajati-var-goswara/prajativargoswara.page').then( m => m.PrajativargoswaraPage)
+    loadComponent: () => import('./pages/prajati-var-goswara/prajativargoswara.page').then(m => m.PrajativargoswaraPage)
   },
   {
     path: 'prajati-goswara-report-circle',
-    loadComponent: () => import('./pages/prajati-var-goswara-circle/prajativargoswara-circle.page').then( m => m.PrajativargoswaraCirclePage)
+    loadComponent: () => import('./pages/prajati-var-goswara-circle/prajativargoswara-circle.page').then(m => m.PrajativargoswaraCirclePage)
   },
   {
     path: 'prajati-goswara-report-head',
-    loadComponent: () => import('./pages/prajati-goswara-report-head/prajati-goswara-report-head.page').then( m => m.PrajatiGoswaraReportHeadPage)
+    loadComponent: () => import('./pages/prajati-goswara-report-head/prajati-goswara-report-head.page').then(m => m.PrajatiGoswaraReportHeadPage)
   },
   {
     path: 'officers-dashboard-sdo',
@@ -216,27 +216,36 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/year-three-dashboard/year-three-dashboard.page').then(m => m.YearThreeDashboardPage),
     canActivate: [authGuard]
   },
-   {
+  {
     path: 'payment',
     loadComponent: () => import('./pages/payment/payment.component').then(m => m.PaymentComponent),
     canActivate: [authGuard]
   },
-   {
+  {
     path: 'payment-create',
     loadComponent: () => import('./pages/payment-create/payment-create.component').then(m => m.PaymentCreateComponent),
     canActivate: [authGuard]
   },
 
-   {
+  {
     path: 'gaon-var-goswara',
     loadComponent: () => import('./pages/gaon-var-goswara/gaon-var-goswara.page').then(m => m.GaonVarGoswaraPage),
     canActivate: [authGuard]
   },
-   {
+  {
     path: 'not-found-page',
     loadComponent: () => import('./pages/not-found-page/not-found-page.component').then(m => m.NotFoundPageComponent),
     canActivate: [authGuard]
   },
-
+  {
+    path: 'profile',
+    loadComponent: () => import('./pages/officer-profile/officer-profile.page').then(m => m.OfficerProfilePage),
+    canActivate: [authGuard]
+  },
+  {
+    path: 'change-password',
+    loadComponent: () => import('./pages/change-password/change-password.page').then(m => m.ChangePasswordPage),
+    canActivate: [authGuard]
+  }
 
 ];

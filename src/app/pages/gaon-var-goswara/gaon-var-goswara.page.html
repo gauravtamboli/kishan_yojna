@@ -1,11 +1,8 @@
 <ion-header>
   <ion-toolbar color="primary">
     <ion-buttons slot="start">
-      <ion-back-button
-        class="custom-back-button"
-        (click)="goBack()"
-        defaultHref="/officers-dashboard"
-      ></ion-back-button>
+      <ion-back-button class="custom-back-button" (click)="goBack()"
+        defaultHref="/officers-dashboard"></ion-back-button>
     </ion-buttons>
     <ion-title class="responsive-toolbar-title">गाँव वार गोस्वारा रिपोर्ट</ion-title>
   </ion-toolbar>
@@ -13,7 +10,7 @@
 
 <ion-content class="ion-padding">
   <!-- Header Card -->
-  <ion-card class="header-card">
+  <!-- <ion-card class="header-card">
     <ion-card-content class="header-card-content">
       <div class="header-container">
         <div class="header-title-section">
@@ -30,7 +27,7 @@
         </ion-button>
       </div>
     </ion-card-content>
-  </ion-card>
+  </ion-card> -->
 
   <!-- Loader -->
   <ion-card *ngIf="isLoading" class="loader-card">
@@ -51,10 +48,7 @@
           <ion-col size="12" size-md="8" size-lg="9">
             <div class="select-wrapper">
               <ion-label class="select-label">पौधा चुनें</ion-label>
-              <ion-select 
-                [(ngModel)]="selectedPlantId" 
-                placeholder="कृपया पौधा चुनें"
-                interface="popover"
+              <ion-select [(ngModel)]="selectedPlantId" placeholder="कृपया पौधा चुनें" interface="popover"
                 class="custom-select">
                 <ion-select-option *ngFor="let plant of plants" [value]="plant.id">
                   {{ plant.plantName }}
@@ -63,11 +57,7 @@
             </div>
           </ion-col>
           <ion-col size="12" size-md="4" size-lg="3">
-            <ion-button 
-              expand="block" 
-              class="search-button"
-              color="primary"
-              (click)="searchReport()" 
+            <ion-button expand="block" class="search-button" color="primary" (click)="searchReport()"
               [disabled]="!selectedPlantId">
               <ion-icon slot="start" name="search-outline"></ion-icon>
               खोजें
@@ -85,13 +75,8 @@
         <div class="report-header-section">
           <h3 class="report-title">रिपोर्ट विवरण</h3>
           <div class="header-right-section">
-            <ion-input 
-              class="search-input"
-              [(ngModel)]="searchText"
-              (ngModelChange)="onSearchTextChanged()"
-              placeholder="खोजें..."
-              fill="outline"
-              clearInput="true">
+            <ion-input class="search-input" [(ngModel)]="searchText" (ngModelChange)="onSearchTextChanged()"
+              placeholder="खोजें..." fill="outline" clearInput="true">
               <ion-icon name="search-outline" slot="start"></ion-icon>
             </ion-input>
             <span class="record-count">कुल रिकॉर्ड: {{ filteredReportData.length }}</span>
@@ -101,7 +86,7 @@
           <table id="report-table" class="professional-table">
             <thead>
               <tr class="table-header-row">
-                <th >क्र.</th>
+                <th>क्र.</th>
                 <th>वनमंडल</th>
                 <th>उप-वनमंडल</th>
                 <th>परिक्षेत्र</th>
@@ -110,9 +95,7 @@
                 <th class="sortable-header" (click)="sortTable('totalFarmers')">
                   <div class="header-content">
                     <span>कुल किसान</span>
-                    <ion-icon 
-                      [name]="getSortIcon('totalFarmers')" 
-                      [class.active-sort]="isColumnSorted('totalFarmers')"
+                    <ion-icon [name]="getSortIcon('totalFarmers')" [class.active-sort]="isColumnSorted('totalFarmers')"
                       class="sort-icon">
                     </ion-icon>
                   </div>
@@ -120,9 +103,7 @@
                 <th class="sortable-header" (click)="sortTable('totalArea')">
                   <div class="header-content">
                     <span>कुल रकबा</span>
-                    <ion-icon 
-                      [name]="getSortIcon('totalArea')" 
-                      [class.active-sort]="isColumnSorted('totalArea')"
+                    <ion-icon [name]="getSortIcon('totalArea')" [class.active-sort]="isColumnSorted('totalArea')"
                       class="sort-icon">
                     </ion-icon>
                   </div>
@@ -130,14 +111,12 @@
                 <th class="sortable-header" (click)="sortTable('totalPlants')">
                   <div class="header-content">
                     <span>कुल पौधे</span>
-                    <ion-icon 
-                      [name]="getSortIcon('totalPlants')" 
-                      [class.active-sort]="isColumnSorted('totalPlants')"
+                    <ion-icon [name]="getSortIcon('totalPlants')" [class.active-sort]="isColumnSorted('totalPlants')"
                       class="sort-icon">
                     </ion-icon>
                   </div>
                 </th>
-                <th >रोपित पौधे</th>
+                <th>रोपित पौधे</th>
               </tr>
             </thead>
             <tbody>
@@ -173,7 +152,8 @@
   </div>
 
   <!-- No Search Results Message -->
-  <ion-card *ngIf="!isLoading && reportData.length > 0 && filteredReportData.length === 0 && searchText" class="no-data-card">
+  <ion-card *ngIf="!isLoading && reportData.length > 0 && filteredReportData.length === 0 && searchText"
+    class="no-data-card">
     <ion-card-content class="no-data-content">
       <ion-icon name="search-outline" class="no-data-icon"></ion-icon>
       <p class="no-data-text">खोज परिणाम नहीं मिले।</p>
@@ -190,4 +170,3 @@
     </ion-card-content>
   </ion-card>
 </ion-content>
-

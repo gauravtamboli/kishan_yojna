@@ -1,5 +1,5 @@
 <ion-header>
-  <ion-toolbar class="govt-toolbar">
+  <ion-toolbar class="govt-toolbar" color="primary">
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/officers-dashboard-ro"></ion-back-button>
     </ion-buttons>
@@ -18,7 +18,7 @@
     <ion-card class="search-card">
       <ion-card-content>
         <ion-row class="search-row">
-          <ion-col size="12" size-md="12" class="search-label-col">
+          <ion-col size="12" size-md="4" class="search-label-col">
             <ion-input [(ngModel)]="searchText" fill="outline" class="search-input"
               placeholder="आवेदन नंबर, हितग्राही नाम, पिता का नाम, गाँव या ग्राम पंचायत से खोजें"
               (ionInput)="onSearch()" (keyup.enter)="onSearchEnter()">
@@ -113,8 +113,11 @@
                 </div>
 
                 <ng-template #noPlants>
-                  <small class="text-muted">कोई जानकारी नहीं</small>
+                  <div style="text-align: center;">
+                    <small class="text-muted">कोई जानकारी नहीं</small>
+                  </div>
                 </ng-template>
+
               </td>
 
 

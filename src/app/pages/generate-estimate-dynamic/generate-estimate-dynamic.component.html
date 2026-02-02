@@ -1,5 +1,5 @@
 <ion-header>
-  <ion-toolbar>
+  <ion-toolbar color="primary">
     <ion-buttons slot="start">
       <ion-back-button class="custom-back-button" (click)="goBack()" defaultHref="/landigpage"></ion-back-button>
     </ion-buttons>
@@ -457,7 +457,7 @@
                   </ion-col>
 
                   <!--RO COLUMN-->
-                  <ion-col size="12"  style="border: 2px dashed black;" size-md="4" size-lg="4">
+                  <ion-col size="12" style="border: 2px dashed black;" size-md="4" size-lg="4">
 
                     <!-- When RO Can Take Action -->
                     <div *ngIf="singleData.awedan_status === '1' && isRO">

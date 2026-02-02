@@ -18,5 +18,8 @@ export interface OfficersLoginResponseModel {
     devision_id: string,
     div_name: string,
     rang_id: string,
-    rang_name: string
+    rang_name: string,
+    mobile_no: string,
+    email: string,
+
 }
