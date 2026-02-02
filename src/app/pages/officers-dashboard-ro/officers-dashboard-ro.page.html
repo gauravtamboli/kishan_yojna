@@ -24,6 +24,28 @@
 
     <ion-content>
       <ion-list>
+        <ion-menu-toggle auto-hide="false">
+          <ion-item *ngFor="let page of pages; let i = index" class="no-gap-item" lines="none">
+            <ng-container *ngIf="page.is_submenu; else noSubMenu">
+              <ion-text class="responsive-menu-title" style="width: 100%; margin-left: 10px"
+                (click)="onMenuItemClick(page)">{{ page.title }}</ion-text>
+            </ng-container>
+
+
+            <ng-template #noSubMenu>
+              <ng-container>
+                <ion-text class="responsive-menu-title" style="font-weight: 900; width: 100%; margin-top: 5px"
+                  (click)="onMenuItemClick(page)">
+                  {{ page.title }}
+                </ion-text>
+              </ng-container>
+            </ng-template>
+          </ion-item>
+        </ion-menu-toggle>
+      </ion-list>
+    </ion-content>
+    <!-- <ion-content>
+      <ion-list>
         <ion-menu-toggle *ngFor="let page of pages; let i = index">
           <ion-item class="no-gap-item" lines="none">
             <ion-text class="responsive-menu-title" style="width: 100%; margin-left: 10px"
@@ -34,7 +56,7 @@
         </ion-menu-toggle>
       </ion-list>
 
-    </ion-content>
+    </ion-content> -->
   </ion-menu>
 
   <div class="ion-page" id="main-content">
