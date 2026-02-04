@@ -1,10 +1,10 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { 
+import {
   IonContent, IonHeader, IonToolbar, IonTitle, IonButtons, IonBackButton,
-  IonButton, IonInput, IonLabel, IonCard, IonCardContent, IonCardHeader, IonCardTitle,
-  IonRow, IonCol, IonGrid, IonLoading, IonIcon, IonText
+  IonButton, IonInput, IonCard, IonCardContent, 
+  IonRow, IonCol, IonLoading, IonIcon, IonText
 } from '@ionic/angular/standalone';
 import { TableModule } from 'primeng/table';
 import { Router } from '@angular/router';
@@ -13,12 +13,12 @@ import { OfficersLoginResponseModel } from '../officer-login/OfficersLoginRespon
 import { Toast } from '@capacitor/toast';
 import { addIcons } from 'ionicons';
 import { chevronBackOutline, chevronForwardOutline, searchOutline, personOutline, locationOutline, leafOutline, documentTextOutline, checkmarkCircleOutline } from 'ionicons/icons';
-import { 
-  GetRopitAwedanResponse, 
+import {
+  GetRopitAwedanResponse,
   RopitKisanAwedanListResponseModel,
-  UpdateRopitCountRequestModel,
-  UpdateRopitCountItem
 } from './RopitAwedanModels';
+import Swal from 'sweetalert2';
+// import { IonicModule } from "@ionic/angular";
 
 @Component({
   selector: 'app-ropit-paudho-ki-sankhya',
@@ -29,26 +29,102 @@ import {
     CommonModule, FormsModule, TableModule,
     IonContent, IonHeader, IonToolbar, IonTitle, IonButtons, IonBackButton,
     IonButton, IonInput, IonCard, IonCardContent,
-    IonRow, IonCol, IonLoading, IonIcon, IonText
+    IonRow, IonCol, IonLoading, IonIcon,
+    // IonicModule
 ]
 })
 export class RopitPaudhoKiSankhyaPage implements OnInit {
-addPlantRow(arg0: any,_t77: number) {
-throw new Error('Method not implemented.');
+
+  showLoading(msg: string) {
+    this.loadingMessage = msg;
+    this.isLoading = true;
+    this.cdRef.detectChanges();
+  }
+
+  dismissLoading() {
+    this.isLoading = false;
+    this.cdRef.detectChanges();
+  }
+  reloadPage() {
+    this.loadData(this.currentPage);
+  }
+
+
+addPlantRow(applicationNumber: string, plantId: number, qty: any) {
+
+  const totalRopit = Number(qty);
+
+  // Basic validation
+  if (!totalRopit || totalRopit <= 0) {
+    Swal.fire({
+      icon: 'warning',
+      title: 'अमान्य संख्या',
+      text: 'कृपया सही पौध संख्या दर्ज करें',
+      confirmButtonText: 'ठीक है'
+    });
+    return;
+  }
+
+  const payload = {
+    applicationNumber: applicationNumber,
+    plantId: plantId,
+    totalRopit: totalRopit
+  };
+
+  this.showLoading('पौधे जोड़े जा रहे हैं...');
+
+  this.apiService.addRopitPlant(payload).subscribe({
+    next: async (res: any) => {
+      await this.dismissLoading();
+
+      if (res?.response?.code === 200) {
+        Swal.fire({
+          icon: 'success',
+          title: 'सफल',
+          text: res.response.msg || 'पौधे सफलतापूर्वक जोड़े गए',
+          confirmButtonText: 'ठीक है'
+        }).then(() => {
+          this.reloadPage(); // or refresh list only
+        });
+      } 
+      else {
+        Swal.fire({
+          icon: 'error',
+          title: 'असफल',
+          text: res?.response?.msg || 'कुछ गलत हो गया',
+          confirmButtonText: 'ठीक है'
+        });
+      }
+    },
+    error: async (err : any) => {
+      await this.dismissLoading();
+      Swal.fire({
+        icon: 'error',
+        title: 'त्रुटि',
+        text: err?.error?.response?.msg || 'सर्वर त्रुटि हुई',
+        confirmButtonText: 'ठीक है'
+      }); 
+    }
+  });
 }
+
+
+
+
+
   isLoading: boolean = false;
   loadingMessage: string = 'कृपया प्रतीक्षा करें.....';
-  
+
   searchText: string = '';
   filteredData: RopitKisanAwedanListResponseModel[] = [];
   allData: RopitKisanAwedanListResponseModel[] = [];
-  
+
   // Pagination
   currentPage: number = 1;
   pageSize: number = 10;
   totalRecords: number = 0;
   totalPages: number = 0;
-  
+
   // Store input values for each plant: { applicationNumber: { plantIndex: value } }
   ropitSankhyaInputs: { [applicationNumber: string]: { [plantIndex: number]: number } } = {};
 
@@ -57,15 +133,15 @@ throw new Error('Method not implemented.');
     private router: Router,
     private cdRef: ChangeDetectorRef
   ) {
-    addIcons({ 
-      chevronBackOutline, 
-      chevronForwardOutline, 
-      searchOutline, 
-      personOutline, 
-      locationOutline, 
-      leafOutline, 
-      documentTextOutline, 
-      checkmarkCircleOutline 
+    addIcons({
+      chevronBackOutline,
+      chevronForwardOutline,
+      searchOutline,
+      personOutline,
+      locationOutline,
+      leafOutline,
+      documentTextOutline,
+      checkmarkCircleOutline
     });
   }
 
@@ -83,7 +159,7 @@ throw new Error('Method not implemented.');
 
   loadData(page: number = 1) {
     const officersLoginModel = this.getOfficersSessionData();
-    
+
     if (!officersLoginModel || !officersLoginModel.rang_id) {
       this.showToast('रेंज ID उपलब्ध नहीं है', 'long');
       return;
@@ -99,13 +175,13 @@ throw new Error('Method not implemented.');
     ).subscribe(
       (response: GetRopitAwedanResponse) => {
         this.isLoading = false;
-        
+        console.log('Ropit Kisan Awedan Response:', response);
         if (response.response.Code === 200) {
           this.allData = response.data || [];
           this.filteredData = this.allData;
           this.totalRecords = response.totalCount || 0;
           this.totalPages = response.totalPages || 0;
-          
+
           // Initialize input values for each plant
           this.allData.forEach(item => {
             if (!this.ropitSankhyaInputs[item.ApplicationNumber]) {
@@ -120,7 +196,7 @@ throw new Error('Method not implemented.');
               });
             }
           });
-          
+
           this.cdRef.detectChanges();
         } else {
           this.showToast(response.response.Message || 'डेटा लोड करने में त्रुटि', 'long');
@@ -139,7 +215,7 @@ throw new Error('Method not implemented.');
 
   onSearch() {
     const value = (this.searchText || '').toLowerCase().trim();
-    
+
     if (!value) {
       this.filteredData = this.allData;
       return;
@@ -179,7 +255,7 @@ throw new Error('Method not implemented.');
   getPageNumbers(): number[] {
     const pages: number[] = [];
     const maxPagesToShow = 5;
-    
+
     if (this.totalPages <= maxPagesToShow) {
       for (let i = 1; i <= this.totalPages; i++) {
         pages.push(i);
@@ -187,173 +263,173 @@ throw new Error('Method not implemented.');
     } else {
       let startPage = Math.max(1, this.currentPage - Math.floor(maxPagesToShow / 2));
       let endPage = Math.min(this.totalPages, startPage + maxPagesToShow - 1);
-      
+
       if (endPage - startPage < maxPagesToShow - 1) {
         startPage = Math.max(1, endPage - maxPagesToShow + 1);
       }
-      
+
       for (let i = startPage; i <= endPage; i++) {
         pages.push(i);
       }
     }
-    
+
     return pages;
   }
 
-  submitRopitSankhya(applicationNumber: string) {
-    const plantInputs = this.ropitSankhyaInputs[applicationNumber];
-    
-    if (!plantInputs) {
-      this.showToast('कृपया कम से कम एक पौधे के लिए संख्या दर्ज करें', 'short');
-      return;
-    }
+  // submitRopitSankhya(applicationNumber: string) {
+  //   const plantInputs = this.ropitSankhyaInputs[applicationNumber];
 
-    // Find the application data to get PlantId from backend
-    const applicationData = this.allData.find(item => item.ApplicationNumber === applicationNumber);
-    
-    if (!applicationData || !applicationData.Plants || applicationData.Plants.length === 0) {
-      this.showToast('पौधों की जानकारी उपलब्ध नहीं है', 'short');
-      return;
-    }
+  //   if (!plantInputs) {
+  //     this.showToast('कृपया कम से कम एक पौधे के लिए संख्या दर्ज करें', 'short');
+  //     return;
+  //   }
 
-    // Check if all plants are readonly
-    const allReadonly = applicationData.Plants.every((plant, index) => 
-      this.isPlantRopitReadonly(applicationNumber, index)
-    );
-    
-    if (allReadonly) {
-      this.showToast('इस आवेदन के सभी पौधों की रोपित संख्या पहले से दर्ज है', 'short');
-      return;
-    }
+  //   // Find the application data to get PlantId from backend
+  //   const applicationData = this.allData.find(item => item.ApplicationNumber === applicationNumber);
 
-    // Prepare data using PlantId from backend (NOT array index)
-    const items: UpdateRopitCountItem[] = [];
-    const validationErrors: string[] = [];
-    
-    Object.keys(plantInputs).forEach(plantIndexStr => {
-      const plantIndex = parseInt(plantIndexStr);
-      
-      // Skip if this plant is readonly (TotalRopit already exists)
-      if (this.isPlantRopitReadonly(applicationNumber, plantIndex)) {
-        return; // Skip this plant
-      }
-      
-      const ropitSankhya = plantInputs[plantIndex];
-      
-      if (ropitSankhya && ropitSankhya > 0) {
-        const plant = applicationData.Plants[plantIndex];
-        const totalTree = plant.TotalTree || 0;
-        
-        // Validation: ropit count must be <= TotalTree
-        if (ropitSankhya > totalTree) {
-          const plantName = plant.PlantName || 'पौधा';
-          validationErrors.push(
-            `${plantName}: रोपित संख्या (${ropitSankhya}) कुल पौधों (${totalTree}) से अधिक नहीं हो सकती`
-          );
-          return; // Skip this plant - don't add to items
-        }
-        
-        // Use PlantId from backend response
-        if (plant && plant.PlantId) {
-          items.push({
-            application_number: applicationNumber,
-            plant_id: plant.PlantId,
-            total_ropit: ropitSankhya
-          });
-        }
-      }
-    });
+  //   if (!applicationData || !applicationData.Plants || applicationData.Plants.length === 0) {
+  //     this.showToast('पौधों की जानकारी उपलब्ध नहीं है', 'short');
+  //     return;
+  //   }
 
-    // Show validation errors if any
-    if (validationErrors.length > 0) {
-      const errorMessage = validationErrors.join('\n');
-      this.showToast(errorMessage, 'long');
-      return; // Don't proceed with API call
-    }
+  //   // Check if all plants are readonly
+  //   const allReadonly = applicationData.Plants.every((plant, index) => 
+  //     this.isPlantRopitReadonly(applicationNumber, index)
+  //   );
 
-    if (items.length === 0) {
-      this.showToast('कृपया कम से कम एक पौधे के लिए वैध संख्या दर्ज करें', 'short');
-      return;
-    }
+  //   if (allReadonly) {
+  //     this.showToast('इस आवेदन के सभी पौधों की रोपित संख्या पहले से दर्ज है', 'short');
+  //     return;
+  //   }
 
-    // Prepare request model
-    const requestModel: UpdateRopitCountRequestModel = {
-      items: items
-    };
+  //   // Prepare data using PlantId from backend (NOT array index)
+  //   const items: UpdateRopitCountItem[] = [];
+  //   const validationErrors: string[] = [];
 
-    // Show loading
-    this.isLoading = true;
-    this.loadingMessage = 'रोपित पौधों की संख्या जमा की जा रही है...';
+  //   Object.keys(plantInputs).forEach(plantIndexStr => {
+  //     const plantIndex = parseInt(plantIndexStr);
 
-    // Call API
-    this.apiService.updateRopitCount(requestModel).subscribe(
-      (response: any) => {
-        this.isLoading = false;
-        
-        if (response.response && response.response.code === 200) {
-          const totalSankhya = items.reduce((sum, item) => sum + item.total_ropit, 0);
-          this.showToast(
-            `आवेदन ${applicationNumber} के लिए ${items.length} पौधों में कुल ${totalSankhya} रोपित पौधों की संख्या सफलतापूर्वक दर्ज की गई`, 
-            'long'
-          );
-          
-          // Reset inputs after successful submission
-          Object.keys(plantInputs).forEach(plantIndexStr => {
-            plantInputs[parseInt(plantIndexStr)] = 0;
-          });
-          
-          // Reload data to reflect updated TotalRopit values
-          this.loadData(this.currentPage);
-        } else {
-          const errorMsg = response.response?.msg || 'रोपित पौधों की संख्या जमा करने में त्रुटि';
-          this.showToast(errorMsg, 'long');
-        }
-      },
-      (error) => {
-        this.isLoading = false;
-        const errorMsg = error?.error?.response?.msg || error?.message || 'सर्वर त्रुटि';
-        this.showToast(`त्रुटि: ${errorMsg}`, 'long');
-      }
-    );
-  }
+  //     // Skip if this plant is readonly (TotalRopit already exists)
+  //     if (this.isPlantRopitReadonly(applicationNumber, plantIndex)) {
+  //       return; // Skip this plant
+  //     }
 
-  getRopitSankhyaInput(applicationNumber: string, plantIndex: number): number {
-    // First check if TotalRopit exists in backend data
-    const applicationData = this.allData.find(item => item.ApplicationNumber === applicationNumber);
-    if (applicationData && applicationData.Plants && applicationData.Plants[plantIndex]) {
-      const plant = applicationData.Plants[plantIndex];
-      if (plant.TotalRopit && plant.TotalRopit > 0) {
-        return plant.TotalRopit;
-      }
-    }
-    
-    // Otherwise return from user input
-    if (!this.ropitSankhyaInputs[applicationNumber]) {
-      return 0;
-    }
-    return this.ropitSankhyaInputs[applicationNumber][plantIndex] || 0;
-  }
+  //     const ropitSankhya = plantInputs[plantIndex];
 
-  isPlantRopitReadonly(applicationNumber: string, plantIndex: number): boolean {
-    const applicationData = this.allData.find(item => item.ApplicationNumber === applicationNumber);
-    if (!applicationData || !applicationData.Plants || !applicationData.Plants[plantIndex]) {
-      return false;
-    }
-    const plant = applicationData.Plants[plantIndex];
-    // Return true if TotalRopit exists and is greater than 0
-    return !!(plant.TotalRopit && plant.TotalRopit > 0);
-  }
+  //     if (ropitSankhya && ropitSankhya > 0) {
+  //       const plant = applicationData.Plants[plantIndex];
+  //       const totalTree = plant.TotalTree || 0;
 
-  areAllPlantsReadonly(applicationNumber: string): boolean {
-    const applicationData = this.allData.find(item => item.ApplicationNumber === applicationNumber);
-    if (!applicationData || !applicationData.Plants || applicationData.Plants.length === 0) {
-      return false;
-    }
-    // Check if all plants have TotalRopit > 0
-    return applicationData.Plants.every((plant, index) => 
-      this.isPlantRopitReadonly(applicationNumber, index)
-    );
-  }
+  //       // Validation: ropit count must be <= TotalTree
+  //       if (ropitSankhya > totalTree) {
+  //         const plantName = plant.PlantName || 'पौधा';
+  //         validationErrors.push(
+  //           `${plantName}: रोपित संख्या (${ropitSankhya}) कुल पौधों (${totalTree}) से अधिक नहीं हो सकती`
+  //         );
+  //         return; // Skip this plant - don't add to items
+  //       }
+
+  //       // Use PlantId from backend response
+  //       if (plant && plant.PlantId) {
+  //         items.push({
+  //           application_number: applicationNumber,
+  //           plant_id: plant.PlantId,
+  //           total_ropit: ropitSankhya
+  //         });
+  //       }
+  //     }
+  //   });
+
+  //   // Show validation errors if any
+  //   if (validationErrors.length > 0) {
+  //     const errorMessage = validationErrors.join('\n');
+  //     this.showToast(errorMessage, 'long');
+  //     return; // Don't proceed with API call
+  //   }
+
+  //   if (items.length === 0) {
+  //     this.showToast('कृपया कम से कम एक पौधे के लिए वैध संख्या दर्ज करें', 'short');
+  //     return;
+  //   }
+
+  //   // Prepare request model
+  //   const requestModel: UpdateRopitCountRequestModel = {
+  //     items: items
+  //   };
+
+  //   // Show loading
+  //   this.isLoading = true;
+  //   this.loadingMessage = 'रोपित पौधों की संख्या जमा की जा रही है...';
+
+  //   // Call API
+  //   this.apiService.updateRopitCount(requestModel).subscribe(
+  //     (response: any) => {
+  //       this.isLoading = false;
+
+  //       if (response.response && response.response.code === 200) {
+  //         const totalSankhya = items.reduce((sum, item) => sum + item.total_ropit, 0);
+  //         this.showToast(
+  //           `आवेदन ${applicationNumber} के लिए ${items.length} पौधों में कुल ${totalSankhya} रोपित पौधों की संख्या सफलतापूर्वक दर्ज की गई`, 
+  //           'long'
+  //         );
+
+  //         // Reset inputs after successful submission
+  //         Object.keys(plantInputs).forEach(plantIndexStr => {
+  //           plantInputs[parseInt(plantIndexStr)] = 0;
+  //         });
+
+  //         // Reload data to reflect updated TotalRopit values
+  //         this.loadData(this.currentPage);
+  //       } else {
+  //         const errorMsg = response.response?.msg || 'रोपित पौधों की संख्या जमा करने में त्रुटि';
+  //         this.showToast(errorMsg, 'long');
+  //       }
+  //     },
+  //     (error) => {
+  //       this.isLoading = false;
+  //       const errorMsg = error?.error?.response?.msg || error?.message || 'सर्वर त्रुटि';
+  //       this.showToast(`त्रुटि: ${errorMsg}`, 'long');
+  //     }
+  //   );
+  // }
+
+  // getRopitSankhyaInput(applicationNumber: string, plantIndex: number): number {
+  //   // First check if TotalRopit exists in backend data
+  //   const applicationData = this.allData.find(item => item.ApplicationNumber === applicationNumber);
+  //   if (applicationData && applicationData.Plants && applicationData.Plants[plantIndex]) {
+  //     const plant = applicationData.Plants[plantIndex];
+  //     if (plant.TotalRopit && plant.TotalRopit > 0) {
+  //       return plant.TotalRopit;
+  //     }
+  //   }
+
+  //   // Otherwise return from user input
+  //   if (!this.ropitSankhyaInputs[applicationNumber]) {
+  //     return 0;
+  //   }
+  //   return this.ropitSankhyaInputs[applicationNumber][plantIndex] || 0;
+  // }
+
+  // isPlantRopitReadonly(applicationNumber: string, plantIndex: number): boolean {
+  //   const applicationData = this.allData.find(item => item.ApplicationNumber === applicationNumber);
+  //   if (!applicationData || !applicationData.Plants || !applicationData.Plants[plantIndex]) {
+  //     return false;
+  //   }
+  //   const plant = applicationData.Plants[plantIndex];
+  //   // Return true if TotalRopit exists and is greater than 0
+  //   return !!(plant.TotalRopit && plant.TotalRopit > 0);
+  // }
+
+  // areAllPlantsReadonly(applicationNumber: string): boolean {
+  //   const applicationData = this.allData.find(item => item.ApplicationNumber === applicationNumber);
+  //   if (!applicationData || !applicationData.Plants || applicationData.Plants.length === 0) {
+  //     return false;
+  //   }
+  //   // Check if all plants have TotalRopit > 0
+  //   return applicationData.Plants.every((plant, index) => 
+  //     this.isPlantRopitReadonly(applicationNumber, index)
+  //   );
+  // }
 
   getPlantTotalTree(applicationNumber: string, plantIndex: number): number {
     const applicationData = this.allData.find(item => item.ApplicationNumber === applicationNumber);
@@ -379,30 +455,30 @@ throw new Error('Method not implemented.');
     this.ropitSankhyaInputs[applicationNumber][plantIndex] = value;
   }
 
-  onPlantInputChange(event: any, applicationNumber: string, plantIndex: number) {
-    const value = event.target?.value || event.detail?.value || '';
-    let numValue = value ? parseInt(value.toString()) : 0;
-    
-    // Get TotalTree for validation
-    const totalTree = this.getPlantTotalTree(applicationNumber, plantIndex);
-    
-    // If value exceeds TotalTree, cap it to TotalTree
-    if (numValue > totalTree && totalTree > 0) {
-      numValue = totalTree;
-      // Update the input field to show the capped value
-      if (event.target) {
-        event.target.value = totalTree;
-      }
-      const plantName = this.getPlantName(applicationNumber, plantIndex);
-      this.showToast(
-        `${plantName}: रोपित संख्या कुल पौधों (${totalTree}) से अधिक नहीं हो सकती`,
-        'short'
-      );
-    }
-    
-    this.setRopitSankhyaInput(applicationNumber, plantIndex, numValue);
-    this.cdRef.detectChanges();
-  }
+  // onPlantInputChange(event: any, applicationNumber: string, plantIndex: number) {
+  //   const value = event.target?.value || event.detail?.value || '';
+  //   let numValue = value ? parseInt(value.toString()) : 0;
+
+  //   // Get TotalTree for validation
+  //   const totalTree = this.getPlantTotalTree(applicationNumber, plantIndex);
+
+  //   // If value exceeds TotalTree, cap it to TotalTree
+  //   if (numValue > totalTree && totalTree > 0) {
+  //     numValue = totalTree;
+  //     // Update the input field to show the capped value
+  //     if (event.target) {
+  //       event.target.value = totalTree;
+  //     }
+  //     const plantName = this.getPlantName(applicationNumber, plantIndex);
+  //     this.showToast(
+  //       `${plantName}: रोपित संख्या कुल पौधों (${totalTree}) से अधिक नहीं हो सकती`,
+  //       'short'
+  //     );
+  //   }
+
+  //   this.setRopitSankhyaInput(applicationNumber, plantIndex, numValue);
+  //   this.cdRef.detectChanges();
+  // }
 
   async showToast(message: string, duration: 'short' | 'long' = 'short') {
     await Toast.show({

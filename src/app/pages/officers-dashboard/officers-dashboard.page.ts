@@ -763,7 +763,7 @@ export class OfficersDashboardPage implements OnInit {
     modal.onDidDismiss().then((result) => {
       if (result.data?.confirmed) {
         sessionStorage.clear();
-        this.router.navigateByUrl('/splash', { replaceUrl: true });
+        this.router.navigateByUrl('/officer-login', { replaceUrl: true });
       }
     });
 

@@ -248,7 +248,7 @@
       <ion-card-header>
         <div style="display: flex; justify-content: space-between; align-items: center;">
           <ion-card-title class="goswara-title">गोस्वारा एस्टीमेट</ion-card-title>
-          <ion-button class="my-ion-button" (click)="printSection('print-section-goswara')">Print</ion-button>
+          <!-- <ion-button class="my-ion-button" (click)="printSection('print-section-goswara')">Print</ion-button> -->
         </div>
       </ion-card-header>
       <ion-card-content>
@@ -488,14 +488,6 @@
                           {{ estimate_data.ro_file }}
                         </a>
                       </ion-item>
-
-
-                      <!-- <ion-item lines="none" style="margin-top: 8px;">
-                        <ion-label position="stacked">विवरण (RO)</ion-label>
-                        <ion-textarea class="custom-textarea" [(ngModel)]="roDescription"
-                          placeholder="विवरण दर्ज करें"></ion-textarea>
-                      </ion-item> -->
-                      <div class="dropdown-label">वन परिक्षेत्र अधिकारी</div>
                     </div>
 
                     <!-- After RO Submitted -->
@@ -520,6 +512,7 @@
                       <ion-label position="stacked">
                         विवरण (RO) :- {{ getSafeString(existingRODescription) }}
                       </ion-label> -->
+                      <div class="dropdown-label">वन परिक्षेत्र अधिकारी</div>
 
                     </div>
 
@@ -532,7 +525,7 @@
                     <!-- RO: Send To SDO Button (only when RO can update and has selected value) -->
                     <ion-button
                       *ngIf="isRO && estimate_data && vanParikshanAdhikari && singleData.awedan_status === '1' && !isReturnCase"
-                      style="float: right;" (click)="confirmSendToSDO()">
+                      style="float: right;" (click)="roSendToSDO()">
                       Send To SDO
                     </ion-button>
 
@@ -540,7 +533,7 @@
                     <ion-button
                       *ngIf="upVanMandalAdhikari === '3' && estimate_data.sdo_file !=null && isSDO  &&singleData.awedan_status ==='2'"
                       style="float: right;" color="danger" (click)="sdoReturnToRO()">
-                      Send Back to RO
+                      Send Back to RO sdfs
                     </ion-button>
 
                     <!-- SDO: Send to DFO Button (only when SDO can update and has selected value '4') -->
@@ -569,10 +562,7 @@
                 <ion-row *ngIf="isReturnCase && isRO">
                   <ion-col size="12" style="margin-top: 20px;">
 
-                    <!-- Delete Button (only when RO can update) -->
-                    <!-- <ion-button color="danger" style="margin-top: 20px; float: right;" (click)="roSoftDelete()">
-            Delete करें
-          </ion-button> -->
+                   
                     <ion-button color="danger" style="margin-top: 20px; float: right;" (click)="confirmDelete()">
                       Delete करें
                     </ion-button>

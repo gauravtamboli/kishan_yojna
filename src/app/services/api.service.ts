@@ -1660,7 +1660,7 @@ export class ApiService {
     );
   }
 
-  // Save estimate approval workflow (RO/SDO/DFO)
+  // Save estimate approval workflow (RO)
   saveEstimateApproval(payload: any): Observable<any> {
     const headers = {
       'Content-Type': 'application/json',
@@ -1687,6 +1687,65 @@ export class ApiService {
     );
   }
 
+  SdoSendBackToRo(payload: any): Observable<any> {
+    const headers = {
+      'Content-Type': 'application/json',
+      'ngrok-skip-browser-warning': 'true'
+    };
+    return from(this.buildApiUrl('/api/KissanMitraYojnaRegisteration/SdoSendBackToRo')).pipe(
+      switchMap((url) => {
+        if (!url) return throwError(() => new Error('No API URL configured'));
+        return this.http.post<any>(url, payload, { headers });
+      })
+    );
+  }
+
+
+  SdoSendToDfo(payload: any): Observable<any> {
+    const headers = {
+      'Content-Type': 'application/json',
+      'ngrok-skip-browser-warning': 'true'
+    };
+    return from(this.buildApiUrl('/api/KissanMitraYojnaRegisteration/SdoSendToDfo')).pipe(
+      switchMap((url) => {
+        if (!url) return throwError(() => new Error('No API URL configured'));
+        return this.http.post<any>(url, payload, { headers });
+      })
+    );
+  }
+
+
+  dfoReturnToRO(payload: any): Observable<any> {
+    const headers = {
+      'Content-Type': 'application/json',
+      'ngrok-skip-browser-warning': 'true'
+    };
+    return from(this.buildApiUrl('/api/KissanMitraYojnaRegisteration/DfoSendBackToRo')).pipe(
+      switchMap((url) => {
+        if (!url) return throwError(() => new Error('No API URL configured'));
+        return this.http.post<any>(url, payload, { headers });
+      })
+    );
+  }
+
+
+  
+  dfoAccept(payload: any): Observable<any> {
+    const headers = {
+      'Content-Type': 'application/json',
+      'ngrok-skip-browser-warning': 'true'
+    };
+    return from(this.buildApiUrl('/api/KissanMitraYojnaRegisteration/DfoAccept')).pipe(
+      switchMap((url) => {
+        if (!url) return throwError(() => new Error('No API URL configured'));
+        return this.http.post<any>(url, payload, { headers });
+      })
+    );
+  }
+
+  
+
+  
   // Fetch saved estimate approval rows for an application
   getEstimateApprovalByApplication(applicationNumber: string): Observable<any> {
     const headers = {
@@ -1904,6 +1963,22 @@ export class ApiService {
     );
   }
 
+addRopitPlant(payload: any): Observable<any> {
+  const headers = {
+    'Content-Type': 'application/json',
+    'ngrok-skip-browser-warning': 'true'
+  };
+
+  return from(this.buildApiUrl('/api/KissanMitraYojnaRegisteration/AddOrUpdateRopitPlant'))
+    .pipe(
+      switchMap((url) => {
+        if (!url) {
+          return throwError(() => new Error('No API URL configured'));
+        }
+        return this.http.post<any>(url, payload, { headers });
+      })
+    );
+}
 
 
 

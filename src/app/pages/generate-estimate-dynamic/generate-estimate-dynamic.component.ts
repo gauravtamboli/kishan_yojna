@@ -772,46 +772,9 @@ export class GenerateEstimateDynamicComponent implements OnInit {
     });
   }
 
-  /**
-   * RO: Save (status 1)
-   */
-  async roSave(description?: string) {
-    await this.showLoading('सेव किया जा रहा है...');
 
-    const officerId = this.getLoggedInOfficerId();
-    const payload = {
-      Items: this.buildApprovalItems(),
-      ActionMeta: {
-        Role: 'RO',
-        Action: 'save',
-        RODeclaration: '1', // 1 = accepted
-        RODescription: description || this.roDescription || null,
-        ROId: officerId,
-        SDOId: this.singleData?.sdoId || null,
-        DFOId: this.singleData?.divisionId || null
-      }
-    };
-    this.api.saveEstimateApproval(payload).subscribe({
-      next: async (response: any) => {
-        await this.dismissLoading();
+  //  * RO: Send to SDO (status 2)
 
-        if (response?.response?.code === 200) {
-          await this.showToast(response.response.msg || 'सफलतापूर्वक सेव हुआ', 'success');
-          this.reloadPage();
-        } else {
-          await this.showError(response?.response?.msg || 'सेव असफल');
-        }
-      },
-      error: async (err) => {
-        await this.dismissLoading();
-        await this.showError(err);
-      }
-    });
-  }
-
-  /**
-   * RO: Send to SDO (status 2)
-   */
   async roSendToSDO(description?: string) {
     await this.showLoading('SDO को भेजा जा रहा है...');
 
@@ -823,9 +786,7 @@ export class GenerateEstimateDynamicComponent implements OnInit {
         Action: 'sendToSDO',
         RODeclaration: '1', // 1 = accepted
         RODescription: description || this.roDescription || null,
-        ROId: officerId,
-        SDOId: this.singleData?.sdoId || null,
-        DFOId: this.singleData?.divisionId || null
+        ROId: officerId
       }
     };
     this.api.saveEstimateApproval(payload).subscribe({
@@ -836,7 +797,7 @@ export class GenerateEstimateDynamicComponent implements OnInit {
 
           Swal.fire({
             title: 'सफलतापूर्वक SDO को भेजा गया',
-            text: response.response.msg || '',
+            // text: response.response.msg || '',
             icon: 'success',
             confirmButtonText: 'ठीक है'
           }).then(() => {
@@ -861,13 +822,9 @@ export class GenerateEstimateDynamicComponent implements OnInit {
     });
   }
 
-  // ============================================================================
-  // STEP 14: APPROVAL ACTIONS - SDO METHODS
-  // ============================================================================
+ 
 
-  /**
-   * SDO: Return to RO (status 3)
-   */
+  //  * SDO: Return to RO (status 3)
   async sdoReturnToRO(description?: string) {
     await this.showLoading('RO को वापस भेजा जा रहा है...');
 
@@ -882,7 +839,7 @@ export class GenerateEstimateDynamicComponent implements OnInit {
         SDOId: officerId,
       }
     };
-    this.api.updateEstimateApproval(payload).subscribe({
+    this.api.SdoSendBackToRo(payload).subscribe({
       next: async (response: any) => {
         await this.dismissLoading();
 
@@ -890,7 +847,7 @@ export class GenerateEstimateDynamicComponent implements OnInit {
 
           Swal.fire({
             title: 'सफलतापूर्वक RO को वापस भेजा गया',
-            text: response.response.msg || '',
+            // text: response.response.msg || '',
             icon: 'success',
             confirmButtonText: 'ठीक है'
           }).then(() => {
@@ -914,9 +871,7 @@ export class GenerateEstimateDynamicComponent implements OnInit {
     });
   }
 
-  /**
-   * SDO: Send to DFO (status 4)
-   */
+  //  * SDO: Send to DFO (status 4)
   async sdoSendToDFO(description?: string, dfoId?: number) {
     await this.showLoading('DFO को भेजा जा रहा है...');
 
@@ -928,18 +883,17 @@ export class GenerateEstimateDynamicComponent implements OnInit {
         Action: 'sendToDFO',
         SDODeclaration: '1', // 1 = accepted
         SDODescription: description || this.sdoDescription || null,
-        SDOId: officerId,
-        DFOId: dfoId || this.singleData?.divisionId || null
+        SDOId: officerId        
       }
     };
-    this.api.updateEstimateApproval(payload).subscribe({
+    this.api.SdoSendToDfo(payload).subscribe({
       next: async (response: any) => {
         await this.dismissLoading();
 
         if (response?.response?.code === 200) {
           Swal.fire({
             title: 'सफलतापूर्वक DFO को भेजा गया',
-            text: response.response.msg || '',
+            // text: response.response.msg || '',
             icon: 'success',
             confirmButtonText: 'ठीक है'
           }).then(() => {
@@ -963,13 +917,9 @@ export class GenerateEstimateDynamicComponent implements OnInit {
     });
   }
 
-  // ============================================================================
-  // STEP 15: APPROVAL ACTIONS - DFO METHODS
-  // ============================================================================
-
-  /**
-   * DFO: Return to RO (status 5)
-   */
+  
+  //  * DFO: Return to RO (status 5)
+   
   async dfoReturnToRO(description?: string) {
     await this.showLoading('RO को वापस भेजा जा रहा है...');
 
@@ -984,14 +934,14 @@ export class GenerateEstimateDynamicComponent implements OnInit {
         DFOId: officerId
       }
     };
-    this.api.updateEstimateApproval(payload).subscribe({
+    this.api.dfoReturnToRO(payload).subscribe({
       next: async (response: any) => {
         await this.dismissLoading();
 
         if (response?.response?.code === 200) {
           Swal.fire({
             title: 'सफलतापूर्वक RO को वापस भेजा गया',
-            text: response.response.msg || '',
+            // text: response.response.msg || '',
             icon: 'success',
             confirmButtonText: 'ठीक है'
           }).then(() => {
@@ -1016,9 +966,9 @@ export class GenerateEstimateDynamicComponent implements OnInit {
     });
   }
 
-  /**
-   * DFO: Accept (status 6 - final)
-   */
+  
+  //  * DFO: Accept (status 6 - final)
+  
   async dfoAccept(description?: string) {
     await this.showLoading('प्राकलन स्वीकृत किया जा रहा है...');
 
@@ -1033,14 +983,14 @@ export class GenerateEstimateDynamicComponent implements OnInit {
         DFOId: officerId
       }
     };
-    this.api.updateEstimateApproval(payload).subscribe({
+    this.api.dfoAccept(payload).subscribe({
       next: async (response: any) => {
         await this.dismissLoading();
 
         if (response?.response?.code === 200) {
           Swal.fire({
             title: 'प्राकलन सफलतापूर्वक स्वीकृत किया गया',
-            text: response.response.msg || '',
+            // text: response.response.msg || '',
             icon: 'success',
             confirmButtonText: 'ठीक है'
           }).then(() => {
@@ -1064,44 +1014,8 @@ export class GenerateEstimateDynamicComponent implements OnInit {
     });
   }
 
-  // ============================================================================
-  // STEP 16: PRINT METHODS
-  // ============================================================================
-
-  print(): void {
-    window.print();
-  }
-
-  printSection(elementId: string): void {
-    const el = document.getElementById(elementId);
-    if (!el) { return; }
-    const containerId = '__print_container__';
-    const styleId = '__print_style__';
-    document.getElementById(containerId)?.remove();
-    document.getElementById(styleId)?.remove();
-    const style = document.createElement('style');
-    style.id = styleId;
-    style.media = 'print';
-    style.textContent = `@media print { body * { visibility: hidden !important; } #${containerId}, #${containerId} * { visibility: visible !important; } #${containerId} { position: absolute; left: 0; top: 0; width: 100%; } table { width: 100%; border-collapse: collapse !important; } th, td, table { border: 1px solid #000 !important; } }`;
-    document.head.appendChild(style);
-    const container = document.createElement('div');
-    container.id = containerId;
-    container.appendChild(el.cloneNode(true));
-    document.body.appendChild(container);
-    setTimeout(() => {
-      window.print();
-      setTimeout(() => { container.remove(); style.remove(); }, 100);
-    }, 50);
-  }
 
 
-
-
-
-  // printAll() {
-  //   this.router.navigate(['/estimate-print', this.singleData.applicationNumber]);
-
-  // }
 
 
   goBack() {
@@ -1141,32 +1055,7 @@ export class GenerateEstimateDynamicComponent implements OnInit {
   }
 
 
-  confirmSendToSDO() {
-    Swal.fire({
-      title: 'क्या आप सुनिश्चित हैं?',
-      text: "क्या आप इस आवेदन को SDO को भेजना चाहते हैं?",
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonText: 'हाँ, भेजें',
-      cancelButtonText: 'रद्द करें',
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      target: '#swal-portal',
-      heightAuto: false
-    }).then((result) => {
-      if (result.isConfirmed) {
-        this.roSendToSDO(); // original function
 
-        Swal.fire({
-          title: 'भेज दिया गया!',
-          text: 'आवेदन सफलतापूर्वक SDO को भेजा गया।',
-          icon: 'success',
-          target: '#swal-portal',
-          heightAuto: false
-        });
-      }
-    });
-  }
 
 
 

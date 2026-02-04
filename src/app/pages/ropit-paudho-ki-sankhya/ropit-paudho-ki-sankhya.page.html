@@ -24,15 +24,16 @@
               (ionInput)="onSearch()" (keyup.enter)="onSearchEnter()">
               <ion-icon name="search-outline" slot="start"></ion-icon>
             </ion-input>
+
+            <!-- <div class="results-info" slot="end" *ngIf="filteredData.length > 0">
+              <ion-text color="medium">
+                <small>{{ filteredData.length }} परिणाम मिले</small>
+              </ion-text>
+            </div> -->
           </ion-col>
 
         </ion-row>
-        <div class="results-info" *ngIf="filteredData.length > 0">
-          <ion-text color="medium">
-            <small>{{ filteredData.length }} परिणाम मिले</small>
-          </ion-text>
 
-        </div>
       </ion-card-content>
     </ion-card>
 
@@ -87,24 +88,21 @@
                     <div class="plant-left">
                       <ion-icon name="leaf-outline" class="plant-icon-small"></ion-icon>
                       <strong class="plant-name">{{ plant.PlantName }}</strong>
-                      <span class="plant-details">
+                      <!-- <span class="plant-details">
                         (क्षेत्र: {{ plant.TotalArea }} हे., पौधे: {{ plant.TotalTree }})
-                      </span>
+                      </span> -->
                     </div>
 
                     <!-- MIDDLE: Input -->
                     <div class="plant-middle">
-                      <input type="number" class="plant-input-native"
-                        [value]="getRopitSankhyaInput(item.ApplicationNumber, plantIndex)"
-                        (input)="onPlantInputChange($event, item.ApplicationNumber, plantIndex)"
-                        [readonly]="isPlantRopitReadonly(item.ApplicationNumber, plantIndex)" [max]="plant.TotalTree"
-                        min="0" placeholder="संख्या" />
+                      <input type="number" class="plant-input-native" [max]="plant.TotalTree" min="0"
+                        placeholder="संख्या" #plantQty />
                     </div>
 
                     <!-- RIGHT: Button -->
                     <div class="plant-right">
                       <button type="button" class="govt-add-btn"
-                        (click)="addPlantRow(item.ApplicationNumber, plantIndex)">
+                        (click)="addPlantRow(item.ApplicationNumber, plant.PlantId, plantQty.value)">
                         Add
                       </button>
                     </div>
@@ -120,7 +118,25 @@
 
               </td>
 
+              <td style="width: 400px;">
+                <div *ngIf="item.Plants?.length > 0; else noPlants">
 
+                  <div *ngFor="let plant of item.Plants; let plantIndex = index" class="plant-line">
+
+                    <!-- LEFT: Plant name + details -->
+                    <div class="plant-left  ">
+                      <ion-icon name="leaf-outline" class="plant-icon-small"></ion-icon>
+                      <strong class="plant-name">{{ plant.PlantName }}</strong>
+                      <span class="plant-details">
+                        (क्षेत्र: {{ plant.TotalArea }} हे., पौधे: {{ plant.TotalTree }})
+                      </span>
+                    </div>
+                    <div class="action-buttons-container">
+                      <strong> कुल रोपित पौधे :- {{plant.TotalRopit}}</strong>
+                    </div>
+                  </div>
+                </div>
+              </td>
 
             </tr>
           </ng-template>
