@@ -1,0 +1,177 @@
+<ion-header>
+    <ion-toolbar class="govt-toolbar" color="primary">
+        <ion-buttons slot="start">
+            <ion-back-button defaultHref="/officers-dashboard-ro"></ion-back-button>
+        </ion-buttons>
+        <ion-title class="govt-title">
+            रेंज प्रगति प्रतिवेदन
+        </ion-title>
+        <ion-buttons slot="end">
+            <ion-button (click)="loadData()">
+                <ion-icon slot="icon-only" name="refresh-outline"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content class="content-wrapper">
+    <ion-loading [isOpen]="isLoading" [message]="loadingMessage" [backdropDismiss]="false"></ion-loading>
+
+    <div class="page-container">
+        <!-- Modern Search Section -->
+        <ion-card class="search-card animate-fadeInUp">
+            <ion-card-content>
+                <ion-row class="ion-align-items-center">
+                    <ion-col size="12" size-md="6">
+                        <ion-input [(ngModel)]="searchText" fill="outline" class="search-input"
+                            placeholder="खोजें: आवेदन नंबर, नाम, गाँव या पंचायत..." (ionInput)="onSearch()"
+                            (keyup.enter)="onSearchEnter()">
+                            <ion-icon name="search-outline" slot="start"></ion-icon>
+                        </ion-input>
+                    </ion-col>
+                    <ion-col size="12" size-md="6" class="ion-text-end">
+                        <span class="total-count-badge">
+                            कुल रिकॉर्ड: <strong>{{ totalRecords }}</strong>
+                        </span>
+                    </ion-col>
+                </ion-row>
+            </ion-card-content>
+        </ion-card>
+
+        <!-- Card-based Report Generation -->
+        <div *ngIf="filteredData.length > 0">
+            <div *ngFor="let item of filteredData; let i = index" class="app-card animate-fadeInUp"
+                [style.animation-delay]="(i * 0.1) + 's'">
+
+                <!-- App Header -->
+                <div class="app-header">
+                    <div class="header-left">
+                        <h3 class="hitgrahi-name">{{ item.HitgrahiName || 'N/A' }}</h3>
+                        <small class="text-muted">पिता: {{ item.FatherName || 'N/A' }}</small>
+                    </div>
+                    <div class="info-item">
+
+                        <span class="label"><ion-icon name="business-outline"></ion-icon> ग्राम पंचायत :- {{
+                            item.GramPanchayatNagar
+                            }} </span><br>
+                        <span class="label"><ion-icon name="location-outline"></ion-icon> गाँव/शहर :- {{
+                            item.VillageCityName }} </span>
+                    </div>
+                    <div class="info-item">
+                        <span class="label"><ion-icon name="location-outline"></ion-icon> पता :- {{
+                            item.Address || 'N/A' }} </span>
+
+                    </div>
+                    <div class="header-right">
+                        <div class="app-id-badge">ID: {{ item.ApplicationNumber }}</div>
+                    </div>
+                </div>
+
+                <!-- App Body -->
+                <div class="app-body">
+
+
+                    <!-- Plants Progress Section -->
+                    <div class="plants-container">
+                        <!-- <h4 class="section-title">पौधों की प्रगति</h4> -->
+                        <div class="plant-grid">
+                            <div *ngFor="let plant of item.Plants" class="plant-item-card">
+                                <div class="plant-top">
+                                    <div class="plant-icon"><ion-icon name="leaf-outline"></ion-icon></div>
+                                    <span class="plant-name">{{ plant.PlantName }}</span>
+                                    <span class="target-tag">लक्ष्य: {{ plant.TotalTree }}</span>
+                                </div>
+
+                                <div class="progress-section">
+                                    <!-- Separate Progress Bars -->
+                                    <div class="progress-bars-wrapper">
+                                        <!-- Ropit Progress -->
+                                        <div class="progress-item">
+                                            <div class="progress-info">
+                                                <span>रोपण प्रगति</span>
+                                                <span>{{ plant.TotalRopit || 0 }} / {{ plant.TotalTree }}</span>
+                                            </div>
+                                            <div class="progress-bar-container ropit-bg">
+                                                <div class="bar-fill ropit-fill"
+                                                    [style.width]="((plant.TotalRopit || 0) / (plant.TotalTree || 1) * 100) + '%'">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Gadda Progress -->
+                                        <div class="progress-item">
+                                            <div class="progress-info">
+                                                <span>गड्ढा प्रगति</span>
+                                                <span>{{ plant.TotalPit || 0 }} / {{ plant.TotalTree }}</span>
+                                            </div>
+                                            <div class="progress-bar-container gadda-bg">
+                                                <div class="bar-fill gadda-fill"
+                                                    [style.width]="((plant.TotalPit || 0) / (plant.TotalTree || 1) * 100) + '%'">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Summary Stat -->
+                                    <div class="stat-summary">
+                                        <span class="remaining-tag ropit-rem">
+                                            शेष पौध: <strong>{{ (plant.TotalTree || 0) - (plant.TotalRopit || 0)
+                                                }}</strong>
+                                        </span>
+                                        <span class="remaining-tag gadda-rem">
+                                            शेष गड्ढे: <strong>{{ (plant.TotalTree || 0) - (plant.TotalPit || 0)
+                                                }}</strong>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- No Records Message -->
+        <div *ngIf="filteredData.length === 0 && !isLoading" class="no-records-content animate-fadeInUp">
+            <div class="icon-circle">
+                <ion-icon name="search-outline"></ion-icon>
+            </div>
+            <h3>कोई डेटा नहीं मिला</h3>
+            <p>क्षमा करें, आपके खोज मापदंडों के अनुसार कोई रिकॉर्ड उपलब्ध नहीं है।</p>
+            <ion-button fill="outline" (click)="searchText = ''; onSearch()">सभी देखें</ion-button>
+        </div>
+
+        <!-- Pagination -->
+        <ion-card *ngIf="totalPages > 1" class="pagination-card animate-fadeInUp">
+            <ion-card-content>
+                <ion-row class="ion-align-items-center ion-justify-content-center">
+                    <ion-col size="auto">
+                        <ion-button [disabled]="currentPage === 1" (click)="goToPreviousPage()" fill="clear"
+                            color="primary">
+                            <ion-icon name="chevron-back-outline" slot="icon-only"></ion-icon>
+                        </ion-button>
+                    </ion-col>
+
+                    <ion-col size="auto" class="ion-hide-sm-down">
+                        <ion-button *ngFor="let page of getPageNumbers()"
+                            [fill]="page === currentPage ? 'solid' : 'clear'"
+                            [color]="page === currentPage ? 'primary' : 'medium'" (click)="goToPage(page)"
+                            class="page-btn">
+                            {{ page }}
+                        </ion-button>
+                    </ion-col>
+
+                    <ion-col size="auto">
+                        <ion-button [disabled]="currentPage === totalPages" (click)="goToNextPage()" fill="clear"
+                            color="primary">
+                            <ion-icon name="chevron-forward-outline" slot="icon-only"></ion-icon>
+                        </ion-button>
+                    </ion-col>
+                </ion-row>
+                <div class="ion-text-center pagination-text">
+                    <small>पृष्ठ {{ currentPage }} / {{ totalPages }} (कुल {{ totalRecords }} परिणाम)</small>
+                </div>
+            </ion-card-content>
+        </ion-card>
+    </div>
+</ion-content>

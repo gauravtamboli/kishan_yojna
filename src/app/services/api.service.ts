@@ -70,6 +70,8 @@ export class ApiService {
   private apiUrlGetAwedanStatusCounts: string = `/api/KissanMitraYojnaRegisteration/getAwedanStatusCounts`;
   private apiUrlGetRopitKisanAwedanListByRange: string = `/api/KissanMitraYojnaRegisteration/getRopitKisanAwedanListByRange`;
   private apiUrlUpdateRopitCount: string = `/api/KissanMitraYojnaRegisteration/UpdateRopitCount`;
+  private apiUrlGetGaddaKisanAwedanListByRange: string = `/api/KissanMitraYojnaRegisteration/getGaddaKisanAwedanListByRange`;
+  private apiUrlAddOrUpdateGaddaPlant: string = `/api/KissanMitraYojnaRegisteration/AddOrUpdateGaddaPlant`;
   private apiUrlGetYearTwoAwedanList: string = `/api/KissanMitraYojnaRegisteration/getYearTwoAwedanList`;
   private apiUrlGetYearTwoAwedanCounts: string = `/api/KissanMitraYojnaRegisteration/getYearTwoAwedanCounts`;
   private apiUrlGetPlantRequestsWithYearTwo: string = `/api/KissanMitraYojnaRegisteration/GetPlantRequestsWithYearTwoByApplicationNumber`;
@@ -77,7 +79,7 @@ export class ApiService {
   private apiUrlSubmitYearThreePlants: string = `/api/KissanMitraYojnaRegisteration/SubmitPlantRequestYearThree`;
   private apiUrlGetYearThreeAwedanList: string = `/api/KissanMitraYojnaRegisteration/getYearThreeAwedanList`;
   private apiUrlGetYearThreeAwedanCounts: string = `/api/KissanMitraYojnaRegisteration/getYearThreeAwedanCounts`;
-
+  private apiUrlGetGaddaplantKisanAwedanListByRange: string = `/api/KissanMitraYojnaRegisteration/getGaddaplantKisanAwedanListByRange`;
   private apiUrlToAcceptRejectApplication: string = `/api/KissanMitraYojnaRegisteration/awedanApproveReject`;
 
   private apiUrlToGetSingleApplicationDetail: string = `/api/KissanMitraYojnaRegisteration/getSingleAwedanDetail`;
@@ -1729,7 +1731,7 @@ export class ApiService {
   }
 
 
-  
+
   dfoAccept(payload: any): Observable<any> {
     const headers = {
       'Content-Type': 'application/json',
@@ -1743,9 +1745,9 @@ export class ApiService {
     );
   }
 
-  
 
-  
+
+
   // Fetch saved estimate approval rows for an application
   getEstimateApprovalByApplication(applicationNumber: string): Observable<any> {
     const headers = {
@@ -1963,23 +1965,96 @@ export class ApiService {
     );
   }
 
-addRopitPlant(payload: any): Observable<any> {
-  const headers = {
-    'Content-Type': 'application/json',
-    'ngrok-skip-browser-warning': 'true'
-  };
+  addRopitPlant(payload: any): Observable<any> {
+    const headers = {
+      'Content-Type': 'application/json',
+      'ngrok-skip-browser-warning': 'true'
+    };
 
-  return from(this.buildApiUrl('/api/KissanMitraYojnaRegisteration/AddOrUpdateRopitPlant'))
-    .pipe(
+    return from(this.buildApiUrl('/api/KissanMitraYojnaRegisteration/AddOrUpdateRopitPlant'))
+      .pipe(
+        switchMap((url) => {
+          if (!url) {
+            return throwError(() => new Error('No API URL configured'));
+          }
+          return this.http.post<any>(url, payload, { headers });
+        })
+      );
+  }
+
+  getPitKisanAwedanListByRange(
+    rangeId: number,
+    pageNumber: number = 1,
+    pageSize: number = 10
+  ): Observable<any> {
+    const headers = {
+      'Content-Type': 'application/json',
+      'ngrok-skip-browser-warning': 'true'
+    };
+
+    const body = {
+      RangeId: rangeId,
+      PageNumber: pageNumber,
+      PageSize: pageSize
+    };
+
+    return from(this.buildApiUrl(this.apiUrlGetGaddaKisanAwedanListByRange)).pipe(
       switchMap((url) => {
-        if (!url) {
-          return throwError(() => new Error('No API URL configured'));
-        }
-        return this.http.post<any>(url, payload, { headers });
+        if (!url) return throwError(() => new Error('No API URL configured'));
+        return this.http.post<any>(url, body, { headers });
+      }),
+      catchError((error) => {
+        return throwError(() => new Error('Error getting gadda kisan awedan list'));
       })
     );
-}
+  }
 
+  addGaddaPlant(payload: any): Observable<any> {
+    const headers = {
+      'Content-Type': 'application/json',
+      'ngrok-skip-browser-warning': 'true'
+    };
+
+    return from(this.buildApiUrl(this.apiUrlAddOrUpdateGaddaPlant))
+      .pipe(
+        switchMap((url) => {
+          if (!url) {
+            return throwError(() => new Error('No API URL configured'));
+          }
+          return this.http.post<any>(url, payload, { headers });
+        })
+      );
+  }
+
+
+
+
+getGaddaplantKisanAwedanListByRange(
+    rangeId: number,
+    pageNumber: number = 1,
+    pageSize: number = 10
+  ): Observable<any> {
+    const headers = {
+      'Content-Type': 'application/json',
+      'ngrok-skip-browser-warning': 'true'
+    };
+
+    const body = {
+      RangeId: rangeId,
+      PageNumber: pageNumber,
+      PageSize: pageSize
+    };
+
+    return from(this.buildApiUrl(this.apiUrlGetGaddaplantKisanAwedanListByRange)).pipe(
+      switchMap((url) => {
+        if (!url) return throwError(() => new Error('No API URL configured'));
+        return this.http.post<any>(url, body, { headers });
+      }),
+      catchError((error) => {
+        return throwError(() => new Error('Error getting gadda kisan awedan list'));
+      })
+    );
+  }
 
 
 }

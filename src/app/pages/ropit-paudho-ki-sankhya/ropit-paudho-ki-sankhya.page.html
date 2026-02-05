@@ -53,8 +53,10 @@
               <th>गाँव/शहर</th>
               <th>ग्राम पंचायत/नगर</th>
               <th>पता</th>
-              <th>पौधों की जानकारी एवं रोपित संख्या</th>
-              <th class="text-center" style="min-width: 120px;">क्रिया</th>
+              <th>रोपित पौधों की संख्या दर्ज करे</th>
+              <th class="text-center" style="min-width: 120px;">
+                कुल रोपित पौधों की संख्या
+              </th>
             </tr>
           </ng-template>
 
@@ -95,14 +97,14 @@
 
                     <!-- MIDDLE: Input -->
                     <div class="plant-middle">
-                      <input type="number" class="plant-input-native" [max]="plant.TotalTree" min="0"
+                      <input type="number" class="plant-input-native" [max]="plant.TotalPit" min="0"
                         placeholder="संख्या" #plantQty />
                     </div>
 
                     <!-- RIGHT: Button -->
                     <div class="plant-right">
                       <button type="button" class="govt-add-btn"
-                        (click)="addPlantRow(item.ApplicationNumber, plant.PlantId, plantQty.value)">
+                        (click)="addPlantRow(item.ApplicationNumber, plant.PlantId, plantQty.value, plant.TotalPit)">
                         Add
                       </button>
                     </div>
@@ -128,7 +130,8 @@
                       <ion-icon name="leaf-outline" class="plant-icon-small"></ion-icon>
                       <strong class="plant-name">{{ plant.PlantName }}</strong>
                       <span class="plant-details">
-                        (क्षेत्र: {{ plant.TotalArea }} हे., पौधे: {{ plant.TotalTree }})
+                        (क्षेत्र: {{ plant.TotalArea }} हे., पौधे: {{ plant.TotalTree }}, गड्ढे: {{ plant.TotalPit || 0
+                        }})
                       </span>
                     </div>
                     <div class="action-buttons-container">

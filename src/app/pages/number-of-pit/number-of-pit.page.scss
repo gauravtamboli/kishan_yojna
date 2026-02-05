@@ -1,0 +1,152 @@
+/* ================================
+   PLANT ROW LAYOUT
+================================ */
+
+.plant-line {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    /* start | middle | end */
+    gap: 10px;
+    padding: 6px 8px;
+    margin-bottom: 6px;
+    border: 1px solid #000;
+    /* all-side border */
+    background: #ffffff;
+    font-size: 12px;
+}
+
+/* ================================
+     LEFT SECTION (Plant Name + Details)
+  ================================ */
+
+.plant-left {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex: 1;
+    /* takes remaining width */
+    min-width: 0;
+}
+
+.plant-icon-small {
+    font-size: 14px;
+    color: #198754;
+}
+
+.plant-name {
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.plant-details {
+    font-size: 11px;
+    color: #495057;
+    white-space: nowrap;
+}
+
+/* ================================
+     MIDDLE SECTION (Input)
+  ================================ */
+
+.plant-middle {
+    flex: 0 0 70px;
+    text-align: center;
+}
+
+.plant-input-native {
+    width: 70px;
+    height: 22px;
+    font-size: 12px;
+    padding: 2px 4px;
+    border: 1px solid #000;
+}
+
+/* ================================
+     RIGHT SECTION (Button)
+  ================================ */
+
+.plant-right {
+    flex: 0 0 auto;
+}
+
+.govt-add-btn {
+    height: 22px;
+    font-size: 11px;
+    padding: 0 8px;
+    border: 1px solid #000;
+    background: #e9ecef;
+    cursor: pointer;
+}
+
+.govt-add-btn:hover {
+    background: #dee2e6;
+}
+
+
+/* ================================
+     TABLE CONTAINER BORDER
+  ================================ */
+
+.table-responsive {
+    border: 1px solid #000;
+    /* outer border */
+    background: #ffffff;
+    overflow-x: auto;
+}
+
+/* ================================
+     PRIME NG DATATABLE BORDERS
+  ================================ */
+
+::ng-deep .gadda-table {
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        border: 1px solid #000;
+        /* full table border */
+    }
+
+    /* HEADER CELLS */
+    .p-datatable-thead>tr>th {
+        border: 1px solid #000;
+        background: #e9ecef;
+        color: #000;
+        font-size: 13px;
+        font-weight: 600;
+        padding: 6px 8px;
+        text-align: center;
+        white-space: nowrap;
+    }
+
+    /* BODY CELLS */
+    .p-datatable-tbody>tr>td {
+        border: 1px solid #000;
+        font-size: 13px;
+        padding: 6px 8px;
+        vertical-align: top;
+    }
+
+    /* REMOVE HOVER SHADE */
+    .p-datatable-tbody>tr:hover {
+        background: transparent !important;
+    }
+}
+
+.no-records-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* horizontal center */
+    justify-content: center;
+    /* vertical center (inside card) */
+    text-align: center;
+    padding: 20px;
+}
+
+.no-records-icon {
+    font-size: 48px;
+    color: var(--ion-color-medium);
+    margin-bottom: 10px;
+}

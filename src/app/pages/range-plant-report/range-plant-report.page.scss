@@ -1,0 +1,375 @@
+/* ============================================================
+   RANGE PLANT REPORT - PREMIUM DESIGN SYSTEM
+   ============================================================ */
+
+:host {
+    --primary-gradient: linear-gradient(135deg, #1a73e8 0%, #0d47a1 100%);
+    --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    --hover-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+    --transition-speed: 0.3s;
+}
+
+.page-container {
+    padding: 16px;
+    background: #f4f7fa;
+    min-height: 100%;
+}
+
+/* ================================
+   SEARCH CARD
+================================ */
+.search-card {
+    border-radius: 16px;
+    box-shadow: var(--card-shadow);
+    margin-bottom: 24px;
+    border: none;
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(10px);
+
+    .search-input {
+        --padding-start: 12px;
+        --border-radius: 12px;
+        font-size: 14px;
+        border: 1px solid #e0e0e0;
+        transition: border-color var(--transition-speed);
+
+        &:focus-within {
+            border-color: #1a73e8;
+        }
+
+        ion-icon {
+            color: #1a73e8;
+            font-size: 20px;
+        }
+    }
+}
+
+/* ================================
+   APPLICATION CARD (Alternative to plain rows)
+================================ */
+.app-card {
+    background: #ffffff;
+    border-radius: 20px;
+    box-shadow: var(--card-shadow);
+    margin-bottom: 20px;
+    overflow: hidden;
+    transition: transform var(--transition-speed), box-shadow var(--transition-speed);
+    border: 1px solid #f0f0f0;
+
+    &:hover {
+        transform: translateY(-4px);
+        box-shadow: var(--hover-shadow);
+    }
+
+    .app-header {
+        background: #f8fafc;
+        padding: 16px 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid #edf2f7;
+
+        .app-id-badge {
+            background: var(--primary-gradient);
+            color: white;
+            padding: 6px 14px;
+            border-radius: 30px;
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            box-shadow: 0 4px 10px rgba(26, 115, 232, 0.3);
+        }
+
+        .hitgrahi-name {
+            font-size: 16px;
+            font-weight: 800;
+            color: #1a202c;
+            margin: 0;
+        }
+    }
+
+    .app-body {
+        padding: 20px;
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            margin-bottom: 24px;
+
+            .info-item {
+                display: flex;
+                flex-direction: column;
+
+                .label {
+                    font-size: 11px;
+                    color: #718096;
+                    text-transform: uppercase;
+                    letter-spacing: 0.5px;
+                    margin-bottom: 4px;
+                }
+
+                .value {
+                    font-size: 14px;
+                    font-weight: 600;
+                    color: #2d3748;
+                }
+            }
+        }
+    }
+}
+
+/* ================================
+   PLANT LIST DESIGN
+================================ */
+.plant-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 16px;
+}
+
+.plant-item-card {
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 16px;
+    position: relative;
+    overflow: hidden;
+
+    &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 4px;
+        height: 100%;
+        background: #48bb78;
+        /* Default success green */
+    }
+
+    .plant-top {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 12px;
+
+        .plant-icon {
+            background: #f0fff4;
+            color: #38a169;
+            padding: 8px;
+            border-radius: 10px;
+            font-size: 18px;
+        }
+
+        .plant-name {
+            font-size: 15px;
+            font-weight: 700;
+            color: #2d3748;
+        }
+
+        .target-tag {
+            margin-left: auto;
+            background: #edf2f7;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+            color: #4a5568;
+        }
+    }
+
+    .progress-section {
+        .progress-bars-wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .progress-item {
+            .progress-info {
+                display: flex;
+                justify-content: space-between;
+                font-size: 11px;
+                font-weight: 700;
+                color: #4a5568;
+                margin-bottom: 4px;
+            }
+        }
+
+        .progress-bar-container {
+            height: 8px;
+            background: #edf2f7;
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+
+            .bar-fill {
+                height: 100%;
+                border-radius: 10px;
+                transition: width 1s ease-out;
+            }
+
+            &.ropit-bg {
+                background: #ebf4ff;
+            }
+
+            &.gadda-bg {
+                background: #fffaf0;
+            }
+
+            .ropit-fill {
+                background: #3182ce;
+                box-shadow: 0 0 8px rgba(49, 130, 206, 0.4);
+            }
+
+            .gadda-fill {
+                background: #ed8936;
+                box-shadow: 0 0 8px rgba(237, 137, 54, 0.4);
+            }
+        }
+
+        .stat-summary {
+            margin-top: 12px;
+            padding-top: 8px;
+            border-top: 1px dashed #e2e8f0;
+            display: flex;
+            justify-content: flex-end;
+            gap: 8px;
+            flex-wrap: wrap;
+
+            .remaining-tag {
+                font-size: 11px;
+                color: #718096;
+                padding: 4px 12px;
+                border-radius: 20px;
+                display: inline-block;
+
+                strong {
+                    font-weight: 800;
+                }
+
+                &.ropit-rem {
+                    background: #ebf8ff;
+                    border: 1px solid #bee3f8;
+
+                    strong {
+                        color: #2b6cb0;
+                    }
+                }
+
+                &.gadda-rem {
+                    background: #fffaf0;
+                    border: 1px solid #feebc8;
+
+                    strong {
+                        color: #c05621;
+                    }
+                }
+            }
+        }
+    }
+}
+
+/* ================================
+   PAGINATION DESIGN
+================================ */
+.pagination-card {
+    border-radius: 16px;
+    box-shadow: var(--card-shadow);
+    background: white;
+    margin-top: 24px;
+
+    .page-btn {
+        --border-radius: 8px;
+        margin: 0 4px;
+        font-weight: 600;
+    }
+
+    .pagination-text {
+        color: #718096;
+        font-size: 13px;
+    }
+}
+
+/* Header Text shadow for readability */
+.govt-title {
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Animation classes */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animate-fadeInUp {
+    animation: fadeInUp 0.6s ease-out forwards;
+}
+
+/* ================================
+   NO RECORDS & MISC
+================================ */
+.no-records-content {
+    text-align: center;
+    padding: 60px 20px;
+    background: white;
+    border-radius: 20px;
+    box-shadow: var(--card-shadow);
+    margin-top: 40px;
+
+    .icon-circle {
+        width: 100px;
+        height: 100px;
+        background: #f0f4f8;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 20px;
+
+        ion-icon {
+            font-size: 48px;
+            color: #1a73e8;
+        }
+    }
+
+    h3 {
+        color: #2d3748;
+        font-weight: 700;
+        margin-bottom: 8px;
+    }
+
+    p {
+        color: #718096;
+        margin-bottom: 24px;
+    }
+}
+
+.total-count-badge {
+    background: #e6fffa;
+    color: #2c7a7b;
+    padding: 8px 16px;
+    border-radius: 12px;
+    font-size: 14px;
+    border: 1px solid #b2f5ea;
+    display: inline-block;
+}
+
+.section-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: #4a5568;
+    margin-bottom: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}

@@ -202,6 +202,16 @@ export const routes: Routes = [
     canActivate: [authGuard]
   },
   {
+    path: 'number-of-pit',
+    loadComponent: () => import('./pages/number-of-pit/number-of-pit.page').then(m => m.NumberOfPitPage),
+    canActivate: [authGuard]
+  },
+  {
+    path: 'range-plant-report',
+    loadComponent: () => import('./pages/range-plant-report/range-plant-report.page').then(m => m.RangePlantReportPage),
+    canActivate: [authGuard]
+  },
+  {
     path: 'year-two-dashboard',
     loadComponent: () => import('./pages/year-two-dashboard/year-two-dashboard.page').then(m => m.YearTwoDashboardPage),
     canActivate: [authGuard]

@@ -20,6 +20,7 @@ export interface RopitPlantDetailModel {
   TotalArea: number | null;
   TotalTree: number | null;
   TotalRopit?: number | null;
+  TotalPit?: number | null;
 }
 
 export interface GetRopitAwedanResponse {

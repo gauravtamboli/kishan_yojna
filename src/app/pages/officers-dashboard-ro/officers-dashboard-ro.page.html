@@ -24,26 +24,35 @@
 
     <ion-content>
       <ion-list>
-        <ion-menu-toggle auto-hide="false">
-          <ion-item *ngFor="let page of pages; let i = index" class="no-gap-item" lines="none">
-            <ng-container *ngIf="page.is_submenu; else noSubMenu">
-              <ion-text class="responsive-menu-title" style="width: 100%; margin-left: 10px"
-                (click)="onMenuItemClick(page)">{{ page.title }}</ion-text>
-            </ng-container>
 
+        <ng-container *ngFor="let page of pages; let i = index">
 
-            <ng-template #noSubMenu>
-              <ng-container>
-                <ion-text class="responsive-menu-title" style="font-weight: 900; width: 100%; margin-top: 5px"
-                  (click)="onMenuItemClick(page)">
-                  {{ page.title }}
-                </ion-text>
-              </ng-container>
-            </ng-template>
+          <!-- Parent menu -->
+          <ion-item class="no-gap-item" lines="none">
+            <ion-icon *ngIf="page.icon" [name]="page.icon" class="menu-icon"></ion-icon>
+            <ion-text class="responsive-menu-title" style="width: 100%; margin-left: 10px"
+              (click)="toggleSubMenu(i, page)">
+              {{ page.title }}
+            </ion-text>
           </ion-item>
-        </ion-menu-toggle>
+
+          <!-- Submenu -->
+          <ion-list *ngIf="page.is_submenu && page.open">
+            <ion-item *ngFor="let child of page.children" class="no-gap-item" lines="none" style="padding-left: 30px"
+              (click)="onMenuItemClick(child)">
+              <ion-icon *ngIf="child.icon" [name]="child.icon" class="menu-icon"
+                style="margin-right: 10px; font-size: 18px;"></ion-icon>
+              <ion-text class="responsive-menu-title">
+                {{ child.title }}
+              </ion-text>
+            </ion-item>
+          </ion-list>
+
+        </ng-container>
+
       </ion-list>
     </ion-content>
+
     <!-- <ion-content>
       <ion-list>
         <ion-menu-toggle *ngFor="let page of pages; let i = index">

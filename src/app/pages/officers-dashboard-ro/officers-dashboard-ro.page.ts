@@ -11,7 +11,7 @@ import { MenuController } from '@ionic/angular';
 import { ApiService } from 'src/app/services/api.service';
 import { OfficersLoginResponseModel } from '../officer-login/OfficersLoginResponse.model';
 import { addIcons } from 'ionicons';
-import { appsOutline, homeOutline, informationOutline, informationCircle, buildOutline, logOutOutline, chevronBackOutline, chevronForwardOutline, downloadOutline, chevronDownOutline, optionsOutline, reorderThreeOutline } from 'ionicons/icons';
+import { appsOutline, homeOutline, informationOutline, informationCircle, buildOutline, logOutOutline, chevronBackOutline, chevronForwardOutline, downloadOutline, chevronDownOutline, optionsOutline, reorderThreeOutline, documentTextOutline, statsChartOutline, mapOutline, peopleOutline, personOutline, addCircleOutline, trendingUpOutline, leafOutline, hammerOutline, clipboardOutline, businessOutline, receiptOutline, cashOutline, listOutline } from 'ionicons/icons';
 import { Browser } from '@capacitor/browser';
 import { Platform, AlertController } from '@ionic/angular';
 import { NetworkCheckService } from 'src/app/services/network-check.service';
@@ -36,6 +36,9 @@ interface MenuPage {
   url?: string;
   route?: string;
   state?: any;
+  children?: MenuPage[];
+  open?: boolean;
+  icon?: string;
 }
 
 
@@ -45,12 +48,32 @@ interface MenuPage {
   templateUrl: './officers-dashboard-ro.page.html',
   styleUrls: ['./officers-dashboard-ro.page.scss'],
   standalone: true,
-  imports: [IonSplitPane, PaginatorModule, IonMenuToggle, IonPopover,
+  imports: [IonSplitPane, PaginatorModule, IonPopover,
     IonMenu, IonList, IonAvatar, IonCard, IonLoading, IonText, IonButton,
     IonInput, IonLabel, IonItem, IonGrid, IonRow, IonCol, IonButtons, IonContent, IonHeader,
     IonToolbar, CommonModule, FormsModule, IonIcon, TableModule, IonMenuButton]
 })
 export class OfficersDashboardROPage implements OnInit {
+
+
+
+
+  toggleSubMenu(index: number, page: any) {
+    if (!page.is_submenu) {
+      this.onMenuItemClick(page);
+      return;
+    }
+
+    // Close other submenus (optional)
+    this.pages.forEach((p, i) => {
+      if (i !== index) {
+        p.open = false;
+      }
+    });
+
+    page.open = !page.open;
+  }
+
 
 
   openUserMenu($event: any) {
@@ -156,56 +179,97 @@ export class OfficersDashboardROPage implements OnInit {
 
     this.langService.language$.subscribe(() => {
       this.pages = [
-        // {
-        //   title: this.getTranslation('offline_to_online_awedan'),
-        //   url: 'make-offline-awedan-to-online',
-        //   is_submenu: false
-        // },
-        // {
-        //   title: this.getTranslation('report'),
-        //   url: 'report',
-        //   is_submenu: false
-        // },
+
         {
           title: 'गोस्वारा रिपोर्ट ',
           url: 'goswara-report',
-          is_submenu: false
+          is_submenu: false,
+          icon: 'document-text-outline'
         },
         {
           title: 'प्रजातिवार गोस्वारा रिपोर्ट ',
           url: 'prajati-goswara-report',
-          is_submenu: false
+          is_submenu: false,
+          icon: 'stats-chart-outline'
         },
         {
           title: 'गाँव वार गोस्वारा',
           url: 'gaon-var-goswara',
-          is_submenu: false
+          is_submenu: false,
+          icon: 'map-outline'
         },
         {
           title: 'किसान रिपोर्ट ',
           url: 'kissan-wise-report',
-          is_submenu: false
+          is_submenu: false,
+          icon: 'people-outline'
         },
         {
-          title: 'रोपित पौधों की संख्या दर्ज करें',
-          url: 'ropit-paudho-ki-sankhya',
-          is_submenu: false
+          title: 'दर्ज करें',
+          is_submenu: true,
+          icon: 'add-circle-outline',
+          children: [
+             {
+              title: 'गड्ढों की संख्या दर्ज करें',
+              url: 'number-of-pit',
+              is_submenu: false,
+              icon: 'hammer-outline'
+            },
+            {
+              title: 'रोपित पौधों की संख्या दर्ज करें',
+              url: 'ropit-paudho-ki-sankhya',
+              is_submenu: false,
+              icon: 'leaf-outline'
+            },
+           
+            {
+              title: 'रेंज रिपोर्ट (रोपण/गड्ढे)',
+              url: 'range-plant-report',
+              is_submenu: false,
+              icon: 'clipboard-outline'
+            }
+          ]
         },
+
         {
           title: 'भुगतान करे',
-          route: '/payment',
-          state: {
-            range_id: rangid,
-            year: 1
+          is_submenu: true,
+          icon: 'cash-outline',
+          children: [
+            {
+              icon: 'business-outline',
+              title: 'वेंडर भुगतान करें',
+              url: 'ropit-paudho-ki-sankhya/list',
+              state: {
+                range_id: rangid,
+                year: 1
 
-          },
-          is_submenu: false
+              },
+              is_submenu: false
+            },
+            {
+              title: 'हितग्राही भुगतान करें',
+              icon: 'person-outline',
+              url: 'ropit-paudho-ki-sankhya/list',
+              is_submenu: false
+
+            },
+            {
+              title: 'रिपोर्ट',
+              icon: 'receipt-outline',
+              url: 'ropit-paudho-ki-sankhya/report',
+              is_submenu: false
+
+            }
+          ]
         },
+
 
         {
           title: 'प्रगति प्रतिवेदन',
           url: 'pragati-prativedan',
-          is_submenu: false
+          is_submenu: false,
+          icon: 'trending-up-outline'
         },
         // {
         //   title: this.getTranslation('circle_wise_hitgrahi_report'),
@@ -363,6 +427,20 @@ export class OfficersDashboardROPage implements OnInit {
     addIcons({
       appsOutline, homeOutline, informationOutline, informationCircle, buildOutline, logOutOutline, reorderThreeOutline,
       chevronBackOutline, chevronForwardOutline, chevronDownOutline, optionsOutline, downloadOutline,
+      'document-text-outline': documentTextOutline,
+      'stats-chart-outline': statsChartOutline,
+      'map-outline': mapOutline,
+      'people-outline': peopleOutline,
+      'person-outline': personOutline,
+      'add-circle-outline': addCircleOutline,
+      'trending-up-outline': trendingUpOutline,
+      'leaf-outline': leafOutline,
+      'hammer-outline': hammerOutline,
+      'clipboard-outline': clipboardOutline,
+      'business-outline': businessOutline,
+      'receipt-outline': receiptOutline,
+      'cash-outline': cashOutline,
+      'list-outline': listOutline
     });
   }
 
