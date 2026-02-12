@@ -1,0 +1,89 @@
+<ion-header>
+    <ion-toolbar color="primary">
+        <ion-buttons slot="start">
+            <ion-back-button defaultHref="/landingpage"></ion-back-button>
+        </ion-buttons>
+        <ion-title> वेंडर भुगतान </ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+    <!-- SEARCH -->
+    <ion-item *ngIf="year" class="m-3 rounded-3 shadow-sm">
+        <ion-icon name="search-outline" slot="start"></ion-icon>
+        <ion-input placeholder="आवेदन नंबर / नाम / पिता का नाम खोजें" [(ngModel)]="searchText"
+            (ionInput)="applySearch()" clearInput="true">
+        </ion-input>
+    </ion-item>
+
+    <!-- NO DATA -->
+    <div *ngIf="!year" class="center-wrapper">
+        <ion-item lines="none" class="center-message-item">
+            <ion-label>
+                कोई भुगतान डेटा उपलब्ध नहीं है |
+            </ion-label>
+        </ion-item>
+    </div>
+
+    <!-- TABLE -->
+    <div *ngIf="year" class="table-responsive">
+        <p-table [value]="filteredAwedans" [paginator]="false" responsiveLayout="scroll" class="custom-dashboard-table">
+
+            <!-- HEADER -->
+            <ng-template pTemplate="header">
+                <tr>
+                    <th>क्र.</th>
+                    <th>आवेदन नंबर</th>
+                    <th>नाम</th>
+                    <th>पिता</th>
+                    <th>पता</th>
+                    <th>क्रिया</th>
+                </tr>
+            </ng-template>
+
+            <!-- BODY -->
+            <ng-template pTemplate="body" let-item let-i="rowIndex">
+                <tr>
+                    <td>{{ (currentPage - 1) * pageSize + i + 1 }}</td>
+                    <td>{{ item.application_number }}</td>
+                    <td>{{ item.hitgrahi_name }}</td>
+                    <td>{{ item.father_name }}</td>
+                    <td>{{ item.address }}</td>
+                    <!-- <td>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" value="" id="" />
+
+            </div>
+
+          </td> -->
+                    <td>
+                        <ion-button size="small" fill="outline" (click)="viewApplication(item)">
+                            भुगतान बनाए / देखें
+                        </ion-button>
+                    </td>
+                </tr>
+            </ng-template>
+
+        </p-table>
+    </div>
+
+    <!-- PAGINATION -->
+    <div *ngIf="year && totalPages > 1" class="pagination-container">
+        <ion-row class="justify-content-center">
+            <ion-button size="small" fill="outline" [disabled]="currentPage === 1" (click)="goToPreviousPage()">
+                पिछला
+            </ion-button>
+
+            <ion-button size="small" *ngFor="let p of getPageNumbers()" [fill]="p === currentPage ? 'solid' : 'outline'"
+                (click)="goToPage(p)">
+                {{ p }}
+            </ion-button>
+
+            <ion-button size="small" fill="outline" [disabled]="currentPage === totalPages" (click)="goToNextPage()">
+                अगला
+            </ion-button>
+        </ion-row>
+    </div>
+
+</ion-content>

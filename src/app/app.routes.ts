@@ -236,6 +236,16 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/payment-create/payment-create.component').then(m => m.PaymentCreateComponent),
     canActivate: [authGuard]
   },
+  {
+    path: 'vendor-payment-list',
+    loadComponent: () => import('./pages/vendor-payment-list/vendor-payment-list.component').then(m => m.VendorPaymentListComponent),
+    canActivate: [authGuard]
+  },
+  {
+    path: 'vendor-payment',
+    loadComponent: () => import('./pages/vendor-payment/vendor-payment.component').then(m => m.VendorPaymentComponent),
+    canActivate: [authGuard]
+  },
 
   {
     path: 'gaon-var-goswara',
@@ -255,6 +265,11 @@ export const routes: Routes = [
   {
     path: 'change-password',
     loadComponent: () => import('./pages/change-password/change-password.page').then(m => m.ChangePasswordPage),
+    canActivate: [authGuard]
+  },
+  {
+    path: 'create-bill',
+    loadComponent: () => import('./pages/create-bill/create-bill.component').then(m => m.CreateBillComponent),
     canActivate: [authGuard]
   }
 

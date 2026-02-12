@@ -1,0 +1,132 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/landingpage" color="light"></ion-back-button>
+    </ion-buttons>
+
+    <ion-title>Create Batch Bill</ion-title>
+
+    <ion-buttons slot="end">
+      <ion-badge color="light">{{ selectedAwedans.length }} Selected</ion-badge>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="bg-gradient ion-padding">
+
+  <div class="main-container">
+
+    <!-- SINGLE GLASS CARD -->
+    <div class="glass-card">
+
+      <!-- FILTERS -->
+      <div class="section">
+        <ion-row class="ion-align-items-center">
+          <ion-col size="12" size-md="4">
+            <label class="label">Select Type</label>
+            <ng-select [items]="billTypes" bindLabel="name" bindValue="id" [(ngModel)]="selectedBillType"
+              (change)="applyFilters()" [clearable]="false" class="custom-select">
+            </ng-select>
+          </ion-col>
+
+          <ion-col size="12" size-md="4">
+            <label class="label">Select Year</label>
+            <ng-select [items]="years" bindLabel="name" bindValue="id" [(ngModel)]="selectedYear" (change)="loadData()"
+              [clearable]="false" class="custom-select">
+            </ng-select>
+          </ion-col>
+        </ion-row>
+
+        <ion-item lines="none" class="search-item mt-3">
+          <ion-icon name="search-outline" slot="start"></ion-icon>
+          <ion-input placeholder="Search by Application No, Name or Father Name" [(ngModel)]="searchText"
+            (ionInput)="applyFilters()">
+          </ion-input>
+        </ion-item>
+      </div>
+
+      <!-- TABLE -->
+      <div class="table-container">
+        <p-table [value]="filteredAwedans" [(selection)]="selectedAwedans" dataKey="application_number"
+          responsiveLayout="stack" breakpoint="768px" [paginator]="true" [rows]="10" class="batch-table">
+
+          <ng-template pTemplate="header">
+            <tr>
+              <th style="width: 3rem">
+                <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+              </th>
+              <th>Application No</th>
+              <th>Bill Number</th>
+              <th>Name</th>
+              <th>Plants</th>
+              <th>Amount</th>
+            </tr>
+          </ng-template>
+
+          <ng-template pTemplate="body" let-item>
+            <tr [pSelectableRow]="item">
+              <td>
+                <p-tableCheckbox [value]="item"></p-tableCheckbox>
+              </td>
+
+              <td>
+                <span class="p-column-title">Application</span>
+                <span class="badge-app">{{ item.application_number }}</span>
+              </td>
+
+              <td>
+                <span class="p-column-title">Bill Number</span>
+                <span class="text-white">{{ item.BillNumber }}</span>
+              </td>
+
+              <td>
+                <span class="p-column-title">Name</span>
+                <div class="name-info">
+                  <div class="primary-name">{{ item.hitgrahi_name }}</div>
+                  <div class="secondary-name">{{ item.father_name }}</div>
+                </div>
+              </td>
+
+              <td>
+                <span class="p-column-title">Plants</span>
+                {{ getPlantNames(item) }}
+              </td>
+
+              <td>
+                <span class="p-column-title">Amount</span>
+                <span class="amount">₹{{ getAmount(item) | number:'1.2-2' }}</span>
+              </td>
+            </tr>
+          </ng-template>
+
+          <ng-template pTemplate="emptymessage">
+            <tr>
+              <td colspan="5" class="empty">
+                No records found
+              </td>
+            </tr>
+          </ng-template>
+
+        </p-table>
+      </div>
+
+      <!-- FOOTER -->
+      <div class="footer">
+        <div>
+          Selected:
+          <strong>{{ selectedAwedans.length }}</strong>
+          |
+          Total:
+          <strong>₹{{ calculateTotalSelectedAmount() | number:'1.2-2' }}</strong>
+        </div>
+
+        <ion-button color="success" (click)="createBatchBill()" [disabled]="selectedAwedans.length === 0 || isLoading">
+          Create Batch Bill
+          <ion-spinner *ngIf="isLoading" slot="end"></ion-spinner>
+        </ion-button>
+      </div>
+
+    </div>
+  </div>
+
+</ion-content>

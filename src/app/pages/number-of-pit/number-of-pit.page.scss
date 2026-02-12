@@ -103,6 +103,8 @@
 
     table {
         width: 100%;
+        min-width: 1200px;
+        /* Force minimum width to prevent wrapping on mobile */
         border-collapse: collapse;
         border: 1px solid #000;
         /* full table border */
@@ -126,6 +128,14 @@
         font-size: 13px;
         padding: 6px 8px;
         vertical-align: top;
+        white-space: nowrap;
+        /* Prevent content wrapping */
+    }
+
+    /* Allow wrapping only for specific cells if needed */
+    .p-datatable-tbody>tr>td.address-cell {
+        white-space: normal;
+        min-width: 200px;
     }
 
     /* REMOVE HOVER SHADE */

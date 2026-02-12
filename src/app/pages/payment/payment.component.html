@@ -3,7 +3,7 @@
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/landingpage"></ion-back-button>
     </ion-buttons>
-    <ion-title>भुगतान</ion-title>
+    <ion-title> हितग्राही भुगतान</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -38,7 +38,6 @@
           <th>नाम</th>
           <th>पिता</th>
           <th>पता</th>
-          <th>राशि (₹)</th>
           <th>क्रिया</th>
         </tr>
       </ng-template>
@@ -51,7 +50,6 @@
           <td>{{ item.hitgrahi_name }}</td>
           <td>{{ item.father_name }}</td>
           <td>{{ item.address }}</td>
-          <td>{{ getAmount(item) | number:'1.0-0' }}</td>
           <!-- <td>
             <div class="form-check">
               <input class="form-check-input" type="checkbox" value="" id="" />

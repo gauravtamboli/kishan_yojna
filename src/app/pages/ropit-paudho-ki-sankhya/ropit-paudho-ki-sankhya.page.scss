@@ -5,11 +5,13 @@
 .plant-line {
   display: flex;
   align-items: center;
-  justify-content: space-between; /* start | middle | end */
+  justify-content: space-between;
+  /* start | middle | end */
   gap: 10px;
   padding: 6px 8px;
   margin-bottom: 6px;
-  border: 1px solid #000;          /* all-side border */
+  border: 1px solid #000;
+  /* all-side border */
   background: #ffffff;
   font-size: 12px;
 }
@@ -22,7 +24,8 @@
   display: flex;
   align-items: center;
   gap: 6px;
-  flex: 1;               /* takes remaining width */
+  flex: 1;
+  /* takes remaining width */
   min-width: 0;
 }
 
@@ -86,7 +89,8 @@
 ================================ */
 
 .table-responsive {
-  border: 1px solid #000;   /* outer border */
+  border: 1px solid #000;
+  /* outer border */
   background: #ffffff;
   overflow-x: auto;
 }
@@ -99,12 +103,15 @@
 
   table {
     width: 100%;
+    min-width: 1200px;
+    /* Force minimum width to prevent wrapping on mobile */
     border-collapse: collapse;
-    border: 1px solid #000;   /* full table border */
+    border: 1px solid #000;
+    /* full table border */
   }
 
   /* HEADER CELLS */
-  .p-datatable-thead > tr > th {
+  .p-datatable-thead>tr>th {
     border: 1px solid #000;
     background: #e9ecef;
     color: #000;
@@ -116,23 +123,34 @@
   }
 
   /* BODY CELLS */
-  .p-datatable-tbody > tr > td {
+  .p-datatable-tbody>tr>td {
     border: 1px solid #000;
     font-size: 13px;
     padding: 6px 8px;
     vertical-align: top;
+    white-space: nowrap;
+    /* Prevent content wrapping */
+  }
+
+  /* Allow wrapping only for specific cells if needed */
+  .p-datatable-tbody>tr>td.address-cell {
+    white-space: normal;
+    min-width: 200px;
   }
 
   /* REMOVE HOVER SHADE */
-  .p-datatable-tbody > tr:hover {
+  .p-datatable-tbody>tr:hover {
     background: transparent !important;
   }
 }
+
 .no-records-content {
   display: flex;
   flex-direction: column;
-  align-items: center;      /* horizontal center */
-  justify-content: center;  /* vertical center (inside card) */
+  align-items: center;
+  /* horizontal center */
+  justify-content: center;
+  /* vertical center (inside card) */
   text-align: center;
   padding: 20px;
 }

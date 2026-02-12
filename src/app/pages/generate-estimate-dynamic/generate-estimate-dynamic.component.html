@@ -331,10 +331,10 @@
                           </ion-button>
                         </div>
                       </ion-item>
-                      <ion-item *ngIf="estimate_data.dfo_file != null">
-                        <a [href]="getFileUrl2(estimate_data.dfo_file)" target="_blank"
+                      <ion-item *ngIf="estimate_data?.dfo_file != null">
+                        <a [href]="getFileUrl2(estimate_data?.dfo_file)" target="_blank"
                           style="color: blue; text-decoration: underline; font-weight: 600;">
-                          {{ estimate_data.dfo_file }}
+                          {{ estimate_data?.dfo_file }}
                         </a>
                       </ion-item>
 
@@ -361,9 +361,9 @@
                       <ion-item *ngIf="estimate_data" lines="none">
                         <ion-label style="text-align: center;">
                           <small>
-                            अग्रेषण पत्र (DFO) :- <a [href]="getFileUrl2(estimate_data.dfo_file)" target="_blank"
+                            अग्रेषण पत्र (DFO) :- <a [href]="getFileUrl2(estimate_data?.dfo_file)" target="_blank"
                               style="color: blue; font-weight: 500;">
-                              {{ estimate_data.dfo_file }}
+                              {{ estimate_data?.dfo_file }}
                             </a>
                           </small>
 
@@ -404,10 +404,10 @@
                         </div>
 
                       </ion-item>
-                      <ion-item *ngIf="estimate_data.sdo_file != null">
-                        <a [href]="getFileUrl1(estimate_data.sdo_file)" target="_blank"
+                      <ion-item *ngIf="estimate_data?.sdo_file != null">
+                        <a [href]="getFileUrl1(estimate_data?.sdo_file)" target="_blank"
                           style="color: blue; text-decoration: underline; font-weight: 600;">
-                          {{ estimate_data.sdo_file }}
+                          {{ estimate_data?.sdo_file }}
                         </a>
                       </ion-item>
                       <!-- <ion-item lines="none" style="margin-top: 8px;">
@@ -437,9 +437,9 @@
                       <ion-item *ngIf="estimate_data" lines="none">
                         <ion-label style="text-align: center;">
                           <small>
-                            अग्रेषण पत्र (SDO) :- <a [href]="getFileUrl1(estimate_data.sdo_file)" target="_blank"
+                            अग्रेषण पत्र (SDO) :- <a [href]="getFileUrl1(estimate_data?.sdo_file)" target="_blank"
                               style="color: blue; font-weight: 500;">
-                              {{ estimate_data.sdo_file }}
+                              {{ estimate_data?.sdo_file }}
                             </a>
                           </small>
 
@@ -531,14 +531,14 @@
 
                     <!-- SDO: Send Back to RO Button (only when SDO can update and has selected value '3') -->
                     <ion-button
-                      *ngIf="upVanMandalAdhikari === '3' && estimate_data.sdo_file !=null && isSDO  &&singleData.awedan_status ==='2'"
+                      *ngIf="upVanMandalAdhikari === '3' && estimate_data?.sdo_file !=null && isSDO  &&singleData.awedan_status ==='2'"
                       style="float: right;" color="danger" (click)="sdoReturnToRO()">
                       Send Back to RO sdfs
                     </ion-button>
 
                     <!-- SDO: Send to DFO Button (only when SDO can update and has selected value '4') -->
                     <ion-button
-                      *ngIf="upVanMandalAdhikari === '4' && estimate_data.sdo_file !=null  && isSDO &&singleData.awedan_status ==='2' "
+                      *ngIf="upVanMandalAdhikari === '4' && estimate_data?.sdo_file !=null  && isSDO &&singleData.awedan_status ==='2' "
                       style="float: right;" (click)="sdoSendToDFO()">
                       Send to DFO
                     </ion-button>
@@ -562,7 +562,7 @@
                 <ion-row *ngIf="isReturnCase && isRO">
                   <ion-col size="12" style="margin-top: 20px;">
 
-                   
+
                     <ion-button color="danger" style="margin-top: 20px; float: right;" (click)="confirmDelete()">
                       Delete करें
                     </ion-button>

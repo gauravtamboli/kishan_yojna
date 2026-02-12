@@ -127,7 +127,7 @@ export class GenerateEstimateComponent implements OnInit {
   totalTissueBansPrathamVarshamount: any;
   totalTissuebansDwitiyaVarshamount: any;
   totalTissueBansTritiyaVarshamount: any;
-officer_name: any;
+  officer_name: any;
 
 
 
@@ -144,7 +144,8 @@ officer_name: any;
     private loadingController: LoadingController,
     private toastController: ToastController,
     private cdRef: ChangeDetectorRef,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    public tableDataService: tableData // Inject tableData service
   ) {
     addIcons({
       buildSharp,
@@ -180,12 +181,12 @@ officer_name: any;
 
 
 
-    this.tableData = tableData['प्रथम_वर्ष'];
-    this.tableData1 = tableData['द्वितीय_वर्ष'];
-    this.tableData2 = tableData['तृतीय_वर्ष'];
+    this.tableData = this.tableDataService.tableData['प्रथम_वर्ष'];
+    this.tableData1 = this.tableDataService.tableData['द्वितीय_वर्ष'];
+    this.tableData2 = this.tableDataService.tableData['तृतीय_वर्ष'];
 
     const storedData = sessionStorage.getItem('logined_officer_data');
-    
+
     console.log('storedData :', storedData);
     this.officer_name = storedData ? JSON.parse(storedData).officer_name : '';
 
@@ -312,7 +313,7 @@ officer_name: any;
 
 
 
-        tableData['प्रथम_वर्ष'].forEach((item: any) => {
+        this.tableDataService.tableData['प्रथम_वर्ष'].forEach((item: any) => {
           const rate = Number(item.klonalNeelgiri) || 0;
           const totalPlant = Number(this.klonalnilgiri_total_plant) || 0;
           totalPrathamVarsh += rate * totalPlant;
@@ -325,7 +326,7 @@ officer_name: any;
           totalOtherLabhkariPrathamVarsh1 += rate * (Number(this.other_labhkari_total_palnt) || 0);
         });
 
-        tableData['द्वितीय_वर्ष'].forEach((item: any) => {
+        this.tableDataService.tableData['द्वितीय_वर्ष'].forEach((item: any) => {
           const rate = Number(item.klonalNeelgiri) || 0;
           const totalPlant = Number(this.klonalnilgiri_total_plant) || 0;
           totalDwitiyaVarsh += rate * totalPlant;
@@ -340,7 +341,7 @@ officer_name: any;
 
         });
 
-        tableData['तृतीय_वर्ष'].forEach((item: any) => {
+        this.tableDataService.tableData['तृतीय_वर्ष'].forEach((item: any) => {
           const rate = Number(item.klonalNeelgiri) || 0;
           const totalPlant = Number(this.klonalnilgiri_total_plant) || 0;
           totalTritiyaVarsh += rate * totalPlant;
@@ -486,24 +487,24 @@ officer_name: any;
 
         // Override totals using ONLY plant_request_new response as per requirement
         if (Object.values(totalsByCategory).some(v => v > 0)) {
-          this.klonalnilgiri_total_plant    = totalsByCategory['klonalnilgiri'];
+          this.klonalnilgiri_total_plant = totalsByCategory['klonalnilgiri'];
           this.tissueclturebans_total_palnt = totalsByCategory['tissueclturebans'];
-          this.normalbans_total_plant       = totalsByCategory['normalbans'];
-          this.chandan_total_plant          = totalsByCategory['chandan'];
-          this.miliyadubiya_total_plant     = totalsByCategory['miliyadubiya'];
-          this.normal_sagon_total_plant     = totalsByCategory['normal_sagon'];
-          this.tissueclturesagon_total_plant= totalsByCategory['tissueclturesagon'];
-          this.other_labhkari_total_palnt   = totalsByCategory['other_labhkari'];
+          this.normalbans_total_plant = totalsByCategory['normalbans'];
+          this.chandan_total_plant = totalsByCategory['chandan'];
+          this.miliyadubiya_total_plant = totalsByCategory['miliyadubiya'];
+          this.normal_sagon_total_plant = totalsByCategory['normal_sagon'];
+          this.tissueclturesagon_total_plant = totalsByCategory['tissueclturesagon'];
+          this.other_labhkari_total_palnt = totalsByCategory['other_labhkari'];
 
           // Set areas from response
-          this.klonalnilgiri_total_area     = areasByCategory['klonalnilgiri'];
-          this.tissueclturebans_total_area  = areasByCategory['tissueclturebans'];
-          this.normalbans_total_area        = areasByCategory['normalbans'];
-          this.chandan_total_area           = areasByCategory['chandan'];
-          this.miliyadubiya_total_area      = areasByCategory['miliyadubiya'];
-          this.normal_sagon_total_area      = areasByCategory['normal_sagon'];
+          this.klonalnilgiri_total_area = areasByCategory['klonalnilgiri'];
+          this.tissueclturebans_total_area = areasByCategory['tissueclturebans'];
+          this.normalbans_total_area = areasByCategory['normalbans'];
+          this.chandan_total_area = areasByCategory['chandan'];
+          this.miliyadubiya_total_area = areasByCategory['miliyadubiya'];
+          this.normal_sagon_total_area = areasByCategory['normal_sagon'];
           this.tissueclturesagon_total_area = areasByCategory['tissueclturesagon'];
-          this.other_labhkari_total_area    = areasByCategory['other_labhkari'];
+          this.other_labhkari_total_area = areasByCategory['other_labhkari'];
 
           // Recalculate all amount totals based on the updated counts
           let totalPrathamVarsh = 0;
@@ -534,7 +535,7 @@ officer_name: any;
           let totalTissueSagonTritiyaVarsh3 = 0;
           let totalOtherLabhkariTritiyaVarsh3 = 0;
 
-          tableData['प्रथम_वर्ष'].forEach((item: any) => {
+          this.tableDataService.tableData['प्रथम_वर्ष'].forEach((item: any) => {
             const rate = Number(item.klonalNeelgiri) || 0;
             const totalPlant = Number(this.klonalnilgiri_total_plant) || 0;
             totalPrathamVarsh += rate * totalPlant;
@@ -547,7 +548,7 @@ officer_name: any;
             totalOtherLabhkariPrathamVarsh1 += rate * (Number(this.other_labhkari_total_palnt) || 0);
           });
 
-          tableData['द्वितीय_वर्ष'].forEach((item: any) => {
+          this.tableDataService.tableData['द्वितीय_वर्ष'].forEach((item: any) => {
             const rate = Number(item.klonalNeelgiri) || 0;
             const totalPlant = Number(this.klonalnilgiri_total_plant) || 0;
             totalDwitiyaVarsh += rate * totalPlant;
@@ -560,7 +561,7 @@ officer_name: any;
             totalOtherLabhkariDwitiyaVarsh2 += rate * (Number(this.other_labhkari_total_palnt) || 0);
           });
 
-          tableData['तृतीय_वर्ष'].forEach((item: any) => {
+          this.tableDataService.tableData['तृतीय_वर्ष'].forEach((item: any) => {
             const rate = Number(item.klonalNeelgiri) || 0;
             const totalPlant = Number(this.klonalnilgiri_total_plant) || 0;
             totalTritiyaVarsh += rate * totalPlant;
@@ -650,7 +651,7 @@ officer_name: any;
     if (storedData) {
       const officerData = JSON.parse(storedData);
       const designation = Number(officerData.designation);
-      
+
       switch (designation) {
         case 1:
           return '/officers-dashboard-circle'; // Circle/CFO designation

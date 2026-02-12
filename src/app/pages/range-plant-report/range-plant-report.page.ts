@@ -6,7 +6,7 @@ import { Router } from '@angular/router';
 import { ApiService } from '../../services/api.service';
 import { TableModule } from 'primeng/table';
 import { addIcons } from 'ionicons';
-import { chevronBackOutline, chevronForwardOutline, searchOutline, personOutline, locationOutline, leafOutline, documentTextOutline, checkmarkCircleOutline, refreshOutline, businessOutline } from 'ionicons/icons';
+import { chevronBackOutline, chevronForwardOutline, searchOutline, personOutline, locationOutline, leafOutline, documentTextOutline, checkmarkCircleOutline, refreshOutline, businessOutline, mapOutline } from 'ionicons/icons';
 import { Toast } from '@capacitor/toast';
 import { RangeReportResponseModel, GetRangeReportResponse } from '../number-of-pit/PitAwedanModels';
 
@@ -47,7 +47,8 @@ export class RangePlantReportPage implements OnInit {
             documentTextOutline,
             checkmarkCircleOutline,
             refreshOutline,
-            businessOutline
+            businessOutline,
+            mapOutline
         });
     }
 

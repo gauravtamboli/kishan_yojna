@@ -1,0 +1,109 @@
+:host {
+  --glass-bg: rgba(255,255,255,0.1);
+  --glass-border: rgba(255,255,255,0.2);
+}
+
+.bg-gradient {
+  --background: radial-gradient(circle at top left, #1a237e, #000);
+}
+
+.main-container {
+  margin: auto;
+}
+
+.glass-card {
+  background: var(--glass-bg);
+  backdrop-filter: blur(14px);
+  border: 1px solid var(--glass-border);
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.section {
+  padding: 1rem;
+}
+
+.label {
+  color: rgba(255,255,255,0.7);
+  font-size: 0.85rem;
+  margin-bottom: 5px;
+  display: block;
+}
+
+.custom-select ::ng-deep .ng-select-container {
+  background: rgba(0,0,0,0.3);
+  color: white;
+  border-radius: 10px;
+}
+
+.search-item {
+  --background: rgba(255,255,255,0.05);
+  border-radius: 50px;
+  border: 1px solid var(--glass-border);
+}
+
+.table-container {
+  overflow-x: auto;
+}
+
+.batch-table ::ng-deep .p-datatable {
+  background: transparent;
+}
+
+.batch-table ::ng-deep th {
+  background: rgba(0,0,0,0.4);
+  color: #ddd;
+}
+
+.batch-table ::ng-deep td {
+  color: white;
+}
+
+.badge-app {
+  background: rgba(0,229,255,0.15);
+  padding: 4px 10px;
+  border-radius: 6px;
+  color: #00e5ff;
+  font-weight: bold;
+}
+
+.name-info {
+  line-height: 1.2;
+}
+
+.primary-name {
+  font-weight: 600;
+}
+
+.secondary-name {
+  font-size: 0.75rem;
+  opacity: 0.6;
+}
+
+.amount {
+  color: #69f0ae;
+  font-weight: bold;
+}
+
+.footer {
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  border-top: 1px solid var(--glass-border);
+}
+
+/* DESKTOP */
+@media (min-width: 768px) {
+  .footer {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+}
+
+.empty {
+  text-align: center;
+  padding: 2rem;
+  opacity: 0.5;
+}

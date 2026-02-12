@@ -77,7 +77,7 @@ export class PaymentComponent implements OnInit {
   onLoadPayment(selectedPaymentYear: string) {
     this.currentPage = 1;
 
-    this.api.paymentlistdata(selectedPaymentYear, this.rangeId).subscribe({
+    this.api.VendorPaymentListData(selectedPaymentYear, this.rangeId).subscribe({
       next: (res: any) => {
         this.paymentList = res?.data || [];
 
@@ -152,15 +152,7 @@ export class PaymentComponent implements OnInit {
     }
   }
 
-  /** Amount */
-  getAmount(item: any): number {
-    switch (this.year?.toString()) {
-      case '1': return item.koolYog1 || 0;
-      case '2': return item.koolYog2 || 0;
-      case '3': return item.koolYog3 || 0;
-      default: return 0;
-    }
-  }
+
 
   /** View Application */
   viewApplication(item: any) {

@@ -33,6 +33,8 @@ type DisplayCategory = {
   area: number;
 };
 
+import { EstimateService } from '../../services/estimate.service';
+
 @Component({
   standalone: true,
   selector: 'app-generate-estimate-dynamic',
@@ -41,9 +43,6 @@ type DisplayCategory = {
   imports: [IonicModule, CommonModule, FormsModule, NgSelectModule],
 })
 export class GenerateEstimateDynamicComponent implements OnInit {
-
-
-
   @ViewChild('uploadFile') uploadFileRef!: ElementRef<HTMLInputElement>;
 
   selectedRoFile: File | null = null;
@@ -119,9 +118,9 @@ export class GenerateEstimateDynamicComponent implements OnInit {
   // ============================================================================
 
   // Get table data directly from estimate-table.ts - no complex processing
-  year1Rows: any[] = tableData['प्रथम_वर्ष'] || []; // Year 1 rates
-  year2Rows: any[] = tableData['द्वितीय_वर्ष'] || []; // Year 2 rates
-  year3Rows: any[] = tableData['तृतीय_वर्ष'] || []; // Year 3 rates
+  year1Rows: any[] = [];
+  year2Rows: any[] = [];
+  year3Rows: any[] = [];
 
   // ============================================================================
   // STEP 3: SIMPLE MAPPING - Plant Name → Rate Field
@@ -169,6 +168,7 @@ export class GenerateEstimateDynamicComponent implements OnInit {
     private location: Location,
     private route: ActivatedRoute,
     private api: ApiService,
+    private estimateService: EstimateService, // Inject EstimateService
     private cdRef: ChangeDetectorRef,
     private loadingController: LoadingController,
     private toastController: ToastController,
@@ -176,18 +176,35 @@ export class GenerateEstimateDynamicComponent implements OnInit {
     private zone: NgZone
   ) {
     addIcons({
-      cloudUploadOutline    // ✅ correct syntax
+      cloudUploadOutline
     });
   }
 
-  // ============================================================================
-  // STEP 5: INITIALIZATION - When component loads
-  // ============================================================================
-
   ngOnInit(): void {
+    // ... existing code ...
 
+    // Subscribe to workPlanData to populate year rows
+    this.estimateService.loadWorkPlanData();
+    this.estimateService.workPlanData$.subscribe(data => {
+      // Handle array format (old)
+      if (Array.isArray(data) && data.length > 0) {
+        this.year1Rows = data.filter(x => x.year === 1);
+        this.year2Rows = data.filter(x => x.year === 2);
+        this.year3Rows = data.filter(x => x.year === 3);
+        this.cdRef.detectChanges();
+      }
+      // Handle object format (new API)
+      else if (data && typeof data === 'object') {
+        const dataObj = data as Record<string, any>;
+        this.year1Rows = dataObj['प्रथम_वर्ष'] || [];
+        this.year2Rows = dataObj['द्वितीय_वर्ष'] || [];
+        this.year3Rows = dataObj['तृतीय_वर्ष'] || [];
+        this.cdRef.detectChanges();
+      }
+    });
 
     (pdfMake as any).fonts = {
+      // ... existing fonts code ...
       NotoSansDevanagari: {
         normal: "NotoSansDevanagari-Regular.ttf",
         bold: "NotoSansDevanagari-Bold.ttf",
@@ -804,7 +821,7 @@ export class GenerateEstimateDynamicComponent implements OnInit {
             this.zone.run(() => {
               this.reloadPage();
             });
-          });         
+          });
         } else {
           Swal.fire({
             title: 'भेजना असफल',
@@ -822,7 +839,7 @@ export class GenerateEstimateDynamicComponent implements OnInit {
     });
   }
 
- 
+
 
   //  * SDO: Return to RO (status 3)
   async sdoReturnToRO(description?: string) {
@@ -883,7 +900,7 @@ export class GenerateEstimateDynamicComponent implements OnInit {
         Action: 'sendToDFO',
         SDODeclaration: '1', // 1 = accepted
         SDODescription: description || this.sdoDescription || null,
-        SDOId: officerId        
+        SDOId: officerId
       }
     };
     this.api.SdoSendToDfo(payload).subscribe({
@@ -917,9 +934,9 @@ export class GenerateEstimateDynamicComponent implements OnInit {
     });
   }
 
-  
+
   //  * DFO: Return to RO (status 5)
-   
+
   async dfoReturnToRO(description?: string) {
     await this.showLoading('RO को वापस भेजा जा रहा है...');
 
@@ -948,7 +965,7 @@ export class GenerateEstimateDynamicComponent implements OnInit {
             this.zone.run(() => {
               this.reloadPage();
             });
-          }); 
+          });
         } else {
 
           Swal.fire({
@@ -966,9 +983,9 @@ export class GenerateEstimateDynamicComponent implements OnInit {
     });
   }
 
-  
+
   //  * DFO: Accept (status 6 - final)
-  
+
   async dfoAccept(description?: string) {
     await this.showLoading('प्राकलन स्वीकृत किया जा रहा है...');
 
@@ -999,7 +1016,7 @@ export class GenerateEstimateDynamicComponent implements OnInit {
             });
           });
         } else {
-         Swal.fire({
+          Swal.fire({
             title: 'स्वीकृति असफल',
             text: response?.response?.msg || '',
             icon: 'error',

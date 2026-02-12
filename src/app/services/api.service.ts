@@ -1882,12 +1882,37 @@ export class ApiService {
       );
   }
 
-  paymentlistdata(selectedPaymentYear: string, rangeId: number): Observable<any> {
+
+    VendorPaymentListData(selectedPaymentYear: string, rangeId: number): Observable<any> {
     return from(
-      this.buildApiUrl(`/api/KissanMitraYojnaRegisteration/paymentlistdata?selectedPaymentYear=${encodeURIComponent(selectedPaymentYear)}&rangeId=${rangeId}`)).pipe(
+      this.buildApiUrl(`/api/KissanMitraYojnaRegisteration/VendorPaymentListData?selectedPaymentYear=${encodeURIComponent(selectedPaymentYear)}&rangeId=${rangeId}`)).pipe(
         switchMap((url) => {
           if (!url) return throwError(() => new Error("No API URL configured"));
-          return this.http.get<any>(url);
+          const headers = { 'ngrok-skip-browser-warning': 'true' };
+          return this.http.get<any>(url, { headers });
+        })
+      );
+  }
+
+    HitgrahiPaymentListData(selectedPaymentYear: string, rangeId: number): Observable<any> {
+    return from(
+      this.buildApiUrl(`/api/KissanMitraYojnaRegisteration/HitgrahiPaymentListData?selectedPaymentYear=${encodeURIComponent(selectedPaymentYear)}&rangeId=${rangeId}`)).pipe(
+        switchMap((url) => {
+          if (!url) return throwError(() => new Error("No API URL configured"));
+          const headers = { 'ngrok-skip-browser-warning': 'true' };
+          return this.http.get<any>(url, { headers });
+        })
+      );
+  }
+
+
+  paymentlistdata(selectedPaymentYear: string, rangeId: number, paymentType: number): Observable<any> {
+    return from(
+      this.buildApiUrl(`/api/KissanMitraYojnaRegisteration/paymentlistdata?selectedPaymentYear=${encodeURIComponent(selectedPaymentYear)}&rangeId=${rangeId}&paymentType=${paymentType}`)).pipe(
+        switchMap((url) => {
+          if (!url) return throwError(() => new Error("No API URL configured"));
+          const headers = { 'ngrok-skip-browser-warning': 'true' };
+          return this.http.get<any>(url, { headers });
         })
       );
   }
@@ -1898,6 +1923,18 @@ export class ApiService {
         switchMap((url) => {
           if (!url) return throwError(() => new Error("No API URL configured"));
           return this.http.get<any>(url);
+        })
+      );
+  }
+
+  getPaymentDetails(billNumber?: string): Observable<any> {
+    const params = billNumber ? `?billNumber=${encodeURIComponent(billNumber)}` : '';
+    return from(
+      this.buildApiUrl(`/api/KissanMitraYojnaRegisteration/getPaymentDetails${params}`)).pipe(
+        switchMap((url) => {
+          if (!url) return throwError(() => new Error("No API URL configured"));
+          const headers = { 'ngrok-skip-browser-warning': 'true' };
+          return this.http.get<any>(url, { headers });
         })
       );
   }
@@ -2029,7 +2066,7 @@ export class ApiService {
 
 
 
-getGaddaplantKisanAwedanListByRange(
+  getGaddaplantKisanAwedanListByRange(
     rangeId: number,
     pageNumber: number = 1,
     pageSize: number = 10
@@ -2056,6 +2093,60 @@ getGaddaplantKisanAwedanListByRange(
     );
   }
 
+
+  getPaymentBundelVendor(application_number: string): Observable<any> {
+    return from(
+      this.buildApiUrl(`/api/KissanMitraYojnaRegisteration/PaymentBundelVendor?applicationNumber=${encodeURIComponent(application_number)}`)).pipe(
+        switchMap((url) => {
+          if (!url) return throwError(() => new Error("No API URL configured"));
+          return this.http.get<any>(url);
+        })
+      );
+  }
+
+  submitVendorPayment(payload: any): Observable<any> {
+    const headers = {
+      'Content-Type': 'application/json',
+      'ngrok-skip-browser-warning': 'true'
+    };
+    return from(this.buildApiUrl('/api/KissanMitraYojnaRegisteration/SubmitVendorPayment')).pipe(
+      switchMap((url) => {
+        if (!url) return throwError(() => new Error('No API URL configured'));
+        return this.http.post<any>(url, payload, { headers });
+      }),
+      catchError((error) => {
+        return throwError(() => new Error('Error submitting vendor payment'));
+      })
+    );
+  }
+
+
+  submitHitgrahiPayment(payload: any): Observable<any> {
+    const headers = {
+      'Content-Type': 'application/json',
+      'ngrok-skip-browser-warning': 'true'
+    };
+    return from(this.buildApiUrl('/api/KissanMitraYojnaRegisteration/SubmitHitgrahiPayment')).pipe(
+      switchMap((url) => {
+        if (!url) return throwError(() => new Error('No API URL configured'));
+        return this.http.post<any>(url, payload, { headers });
+      }),
+      catchError((error) => {
+        return throwError(() => new Error('Error submitting hitgrahi payment'));
+      })
+    );
+  }
+
+
+    GetAllPaymentDetailsByApplication(application_number: string): Observable<any> {
+    return from(
+      this.buildApiUrl(`/api/KissanMitraYojnaRegisteration/GetAllPaymentDetailsByApplication?application_number=${encodeURIComponent(application_number)}`)).pipe(
+        switchMap((url) => {
+          if (!url) return throwError(() => new Error("No API URL configured"));
+          return this.http.get<any>(url);
+        })
+      );
+  }
 
 }
 

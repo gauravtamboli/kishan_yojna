@@ -1,47 +1,37 @@
 <ion-split-pane contentId="main-content" when="(min-width: 768px)">
-  <ion-menu class="no-shadow" side="start" content-id="main-content" style="width: 350px;" >
- <ion-header class="ion-header-class-for-menu">
-  <ion-toolbar>
-    <ion-avatar slot="start" class="custom-avatar" style="padding: 2px; margin-top: 6px; " >
-      <img style="background-color: white;" src="assets/img/app_logo.png" alt="App Logo" />
-    </ion-avatar>
-    <ion-title>
-      <div class="header-content">
-        {{ getTranslation('app_name') }}
-        <div class="subheader">
-          <ion-text style="font-size: small;" >({{ getTranslation('state_name') }}) (VERSION: {{ versionNumber }})</ion-text>
-        </div>
-      </div>
-    </ion-title>
-  </ion-toolbar>
-</ion-header>
+  <ion-menu class="no-shadow" side="start" content-id="main-content" style="width: 350px;">
+    <ion-header class="ion-header-class-for-menu">
+      <ion-toolbar>
+        <ion-avatar slot="start" class="custom-avatar" style="padding: 2px; margin-top: 6px; ">
+          <img style="background-color: white;" src="assets/img/app_logo.png" alt="App Logo" />
+        </ion-avatar>
+        <ion-title>
+          <div class="header-content">
+            {{ getTranslation('app_name') }}
+            <div class="subheader">
+              <ion-text style="font-size: small;">({{ getTranslation('state_name') }}) (VERSION: {{ versionNumber
+                }})</ion-text>
+            </div>
+          </div>
+        </ion-title>
+      </ion-toolbar>
+    </ion-header>
 
     <ion-content>
       <ion-list>
         <ion-menu-toggle auto-hide="false">
-          <ion-item
-            *ngFor="let page of pages; let i = index"
-            class="no-gap-item"
-            lines="none"
-          >
+          <ion-item *ngFor="let page of pages; let i = index" class="no-gap-item" lines="none">
             <ng-container *ngIf="page.is_sub_menu; else noSubMenu">
               <!-- <ion-text class="responsive-sub-menu-title" (click)="onMenuItemClick(page.url)">{{ page.title
                 }}</ion-text> -->
-              <ion-label
-                class="responsive-sub-menu-title"
-                (click)="onMenuItemClick(page.url)"
-                [innerHTML]="getTranslation(page.title)"
-              ></ion-label>
+              <ion-label class="responsive-sub-menu-title" (click)="onMenuItemClick(page.url)"
+                [innerHTML]="getTranslation(page.title)"></ion-label>
             </ng-container>
 
             <ng-template #noSubMenu>
               <!-- <ng-container *ngIf="isWebPlatform(page.url)"> -->
-              <ion-text
-                style="font-weight: 700"
-                class="responsive-menu-title"
-                (click)="onMenuItemClick(page.url)"
-                >{{ page.title }}</ion-text
-              >
+              <ion-text style="font-weight: 700" class="responsive-menu-title" (click)="onMenuItemClick(page.url)">{{
+                page.title }}</ion-text>
               <!-- </ng-container> -->
             </ng-template>
           </ion-item>
@@ -54,9 +44,7 @@
     <ion-header>
       <div class="div-color" style="padding-top: 20px; color: white">
         <ion-toolbar>
-          <ion-title class="ion-text-center"
-            >{{ getTranslation('app_name') }}</ion-title
-          >
+          <ion-title class="ion-text-center">{{ getTranslation('app_name') }}</ion-title>
           <ion-menu-button slot="start"></ion-menu-button>
         </ion-toolbar>
       </div>
@@ -67,16 +55,12 @@
           <ion-row class="officials-row">
             <ion-col size="4" size-md="5">
               <ion-row class="row-50">
-                <img
-                  src="assets/img/cm_image.jpg"
-                  class="img-style"
-                  alt="CM Image"
-                />
+                <img src="assets/img/cm_image.jpg" class="img-style" alt="CM Image" />
               </ion-row>
               <ion-row class="row-50">
                 <ion-label class="custom-ion-lable">
                   <!-- {{ getTranslation('cm_name') }} -->
-                    श्री विष्णु देव साय 
+                  श्री विष्णु देव साय
                 </ion-label>
               </ion-row>
               <ion-row class="row-50">
@@ -91,23 +75,16 @@
             <ion-col size="4" size-md="2">
               <ion-row style="margin-top: -20px; margin-bottom: 50px">
                 <img src="assets/img/cg_image.png" alt="CG Logo" />
-                <ion-label
-                  style="width: 100%; text-align: center; color: blue"
-                  class="custom-ion-lable"
-                >  
+                <ion-label style="width: 100%; text-align: center; color: blue" class="custom-ion-lable">
                   {{ getTranslation('cg_sasan') }}
                 </ion-label>
-                
+
               </ion-row>
             </ion-col>
 
             <ion-col size="4" size-md="5">
               <ion-row class="row-50">
-                <img
-                  src="assets/img/minister_image.jpg"
-                  class="img-style"
-                  alt="Minister Image"
-                />
+                <img src="assets/img/minister_image.jpg" class="img-style" alt="Minister Image" />
               </ion-row>
               <ion-row class="row-50">
                 <ion-label class="custom-ion-lable">
@@ -134,27 +111,16 @@
 
           <ion-row class="apply-button-row">
             <ion-col size="12" style="display: flex; justify-content: center">
-              <ion-button 
-                class="apply-button"
-                expand="block"
-                (click)="navigateToKisanAwedan()"
-                size="large">
+              <ion-button class="apply-button" expand="block" (click)="navigateToKisanAwedan()" size="large">
                 योजना के लिए आवेदन करें
               </ion-button>
             </ion-col>
           </ion-row>
 
 
-          <ion-row
-            style="height: 300px; overflow: hidden"
-            *ngIf="isMobilePlatForm()"
-          >
+          <ion-row style="height: 300px; overflow: hidden" *ngIf="isMobilePlatForm()">
             <ion-col size="12">
-              <img
-                class="background-image"
-                src="assets/img/app_background.jpeg"
-                alt="Background Image"
-              />
+              <img class="background-image" src="assets/img/app_background.jpeg" alt="Background Image" />
             </ion-col>
           </ion-row>
         </ion-grid>
@@ -162,4 +128,3 @@
     </ion-content>
   </div>
 </ion-split-pane>
-

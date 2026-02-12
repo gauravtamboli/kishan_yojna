@@ -1,0 +1,397 @@
+<ion-header style="background-color: blue;">
+    <ion-toolbar>
+
+        <!-- LEFT -->
+        <ion-buttons slot="start">
+            <ion-back-button class="custom-back-button" (click)="goBack()" defaultHref="/landingpage">
+            </ion-back-button>
+            <ion-title class="responsive-toolbar-title toolbar-center">
+                वेंडर भुगतान
+            </ion-title>
+        </ion-buttons>
+
+
+        <!-- RIGHT -->
+        <ion-buttons slot="end">
+            <!-- <ion-button class="gradient-btn" size="small" (click)="generatePDF()">
+        Print All
+      </ion-button> -->
+        </ion-buttons>
+
+    </ion-toolbar>
+</ion-header>
+
+
+
+
+<ion-content>
+    <!-- Page Loading Indicator -->
+    <ion-loading *ngIf="isPageLoading" [isOpen]="isPageLoading" message="डेटा लोड हो रहा है..." spinner="circular"
+        backdropDismiss="false">
+    </ion-loading>
+
+    <!-- Main Content - Hide until loading complete -->
+    <div *ngIf="!isPageLoading">
+        <!-- Applicant Card (same fields as normal page) -->
+        <div class="estimate-container" *ngIf="singleData">
+            <!-- <ion-card class="applicant-card">
+        <div class="applicant-row">
+          <ion-text class="applicant-text">
+            <strong style="font-size: 20px; text-align: center;">
+              आवेदक क्रमांक : {{ application_number }}
+            </strong>
+          </ion-text>
+        </div>
+      </ion-card> -->
+
+            <div class="details-section">
+
+                <strong style="font-size: 20px; text-align: center !important ;">
+                    आवेदक विवरण :
+                </strong>
+                <hr />
+                <ion-grid>
+
+                    <ion-row>
+                        <ion-col size="12" size-md="4">
+                            <div class="detail-item">
+                                <ion-label class="detail-title"> आवेदक क्रमांक :
+                                    <span class="detail-value">{{ application_number }}</span>
+                                </ion-label>
+                            </div>
+                        </ion-col>
+
+                        <ion-col size="12" size-md="4">
+                            <div class="detail-item">
+                                <ion-label class="detail-title">कृषक/हितग्राही का नाम :
+                                    <span class="detail-value">{{ singleData.hitgrahiName }}</span>
+                                </ion-label>
+                            </div>
+                        </ion-col>
+
+                        <ion-col size="12" size-md="4">
+                            <div class="detail-item">
+                                <ion-label class="detail-title">पिता का नाम :
+                                    <span class="detail-value">{{ singleData.fatherName }}</span>
+                                </ion-label>
+                            </div>
+                        </ion-col>
+
+                        <ion-col size="12" size-md="4">
+                            <div class="detail-item">
+                                <ion-label class="detail-title">पता :
+                                    <span class="detail-value">
+                                        {{ singleData.address }}, {{ singleData.gramPanchayatName }}
+                                    </span>
+                                </ion-label>
+                            </div>
+                        </ion-col>
+                        <ion-col size="12" size-md="4">
+                            <div class="detail-item">
+                                <ion-label class="detail-title">मोबाईल नंबर :
+                                    <span class="detail-value">{{ singleData.mobileNo }}</span>
+                                </ion-label>
+                            </div>
+                        </ion-col>
+                    </ion-row>
+
+                    <ion-row>
+
+
+                        <ion-col size="12" size-md="4">
+                            <div class="detail-item">
+                                <ion-label class="detail-title">भूमि का प्रकार :
+                                    <span class="detail-value">
+                                        {{ singleData.landType == 1 ? 'FRA LAND' : 'REVENUE LAND' }}
+                                    </span>
+                                </ion-label>
+                            </div>
+                        </ion-col>
+
+                        <ion-col size="12" size-md="4">
+                            <div class="detail-item">
+                                <ion-label class="detail-title">कुल रकबा (एकड़ मे) :
+                                    <span class="detail-value">{{ singleData.totalAcre }}</span>
+                                </ion-label>
+                            </div>
+                        </ion-col>
+                    </ion-row>
+                </ion-grid>
+            </div>
+
+
+        </div>
+
+        <!-- Actions -->
+
+
+        <!-- <div *ngIf="!categoriesToShow.length">कोई मान्य प्रजाति डेटा उपलब्ध नहीं</div> -->
+        <div *ngIf="!categoriesToShow.length" class="center-image">
+            <img src="../../../assets/img/notfound.jpeg" alt="No Data">
+        </div>
+
+
+        <!-- Goswara Summary Table (New Table) -->
+
+
+        <!-- Previous Detailed Tables (One per Plant Category) -->
+
+        <ng-container *ngFor="let cat of categoriesToShow; let i = index">
+            <ion-card class="species-card">
+                <ion-text class="species-title">
+                    <strong>प्रजाति का नाम :- {{ cat.label }} (कुल पौधे: {{ cat.plantCount }}) (कुल एकड़ : {{ cat.area
+                        }})
+                        (RO द्वारा कुल रोपित : {{ cat.total_ropit }})
+                    </strong>
+                </ion-text>
+                <!-- <ion-button class="my-ion-button" (click)="printSection('print-section-' + i)">Print</ion-button> -->
+            </ion-card>
+
+            <div class="table-wrapper detail-table-wrapper printable-section" [id]="'print-section-' + i">
+                <table class="custom-table detail-table">
+                    <thead>
+                        <!-- Row 1: Main headers -->
+                        <tr>
+                            <th rowspan="2" class="detail-th-year">वर्ष</th>
+                            <th rowspan="2" class="detail-th">क्रमांक</th>
+                            <th rowspan="2" class="detail-th">कार्य विवरण</th>
+                            <th rowspan="2"></th>
+                            <th rowspan="2"></th>
+                            <th colspan="2" class="detail-th">रोपित पौधों की संख्या</th>
+
+                            <th colspan="2" class="detail-th">दर (₹)</th>
+                            <th rowspan="2" class="detail-th">राशि (₹)</th>
+                        </tr>
+
+                        <!-- Row 2: Sub headers -->
+                        <tr>
+                            <th class="detail-th">5 एकड़ से कम</th>
+                            <th class="detail-th">5 एकड़ से अधिक</th>
+                            <th class="detail-th">5 एकड़ से कम (100%)</th>
+                            <th class="detail-th">5 एकड़ से अधिक (50%)</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        <!-- ================== प्रथम वर्ष ================== -->
+                        <ng-container *ngIf="showYear1">
+
+                            <tr class="detail-year-header-row">
+                                <td [attr.rowspan]="year1Rows.length + 1" class="year-label detail-year-cell">प्रथम वर्ष
+                                </td>
+                            </tr>
+
+                            <tr *ngFor="let item of year1Rows" [class.table-secondary]="!item.isGranted"
+                                class="detail-data-row">
+                                <td class="detail-td detail-kramank">{{ item.itemKramank }}</td>
+                                <td class="detail-td detail-karya" [style.text-align]="item.tablealign"
+                                    [style.font-weight]="item.fontweight">
+                                    {{ item.karyaVivran }}
+
+                                </td>
+                                <td>
+                                    <input type="checkbox" class="form-check-input"
+                                        [(ngModel)]="cat.rowGrantMap[1][item.itemKramank]" />
+                                </td>
+                                <td>
+                                    {{ cat.rowGrantMap[selectedYear!][item.itemKramank] ? 'Yes' : 'No' }}
+                                </td>
+                                <td class="detail-td detail-count"> {{ item.itemKramank === 3 ? less5PitCount(cat) :
+                                    less5AreaCount(cat) }}</td>
+                                <td class="detail-td detail-count"> {{ item.itemKramank === 3 ? more5PitCount(cat) :
+                                    more5AreaCount(cat) }}</td>
+                                <td class="detail-td detail-rate">{{ item[cat.rateField] }}</td>
+                                <td class="detail-td detail-rate">{{ item[cat.rateField] / 2 }}</td>
+                                <td class="detail-td detail-amount">
+                                    {{ ((item[cat.rateField] * (item.itemKramank === 3 ? less5PitCount(cat) :
+                                    less5AreaCount(cat))) + ((item[cat.rateField] / 2) * (item.itemKramank === 3 ?
+                                    more5PitCount(cat) : more5AreaCount(cat)))) | number:'1.2-2' }}
+                                </td>
+                            </tr>
+
+                            <tr class="detail-year-total-row">
+                                <td colspan="" class="detail-grand-total-label">महायोग</td>
+                                <td colspan="8" class="detail-words-text"> राशि शब्दों में :
+                                    {{ convertNumberToWords(getYearTotal(cat, year1Rows, 1)) }}</td>
+                                <td class="detail-year-total-amount">
+                                    {{ getYearTotal(cat, year1Rows, 1) | number:'1.2-2' }}
+                                </td>
+                            </tr>
+
+                        </ng-container>
+
+
+                        <!-- ================== द्वितीय वर्ष ================== -->
+                        <ng-container *ngIf="showYear2">
+
+                            <tr class="detail-year-header-row">
+                                <td [attr.rowspan]="year2Rows.length + 1" class="year-label detail-year-cell">द्वितीय
+                                    वर्ष</td>
+                            </tr>
+
+                            <tr *ngFor="let item of year2Rows" class="detail-data-row">
+                                <td class="detail-td detail-kramank">{{ item.itemKramank }}</td>
+                                <td class="detail-td detail-karya" [style.text-align]="item.tablealign"
+                                    [style.font-weight]="item.fontweight">
+                                    {{ item.karyaVivran }}
+                                </td>
+                                <td>
+                                    <input type="checkbox" class="form-check-input"
+                                        [(ngModel)]="cat.rowGrantMap[2][item.itemKramank]" />
+                                </td>
+                                <td>
+                                    {{ cat.rowGrantMap[selectedYear!][item.itemKramank] ? 'Yes' : 'No' }}
+                                </td>
+                                <td class="detail-td detail-count"> {{ item.itemKramank === 3 ? less5PitCount(cat) :
+                                    less5AreaCount(cat) }}</td>
+                                <td class="detail-td detail-count"> {{ item.itemKramank === 3 ? more5PitCount(cat) :
+                                    more5AreaCount(cat) }}</td>
+                                <td class="detail-td detail-rate">{{ item[cat.rateField] }}</td>
+                                <td class="detail-td detail-rate">{{ item[cat.rateField] / 2 }}</td>
+                                <td class="detail-td detail-amount">
+                                    {{ ((item[cat.rateField] * (item.itemKramank === 3 ? less5PitCount(cat) :
+                                    less5AreaCount(cat))) + ((item[cat.rateField] / 2) * (item.itemKramank === 3 ?
+                                    more5PitCount(cat) : more5AreaCount(cat)))) | number:'1.2-2' }}
+                                </td>
+                            </tr>
+
+                            <tr class="detail-year-total-row">
+                                <td colspan="9" class="detail-year-total-label">द्वितीय वर्ष का योग</td>
+                                <td class="detail-year-total-amount">
+                                    {{ getYearTotal(cat, year2Rows, 2) | number:'1.2-2' }}
+                                </td>
+                            </tr>
+
+                        </ng-container>
+
+
+                        <!-- ================== तृतीय वर्ष ================== -->
+                        <ng-container *ngIf="showYear3">
+
+                            <tr class="detail-year-header-row">
+                                <td [attr.rowspan]="year3Rows.length + 1" class="year-label detail-year-cell">तृतीय वर्ष
+                                </td>
+                            </tr>
+
+                            <tr *ngFor="let item of year3Rows" class="detail-data-row">
+                                <td class="detail-td detail-kramank">{{ item.itemKramank }}</td>
+                                <td class="detail-td detail-karya" [style.text-align]="item.tablealign"
+                                    [style.font-weight]="item.fontweight">
+                                    {{ item.karyaVivran }}
+                                </td>
+                                <td>
+                                    <input type="checkbox" class="form-check-input"
+                                        [(ngModel)]="cat.rowGrantMap[3][item.itemKramank]" />
+                                </td>
+                                <td>
+                                    {{ cat.rowGrantMap[selectedYear!][item.itemKramank] ? 'Yes' : 'No' }}
+                                </td>
+                                <td class="detail-td detail-count"> {{ item.itemKramank === 3 ? less5PitCount(cat) :
+                                    less5AreaCount(cat) }}</td>
+                                <td class="detail-td detail-count"> {{ item.itemKramank === 3 ? more5PitCount(cat) :
+                                    more5AreaCount(cat) }}</td>
+                                <td class="detail-td detail-rate">{{ item[cat.rateField] }}</td>
+                                <td class="detail-td detail-rate">{{ item[cat.rateField] / 2 }}</td>
+                                <td class="detail-td detail-amount">
+                                    {{ ((item[cat.rateField] * (item.itemKramank === 3 ? less5PitCount(cat) :
+                                    less5AreaCount(cat))) + ((item[cat.rateField] / 2) * (item.itemKramank === 3 ?
+                                    more5PitCount(cat) : more5AreaCount(cat)))) | number:'1.2-2' }}
+                                </td>
+                            </tr>
+
+                            <tr class="detail-year-total-row">
+                                <td colspan="9" class="detail-year-total-label">तृतीय वर्ष का योग</td>
+                                <td class="detail-year-total-amount">
+                                    {{ getYearTotal(cat, year3Rows, 3) | number:'1.2-2' }}
+                                </td>
+                            </tr>
+
+                        </ng-container>
+
+
+                    </tbody>
+
+                </table>
+            </div>
+        </ng-container>
+
+        <div *ngIf="categoriesToShow.length">
+            <ion-card class="goswara-card" style="margin-top: 20px;">
+                <ion-card-header>
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <ion-card-title class="goswara-title">गोस्वारा एस्टीमेट</ion-card-title>
+                    </div>
+                </ion-card-header>
+                <ion-card-content>
+                    <div class="table-wrapper goswara-table-wrapper printable-section" id="print-section-goswara">
+                        <table class="custom-table goswara-table">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        प्रजातिवर गोस्वारा एस्टीमेट
+                                        {{ selectedYear === 1 ? 'पहला वर्ष' : (selectedYear === 2 ? 'द्वितीय वर्ष' :
+                                        'तृतीय वर्ष') }}
+                                    </th>
+                                    <th *ngIf="showYear1">कुल योग</th>
+                                    <th *ngIf="showYear2">कुल योग</th>
+                                    <th *ngIf="showYear3">कुल योग</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                <!-- One row for each plant category -->
+
+
+
+                                <!-- Total Row (महायोग) -->
+                                <tr *ngFor="let cat of categoriesToShow" class="goswara-data-row">
+                                    <td class="goswara-plant-name">{{ cat.label }}</td>
+
+                                    <td *ngIf="showYear1" class="goswara-amount">
+                                        {{ getYearTotal(cat, year1Rows, 1) | number:'1.2-2' }}
+                                    </td>
+
+                                    <td *ngIf="showYear2" class="goswara-amount">
+                                        {{ getYearTotal(cat, year2Rows, 2) | number:'1.2-2' }}
+                                    </td>
+
+                                    <td *ngIf="showYear3" class="goswara-amount">
+                                        {{ getYearTotal(cat, year3Rows, 3 ) | number:'1.2-2' }}
+                                    </td>
+                                </tr>
+
+
+                                <!-- Amount in words row -->
+                                <tr class="goswara-words-row">
+                                    <td class="goswara-words-text">
+                                        <strong>राशि शब्दों में :</strong>
+                                        {{ convertNumberToWords(getAllPrajatiYearTotal(1)) }}
+                                    </td>
+                                    <td *ngIf="showYear1" class="goswara-words-text">
+                                        <strong>महायोग (प्रथम वर्ष) :</strong>
+                                        {{ getAllPrajatiYearTotal(1) | number:'1.2-2' }}
+                                    </td>
+                                    <td *ngIf="showYear2" class="goswara-words-text">
+                                        <strong>महायोग (द्वितीय वर्ष) :</strong>
+                                        {{ getAllPrajatiYearTotal(2) | number:'1.2-2' }}
+                                    </td>
+                                    <td *ngIf="showYear3" class="goswara-words-text">
+                                        <strong>महायोग (तृतीय वर्ष) :</strong>
+                                        {{ getAllPrajatiYearTotal(3) | number:'1.2-2' }}
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </ion-card-content>
+                <div class="payment-button-container">
+                    <ion-button (click)="makePayment()" >make payment</ion-button>
+                </div>
+            </ion-card>
+
+
+        </div>
+    </div>
+
+</ion-content>

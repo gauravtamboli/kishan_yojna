@@ -11,7 +11,7 @@ import { MenuController } from '@ionic/angular';
 import { ApiService } from 'src/app/services/api.service';
 import { OfficersLoginResponseModel } from '../officer-login/OfficersLoginResponse.model';
 import { addIcons } from 'ionicons';
-import { appsOutline, homeOutline, informationOutline, informationCircle, buildOutline, logOutOutline, chevronBackOutline, chevronForwardOutline, downloadOutline, chevronDownOutline, optionsOutline, reorderThreeOutline, documentTextOutline, statsChartOutline, mapOutline, peopleOutline, personOutline, addCircleOutline, trendingUpOutline, leafOutline, hammerOutline, clipboardOutline, businessOutline, receiptOutline, cashOutline, listOutline } from 'ionicons/icons';
+import { appsOutline, homeOutline, informationOutline, informationCircle, buildOutline, logOutOutline, chevronBackOutline, chevronForwardOutline, downloadOutline, chevronDownOutline, optionsOutline, reorderThreeOutline, documentTextOutline, statsChartOutline, mapOutline, peopleOutline, personOutline, addCircleOutline, trendingUpOutline, leafOutline, hammerOutline, clipboardOutline, businessOutline, receiptOutline, cashOutline, listOutline, walletOutline } from 'ionicons/icons';
 import { Browser } from '@capacitor/browser';
 import { Platform, AlertController } from '@ionic/angular';
 import { NetworkCheckService } from 'src/app/services/network-check.service';
@@ -209,19 +209,19 @@ export class OfficersDashboardROPage implements OnInit {
           is_submenu: true,
           icon: 'add-circle-outline',
           children: [
-             {
+            {
               title: 'गड्ढों की संख्या दर्ज करें',
               url: 'number-of-pit',
               is_submenu: false,
               icon: 'hammer-outline'
             },
             {
-              title: 'रोपित पौधों की संख्या दर्ज करें',
+              title: 'पौधों की संख्या दर्ज करें',
               url: 'ropit-paudho-ki-sankhya',
               is_submenu: false,
               icon: 'leaf-outline'
             },
-           
+
             {
               title: 'रेंज रिपोर्ट (रोपण/गड्ढे)',
               url: 'range-plant-report',
@@ -232,14 +232,14 @@ export class OfficersDashboardROPage implements OnInit {
         },
 
         {
-          title: 'भुगतान करे',
+          title: 'भुगतान',
           is_submenu: true,
           icon: 'cash-outline',
           children: [
             {
               icon: 'business-outline',
-              title: 'वेंडर भुगतान करें',
-              url: 'ropit-paudho-ki-sankhya/list',
+              title: 'वेंडर भुगतान बनाए ',
+              url: 'vendor-payment-list',
               state: {
                 range_id: rangid,
                 year: 1
@@ -248,15 +248,30 @@ export class OfficersDashboardROPage implements OnInit {
               is_submenu: false
             },
             {
-              title: 'हितग्राही भुगतान करें',
+              title: 'हितग्राही भुगतान बनाएं',
               icon: 'person-outline',
-              url: 'ropit-paudho-ki-sankhya/list',
+              url: 'payment',
+              state: {
+                range_id: rangid,
+                year: 1
+              },
               is_submenu: false
 
             },
             {
-              title: 'रिपोर्ट',
+              title: 'भुगतान करे ',
               icon: 'receipt-outline',
+              url: 'create-bill',
+              state: {
+                range_id: rangid,
+                year: 1
+              },
+              is_submenu: false
+
+            },
+            {
+              title: 'भुगतान रिपोर्ट',
+              icon: 'wallet-outline',
               url: 'ropit-paudho-ki-sankhya/report',
               is_submenu: false
 
@@ -426,7 +441,7 @@ export class OfficersDashboardROPage implements OnInit {
   addAllIcon() {
     addIcons({
       appsOutline, homeOutline, informationOutline, informationCircle, buildOutline, logOutOutline, reorderThreeOutline,
-      chevronBackOutline, chevronForwardOutline, chevronDownOutline, optionsOutline, downloadOutline,
+      chevronBackOutline, chevronForwardOutline, chevronDownOutline, optionsOutline, downloadOutline, walletOutline,
       'document-text-outline': documentTextOutline,
       'stats-chart-outline': statsChartOutline,
       'map-outline': mapOutline,
@@ -738,7 +753,13 @@ export class OfficersDashboardROPage implements OnInit {
     // NORMAL URL (OLD)
     // -------------------------------
     if (page.url) {
-      this.router.navigate([page.url]);
+      if (page.state) {
+        this.router.navigate([page.url], {
+          state: page.state
+        });
+      } else {
+        this.router.navigate([page.url]);
+      }
       return;
     }
   }

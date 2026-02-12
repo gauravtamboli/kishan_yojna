@@ -53,14 +53,14 @@
         <ion-grid>
 
           <ion-row>
-             <ion-col size="12" size-md="4">
+            <ion-col size="12" size-md="4">
               <div class="detail-item">
-                <ion-label class="detail-title">  आवेदक क्रमांक : 
+                <ion-label class="detail-title"> आवेदक क्रमांक :
                   <span class="detail-value">{{ application_number }}</span>
                 </ion-label>
               </div>
             </ion-col>
-            
+
             <ion-col size="12" size-md="4">
               <div class="detail-item">
                 <ion-label class="detail-title">कृषक/हितग्राही का नाम :
@@ -86,7 +86,7 @@
                 </ion-label>
               </div>
             </ion-col>
-              <ion-col size="12" size-md="4">
+            <ion-col size="12" size-md="4">
               <div class="detail-item">
                 <ion-label class="detail-title">मोबाईल नंबर :
                   <span class="detail-value">{{ singleData.mobileNo }}</span>
@@ -96,7 +96,7 @@
           </ion-row>
 
           <ion-row>
-          
+
 
             <ion-col size="12" size-md="4">
               <div class="detail-item">
@@ -140,7 +140,7 @@
       <ion-card class="species-card">
         <ion-text class="species-title">
           <strong>प्रजाति का नाम :- {{ cat.label }} (कुल पौधे: {{ cat.plantCount }}) (कुल एकड़ : {{ cat.area }})
-             (RO द्वारा कुल रोपित : {{ cat.total_ropit }})
+            (RO द्वारा कुल रोपित : {{ cat.total_ropit }})
           </strong>
         </ion-text>
         <!-- <ion-button class="my-ion-button" (click)="printSection('print-section-' + i)">Print</ion-button> -->
@@ -193,12 +193,15 @@
                 <td>
                   {{ cat.rowGrantMap[selectedYear!][item.itemKramank] ? 'Yes' : 'No' }}
                 </td>
-                <td class="detail-td detail-count"> {{ less5AreaCount(cat) }}</td>
-                <td class="detail-td detail-count"> {{ more5AreaCount(cat) }}</td>
+                <td class="detail-td detail-count"> {{ item.itemKramank === 3 ? less5PitCount(cat) : less5AreaCount(cat)
+                  }}</td>
+                <td class="detail-td detail-count"> {{ item.itemKramank === 3 ? more5PitCount(cat) : more5AreaCount(cat)
+                  }}</td>
                 <td class="detail-td detail-rate">{{ item[cat.rateField] }}</td>
                 <td class="detail-td detail-rate">{{ item[cat.rateField] / 2 }}</td>
                 <td class="detail-td detail-amount">
-                  {{ (item[cat.rateField] * less5AreaCount(cat)) + ((item[cat.rateField] / 2) * more5AreaCount(cat)) |
+                  {{ ((item[cat.rateField] * (item.itemKramank === 3 ? less5PitCount(cat) : less5AreaCount(cat))) +
+                  ((item[cat.rateField] / 2) * (item.itemKramank === 3 ? more5PitCount(cat) : more5AreaCount(cat)))) |
                   number:'1.2-2' }}
                 </td>
               </tr>
@@ -234,12 +237,15 @@
                 <td>
                   {{ cat.rowGrantMap[selectedYear!][item.itemKramank] ? 'Yes' : 'No' }}
                 </td>
-                <td class="detail-td detail-count"> {{ less5AreaCount(cat) }}</td>
-                <td class="detail-td detail-count"> {{ more5AreaCount(cat) }}</td>
+                <td class="detail-td detail-count"> {{ item.itemKramank === 3 ? less5PitCount(cat) : less5AreaCount(cat)
+                  }}</td>
+                <td class="detail-td detail-count"> {{ item.itemKramank === 3 ? more5PitCount(cat) : more5AreaCount(cat)
+                  }}</td>
                 <td class="detail-td detail-rate">{{ item[cat.rateField] }}</td>
                 <td class="detail-td detail-rate">{{ item[cat.rateField] / 2 }}</td>
                 <td class="detail-td detail-amount">
-                  {{ (item[cat.rateField] * less5AreaCount(cat)) + ((item[cat.rateField] / 2) * more5AreaCount(cat)) |
+                  {{ ((item[cat.rateField] * (item.itemKramank === 3 ? less5PitCount(cat) : less5AreaCount(cat))) +
+                  ((item[cat.rateField] / 2) * (item.itemKramank === 3 ? more5PitCount(cat) : more5AreaCount(cat)))) |
                   number:'1.2-2' }}
                 </td>
               </tr>
@@ -273,12 +279,15 @@
                 <td>
                   {{ cat.rowGrantMap[selectedYear!][item.itemKramank] ? 'Yes' : 'No' }}
                 </td>
-                <td class="detail-td detail-count"> {{ less5AreaCount(cat) }}</td>
-                <td class="detail-td detail-count"> {{ more5AreaCount(cat) }}</td>
+                <td class="detail-td detail-count"> {{ item.itemKramank === 3 ? less5PitCount(cat) : less5AreaCount(cat)
+                  }}</td>
+                <td class="detail-td detail-count"> {{ item.itemKramank === 3 ? more5PitCount(cat) : more5AreaCount(cat)
+                  }}</td>
                 <td class="detail-td detail-rate">{{ item[cat.rateField] }}</td>
                 <td class="detail-td detail-rate">{{ item[cat.rateField] / 2 }}</td>
                 <td class="detail-td detail-amount">
-                  {{ (item[cat.rateField] * less5AreaCount(cat)) + ((item[cat.rateField] / 2) * more5AreaCount(cat)) |
+                  {{ ((item[cat.rateField] * (item.itemKramank === 3 ? less5PitCount(cat) : less5AreaCount(cat))) +
+                  ((item[cat.rateField] / 2) * (item.itemKramank === 3 ? more5PitCount(cat) : more5AreaCount(cat)))) |
                   number:'1.2-2' }}
                 </td>
               </tr>
@@ -367,12 +376,12 @@
             </table>
           </div>
         </ion-card-content>
-         <div class="payment-button-container"> 
-        <ion-button>make payment</ion-button>
-      </div>
+        <div class="payment-button-container">
+          <ion-button (click)="makePayment()" >Create Payment</ion-button>
+        </div>
       </ion-card>
-      
-     
+
+
     </div>
   </div>
 
