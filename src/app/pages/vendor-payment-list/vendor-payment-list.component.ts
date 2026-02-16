@@ -42,6 +42,7 @@ export class VendorPaymentListComponent implements OnInit {
     filteredAwedans: any[] = [];
 
     searchText: string = '';
+    fin_year: any;
 
     constructor(
         private platform: Platform,
@@ -51,14 +52,19 @@ export class VendorPaymentListComponent implements OnInit {
     ) { }
 
     ngOnInit(): void {
+        this.setSelectInterface();
+    }
 
+    ionViewWillEnter(): void {
         const navigationState = history.state;
+        if (navigationState?.range_id) {
+            this.rangeId = navigationState.range_id;
+            this.year = navigationState.year;
+            this.fin_year = navigationState.fin_year;
+        }
 
-        this.rangeId = navigationState.range_id;
-        this.year = navigationState.year;
         console.log('Navigation State (Vendor List):', navigationState);
         this.onLoadPayment((this.year ?? 1).toString());
-        this.setSelectInterface();
     }
 
     /** Detect Mobile vs Web */
@@ -74,7 +80,7 @@ export class VendorPaymentListComponent implements OnInit {
     onLoadPayment(selectedPaymentYear: string) {
         this.currentPage = 1;
 
-        this.api.VendorPaymentListData(selectedPaymentYear, this.rangeId).subscribe({
+        this.api.VendorPaymentListData(selectedPaymentYear, this.rangeId, this.fin_year || '').subscribe({
             next: (res: any) => {
                 this.paymentList = res?.data || [];
 
@@ -158,7 +164,8 @@ export class VendorPaymentListComponent implements OnInit {
         this.router.navigate(['/vendor-payment'], {
             queryParams: {
                 application_number: item.application_number,
-                year: this.year
+                year: this.year,
+                fin_year: this.fin_year
             }
         });
     }

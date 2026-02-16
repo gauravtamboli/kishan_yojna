@@ -13,6 +13,7 @@ import { appsOutline, homeOutline, informationOutline, informationCircle, buildO
 import { Platform } from '@ionic/angular';
 import { NetworkCheckService } from 'src/app/services/network-check.service';
 import { Router } from '@angular/router';
+import { StorageService } from 'src/app/services/storage.service';
 import { TableModule } from 'primeng/table';
 import { SharedserviceService } from 'src/app/services/sharedservice.service';
 import { ModalController } from '@ionic/angular';
@@ -47,12 +48,39 @@ export class YearThreeDashboardPage implements OnInit {
     this.isUserMenuOpen = true;
   }
 
+  curent_session: any;
   pages: { title: string, url: string, is_submenu: boolean }[] = [];
   isConnected: boolean = false;
+
+  isDarkMode = false;
+
+  toggleTheme() {
+    this.isDarkMode = !this.isDarkMode;
+    this.applyTheme();
+    localStorage.setItem('theme-mode', this.isDarkMode ? 'dark' : 'light');
+  }
+
+  private applyTheme() {
+    const isDarkClass = 'ion-palette-dark';
+    if (this.isDarkMode) {
+      document.documentElement.classList.add(isDarkClass);
+      document.body.classList.add(isDarkClass);
+    } else {
+      document.documentElement.classList.remove(isDarkClass);
+      document.body.classList.remove(isDarkClass);
+    }
+  }
+
+  private restoreSavedTheme() {
+    const savedTheme = localStorage.getItem('theme-mode');
+    this.isDarkMode = savedTheme === 'dark';
+    this.applyTheme();
+  }
   isNoRecordFound: boolean = true;
 
   constructor(
     private modalCtrl: ModalController,
+    private storageService: StorageService,
     private router: Router,
     private networkCheckService: NetworkCheckService,
     private platform: Platform,
@@ -90,7 +118,10 @@ export class YearThreeDashboardPage implements OnInit {
   plantInputs: { [key: string]: number | null } = {}; // key: "appNumber_plantId"
   isRangeOfficer: boolean = false;
 
-  ngOnInit() {
+  async ngOnInit() {
+    this.restoreSavedTheme();
+    this.curent_session = await this.storageService.get('current_session');
+
     this.updateTranslation();
     this.isRangeOfficer = this.isRODesignation(); // Check if RO
     this.getYearThreeAwedanCounts(); // Load counts first

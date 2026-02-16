@@ -33,7 +33,7 @@
  */
 
 /* @import "@ionic/angular/css/palettes/dark.always.css"; */
-/* @import "@ionic/angular/css/palettes/dark.class.css"; */
+@import "@ionic/angular/css/palettes/dark.class.css";
 // @import '@ionic/angular/css/palettes/dark.system.css';
 // @import '@ionic/angular/css/palettes/light.css';
 
@@ -102,132 +102,1466 @@
 
 :root {
   --ion-safe-area-top: env(safe-area-inset-top);
+
+  /* ========================================
+     PREMIUM THEME SYSTEM - Light Mode
+     ======================================== */
+
+  /* PRIMARY COLOR PALETTE - Modern Teal/Gold */
+  --theme-primary: #2c7a7b;
+  --theme-primary-light: #45b7ba;
+  --theme-primary-lighter: #6fc9cb;
+  --theme-primary-dark: #1d4f50;
+  --theme-primary-gradient: linear-gradient(135deg, #2c7a7b 0%, #45b7ba 100%);
+
+  /* SECONDARY COLOR - Forest Green */
+  --theme-secondary: #1a5f3c;
+  --theme-secondary-light: #2d8f5e;
+  --theme-secondary-lighter: #4ab382;
+  --theme-secondary-dark: #0f3720;
+
+  /* ACCENT COLOR - Gold/Orange */
+  --theme-accent: #f59e0b;
+  --theme-accent-light: #fbbf24;
+  --theme-accent-lighter: #fcd34d;
+  --theme-accent-dark: #d97706;
+
+  /* NEUTRAL PALETTE - Light Mode */
+  --theme-bg-light: #f8f9fa;
+  --theme-bg-secondary: #f1f3f5;
+  --theme-bg-tertiary: #e9ecef;
+  --theme-text-primary: #0f172a;
+  --theme-text-secondary: #475569;
+  --theme-text-tertiary: #64748b;
+  --theme-text-quaternary: #94a3b8;
+  --theme-border: #cbd5e1;
+  --theme-border-light: #e2e8f0;
+
+  /* SURFACE COLORS */
+  --theme-card-bg: #ffffff;
+  --theme-card-border: #e2e8f0;
+  --theme-surface-overlay: rgba(0, 0, 0, 0.02);
+
+  /* SHADOWS - Premium Depth */
+  --theme-shadow-xs: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --theme-shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  --theme-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --theme-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --theme-shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  --theme-shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  --theme-shadow-elevation-1: 0 3px 8px rgba(0, 0, 0, 0.08);
+  --theme-shadow-elevation-2: 0 8px 16px rgba(0, 0, 0, 0.12);
+
+  /* STATUS COLORS */
+  --theme-success: #10b981;
+  --theme-success-light: #6ee7b7;
+  --theme-success-bg: #ecfdf5;
+  --theme-warning: #f59e0b;
+  --theme-warning-light: #fcd34d;
+  --theme-warning-bg: #fffbeb;
+  --theme-danger: #ef4444;
+  --theme-danger-light: #fca5a5;
+  --theme-danger-bg: #fef2f2;
+  --theme-info: #0ea5e9;
+  --theme-info-light: #7dd3fc;
+  --theme-info-bg: #f0f9ff;
+
+  /* SPACING SCALE */
+  --theme-spacing-xs: 4px;
+  --theme-spacing-sm: 8px;
+  --theme-spacing-md: 12px;
+  --theme-spacing-lg: 16px;
+  --theme-spacing-xl: 24px;
+  --theme-spacing-2xl: 32px;
+  --theme-spacing-3xl: 48px;
+  --theme-spacing-4xl: 64px;
+
+  /* TYPOGRAPHY */
+  --theme-font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --theme-font-family-mono: 'SFMono-Regular', Menlo, 'Courier New', monospace;
+  --theme-font-weight-thin: 100;
+  --theme-font-weight-light: 300;
+  --theme-font-weight-regular: 400;
+  --theme-font-weight-medium: 500;
+  --theme-font-weight-semibold: 600;
+  --theme-font-weight-bold: 700;
+  --theme-font-weight-extrabold: 800;
+
+  /* LINE HEIGHT & LETTER SPACING */
+  --theme-line-height-tight: 1.2;
+  --theme-line-height-normal: 1.5;
+  --theme-line-height-relaxed: 1.75;
+  --theme-letter-spacing-tight: -0.01em;
+  --theme-letter-spacing-normal: 0;
+  --theme-letter-spacing-wide: 0.025em;
+
+  /* BORDER RADIUS */
+  --theme-radius-xs: 2px;
+  --theme-radius-sm: 4px;
+  --theme-radius-md: 8px;
+  --theme-radius-lg: 12px;
+  --theme-radius-xl: 16px;
+  --theme-radius-2xl: 20px;
+  --theme-radius-3xl: 24px;
+  --theme-radius-full: 9999px;
+
+  /* TRANSITIONS & ANIMATIONS */
+  --theme-transition-fast: all 0.15s ease-in-out;
+  --theme-transition-base: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --theme-transition-slow: all 0.5s ease-in-out;
+  --theme-transition-slower: all 0.7s ease-in-out;
+
+  /* Z-INDEX SCALE */
+  --theme-z-hide: -1;
+  --theme-z-auto: auto;
+  --theme-z-base: 0;
+  --theme-z-dropdown: 1000;
+  --theme-z-sticky: 1100;
+  --theme-z-fixed: 1200;
+  --theme-z-modal-backdrop: 1300;
+  --theme-z-modal: 1310;
+  --theme-z-popover: 1320;
+  --theme-z-tooltip: 1330;
 }
 
-.responsive-title {
-  font-size: 12px;
+/* ========================================
+   DARK MODE - Premium Dark Theme
+   ======================================== */
+html.ion-palette-dark,
+body.ion-palette-dark {
+  /* NEUTRAL PALETTE - Dark Mode */
+  --theme-bg-light: #0f172a;
+  --theme-bg-secondary: #1e293b;
+  --theme-bg-tertiary: #334155;
+  --theme-text-primary: #f1f5f9;
+  --theme-text-secondary: #cbd5e1;
+  --theme-text-tertiary: #94a3b8;
+  --theme-text-quaternary: #64748b;
+  --theme-border: #475569;
+  --theme-border-light: #334155;
 
-  @media (min-width: 600px) {
-    font-size: 16px;
+  /* SURFACE COLORS - Dark */
+  --theme-card-bg: #1e293b;
+  --theme-card-border: #334155;
+  --theme-surface-overlay: rgba(255, 255, 255, 0.05);
+
+  /* SHADOWS - Dark Mode (More Pronounced) */
+  --theme-shadow-xs: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+  --theme-shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.4), 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+  --theme-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
+  --theme-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.4), 0 4px 6px -2px rgba(0, 0, 0, 0.3);
+  --theme-shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 10px 10px -5px rgba(0, 0, 0, 0.3);
+  --theme-shadow-elevation-1: 0 3px 8px rgba(0, 0, 0, 0.4);
+  --theme-shadow-elevation-2: 0 8px 16px rgba(0, 0, 0, 0.5);
+
+  /* STATUS COLORS - Dark Mode Variants */
+  --theme-success-bg: #064e3b;
+  --theme-warning-bg: #78350f;
+  --theme-danger-bg: #7f1d1d;
+  --theme-info-bg: #082f49;
+}
+
+/* Dark Mode Element Overrides */
+html.ion-palette-dark,
+html.ion-palette-dark body {
+  background-color: var(--theme-bg-light) !important;
+  color: var(--theme-text-primary) !important;
+}
+
+html.ion-palette-dark ion-content,
+body.ion-palette-dark ion-content {
+  --background: var(--theme-bg-light) !important;
+  --color: var(--theme-text-primary) !important;
+}
+
+html.ion-palette-dark h1,
+html.ion-palette-dark h2,
+html.ion-palette-dark h3,
+html.ion-palette-dark h4,
+html.ion-palette-dark h5,
+html.ion-palette-dark h6,
+html.ion-palette-dark p,
+html.ion-palette-dark span,
+html.ion-palette-dark div,
+html.ion-palette-dark ion-label,
+html.ion-palette-dark ion-text,
+body.ion-palette-dark h1,
+body.ion-palette-dark h2,
+body.ion-palette-dark h3,
+body.ion-palette-dark h4,
+body.ion-palette-dark h5,
+body.ion-palette-dark h6,
+body.ion-palette-dark p,
+body.ion-palette-dark span,
+body.ion-palette-dark div,
+body.ion-palette-dark ion-label,
+body.ion-palette-dark ion-text {
+  color: var(--theme-text-primary) !important;
+}
+
+html.ion-palette-dark ion-input,
+html.ion-palette-dark ion-textarea,
+html.ion-palette-dark ion-select,
+body.ion-palette-dark ion-input,
+body.ion-palette-dark ion-textarea,
+body.ion-palette-dark ion-select {
+  --color: var(--theme-text-primary) !important;
+  --background: var(--theme-card-bg) !important;
+  --border-color: var(--theme-border) !important;
+}
+
+html.ion-palette-dark ion-card,
+body.ion-palette-dark ion-card {
+  --background: var(--theme-card-bg) !important;
+  border-color: var(--theme-border) !important;
+}
+
+html.ion-palette-dark table,
+body.ion-palette-dark table {
+  background: var(--theme-card-bg) !important;
+  color: var(--theme-text-primary) !important;
+}
+
+html.ion-palette-dark th,
+html.ion-palette-dark td,
+body.ion-palette-dark th,
+body.ion-palette-dark td {
+  color: var(--theme-text-primary) !important;
+  border-color: var(--theme-border) !important;
+}
+
+/* Dark Mode Button Styles */
+html.ion-palette-dark ion-button,
+body.ion-palette-dark ion-button {
+  --color: var(--theme-text-primary);
+
+  &[color="primary"] {
+    --background: var(--theme-primary) !important;
   }
 
-  @media (min-width: 1024px) {
-    font-size: 20px;
+  &[color="secondary"] {
+    --background: var(--theme-secondary) !important;
+  }
+
+  &[color="accent"] {
+    --background: var(--theme-accent) !important;
   }
 }
 
-/* Standardized Dashboard Headers */
-.dashboard-toolbar {
-  --min-height: 70px !important;
-  --padding-top: env(safe-area-inset-top) !important;
-  --background: linear-gradient(135deg, var(--ion-color-primary) 0%, #2ecc71 100%) !important;
-  --color: white !important;
-  display: flex;
-  align-items: center;
-}
+/* Dark Mode Popover & Modal */
+html.ion-palette-dark ion-popover,
+body.ion-palette-dark ion-popover {
+  --background: var(--theme-card-bg) !important;
+  --border-color: var(--theme-border) !important;
 
-.dashboard-menu-header {
-  height: 70px !important;
-  display: flex !important;
-  align-items: center !important;
-  background: linear-gradient(135deg, var(--ion-color-primary) 0%, #2ecc71 100%) !important;
-  --border-width: 0 !important;
-
+  ion-list,
   ion-item {
-    --background: transparent !important;
-    --padding-start: 16px !important;
-    --inner-padding-end: 16px !important;
-    width: 100% !important;
-    margin: 0 !important;
-    position: static !important;
-    --min-height: 70px !important;
+    --background: var(--theme-card-bg) !important;
+    --color: var(--theme-text-primary) !important;
+  }
+}
 
-    ion-avatar {
-      width: 40px !important;
-      height: 40px !important;
-      margin-inline-end: 12px !important;
+/* Dark Mode Menu */
+html.ion-palette-dark ion-menu,
+body.ion-palette-dark ion-menu {
+  --background: var(--theme-bg-light) !important;
+  --color: var(--theme-text-primary) !important;
+}
+
+html.ion-palette-dark ion-menu ion-item,
+body.ion-palette-dark ion-menu ion-item {
+  --color: var(--theme-text-primary) !important;
+}
+
+/* Dark Mode Toolbar Parts */
+html.ion-palette-dark ion-toolbar::part(background),
+body.ion-palette-dark ion-toolbar::part(background) {
+  background: var(--theme-primary-gradient) !important;
+}
+
+/* Dark Mode Form Elements Placeholder */
+html.ion-palette-dark ion-input::placeholder,
+html.ion-palette-dark ion-textarea::placeholder,
+body.ion-palette-dark ion-input::placeholder,
+body.ion-palette-dark ion-textarea::placeholder {
+  color: var(--theme-text-tertiary) !important;
+  opacity: 0.7;
+}
+
+/* ========================================
+   DARK MODE - FORCE ALL TEXT VISIBILITY
+   ======================================== */
+html.ion-palette-dark,
+body.ion-palette-dark {
+
+  /* Force all text to be white in dark mode */
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  p,
+  span,
+  div,
+  a,
+  li,
+  td,
+  th,
+  ion-label,
+  ion-text,
+  ion-button,
+  .text-primary,
+  .text-secondary,
+  .text-accent,
+  .label,
+  .title,
+  .subtitle,
+  .responsive-menu-title,
+  .responsive-title,
+  .responsive-label-count,
+  .label-text,
+  .label-count,
+  .status-badge,
+  .badge,
+  .custom-ion-label,
+  .item-style-label,
+  .primary-name,
+  .secondary-name,
+  .beneficiary-cell,
+  .officer-name,
+  .session-text,
+  .action-buttons,
+  [color="primary"],
+  [color="secondary"],
+  [color="accent"],
+  .glass-card,
+  .custom-card,
+  .plant-name,
+  .plant-details,
+  .loading-container p,
+  .farmer-table td,
+  .farmer-table th,
+  .prapatra-title,
+  .species-title,
+  .no-data,
+  .no-records-content,
+  .hitgrahi-name,
+  .info-item .label,
+  .target-tag,
+  .remaining-tag,
+  .stat-summary,
+  .section-title,
+  .govt-title,
+  .pagination-text,
+  .report-title,
+  .report-date,
+  .responsive-toolbar-title {
+    color: var(--theme-text-primary) !important;
+  }
+
+  /* Force background overrides for commonly used light containers in pages */
+  .container,
+  .loading-container,
+  .table-container,
+  .table-responsive,
+  .table-wrapper,
+  .filter-card,
+  .prapatra-section,
+  .plant-line,
+  .report-table,
+  .farmer-table,
+  .p-datatable,
+  .custom-card,
+  .glass-card,
+  .no-records-content,
+  .search-card,
+  .app-card,
+  .plant-item-card,
+  .pagination-card,
+  .page-container,
+  .report-container,
+  .custom-dashboard-table,
+  .center-message-item {
+    background: var(--theme-card-bg) !important;
+    background-color: var(--theme-card-bg) !important;
+    color: var(--theme-text-primary) !important;
+    border-color: var(--theme-border) !important;
+  }
+
+  /* Specific Fixes for reported pages */
+  .kissan-wise-report-container,
+  .payment-container,
+  .vendor-payment-list-container {
+    background: var(--theme-bg-light) !important;
+  }
+
+  /* Table specific overrides for dark mode */
+  .report-table th,
+  .farmer-table thead tr th,
+  .p-datatable thead th,
+  .custom-dashboard-table thead tr,
+  .custom-dashboard-table th {
+    background: var(--theme-primary-dark) !important;
+    color: white !important;
+  }
+
+  .report-table td,
+  .farmer-table tbody tr td,
+  .custom-dashboard-table td {
+    background: transparent !important;
+    border-color: var(--theme-border) !important;
+    color: var(--theme-text-primary) !important;
+  }
+
+  /* Row banding in dark mode */
+  .report-table tbody tr:nth-child(even),
+  .farmer-table tbody tr:nth-child(even),
+  .custom-dashboard-table tbody tr:nth-child(even) {
+    background: rgba(255, 255, 255, 0.03) !important;
+  }
+
+  .total-row {
+    background-color: var(--theme-primary-dark) !important;
+    color: white !important;
+
+    td {
+      color: white !important;
+    }
+  }
+
+  /* Progress Bars & Badges in Dark Mode */
+  .progress-bar-container {
+    background: rgba(255, 255, 255, 0.1) !important;
+  }
+
+  .total-count-badge {
+    background: var(--theme-primary-dark) !important;
+    color: white !important;
+    border-color: var(--theme-primary) !important;
+  }
+
+  .remaining-tag {
+    &.ropit-rem {
+      background: rgba(49, 130, 206, 0.2) !important;
+      border-color: #3182ce !important;
+
+      strong {
+        color: #90cdf4 !important;
+      }
     }
 
-    ion-label {
-      color: white !important;
-      font-weight: 600 !important;
-      margin: 0 !important;
+    &.gadda-rem {
+      background: rgba(237, 137, 54, 0.2) !important;
+      border-color: #ed8936 !important;
 
-      p {
-        color: rgba(255, 255, 255, 0.8) !important;
-        font-size: 0.75rem !important;
-        margin: 0 !important;
+      strong {
+        color: #fbd38d !important;
       }
     }
   }
 
-  .bg {
-    display: none !important;
+
+  /* Exceptions - preserve specific colors */
+  .amount {
+    color: #2ecc71 !important;
+    /* Brighter green for dark mode */
+  }
+
+  .text-success {
+    color: var(--theme-success) !important;
+  }
+
+  .text-warning {
+    color: var(--theme-warning) !important;
+  }
+
+  .text-danger {
+    color: var(--theme-danger) !important;
+  }
+
+  .text-info {
+    color: var(--theme-info) !important;
+  }
+
+  .text-muted {
+    color: var(--theme-text-tertiary) !important;
+  }
+
+  /* Override all hard-coded dark text colors */
+  *:not(.amount):not(.text-success):not(.text-warning):not(.text-danger):not(.text-info):not(.text-muted) {
+
+    &[style*="color: #333"],
+    &[style*="color: black"],
+    &[style*="color: #000"],
+    &[style*="color:#333"],
+    &[style*="color:black"],
+    &[style*="color:#000"],
+    &[style*="color: #2d5a2d"],
+    &[style*="color: #6A5ACD"],
+    &[style*="color: #0066cc"],
+    &[style*="color: #2c3e50"] {
+      color: var(--theme-text-primary) !important;
+    }
+  }
+
+  /* Override hard-coded white/light backgrounds in any element content */
+  div,
+  section,
+  article {
+
+    &[style*="background: white"],
+    &[style*="background: #fff"],
+    &[style*="background: #ffffff"],
+    &[style*="background-color: white"],
+    &[style*="background-color: #fff"],
+    &[style*="background-color: #ffffff"],
+    &[style*="background:white"],
+    &[style*="background:#fff"],
+    &[style*="background:#ffffff"] {
+      background-color: var(--theme-card-bg) !important;
+      background: var(--theme-card-bg) !important;
+    }
+  }
+
+  /* Dark Mode - Form Elements with White Text */
+  ion-input,
+  ion-textarea,
+  ion-select,
+  ion-datetime {
+    --color: var(--theme-text-primary) !important;
+    --text-color: var(--theme-text-primary) !important;
+
+    &::placeholder {
+      color: var(--theme-text-tertiary) !important;
+    }
+  }
+
+  /* Dark Mode - Select/Dropdown Options */
+  .ng-select-container,
+  .ng-dropdown-panel,
+  .ng-option {
+    background: var(--theme-card-bg) !important;
+    color: var(--theme-text-primary) !important;
+  }
+
+  /* Dark Mode - Highlight & Background Colors */
+  [style*="background: #f5f5f5"],
+  [style*="background: #f9f9f9"],
+  [style*="background: #e8f5e9"],
+  [style*="background: #f0f7f0"],
+  [style*="background-color: #f5f5f5"],
+  [style*="background-color: #f9f9f9"],
+  [style*="background-color: #e8f5e9"],
+  [style*="background-color: #f0f7f0"],
+  [style*="background-color: #e0f0f0"],
+  [style*="background-color: #f2f2f2"],
+  [style*="background: #e9ecef"],
+  [style*="background-color: #e9ecef"] {
+    background: var(--theme-bg-secondary) !important;
+  }
+
+  /* Dark Mode - Links */
+  a {
+    color: var(--theme-primary-light) !important;
+
+    &:visited {
+      color: var(--theme-primary-light) !important;
+    }
+
+    &:hover {
+      color: var(--theme-primary) !important;
+    }
+  }
+
+  /* Dark Mode - List Items */
+  ion-item,
+  ion-list {
+    --color: var(--theme-text-primary) !important;
+    --background: transparent !important;
+
+    ion-label {
+      color: var(--theme-text-primary) !important;
+    }
   }
 }
 
-/* ===================================== */
-/* SweetAlert2 PERFECT CENTER FIX (Ionic) */
-/* ===================================== */
 
-/* Remove Ionic transform that breaks fixed positioning */
-ion-content,
-ion-router-outlet,
-.inner-scroll {
-  transform: none !important;
+/* ========================================
+   GLOBAL ELEMENT STYLING
+   ======================================== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-/* Force Swal container to true viewport center */
-body>.swal2-container {
-  position: fixed !important;
-  top: 0 !important;
-  left: 0 !important;
-  width: 100vw !important;
-  height: 100vh !important;
+html,
+body {
+  font-family: var(--theme-font-family);
+  background-color: var(--theme-bg-light);
+  color: var(--theme-text-primary);
+  transition: background-color var(--theme-transition), color var(--theme-transition);
+}
 
-  display: flex !important;
-  align-items: center !important;
+ion-content {
+  --background: var(--theme-bg-light);
+  --color: var(--theme-text-primary);
+}
+
+/* Typography */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: var(--theme-font-weight-bold);
+  color: var(--theme-text-primary);
+  line-height: 1.3;
+}
+
+p {
+  color: var(--theme-text-secondary);
+  line-height: 1.6;
+}
+
+/* ========================================
+   BUTTON STYLING - Premium
+   ======================================== */
+ion-button {
+  --padding-start: var(--theme-spacing-lg);
+  --padding-end: var(--theme-spacing-lg);
+  --padding-top: var(--theme-spacing-md);
+  --padding-bottom: var(--theme-spacing-md);
+  --border-radius: var(--theme-radius-lg);
+  transition: var(--theme-transition-base);
+  font-weight: var(--theme-font-weight-semibold);
+  letter-spacing: 0.5px;
+  text-transform: none;
+  box-shadow: var(--theme-shadow-sm);
+
+  &[color="primary"] {
+    --background: var(--theme-primary);
+    --color: white;
+    --background-hover: var(--theme-primary-dark);
+    --box-shadow: var(--theme-shadow-md);
+
+    &:hover,
+    &:active {
+      box-shadow: var(--theme-shadow-lg);
+      transform: translateY(-1px);
+    }
+  }
+
+  &[color="secondary"] {
+    --background: var(--theme-secondary);
+    --color: white;
+    --background-hover: var(--theme-secondary-dark);
+    --box-shadow: var(--theme-shadow-md);
+  }
+
+  &[color="accent"] {
+    --background: var(--theme-accent);
+    --color: white;
+    --background-hover: var(--theme-accent-dark);
+    --box-shadow: var(--theme-shadow-md);
+  }
+
+  &[fill="outline"] {
+    --border-color: var(--theme-border);
+    --color: var(--theme-text-primary);
+    --background: transparent;
+    border: 1.5px solid var(--theme-border);
+
+    &:hover {
+      background-color: var(--theme-surface-overlay);
+      border-color: var(--theme-primary);
+    }
+  }
+
+  &[fill="clear"] {
+    --color: var(--theme-primary);
+    font-weight: var(--theme-font-weight-semibold);
+
+    &:hover {
+      background-color: var(--theme-surface-overlay);
+    }
+  }
+}
+
+ion-button[color="primary"] {
+  &[color="secondary"] {
+    --background: var(--theme-secondary);
+    --box-shadow: 0 4px 12px rgba(45, 80, 22, 0.3);
+  }
+
+  &[color="accent"] {
+    --background: var(--theme-accent);
+    --box-shadow: 0 4px 12px rgba(230, 126, 34, 0.3);
+  }
+
+  &[fill="outline"] {
+    --border-color: var(--theme-border);
+    --color: var(--theme-text-primary);
+    --background: transparent;
+
+    &:hover {
+      background-color: var(--theme-bg-secondary);
+    }
+  }
+
+
+  /* ========================================
+   CARD & CONTAINER STYLING - Premium
+   ======================================== */
+  ion-card {
+    --background: var(--theme-card-bg);
+    --box-shadow: var(--theme-shadow-sm);
+    border: 1px solid var(--theme-card-border);
+    border-radius: var(--theme-radius-xl);
+    transition: var(--theme-transition-base);
+    overflow: hidden;
+
+    &:hover {
+      box-shadow: var(--theme-shadow-lg);
+      transform: translateY(-4px);
+      border-color: var(--theme-primary-lighter);
+    }
+  }
+
+  .glass-card,
+  .custom-card {
+    background: var(--theme-card-bg);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--theme-card-border);
+    border-radius: var(--theme-radius-xl);
+    box-shadow: var(--theme-shadow-md);
+    transition: var(--theme-transition-base);
+    position: relative;
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: var(--theme-primary-gradient);
+      border-radius: var(--theme-radius-xl) var(--theme-radius-xl) 0 0;
+    }
+
+    &:hover {
+      box-shadow: var(--theme-shadow-xl);
+      transform: translateY(-2px);
+    }
+  }
+
+  /* ========================================
+   FORM ELEMENTS - Premium
+   ======================================== */
+  ion-input,
+  ion-textarea,
+  ion-select,
+  ion-datetime {
+    --background: var(--theme-card-bg);
+    --color: var(--theme-text-primary);
+    --border-color: var(--theme-border);
+    --placeholder-color: var(--theme-text-quaternary);
+    --padding-start: var(--theme-spacing-lg);
+    --padding-end: var(--theme-spacing-lg);
+    --padding-top: var(--theme-spacing-md);
+    --padding-bottom: var(--theme-spacing-md);
+    border: 1.5px solid var(--theme-border);
+    border-radius: var(--theme-radius-lg);
+    transition: var(--theme-transition-base);
+    --min-height: 44px;
+    transition: var(--theme-transition-base);
+
+    &:focus {
+      --border-color: var(--theme-primary);
+      box-shadow: inset 0 0 0 1px var(--theme-primary), 0 0 0 3px rgba(44, 122, 123, 0.1);
+      outline: none;
+    }
+
+    &:hover:not(:focus) {
+      --border-color: var(--theme-primary-lighter);
+    }
+  }
+
+  ion-label {
+    color: var(--theme-text-secondary);
+    font-weight: var(--theme-font-weight-medium);
+    margin-bottom: var(--theme-spacing-md);
+    font-size: 0.875rem;
+    letter-spacing: 0.3px;
+  }
+
+  /* ========================================
+   TABLE STYLING - Premium
+   ======================================== */
+  table,
+  .p-datatable {
+    background: var(--theme-card-bg);
+    border-collapse: collapse;
+    border-radius: var(--theme-radius-lg);
+    overflow: hidden;
+    box-shadow: var(--theme-shadow-sm);
+
+    thead {
+      background: var(--theme-primary-gradient);
+      color: white;
+    }
+
+    th {
+      padding: var(--theme-spacing-lg) var(--theme-spacing-md);
+      font-weight: var(--theme-font-weight-bold);
+      text-align: left;
+      border: none;
+      font-size: 0.875rem;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+
+    td {
+      padding: var(--theme-spacing-lg) var(--theme-spacing-md);
+      border-bottom: 1px solid var(--theme-border-light);
+      color: var(--theme-text-primary);
+      font-size: 0.9375rem;
+    }
+
+    tbody tr {
+      transition: background-color var(--theme-transition-fast);
+
+      &:hover {
+        background-color: var(--theme-surface-overlay);
+      }
+
+      &:nth-child(even) {
+        background-color: transparent;
+      }
+    }
+  }
+
+  /* Dark Mode Table Styles */
+  html.ion-palette-dark table,
+  html.ion-palette-dark .p-datatable,
+  body.ion-palette-dark table,
+  body.ion-palette-dark .p-datatable {
+    background: var(--theme-card-bg) !important;
+
+    thead {
+      background: linear-gradient(135deg, var(--theme-primary-light), var(--theme-primary)) !important;
+    }
+
+    th {
+      background: inherit !important;
+      color: white !important;
+      border-color: var(--theme-border) !important;
+    }
+
+    td {
+      color: var(--theme-text-primary) !important;
+      border-color: var(--theme-border) !important;
+    }
+
+    tbody tr {
+      &:hover {
+        background-color: var(--theme-bg-tertiary) !important;
+      }
+
+      &:nth-child(even) {
+        background-color: var(--theme-bg-secondary) !important;
+      }
+    }
+  }
+
+  html.ion-palette-dark .p-paginator,
+  html.ion-palette-dark .p-datatable .p-datatable-paginator,
+  body.ion-palette-dark .p-paginator,
+  body.ion-palette-dark .p-datatable .p-datatable-paginator {
+    background: var(--theme-card-bg) !important;
+    color: var(--theme-text-primary) !important;
+    border-color: var(--theme-border) !important;
+  }
+
+  html.ion-palette-dark .p-paginator .p-paginator-pages .p-paginator-page,
+  body.ion-palette-dark .p-paginator .p-paginator-pages .p-paginator-page {
+    color: var(--theme-text-primary) !important;
+
+    &.p-highlight {
+      background: var(--theme-primary) !important;
+      color: white !important;
+    }
+  }
+
+  /* ========================================
+   STATUS BADGES
+   ======================================== */
+  .status-badge {
+    padding: var(--theme-spacing-xs) var(--theme-spacing-sm);
+    border-radius: var(--theme-radius-sm);
+    font-size: 0.75rem;
+    font-weight: var(--theme-font-weight-bold);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+
+    &.status-approved,
+    &.success {
+      background: rgba(39, 174, 96, 0.1);
+      color: var(--theme-success);
+    }
+
+    &.status-pending,
+    &.warning {
+      background: rgba(243, 156, 18, 0.1);
+      color: var(--theme-warning);
+    }
+
+    &.status-rejected,
+    &.danger {
+      background: rgba(231, 76, 60, 0.1);
+      color: var(--theme-danger);
+    }
+
+    &.status-draft {
+      background: rgba(52, 152, 219, 0.1);
+      color: var(--theme-info);
+    }
+  }
+
+  /* ========================================
+   DARK MODE - ION-SELECT & SELECT OPTIONS
+   ======================================== */
+  html.ion-palette-dark ion-select,
+  html.ion-palette-dark ion-select-option,
+  body.ion-palette-dark ion-select,
+  body.ion-palette-dark ion-select-option {
+    --background: var(--theme-card-bg) !important;
+    --color: var(--theme-text-primary) !important;
+    color: var(--theme-text-primary) !important;
+  }
+
+  html.ion-palette-dark ion-select::part(label),
+  body.ion-palette-dark ion-select::part(label) {
+    color: var(--theme-text-primary) !important;
+  }
+
+  html.ion-palette-dark ion-select-option,
+  body.ion-palette-dark ion-select-option {
+    color: var(--theme-text-primary) !important;
+    background: var(--theme-card-bg) !important;
+  }
+
+  html.ion-palette-dark .ionselect,
+  body.ion-palette-dark .ionselect {
+    color: var(--theme-text-primary) !important;
+  }
+
+  /* ========================================
+   UTILITY CLASSES
+   ======================================== */
+  .shadow-sm {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  .shadow-md {
+    box-shadow: var(--theme-card-shadow);
+  }
+
+  .shadow-lg {
+    box-shadow: var(--theme-card-shadow-hover);
+  }
+
+  .rounded-sm {
+    border-radius: var(--theme-radius-sm);
+  }
+
+  .rounded-md {
+    border-radius: var(--theme-radius-md);
+  }
+
+  .rounded-lg {
+    border-radius: var(--theme-radius-lg);
+  }
+
+  .rounded-full {
+    border-radius: var(--theme-radius-round);
+  }
+
+  .text-primary {
+    color: var(--theme-primary);
+  }
+
+  .text-secondary {
+    color: var(--theme-secondary);
+  }
+
+  .text-accent {
+    color: var(--theme-accent);
+  }
+
+  .text-success {
+    color: var(--theme-success);
+  }
+
+  .text-warning {
+    color: var(--theme-warning);
+  }
+
+  .text-danger {
+    color: var(--theme-danger);
+  }
+
+  /* ========================================
+   ANIMATIONS
+   ======================================== */
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes slideInUp {
+    from {
+      transform: translateY(20px);
+      opacity: 0;
+    }
+
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+
+  @keyframes pulse {
+
+    0%,
+    100% {
+      opacity: 1;
+    }
+
+    50% {
+      opacity: 0.5;
+    }
+  }
+
+  .fade-in {
+    animation: fadeIn 0.3s ease;
+  }
+
+  .slide-in-up {
+    animation: slideInUp 0.3s ease;
+  }
+
+  .pulse {
+    animation: pulse 2s infinite;
+  }
+
+  .responsive-title {
+    font-size: 12px;
+
+    @media (min-width: 600px) {
+      font-size: 16px;
+    }
+
+    @media (min-width: 1024px) {
+      font-size: 20px;
+    }
+  }
+
+  /* Standardized Dashboard Headers - Premium */
+  .dashboard-toolbar {
+    --min-height: 70px !important;
+    --padding-top: env(safe-area-inset-top) !important;
+    --background: var(--theme-primary-gradient) !important;
+    --color: white !important;
+    display: flex;
+    align-items: center;
+    box-shadow: var(--theme-shadow-elevation-2) !important;
+  }
+
+  /* Global Primary Toolbar Styling - Premium */
+  ion-toolbar[color="primary"] {
+    --background: var(--theme-primary-gradient) !important;
+    --color: #ffffff !important;
+    box-shadow: var(--theme-shadow-elevation-2) !important;
+  }
+
+  .dashboard-menu-header {
+    height: 70px !important;
+    display: flex !important;
+    align-items: center !important;
+    background: var(--theme-primary-gradient) !important;
+    --border-width: 0 !important;
+    box-shadow: var(--theme-shadow-elevation-2) !important;
+
+    ion-item {
+      --background: transparent !important;
+      --padding-start: 16px !important;
+      --inner-padding-end: 16px !important;
+      width: 100% !important;
+      margin: 0 !important;
+      position: static !important;
+      --min-height: 70px !important;
+
+      ion-avatar {
+        width: 40px !important;
+        height: 40px !important;
+        margin-inline-end: 12px !important;
+      }
+
+      ion-label {
+        color: white !important;
+        font-weight: 600 !important;
+        margin: 0 !important;
+
+        p {
+          color: rgba(255, 255, 255, 0.8) !important;
+          font-size: 0.75rem !important;
+          margin: 0 !important;
+        }
+      }
+    }
+
+    .bg {
+      display: none !important;
+    }
+  }
+
+  /* ===================================== */
+  /* SweetAlert2 PERFECT CENTER FIX (Ionic) */
+  /* ===================================== */
+
+  /* Remove Ionic transform that breaks fixed positioning */
+  ion-content,
+  ion-router-outlet,
+  .inner-scroll {
+    transform: none !important;
+  }
+
+  /* Force Swal container to true viewport center */
+  body>.swal2-container {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    z-index: 1000000 !important;
+  }
+
+  /* Remove default Swal top margin */
+  .swal2-popup {
+    margin: 0 !important;
+  }
+
+
+
+
+
+  /* ========================================
+   DARK MODE - COMPREHENSIVE TEXT VISIBILITY
+   ENSURES ALL PAGES HAVE READABLE TEXT
+   ======================================== */
+
+  /* Force white text on all elements in dark mode */
+  html.ion-palette-dark {
+    /* Override all hard-coded dark colors */
+    color: var(--theme-text-primary) !important;
+
+    /* Ensure all text elements are readable */
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      color: var(--theme-text-primary) !important;
+    }
+
+    p,
+    span,
+    div,
+    a,
+    li,
+    label,
+    strong,
+    em {
+      color: var(--theme-text-primary) !important;
+    }
+
+    /* Form elements */
+    input,
+    textarea,
+    select,
+    ion-input,
+    ion-textarea,
+    ion-select {
+      --color: var(--theme-text-primary) !important;
+      color: var(--theme-text-primary) !important;
+    }
+
+    /* Table text */
+    table,
+    td,
+    th,
+    tr {
+      color: var(--theme-text-primary) !important;
+    }
+
+    /* Card content */
+    ion-card-content,
+    ion-card-title,
+    ion-card-subtitle {
+      color: var(--theme-text-primary) !important;
+    }
+
+    /* Button text */
+    ion-button {
+      --color: white !important;
+      color: white !important;
+    }
+
+    /* List items */
+    ion-item,
+    ion-item-option,
+    ion-list {
+      --color: var(--theme-text-primary) !important;
+      color: var(--theme-text-primary) !important;
+    }
+
+    /* Menu & navigation */
+    ion-menu,
+    ion-menu-toggle {
+      --color: var(--theme-text-primary) !important;
+    }
+  }
+
+  body.ion-palette-dark {
+    /* Override all hard-coded dark colors */
+    color: var(--theme-text-primary) !important;
+
+    /* Ensure all text elements are readable */
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      color: var(--theme-text-primary) !important;
+    }
+
+    p,
+    span,
+    div,
+    a,
+    li,
+    label,
+    strong,
+    em {
+      color: var(--theme-text-primary) !important;
+    }
+
+    /* Form elements */
+    input,
+    textarea,
+    select,
+    ion-input,
+    ion-textarea,
+    ion-select {
+      --color: var(--theme-text-primary) !important;
+      color: var(--theme-text-primary) !important;
+    }
+
+    /* Table text */
+    table,
+    td,
+    th,
+    tr {
+      color: var(--theme-text-primary) !important;
+    }
+
+    /* Card content */
+    ion-card-content,
+    ion-card-title,
+    ion-card-subtitle {
+      color: var(--theme-text-primary) !important;
+    }
+
+    /* Button text */
+    ion-button {
+      --color: white !important;
+      color: white !important;
+    }
+
+    /* List items */
+    ion-item,
+    ion-item-option,
+    ion-list {
+      --color: var(--theme-text-primary) !important;
+      color: var(--theme-text-primary) !important;
+    }
+
+    /* Menu & navigation */
+    ion-menu,
+    ion-menu-toggle {
+      --color: var(--theme-text-primary) !important;
+    }
+  }
+
+  /* Aggressive catch-all for inline styled text in dark mode */
+  html.ion-palette-dark [style*="color:"] {
+    color: var(--theme-text-primary) !important;
+  }
+
+  body.ion-palette-dark [style*="color:"] {
+    color: var(--theme-text-primary) !important;
+  }
+}
+
+/* --------- SweetAlert2 Premium Theme Overrides --------- */
+.swal2-container {
+  z-index: 99999 !important;
+}
+
+.premium-swal-popup {
+  background: var(--theme-card-bg) !important;
+  color: var(--theme-text-primary) !important;
+  border-radius: var(--theme-radius-xl) !important;
+  border: 1px solid var(--theme-border) !important;
+  font-family: inherit !important;
+  padding: 2.5rem 1.5rem !important;
+  box-shadow: var(--theme-shadow-lg) !important;
+}
+
+.swal2-title {
+  color: var(--theme-text-primary) !important;
+  font-weight: 800 !important;
+  font-size: 1.6rem !important;
+  margin-top: 0.5rem !important;
+}
+
+.swal2-html-container {
+  color: var(--theme-text-secondary) !important;
+  line-height: 1.6 !important;
+}
+
+.swal2-actions {
+  gap: 15px !important;
+  margin-top: 2rem !important;
+  width: 100% !important;
   justify-content: center !important;
-
-  z-index: 1000000 !important;
 }
 
-/* Remove default Swal top margin */
-.swal2-popup {
+.premium-swal-confirm,
+.premium-swal-cancel {
+  border-radius: var(--theme-radius-md) !important;
+  font-weight: 700 !important;
+  padding: 14px 28px !important;
   margin: 0 !important;
+  height: auto !important;
+  min-height: 50px !important;
+  font-size: 1rem !important;
+  transition: all 0.2s ease !important;
 }
 
+.premium-swal-confirm {
+  background: var(--theme-primary-gradient) !important;
+  color: white !important;
+  border: none !important;
+  box-shadow: var(--theme-shadow-md) !important;
 
+  &:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: var(--theme-shadow-lg) !important;
+  }
+}
 
-// // LOADING CSS START //
-// .custom-loading::part(backdrop) {
-//   background: rgba(0, 0, 0, 0.5);
-//   backdrop-filter: blur(2px);
-// }
+.premium-swal-cancel {
+  background: var(--theme-bg-light) !important;
+  color: var(--theme-text-tertiary) !important;
+  border: 1px solid var(--theme-border) !important;
 
-// .custom-loading::part(loading-wrapper) {
-//   border-radius: 12px;
-//   background: white;
-//   padding: 24px;
-//   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-//   display: flex;
-//   flex-direction: column;
-//   align-items: center;
-//   text-align: center;
-//   color: #333;
-// }
+  &:hover {
+    background: var(--theme-bg-tertiary) !important;
+  }
+}
 
-// .custom-loading::part(message) {
-//   font-size: 1rem;
-//   margin-top: 12px;
-//   color: #666;
-// }
+/* Custom classes for our payment Swal */
+.swal-detail-box {
+  background: var(--theme-bg-light);
+  border: 1px solid var(--theme-border);
+  border-radius: var(--theme-radius-lg);
+  padding: 1.25rem;
+  margin: 1.25rem 0;
+  width: 100%;
+}
 
-// /* Optional: Customize the spinner */
-// .custom-loading::part(spinner) {
-//   width: 36px;
-//   height: 36px;
-//   stroke: #3880ff; // primary Ionic blue
-// }
+.swal-detail-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+  font-size: 0.95rem;
 
-// LOADING CSS END //
+  &:last-child {
+    margin-bottom: 0;
+  }
+
+  span {
+    color: var(--theme-text-secondary);
+  }
+
+  strong {
+    color: var(--theme-text-primary);
+  }
+
+  &.total {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px dashed var(--theme-border);
+    font-size: 1.2rem;
+
+    span {
+      font-weight: 700;
+      color: var(--theme-text-primary);
+    }
+
+    strong {
+      color: var(--theme-primary);
+      font-weight: 800;
+    }
+  }
+}
+
+.swal-checkbox-container {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  text-align: left;
+  margin-top: 1.5rem;
+
+  input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    accent-color: var(--theme-primary);
+    cursor: pointer;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  label {
+    cursor: pointer;
+    color: var(--theme-text-secondary);
+    font-size: 0.9rem;
+    line-height: 1.4;
+  }
+}

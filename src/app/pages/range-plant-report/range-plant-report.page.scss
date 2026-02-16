@@ -3,19 +3,19 @@
    ============================================================ */
 
 :host {
-    --primary-gradient: linear-gradient(135deg, #1a73e8 0%, #0d47a1 100%);
-    --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-    --hover-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
-    --transition-speed: 0.3s;
+    --primary-gradient: linear-gradient(135deg, var(--theme-primary) 0%, var(--theme-primary-dark) 100%);
+    --card-shadow: var(--theme-shadow-md);
+    --hover-shadow: var(--theme-shadow-lg);
+    --transition-speed: var(--theme-transition-base);
 }
 
 .page-container {
-    padding: 16px;
-    background: #f4f7fa;
+    padding: var(--theme-spacing-md);
+    background: var(--theme-bg-light);
     min-height: 100%;
 
     @media (max-width: 576px) {
-        padding: 10px;
+        padding: var(--theme-spacing-sm);
     }
 }
 
@@ -23,26 +23,26 @@
    SEARCH CARD
 ================================ */
 .search-card {
-    border-radius: 16px;
+    border-radius: var(--theme-radius-lg);
     box-shadow: var(--card-shadow);
-    margin-bottom: 24px;
-    border: none;
-    background: rgba(255, 255, 255, 0.9);
+    margin-bottom: var(--theme-spacing-lg);
+    border: 1px solid var(--theme-border);
+    background: var(--theme-card-bg);
     backdrop-filter: blur(10px);
 
     .search-input {
         --padding-start: 12px;
         --border-radius: 12px;
         font-size: 14px;
-        border: 1px solid #e0e0e0;
+        --border-color: var(--theme-border);
         transition: border-color var(--transition-speed);
 
         &:focus-within {
-            border-color: #1a73e8;
+            --border-color: var(--theme-primary);
         }
 
         ion-icon {
-            color: #1a73e8;
+            color: var(--theme-primary);
             font-size: 20px;
         }
     }
@@ -59,13 +59,13 @@
    APPLICATION CARD
 ================================ */
 .app-card {
-    background: #ffffff;
-    border-radius: 20px;
+    background: var(--theme-card-bg);
+    border-radius: var(--theme-radius-xl);
     box-shadow: var(--card-shadow);
-    margin-bottom: 20px;
+    margin-bottom: var(--theme-spacing-lg);
     overflow: hidden;
     transition: transform var(--transition-speed), box-shadow var(--transition-speed);
-    border: 1px solid #f0f0f0;
+    border: 1px solid var(--theme-border);
 
     &:hover {
         transform: translateY(-4px);
@@ -73,25 +73,20 @@
     }
 
     .app-header {
-        background: #f8fafc;
+        background: var(--theme-bg-secondary);
         padding: 12px 16px;
-        border-bottom: 1px solid #edf2f7;
+        border-bottom: 1px solid var(--theme-border);
 
-        /* Remove fixed flex to allow ion-row to control layout */
         display: block;
 
-        /* Custom utility for md-end since older Ionic versions might not support it fully or for custom behavior */
         .ion-text-md-end {
             text-align: left;
-            /* Default mobile */
 
             @media (min-width: 768px) {
                 text-align: right;
                 justify-content: flex-end;
             }
         }
-
-
 
         .app-id-badge {
             background: var(--primary-gradient);
@@ -101,14 +96,14 @@
             font-size: 12px;
             font-weight: 700;
             letter-spacing: 0.5px;
-            box-shadow: 0 4px 10px rgba(26, 115, 232, 0.3);
+            box-shadow: 0 4px 10px rgba(var(--theme-primary-rgb), 0.3);
             display: inline-block;
         }
 
         .hitgrahi-name {
             font-size: 16px;
             font-weight: 800;
-            color: #1a202c;
+            color: var(--theme-text-primary);
             margin: 0;
             line-height: 1.2;
         }
@@ -121,30 +116,25 @@
 
             .label {
                 font-size: 12px;
-                color: #4a5568;
+                color: var(--theme-text-secondary);
                 font-weight: 500;
                 display: flex;
                 align-items: center;
                 gap: 6px;
 
-                /* Ensure icon alignment */
                 ion-icon {
-                    color: #1a73e8;
+                    color: var(--theme-primary);
                     min-width: 16px;
                 }
             }
 
-            /* On desktop, align items to end if parent is end aligned */
             @media (min-width: 768px) {
-
-                /* If parent is right aligned, we need to align flex items (labels) right too */
                 &.align-right {
                     align-items: flex-end;
                 }
             }
         }
 
-        /* Specific fix for Address column to align content right on desktop */
         .ion-text-md-end .info-item {
             @media (min-width: 768px) {
                 align-items: flex-end;
@@ -162,26 +152,23 @@
 ================================ */
 .plant-grid {
     display: grid;
-    /* Use a smaller min-width to ensure it fits on mobile devices (e.g. 320px, 360px) without overflow */
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     gap: 12px;
 
-    /* Ensure single column on smaller mobile screens */
     @media (max-width: 480px) {
         grid-template-columns: 1fr;
     }
 }
 
 .plant-item-card {
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-    background: #ffffff;
-    border: 1px solid #e2e8f0;
-    border-radius: 12px;
+    box-shadow: var(--theme-shadow-xs);
+    background: var(--theme-card-bg);
+    border: 1px solid var(--theme-border);
+    border-radius: var(--theme-radius-lg);
     padding: 14px;
     position: relative;
     overflow: hidden;
     margin: 0 !important;
-    /* Reset ion-row negative margins */
     width: 100%;
 
     &::before {
@@ -191,7 +178,7 @@
         left: 0;
         width: 4px;
         height: 100%;
-        background: #48bb78;
+        background: var(--theme-success);
     }
 
     .plant-top {
@@ -201,8 +188,8 @@
         margin-bottom: 12px;
 
         .plant-icon {
-            background: #f0fff4;
-            color: #38a169;
+            background: var(--theme-success-light);
+            color: var(--theme-success);
             padding: 6px;
             border-radius: 8px;
             font-size: 16px;
@@ -212,7 +199,7 @@
         .plant-name {
             font-size: 14px;
             font-weight: 700;
-            color: #2d3748;
+            color: var(--theme-text-primary);
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -220,12 +207,12 @@
 
         .target-tag {
             margin-left: auto;
-            background: #edf2f7;
+            background: var(--theme-bg-tertiary);
             padding: 3px 8px;
             border-radius: 20px;
             font-size: 10px;
             font-weight: 700;
-            color: #4a5568;
+            color: var(--theme-text-secondary);
             flex-shrink: 0;
         }
     }
@@ -243,14 +230,14 @@
                 justify-content: space-between;
                 font-size: 10px;
                 font-weight: 700;
-                color: #4a5568;
+                color: var(--theme-text-secondary);
                 margin-bottom: 4px;
             }
         }
 
         .progress-bar-container {
             height: 6px;
-            background: #edf2f7;
+            background: var(--theme-border-light);
             border-radius: 10px;
             overflow: hidden;
             position: relative;
@@ -262,28 +249,28 @@
             }
 
             &.ropit-bg {
-                background: #ebf4ff;
+                background: var(--theme-bg-secondary);
             }
 
             &.gadda-bg {
-                background: #fffaf0;
+                background: var(--theme-bg-secondary);
             }
 
             .ropit-fill {
-                background: #3182ce;
-                box-shadow: 0 0 8px rgba(49, 130, 206, 0.4);
+                background: var(--theme-primary);
+                box-shadow: 0 0 8px rgba(var(--theme-primary-rgb), 0.4);
             }
 
             .gadda-fill {
-                background: #ed8936;
-                box-shadow: 0 0 8px rgba(237, 137, 54, 0.4);
+                background: var(--theme-warning);
+                box-shadow: 0 0 8px rgba(var(--theme-warning-rgb), 0.4);
             }
         }
 
         .stat-summary {
             margin-top: 10px;
             padding-top: 8px;
-            border-top: 1px dashed #e2e8f0;
+            border-top: 1px dashed var(--theme-border);
             display: flex;
             justify-content: space-between;
             gap: 6px;
@@ -291,39 +278,37 @@
 
             .remaining-tag {
                 font-size: 10px;
-                color: #718096;
+                color: var(--theme-text-secondary);
                 padding: 3px 10px;
                 border-radius: 20px;
                 flex: 1;
                 min-width: 80px;
                 text-align: center;
                 white-space: nowrap;
-                /* Prevent text wrapping inside tag */
 
                 strong {
                     font-weight: 800;
                 }
 
                 &.ropit-rem {
-                    background: #ebf8ff;
-                    border: 1px solid #bee3f8;
+                    background: var(--theme-primary-light);
+                    border: 1px solid var(--theme-primary);
 
                     strong {
-                        color: #2b6cb0;
+                        color: white;
                     }
                 }
 
                 &.gadda-rem {
-                    background: #fffaf0;
-                    border: 1px solid #feebc8;
+                    background: var(--theme-warning-light);
+                    border: 1px solid var(--theme-warning);
 
                     strong {
-                        color: #c05621;
+                        color: white;
                     }
                 }
             }
 
-            /* Stack tags on very small screens for better readability */
             @media (max-width: 320px) {
                 flex-direction: column;
 
@@ -339,10 +324,11 @@
    PAGINATION DESIGN
 ================================ */
 .pagination-card {
-    border-radius: 16px;
+    border-radius: var(--theme-radius-lg);
     box-shadow: var(--card-shadow);
-    background: white;
+    background: var(--theme-card-bg);
     margin: 24px 0;
+    border: 1px solid var(--theme-border);
 
     .page-btn {
         --border-radius: 8px;
@@ -353,7 +339,7 @@
     }
 
     .pagination-text {
-        color: #718096;
+        color: var(--theme-text-secondary);
         font-size: 12px;
         margin-top: 8px;
     }
@@ -365,6 +351,7 @@
     letter-spacing: 0.5px;
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
     font-size: 1.1rem;
+    color: white;
 
     @media (max-width: 400px) {
         font-size: 0.9rem;
@@ -394,15 +381,16 @@
 .no-records-content {
     text-align: center;
     padding: 40px 20px;
-    background: white;
-    border-radius: 20px;
+    background: var(--theme-card-bg);
+    border-radius: var(--theme-radius-xl);
     box-shadow: var(--card-shadow);
     margin-top: 24px;
+    border: 1px solid var(--theme-border);
 
     .icon-circle {
         width: 80px;
         height: 80px;
-        background: #f0f4f8;
+        background: var(--theme-bg-secondary);
         border-radius: 50%;
         display: flex;
         align-items: center;
@@ -411,31 +399,31 @@
 
         ion-icon {
             font-size: 36px;
-            color: #1a73e8;
+            color: var(--theme-primary);
         }
     }
 
     h3 {
-        color: #2d3748;
+        color: var(--theme-text-primary);
         font-weight: 700;
         margin-bottom: 8px;
         font-size: 1.2rem;
     }
 
     p {
-        color: #718096;
+        color: var(--theme-text-secondary);
         margin-bottom: 20px;
         font-size: 0.9rem;
     }
 }
 
 .total-count-badge {
-    background: #e6fffa;
-    color: #2c7a7b;
+    background: var(--theme-success-light);
+    color: var(--theme-success);
     padding: 8px 16px;
-    border-radius: 12px;
+    border-radius: var(--theme-radius-md);
     font-size: 13px;
-    border: 1px solid #b2f5ea;
+    border: 1px solid var(--theme-success);
     display: inline-block;
 
     @media (max-width: 576px) {
@@ -448,7 +436,7 @@
 .section-title {
     font-size: 13px;
     font-weight: 700;
-    color: #4a5568;
+    color: var(--theme-text-secondary);
     margin-bottom: 12px;
     text-transform: uppercase;
     letter-spacing: 1px;

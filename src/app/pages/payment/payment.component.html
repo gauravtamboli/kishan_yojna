@@ -4,10 +4,15 @@
       <ion-back-button defaultHref="/landingpage"></ion-back-button>
     </ion-buttons>
     <ion-title> हितग्राही भुगतान</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="toggleTheme()">
+        <ion-icon [name]="isDarkMode ? 'sunny-outline' : 'moon-outline'"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content [class.dark-mode]="isDarkMode">
 
   <!-- SEARCH -->
   <ion-item *ngIf="year" class="m-3 rounded-3 shadow-sm">

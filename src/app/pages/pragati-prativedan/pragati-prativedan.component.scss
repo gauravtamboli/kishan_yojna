@@ -1,28 +1,32 @@
 /* --- Page Layout --- */
 .report-container {
   text-align: center;
-  padding: 10px;
+  padding: 20px;
+  background: var(--theme-bg-light);
+  min-height: 100%;
 }
 
 .report-title {
-  font-weight: 700;
-  font-size: 16px;
+  font-weight: 800;
+  font-size: 1.2rem;
   margin-bottom: 8px;
+  color: var(--theme-primary);
 }
 
 .report-date {
-  font-size: 13px;
-  margin-bottom: 12px;
-  color: #555;
+  font-size: 14px;
+  margin-bottom: 20px;
+  color: var(--theme-text-secondary);
+  font-weight: 500;
 }
 
 .custom-back-button {
-  color: #388e3c;
-  font-weight: 600;
+  --color: var(--theme-primary);
+  font-weight: 700;
 }
 
 .responsive-toolbar-title {
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 700;
 }
 
@@ -31,49 +35,56 @@
   width: 100%;
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  background: #fff;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-  margin-top: 10px;
+  border: 1px solid var(--theme-border);
+  border-radius: var(--theme-radius-lg);
+  background: var(--theme-card-bg);
+  box-shadow: var(--theme-shadow-sm);
+  margin-top: 20px;
 }
 
 /* --- Table Styling --- */
 .report-table {
   width: 100%;
   border-collapse: collapse;
-  min-width: 1200px; /* ensures scroll on small devices */
+  min-width: 1200px;
+  /* ensures scroll on small devices */
   font-size: 13px;
-  background: #fff;
+  background: transparent;
 }
 
 .report-table th,
 .report-table td {
-  border: 1px solid #999;
-  padding: 6px 8px;
+  border: 1px solid var(--theme-border);
+  padding: 12px 10px;
   text-align: center;
   white-space: nowrap;
+  color: var(--theme-text-primary);
 }
 
 .report-table th {
-  background-color: #f7f7f7;
-  font-weight: 600;
+  background: var(--theme-bg-secondary);
+  color: var(--theme-primary);
+  font-weight: 700;
   position: sticky;
   top: 0;
   z-index: 2;
+  text-transform: uppercase;
+  font-size: 11px;
+  letter-spacing: 0.5px;
 }
 
 ion-button {
-  font-size: 13px;
-  font-weight: 600;
-  background: green;
-  color: #fff;
-  border-radius: 6px;
-  
+  --border-radius: 8px;
+  font-weight: 700;
+  height: 40px;
 }
 
 .report-table tr:nth-child(even) {
-  background-color: #fafafa;
+  background-color: var(--theme-surface-overlay);
+}
+
+.report-table tr:hover {
+  background-color: var(--theme-bg-tertiary);
 }
 
 /* --- Responsive Behavior --- */
@@ -98,6 +109,6 @@ ion-button {
   }
 
   .report-title {
-    font-size: 14px;
+    font-size: 16px;
   }
 }

@@ -6,9 +6,9 @@ import { Router } from '@angular/router';
 import { ApiService } from '../../services/api.service';
 import { TableModule } from 'primeng/table';
 import { addIcons } from 'ionicons';
-import { chevronBackOutline, chevronForwardOutline, searchOutline, personOutline, locationOutline, leafOutline, documentTextOutline, checkmarkCircleOutline } from 'ionicons/icons';
+import { chevronBackOutline, chevronForwardOutline, searchOutline, personOutline, locationOutline, leafOutline, documentTextOutline, checkmarkCircleOutline, alertCircleOutline, helpCircleOutline } from 'ionicons/icons';
 import { Toast } from '@capacitor/toast';
-import Swal from 'sweetalert2';
+// import Swal from 'sweetalert2';
 import { RangeReportResponseModel, GetRangeReportResponse } from './PitAwedanModels';
 
 @Component({
@@ -33,6 +33,12 @@ export class NumberOfPitPage implements OnInit {
     totalRecords: number = 0;
     totalPages: number = 0;
 
+    // Modal State
+    isStatusModalOpen = false;
+    statusType: 'success' | 'error' | 'question' = 'success';
+    statusMessage = '';
+    pendingAction: (() => void) | null = null;
+
     constructor(
         private apiService: ApiService,
         private router: Router,
@@ -46,7 +52,9 @@ export class NumberOfPitPage implements OnInit {
             locationOutline,
             leafOutline,
             documentTextOutline,
-            checkmarkCircleOutline
+            checkmarkCircleOutline,
+            alertCircleOutline,
+            helpCircleOutline
         });
     }
 
@@ -119,61 +127,69 @@ export class NumberOfPitPage implements OnInit {
 
         // Basic validation
         if (!qty || qty <= 0) {
-            Swal.fire({
-                icon: 'warning',
-                title: 'अमान्य संख्या',
-                text: 'कृपया सही संख्या दर्ज करें',
-                confirmButtonText: 'ठीक है'
-            });
+            this.statusType = 'error';
+            this.statusMessage = 'कृपया सही संख्या दर्ज करें';
+            this.isStatusModalOpen = true;
             return;
         }
 
         const totalGadda = parseInt(qty);
 
-        const result = await Swal.fire({
-            title: 'क्या आप सुनिश्चित हैं?',
-            text: `आवेदन ${applicationNumber} के लिए ${totalGadda} गड्ढों की संख्या दर्ज करें?`,
-            icon: 'question',
-            showCancelButton: true,
-            confirmButtonText: 'हाँ, दर्ज करें',
-            cancelButtonText: 'नहीं',
-            heightAuto: false
-        });
+        this.statusType = 'question';
+        this.statusMessage = `आवेदन ${applicationNumber} के लिए ${totalGadda} गड्ढों की संख्या दर्ज करें?`;
+        this.pendingAction = () => this.submitGaddaPlant(applicationNumber, plantId, totalGadda);
+        this.isStatusModalOpen = true;
+    }
 
-        if (result.isConfirmed) {
-            this.isLoading = true;
-            this.loadingMessage = 'दर्ज किया जा रहा है...';
+    private submitGaddaPlant(applicationNumber: string, plantId: number, totalGadda: number) {
+        this.isLoading = true;
+        this.loadingMessage = 'दर्ज किया जा रहा है...';
 
-            const payload = {
-                applicationNumber: applicationNumber,
-                plantId: plantId,
-                totalGadda: totalGadda
-            };
+        const payload = {
+            applicationNumber: applicationNumber,
+            plantId: plantId,
+            totalGadda: totalGadda
+        };
 
-            this.apiService.addGaddaPlant(payload).subscribe({
-                next: async (res) => {
-                    this.isLoading = false;
-                    if (res && res.response && res.response.code === 200) {
-                        await Swal.fire({
-                            title: 'सफलता',
-                            text: 'गड्ढों की संख्या सफलतापूर्वक दर्ज की गई',
-                            icon: 'success',
-                            heightAuto: false
-                        });
-                        this.loadData(this.currentPage);
-                    } else {
-                        const msg = res?.response?.message || 'दर्ज करने में त्रुटि हुई';
-                        await Toast.show({ text: msg, duration: 'long' });
-                    }
-                    this.cdRef.detectChanges();
-                },
-                error: async (err) => {
-                    this.isLoading = false;
-                    console.error('Error adding gadda count:', err);
-                    await Toast.show({ text: 'सर्वर त्रुटि', duration: 'long' });
-                    this.cdRef.detectChanges();
+        this.apiService.addGaddaPlant(payload).subscribe({
+            next: async (res) => {
+                this.isLoading = false;
+                if (res && res.response && res.response.code === 200) {
+                    this.statusType = 'success';
+                    this.statusMessage = 'गड्ढों की संख्या सफलतापूर्वक दर्ज की गई';
+                    this.isStatusModalOpen = true;
+                } else {
+                    this.statusType = 'error';
+                    this.statusMessage = res?.response?.message || 'दर्ज करने में त्रुटि हुई';
+                    this.isStatusModalOpen = true;
                 }
-            });
+                this.cdRef.detectChanges();
+            },
+            error: async (err) => {
+                this.isLoading = false;
+                console.error('Error adding gadda count:', err);
+                this.statusType = 'error';
+                this.statusMessage = 'सर्वर त्रुटि';
+                this.isStatusModalOpen = true;
+                this.cdRef.detectChanges();
+            }
+        });
+    }
+
+    confirmAction() {
+        if (this.pendingAction) {
+            const action = this.pendingAction;
+            this.pendingAction = null;
+            this.isStatusModalOpen = false;
+            action();
+        }
+    }
+
+    closeStatusModal() {
+        this.isStatusModalOpen = false;
+        this.pendingAction = null;
+        if (this.statusType === 'success') {
+            this.loadData(this.currentPage);
         }
     }
 

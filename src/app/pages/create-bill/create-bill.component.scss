@@ -1,10 +1,22 @@
 :host {
-  --glass-bg: rgba(255,255,255,0.1);
-  --glass-border: rgba(255,255,255,0.2);
+  --transition: var(--theme-transition);
 }
 
-.bg-gradient {
-  --background: radial-gradient(circle at top left, #1a237e, #000);
+// Use Global Theme Variables
+ion-content {
+  --background: var(--theme-bg-light);
+  --text-color: var(--theme-text-primary);
+  --card-bg: var(--theme-card-bg);
+  --card-border: var(--theme-card-border);
+  --input-bg: var(--theme-card-bg);
+  --input-border: var(--theme-border);
+  --table-header-bg: var(--theme-primary);
+  --table-header-color: white;
+  --table-row-color: var(--theme-text-primary);
+  --label-color: var(--theme-text-secondary);
+  --shadow-color: var(--theme-card-shadow);
+  --badge-bg: rgba(212, 160, 36, 0.1);
+  --badge-color: var(--theme-primary);
 }
 
 .main-container {
@@ -12,11 +24,13 @@
 }
 
 .glass-card {
-  background: var(--glass-bg);
+  background: var(--card-bg);
   backdrop-filter: blur(14px);
-  border: 1px solid var(--glass-border);
-  border-radius: 20px;
+  border: 1px solid var(--card-border);
+  border-radius: var(--theme-radius-xl);
   overflow: hidden;
+  box-shadow: var(--theme-card-shadow);
+  transition: var(--transition);
 }
 
 .section {
@@ -24,46 +38,87 @@
 }
 
 .label {
-  color: rgba(255,255,255,0.7);
+  color: var(--label-color);
   font-size: 0.85rem;
   margin-bottom: 5px;
   display: block;
 }
 
+/* NG-SELECT STYLES */
 .custom-select ::ng-deep .ng-select-container {
-  background: rgba(0,0,0,0.3);
-  color: white;
+  background: var(--input-bg);
+  color: var(--text-color);
+  border: 1px solid var(--input-border);
   border-radius: 10px;
+  transition: var(--transition);
 }
 
+.custom-select ::ng-deep .ng-value-label {
+  color: var(--text-color) !important;
+}
+
+.custom-select ::ng-deep .ng-dropdown-panel {
+  background: var(--input-bg);
+  border: 1px solid var(--input-border);
+}
+
+.custom-select ::ng-deep .ng-option {
+  background: var(--input-bg) !important;
+  color: var(--text-color) !important;
+}
+
+.custom-select ::ng-deep .ng-option-selected {
+  background: rgba(var(--ion-color-primary-rgb), 0.2) !important;
+}
+
+/* SEARCH INPUT */
 .search-item {
-  --background: rgba(255,255,255,0.05);
+  --background: var(--input-bg);
+  --color: var(--text-color);
   border-radius: 50px;
-  border: 1px solid var(--glass-border);
+  border: 1px solid var(--input-border);
+  margin-top: 1rem;
 }
 
 .table-container {
   overflow-x: auto;
 }
 
-.batch-table ::ng-deep .p-datatable {
+/* PRIMENG TABLE STYLES */
+.batch-table ::ng-deep .p-datatable .p-datatable-header,
+.batch-table ::ng-deep .p-datatable .p-datatable-footer {
   background: transparent;
+  color: var(--text-color);
+  border: none;
 }
 
 .batch-table ::ng-deep th {
-  background: rgba(0,0,0,0.4);
-  color: #ddd;
+  background: var(--table-header-bg);
+  color: var(--table-header-color);
+  border-bottom: 1px solid var(--card-border);
 }
 
 .batch-table ::ng-deep td {
-  color: white;
+  background: transparent;
+  color: var(--table-row-color);
+  border-bottom: 1px solid var(--card-border);
+}
+
+.batch-table ::ng-deep .p-paginator {
+  background: transparent;
+  border: none;
+  color: var(--text-color);
+}
+
+.batch-table ::ng-deep .p-paginator .p-paginator-pages .p-paginator-page {
+  color: var(--text-color);
 }
 
 .badge-app {
-  background: rgba(0,229,255,0.15);
+  background: var(--badge-bg);
   padding: 4px 10px;
   border-radius: 6px;
-  color: #00e5ff;
+  color: var(--badge-color);
   font-weight: bold;
 }
 
@@ -73,15 +128,18 @@
 
 .primary-name {
   font-weight: 600;
+  color: var(--text-color);
 }
 
 .secondary-name {
   font-size: 0.75rem;
   opacity: 0.6;
+  color: var(--text-color);
 }
 
 .amount {
-  color: #69f0ae;
+  color: #2db84c;
+  /* Keep green for money */
   font-weight: bold;
 }
 
@@ -90,7 +148,8 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
-  border-top: 1px solid var(--glass-border);
+  border-top: 1px solid var(--card-border);
+  color: var(--text-color);
 }
 
 /* DESKTOP */
@@ -106,4 +165,87 @@
   text-align: center;
   padding: 2rem;
   opacity: 0.5;
+  color: var(--text-color);
+}
+
+/* Dark Mode Styles */
+:host-context(.ion-palette-dark) {
+  ion-content {
+    --background: var(--theme-bg-light);
+    --color: var(--theme-text-primary);
+  }
+
+  .glass-card, .custom-card {
+    background: var(--theme-card-bg);
+    border-color: var(--theme-border);
+    
+    ion-label, ion-text, .label {
+      color: var(--theme-text-primary) !important;
+    }
+  }
+
+  .custom-select ::ng-deep .ng-select-container {
+    background: var(--theme-card-bg);
+    color: var(--theme-text-primary);
+    border-color: var(--theme-border);
+  }
+
+  .custom-select ::ng-deep .ng-dropdown-panel {
+    background: var(--theme-card-bg);
+    border-color: var(--theme-border);
+  }
+
+  .custom-select ::ng-deep .ng-option {
+    background: var(--theme-card-bg) !important;
+    color: var(--theme-text-primary) !important;
+  }
+
+  .batch-table ::ng-deep .p-datatable {
+    background: var(--theme-card-bg);
+    color: var(--theme-text-primary);
+  }
+
+  .batch-table ::ng-deep th {
+    background: linear-gradient(135deg, var(--theme-primary-light), var(--theme-primary)) !important;
+    color: white !important;
+    border-color: var(--theme-border) !important;
+  }
+
+  .batch-table ::ng-deep td {
+    background: transparent;
+    color: var(--theme-text-primary) !important;
+    border-color: var(--theme-border) !important;
+  }
+
+  .batch-table ::ng-deep tbody tr:hover {
+    background: var(--theme-bg-secondary) !important;
+  }
+
+  .batch-table ::ng-deep .p-paginator {
+    background: transparent;
+    color: var(--theme-text-primary) !important;
+  }
+
+  .status-badge {
+    color: var(--theme-text-primary) !important;
+  }
+
+  .name-info {
+    .primary-name {
+      color: var(--theme-text-primary) !important;
+    }
+
+    .secondary-name {
+      color: var(--theme-text-secondary) !important;
+    }
+  }
+
+  .footer {
+    border-color: var(--theme-border);
+    color: var(--theme-text-primary);
+  }
+
+  .empty {
+    color: var(--theme-text-tertiary);
+  }
 }

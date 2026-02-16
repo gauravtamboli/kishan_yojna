@@ -11,7 +11,8 @@ import { addIcons } from 'ionicons';
 import {
     searchOutline, receiptOutline, peopleOutline,
     businessOutline, refreshOutline, listOutline,
-    checkmarkCircleOutline, alertCircleOutline
+    checkmarkCircleOutline, alertCircleOutline,
+    moonOutline, sunnyOutline
 } from 'ionicons/icons';
 
 @Component({
@@ -67,8 +68,15 @@ export class CreateBillComponent implements OnInit {
         addIcons({
             searchOutline, receiptOutline, peopleOutline,
             businessOutline, refreshOutline, listOutline,
-            checkmarkCircleOutline, alertCircleOutline
+            checkmarkCircleOutline, alertCircleOutline,
+            moonOutline, sunnyOutline
         });
+    }
+
+    isDarkMode = false;
+
+    toggleTheme() {
+        this.isDarkMode = !this.isDarkMode;
     }
 
     ngOnInit(): void {
@@ -83,7 +91,7 @@ export class CreateBillComponent implements OnInit {
             }
         }
 
-        this.loadData();
+        // this.loadData();
     }
 
 

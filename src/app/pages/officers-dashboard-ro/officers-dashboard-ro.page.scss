@@ -10,7 +10,7 @@ ion-menu-button {
   font-size: 12px;
   font-weight: 700;
 
-  color: black;
+  color: var(--theme-text-primary);
   font-style: bold;
 }
 
@@ -94,7 +94,7 @@ ion-select {
   padding: 8px;
   font-size: 16px;
   --min-height: 45px;
-  background-color: #f9f9f9;
+  background-color: var(--theme-bg-secondary);
 }
 
 .title-ion-lable {
@@ -277,80 +277,7 @@ ion-select {
 
 
 
-// .ion-header-class-for-menu {
-//   height: 10rem;
-//   // --border-width: 0
-
-//   .bg {
-//     height: 60%;
-//     width: 120%;
-
-//     // Default (optional): hidden unless overridden
-//     display: none;
-
-//     // Mobile styles (max-width: 768px)
-//     @media screen and (max-width: 768px) {
-//       display: block;
-//       background: linear-gradient(90deg,
-//           var(--ion-color-primary) 0%,
-//           var(--ion-color-secondary) 100%);
-//       transform: rotate(-10deg);
-//       border-radius: 10px 30px 10px 30px;
-//       margin-top: -3rem;
-//       margin-left: -1rem;
-//       box-shadow: 0 1px 10px rgba(98, 255, 169, 0.4);
-//     }
-
-//     // Desktop styles (min-width: 1024px)
-//     @media screen and (min-width: 1024px) {
-//       display: block;
-//       background: linear-gradient(90deg,
-//           var(--ion-color-tertiary) 0%,
-//           var(--ion-color-primary) 100%);
-//       transform: rotate(-5deg);
-//       border-radius: 10px 10px 10px 50px;
-//       margin-top: -4rem;
-//       margin-left: -2rem;
-//       box-shadow: 0 1px 20px rgba(98, 255, 169, 0.6);
-//     }
-//   }
-
-
-//   ion-item {
-//     //         --inner-border-width: 0px !important;
-//     //   --border-width: 0px !important;
-//     --background: transparent;
-//     position: absolute;
-//     top: 1rem;
-//     left: 0;
-
-
-//     ion-avatar {
-//       height: 5rem;
-//       width: 5rem;
-//       border-radius: 50%;
-//       border: 3px solid #90EE90;
-//       padding: 1px;
-//     }
-
-//     ion-label {
-//       color: white;
-//       font-size: 1.2rem;
-//       font-weight: bold;
-//       width: auto;
-//       letter-spacing: .5px;
-
-//       p {
-//         color: white;
-//         margin-top: 2px;
-//         font-weight: normal;
-//         font-size: 0.9rem;
-//       }
-//     }
-
-//   }
-
-// }
+// .dashboard-menu-header is now handled by standard ion-toolbar styles
 
 .custom-menu {
   @media (min-width: 1024px) {
@@ -405,7 +332,7 @@ ion-select {
 .responsive-menu-title {
   font-size: 14px;
   font-weight: 500;
-  color: #333;
+  color: var(--theme-text-primary);
   padding: 8px 12px;
   border-radius: 8px;
   transition: all 0.2s ease;
@@ -444,6 +371,38 @@ ion-select {
 }
 
 // Header styles are now handled globally via .dashboard-menu-header and .dashboard-toolbar
+.dashboard-menu-header {
+  ion-toolbar {
+    --min-height: 67px;
+    padding: 2px 2px;
+    --padding-start: 2px;
+    --inner-padding-end: 2px;
+  }
+
+  ion-item {
+    --padding-start: 2px;
+    --inner-padding-end: 2px;
+
+    ion-avatar {
+      height: 4rem;
+      width: 4rem;
+      border-radius: 50%;
+      border: 3px solid #90EE90;
+      padding: 1px;
+      margin-inline-end: 4px; // Add space between icon and name
+    }
+
+    ion-label {
+      font-size: 1rem;
+      font-weight: 550;
+
+      p {
+        font-size: 0.8rem;
+        margin-top: 4px;
+      }
+    }
+  }
+}
 
 // Extra small devices
 @media (max-width: 360px) {
@@ -467,24 +426,7 @@ ion-select {
     height: 20vh;
   }
 
-  .ion-header-class-for-menu {
-    height: 9rem;
-
-    ion-item {
-      ion-avatar {
-        height: 3rem;
-        width: 3rem;
-      }
-
-      ion-label {
-        font-size: 1rem;
-
-        p {
-          font-size: 0.7rem;
-        }
-      }
-    }
-  }
+  // .dashboard-menu-header styles moved to global scope for all devices
 }
 
 .custom-card {
@@ -529,7 +471,7 @@ ion-select {
       transition: background-color 0.2s ease;
 
       &:hover {
-        background-color: rgba(25, 142, 219, 0.05);
+        background-color: var(--theme-surface-overlay);
       }
 
       >td {
@@ -543,7 +485,7 @@ ion-select {
 .responsive-label {
   font-size: 14px;
   font-weight: 500;
-  color: #333;
+  color: var(--theme-text-primary);
 
   @media (min-width: 600px) {
     font-size: 16px;
@@ -695,7 +637,7 @@ ion-menu-button {
   }
 
   tr:hover {
-    background-color: #f1f3f5;
+    background-color: var(--theme-surface-overlay);
     transition: background-color 0.2s ease-in-out;
   }
 
@@ -706,7 +648,7 @@ ion-menu-button {
 }
 
 .table-responsive {
-  background: #fff;
+  background: var(--theme-card-bg);
   border-radius: 12px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
   padding: 10px;
@@ -727,7 +669,7 @@ ion-menu-button {
   border-radius: 12px;
   overflow: hidden;
   box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
-  background: #fff;
+  background: var(--theme-card-bg);
   font-family: 'Poppins', sans-serif;
 
   th {
@@ -746,7 +688,7 @@ ion-menu-button {
   }
 
   tr:hover {
-    background-color: #f1f8f6;
+    background-color: var(--theme-surface-overlay);
     transition: background-color 0.2s ease-in-out;
   }
 
@@ -754,7 +696,7 @@ ion-menu-button {
     text-align: left;
 
     strong {
-      color: #222;
+      color: var(--theme-text-primary);
     }
 
     .text-muted {
@@ -823,8 +765,8 @@ ion-button {
   margin-top: 20px;
   height: 100px;
   font-weight: 600;
-  color: var(--ion-color-medium);
-  background-color: #fff;
+  color: var(--theme-text-tertiary);
+  background-color: var(--theme-card-bg);
 }
 
 .custom-paginator {
@@ -841,7 +783,7 @@ ion-button {
 
 .pagination-container {
   padding: 1rem;
-  background: white;
+  background: var(--theme-card-bg);
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   margin-top: 1rem;

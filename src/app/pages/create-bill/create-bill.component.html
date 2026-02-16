@@ -1,5 +1,5 @@
 <ion-header class="ion-no-border">
-  <ion-toolbar color="primary">
+  <ion-toolbar class="dark-gradient-toolbar">
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/landingpage" color="light"></ion-back-button>
     </ion-buttons>
@@ -12,7 +12,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="bg-gradient ion-padding">
+<ion-content [class.dark-mode]="isDarkMode" class="ion-padding">
 
   <div class="main-container">
 
@@ -21,19 +21,23 @@
 
       <!-- FILTERS -->
       <div class="section">
-        <ion-row class="ion-align-items-center">
+        <ion-row class="ion-align-items-end">
           <ion-col size="12" size-md="4">
             <label class="label">Select Type</label>
             <ng-select [items]="billTypes" bindLabel="name" bindValue="id" [(ngModel)]="selectedBillType"
-              (change)="applyFilters()" [clearable]="false" class="custom-select">
+              [searchable]="false" [clearable]="false" class="custom-select">
             </ng-select>
           </ion-col>
 
           <ion-col size="12" size-md="4">
             <label class="label">Select Year</label>
-            <ng-select [items]="years" bindLabel="name" bindValue="id" [(ngModel)]="selectedYear" (change)="loadData()"
+            <ng-select [items]="years" bindLabel="name" bindValue="id" [(ngModel)]="selectedYear" [searchable]="false"
               [clearable]="false" class="custom-select">
             </ng-select>
+          </ion-col>
+
+          <ion-col size="12" size-md="4">
+            <ion-button expand="block" (click)="loadData()">Search</ion-button>
           </ion-col>
         </ion-row>
 

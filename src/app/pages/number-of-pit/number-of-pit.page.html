@@ -182,4 +182,49 @@
             </ion-card-content>
         </ion-card>
     </div>
+    <!-- Status/Action Modal -->
+    <ion-modal [isOpen]="isStatusModalOpen" (didDismiss)="closeStatusModal()" [backdropDismiss]="false"
+        class="confirmation-modal">
+        <ng-template>
+            <ion-content scroll-y="false">
+                <div class="confirm-content">
+                    <div class="confirm-icon-wrapper" [class.success]="statusType === 'success'"
+                        [class.error]="statusType === 'error'" [class.question]="statusType === 'question'">
+                        <ion-icon [name]="statusType === 'success' ? 'checkmark-circle-outline' : 
+                                 (statusType === 'error' ? 'alert-circle-outline' : 'help-circle-outline')"
+                            class="confirm-icon"></ion-icon>
+                    </div>
+
+                    <h3 class="confirm-title" [class.success-text]="statusType === 'success'"
+                        [class.error-text]="statusType === 'error'">
+                        {{ statusType === 'success' ? 'सफल' : (statusType === 'error' ? 'त्रुटि' : 'पुष्टि करें') }}
+                    </h3>
+
+                    <p class="confirm-message">
+                        {{ statusMessage }}
+                    </p>
+
+                    <div class="confirm-actions">
+                        <!-- Confirm/OK Button -->
+                        <ion-button *ngIf="statusType === 'question'" expand="block" color="success"
+                            (click)="confirmAction()">
+                            हाँ, दर्ज करें
+                        </ion-button>
+
+                        <!-- Regular OK Button for success/error -->
+                        <ion-button *ngIf="statusType !== 'question'" expand="block"
+                            [color]="statusType === 'success' ? 'success' : 'danger'" (click)="closeStatusModal()">
+                            ठीक है
+                        </ion-button>
+
+                        <!-- Cancel Button for Question -->
+                        <ion-button *ngIf="statusType === 'question'" expand="block" fill="clear" color="medium"
+                            (click)="closeStatusModal()">
+                            नहीं
+                        </ion-button>
+                    </div>
+                </div>
+            </ion-content>
+        </ng-template>
+    </ion-modal>
 </ion-content>

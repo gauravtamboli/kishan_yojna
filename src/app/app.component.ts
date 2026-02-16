@@ -70,6 +70,7 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.restoreSavedTheme();
     Preferences.set({ key: 'ngrok_url', value: environment.apiUrl });
 
     this.updateTranslation();
@@ -164,6 +165,21 @@ export class AppComponent implements OnInit {
     });
 
   }
+
+  private restoreSavedTheme(): void {
+    const savedTheme = localStorage.getItem('theme-mode');
+    const isDarkMode = savedTheme === 'dark';
+    const isDarkClass = 'ion-palette-dark';
+    
+    if (isDarkMode) {
+      document.documentElement.classList.add(isDarkClass);
+      document.body.classList.add(isDarkClass);
+    } else {
+      document.documentElement.classList.remove(isDarkClass);
+      document.body.classList.remove(isDarkClass);
+    }
+  }
+
 
   updateTranslation() {
     this.languageService.language$.subscribe((data) => {

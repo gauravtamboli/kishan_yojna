@@ -8,7 +8,7 @@ import { ApiService } from '../../services/api.service';
 import { tableData } from '../generate-estimate-dynamic/estimate-table';
 import Swal from 'sweetalert2';
 import { addIcons } from 'ionicons';
-import { cloudUploadOutline } from 'ionicons/icons';
+import { cloudUploadOutline, moonOutline, sunnyOutline, cardOutline, closeOutline, checkmarkCircleOutline, alertCircleOutline } from 'ionicons/icons';
 import pdfMake from 'pdfmake/build/pdfmake';
 import * as pdfFontsBold from "../../../assets/fonts/vfs_fonts_bold_custom";
 import * as pdfFontsNormal from "../../../assets/fonts/vfs_fonts_custom";
@@ -37,6 +37,9 @@ type DisplayCategory = {
 })
 export class PaymentCreateComponent implements OnInit {
 
+  payment_type: any;
+  finalRowTotal: any;
+  totalYearAmount: number = 0;
   application_number: string | null = null;
   singleData: any;
   estimateRows: any[] = [];
@@ -60,6 +63,12 @@ export class PaymentCreateComponent implements OnInit {
 
   isLoading = false;
   isPageLoading = false;
+  isPaymentModalOpen = false;
+  isStatusModalOpen = false;
+  statusType: 'success' | 'error' = 'success';
+  statusMessage = '';
+  confirmationChecked = false;
+  isSubmitting = false;
   private loadingElement: any = null;
 
   private plantNameToRateField: Record<string, string> = {
@@ -76,6 +85,7 @@ export class PaymentCreateComponent implements OnInit {
   };
 
   isNavigating = false;
+  fin_year: any;
 
   constructor(
     private location: Location,
@@ -86,7 +96,12 @@ export class PaymentCreateComponent implements OnInit {
     private toastController: ToastController,
     private router: Router
   ) {
-    addIcons({ cloudUploadOutline });
+    addIcons({ cloudUploadOutline, moonOutline, sunnyOutline, cardOutline, closeOutline, checkmarkCircleOutline, alertCircleOutline });
+  }
+
+  isDarkMode = false;
+  toggleTheme() {
+    this.isDarkMode = !this.isDarkMode;
   }
 
   ngOnInit(): void {
@@ -103,6 +118,8 @@ export class PaymentCreateComponent implements OnInit {
     this.route.queryParams.subscribe(params => {
       this.application_number = params['application_number'] || null;
       const yearParam = Number(params['year']);
+      this.fin_year = params['fin_year'] || null;
+
       this.selectedYear = [1, 2, 3].includes(yearParam) ? yearParam : null;
 
       this.showYear1 = this.selectedYear === 1;
@@ -148,15 +165,28 @@ export class PaymentCreateComponent implements OnInit {
   private GetAllPaymentDetailsByApplication(application_number: string) {
     this.api.GetAllPaymentDetailsByApplication(application_number)
       .subscribe({
-        next: (res) => {
-          this.paymentDetails = res?.data ?? [];
+        next: (res: any) => {
+
+          this.paymentDetails = res?.data?.payments ?? [];
+
           console.log('Payment details loaded:', this.paymentDetails);
+
+          this.totalYearAmount = this.paymentDetails.reduce(
+            (sum: number, pay: any) => {
+              return sum + Number(pay.year_total || 0);
+            },
+            0
+          );
+          this.payment_type = res?.data?.payment_type || null;
+          console.log('Total last payment amount:', this.payment_type);
         },
-        error: () => {
+        error: (err) => {
+          console.error(err);
           this.paymentDetails = [];
         }
       });
   }
+
 
 
 
@@ -268,14 +298,22 @@ export class PaymentCreateComponent implements OnInit {
       const rowTotal =
         (lessCount * less5Rate) +
         (moreCount * (more5Rate / 2));
-
-      return sum + rowTotal;
+      this.finalRowTotal = rowTotal - this.getAlreadyPaidAmount(cat, row.itemKramank, year);
+      return sum + this.finalRowTotal;
 
     }, 0);
   }
 
   goBack() {
-    this.location.back();
+    // Pass necessary state back to payment page so it can reload data
+    this.router.navigate(['/payment'], {
+      replaceUrl: true,
+      state: {
+        range_id: this.officer_id, // ranges id
+        year: this.selectedYear || 1, // default to 1 if null
+        fin_year: this.fin_year
+      }
+    });
   }
 
 
@@ -387,55 +425,36 @@ export class PaymentCreateComponent implements OnInit {
 
 
   async makePayment() {
-
-    // 1️⃣ Basic validation
     if (!this.application_number || !this.selectedYear) {
-      await Swal.fire({
-        icon: 'warning',
-        title: 'आवश्यक जानकारी',
-        text: 'कृपया आवेदन संख्या और वर्ष का चयन करें।'
-      });
+      this.showToast('कृपया आवेदन संख्या और वर्ष का चयन करें।');
       return;
     }
 
-    // 2️⃣ Calculate final amount BEFORE confirmation
-    const finalAmount = this.getAllPrajatiYearTotal(this.selectedYear!);
+    this.confirmationChecked = false;
+    this.isPaymentModalOpen = true;
+  }
 
-    // 3️⃣ Confirmation with amount + checkbox
-    const confirmResult = await Swal.fire({
-      title: 'भुगतान पुष्टि',
-      html: `
-            <div style="text-align:left">               
-                <div style="margin-top:15px">
-                    <input type="checkbox" id="confirmCheck">
-                    <label for="confirmCheck">
-                        मैं पुष्टि करता/करती हूँ कि उपरोक्त जानकारी सही है
-                    </label>
-                </div>
-            </div>
-        `,
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonText: 'हाँ, भुगतान सबमिट करें',
-      cancelButtonText: 'रद्द करें',
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      reverseButtons: true,
-      preConfirm: () => {
-        const checkbox = document.getElementById('confirmCheck') as HTMLInputElement;
-        if (!checkbox?.checked) {
-          Swal.showValidationMessage('कृपया पुष्टि के लिए चेकबॉक्स चुनें।');
-          return false;
-        }
-        return true;
-      }
+  async showToast(message: string) {
+    const toast = await this.toastController.create({
+      message: message,
+      duration: 2000,
+      position: 'bottom',
+      color: 'warning'
     });
+    toast.present();
+  }
 
-    if (!confirmResult.isConfirmed) {
-      return; // ❌ User cancelled
+  closeModal() {
+    this.isPaymentModalOpen = false;
+  }
+
+  async confirmAndSubmitPayment() {
+    if (!this.confirmationChecked) {
+      this.showToast('कृपया पुष्टि के लिए चेकबॉक्स चुनें।');
+      return;
     }
 
-    // 4️⃣ Prepare data AFTER confirmation
+    const finalAmount = this.getAllPrajatiYearTotal(this.selectedYear!);
     const selectedYearRows =
       this.selectedYear === 1 ? this.year1Rows :
         this.selectedYear === 2 ? this.year2Rows :
@@ -444,11 +463,11 @@ export class PaymentCreateComponent implements OnInit {
     const paymentData = {
       application_number: this.application_number,
       year: this.selectedYear!,
+      fin_year: this.fin_year,
       officer_name: this.officer_id,
       categories: this.categoriesToShow.map(cat => {
         const less5Count = this.less5AreaCount(cat);
         const more5Count = this.more5AreaCount(cat);
-
         const less5pitCount = this.less5PitCount(cat);
         const more5pitCount = this.more5PitCount(cat);
 
@@ -456,19 +475,16 @@ export class PaymentCreateComponent implements OnInit {
           plant_id: cat.plant_id,
           less5plant: less5Count,
           more5plant: more5Count,
-          less5pit: less5pitCount,
-          more5pit: more5pitCount,
+          lesspit: less5pitCount,
+          morepit: more5pitCount,
           table_rows: selectedYearRows.map(item => {
-            const isGranted =
-              cat.rowGrantMap[this.selectedYear!]?.[item.itemKramank] ?? true;
-
+            const isGranted = cat.rowGrantMap[this.selectedYear!]?.[item.itemKramank] ?? true;
             let less5Amount = 0;
             let more5Amount = 0;
 
             if (isGranted) {
               const rate = Number(item[cat.rateField]) || 0;
               const halfRate = rate / 2;
-
               if (item.itemKramank === 3) {
                 less5Amount = less5pitCount * rate;
                 more5Amount = more5pitCount * halfRate;
@@ -492,67 +508,76 @@ export class PaymentCreateComponent implements OnInit {
       grand_total_in_words: this.convertNumberToWords(finalAmount)
     };
 
-    // 5️⃣ Loader Swal
-    Swal.fire({
-      title: 'भुगतान सबमिट हो रहा है...',
-      allowOutsideClick: false,
-      didOpen: () => Swal.showLoading()
+    this.isSubmitting = true;
+    this.isPaymentModalOpen = false;
+
+    // Show loading
+    const loading = await this.loadingController.create({
+      message: 'भुगतान सबमिट हो रहा है...',
+      spinner: 'circular'
     });
+    await loading.present();
 
-    this.isLoading = true;
-    this.cdRef.detectChanges();
-
-    // 6️⃣ API call
-    console.log('Payment submission response:', paymentData);
     this.api.submitHitgrahiPayment(paymentData).subscribe({
       next: async (response: any) => {
-        this.isLoading = false;
-        this.cdRef.detectChanges();
-        Swal.close();
+        await loading.dismiss();
+        this.isSubmitting = false;
 
         if (response?.response?.code === 200) {
-          const msg = response?.response?.msg;
-          // ✅ Success with BillNumber
-          await Swal.fire({
-            icon: 'success',
-            title: 'Bill Created',
-            html: `
-                        <p><strong><h4 style="color:#2e7d32">${msg}</h4></strong></p>
-                      
-                      
-                    `,
-            confirmButtonText: 'ठीक है'
-          });
-
-          this.goBack();
-
+          this.statusType = 'success';
+          this.statusMessage = response?.response?.msg || 'भुगतान सफलतापूर्वक सबमिट हो गया है।';
+          this.isStatusModalOpen = true;
         } else {
-          await Swal.fire({
-            icon: 'error',
-            title: 'त्रुटि',
-            text: response?.response?.msg || 'भुगतान सबमिट करने में त्रुटि।'
-          });
+          this.statusType = 'error';
+          this.statusMessage = response?.response?.msg || 'भुगतान सबमिट करने में त्रुटि।';
+          this.isStatusModalOpen = true;
         }
       },
       error: async (error) => {
-        this.isLoading = false;
-        this.cdRef.detectChanges();
-        Swal.close();
-
+        await loading.dismiss();
+        this.isSubmitting = false;
         console.error('Payment submission error:', error);
-
-        await Swal.fire({
-          icon: 'error',
-          title: 'त्रुटि',
-          text: 'भुगतान सबमिट करने में त्रुटि हुई।'
-        });
+        this.statusType = 'error';
+        this.statusMessage = 'भुगतान सबमिट करने में त्रुटि हुई। कृपया पुनः प्रयास करें।';
+        this.isStatusModalOpen = true;
       }
     });
+  }
+
+  closeStatusModal() {
+    this.isStatusModalOpen = false;
+    if (this.statusType === 'success') {
+      this.goBack();
+    }
+  }
+
+
+  getAlreadyPaidAmount(cat: any, itemKramank: number, year: number): number {
+
+    if (!this.paymentDetails?.length) return 0;
+
+    const selectedYearStr = String(year);
+
+    return this.paymentDetails
+      .filter((p: any) =>
+        Number(p.PlantId) === Number(cat.plant_id) &&
+        String(p.payment_year) === selectedYearStr &&
+        p.payment_Status === 'C' &&
+        p.is_delete === false
+      )
+      .reduce((sum: number, pay: any) => {
+
+        const mainKey = `Work${itemKramank}`;
+        const halfKey = `work${itemKramank}A`;
+
+        return sum +
+          Number(pay[mainKey] ?? 0) +
+          Number(pay[halfKey] ?? 0);
+
+      }, 0);
   }
 
 
 
 
-
-  
 }

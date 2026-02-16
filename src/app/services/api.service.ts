@@ -1883,9 +1883,9 @@ export class ApiService {
   }
 
 
-    VendorPaymentListData(selectedPaymentYear: string, rangeId: number): Observable<any> {
+    VendorPaymentListData(selectedPaymentYear: string, rangeId: number , fin_year : string): Observable<any> {
     return from(
-      this.buildApiUrl(`/api/KissanMitraYojnaRegisteration/VendorPaymentListData?selectedPaymentYear=${encodeURIComponent(selectedPaymentYear)}&rangeId=${rangeId}`)).pipe(
+      this.buildApiUrl(`/api/KissanMitraYojnaRegisteration/VendorPaymentListData?selectedPaymentYear=${encodeURIComponent(selectedPaymentYear)}&rangeId=${rangeId}&fin_year=${encodeURIComponent(fin_year)}`)).pipe(
         switchMap((url) => {
           if (!url) return throwError(() => new Error("No API URL configured"));
           const headers = { 'ngrok-skip-browser-warning': 'true' };
@@ -1894,9 +1894,9 @@ export class ApiService {
       );
   }
 
-    HitgrahiPaymentListData(selectedPaymentYear: string, rangeId: number): Observable<any> {
+    HitgrahiPaymentListData(selectedPaymentYear: string, rangeId: number, fin_year: string): Observable<any> {
     return from(
-      this.buildApiUrl(`/api/KissanMitraYojnaRegisteration/HitgrahiPaymentListData?selectedPaymentYear=${encodeURIComponent(selectedPaymentYear)}&rangeId=${rangeId}`)).pipe(
+      this.buildApiUrl(`/api/KissanMitraYojnaRegisteration/HitgrahiPaymentListData?selectedPaymentYear=${encodeURIComponent(selectedPaymentYear)}&rangeId=${rangeId}&fin_year=${encodeURIComponent(fin_year)}`)).pipe(
         switchMap((url) => {
           if (!url) return throwError(() => new Error("No API URL configured"));
           const headers = { 'ngrok-skip-browser-warning': 'true' };

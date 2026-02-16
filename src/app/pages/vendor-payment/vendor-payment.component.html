@@ -1,5 +1,5 @@
-<ion-header style="background-color: blue;">
-    <ion-toolbar>
+<ion-header>
+    <ion-toolbar class="dark-gradient-toolbar">
 
         <!-- LEFT -->
         <ion-buttons slot="start">
@@ -21,9 +21,6 @@
     </ion-toolbar>
 </ion-header>
 
-
-
-
 <ion-content>
     <!-- Page Loading Indicator -->
     <ion-loading *ngIf="isPageLoading" [isOpen]="isPageLoading" message="डेटा लोड हो रहा है..." spinner="circular"
@@ -31,7 +28,7 @@
     </ion-loading>
 
     <!-- Main Content - Hide until loading complete -->
-    <div *ngIf="!isPageLoading">
+    <div *ngIf="!isPageLoading" class="vendor-payment-container">
         <!-- Applicant Card (same fields as normal page) -->
         <div class="estimate-container" *ngIf="singleData">
             <!-- <ion-card class="applicant-card">
@@ -46,10 +43,10 @@
 
             <div class="details-section">
 
-                <strong style="font-size: 20px; text-align: center !important ;">
+                <strong class="section-title">
                     आवेदक विवरण :
                 </strong>
-                <hr />
+                <hr class="separator" />
                 <ion-grid>
 
                     <ion-row>
@@ -155,8 +152,8 @@
                             <th rowspan="2" class="detail-th-year">वर्ष</th>
                             <th rowspan="2" class="detail-th">क्रमांक</th>
                             <th rowspan="2" class="detail-th">कार्य विवरण</th>
-                            <th rowspan="2"></th>
-                            <th rowspan="2"></th>
+                            <th rowspan="2">ग्रांट</th>
+                            <th rowspan="2">स्थिति</th>
                             <th colspan="2" class="detail-th">रोपित पौधों की संख्या</th>
 
                             <th colspan="2" class="detail-th">दर (₹)</th>
@@ -190,11 +187,11 @@
                                     {{ item.karyaVivran }}
 
                                 </td>
-                                <td>
+                                <td class="checkbox-cell">
                                     <input type="checkbox" class="form-check-input"
                                         [(ngModel)]="cat.rowGrantMap[1][item.itemKramank]" />
                                 </td>
-                                <td>
+                                <td class="status-cell">
                                     {{ cat.rowGrantMap[selectedYear!][item.itemKramank] ? 'Yes' : 'No' }}
                                 </td>
                                 <td class="detail-td detail-count"> {{ item.itemKramank === 3 ? less5PitCount(cat) :
@@ -204,9 +201,16 @@
                                 <td class="detail-td detail-rate">{{ item[cat.rateField] }}</td>
                                 <td class="detail-td detail-rate">{{ item[cat.rateField] / 2 }}</td>
                                 <td class="detail-td detail-amount">
-                                    {{ ((item[cat.rateField] * (item.itemKramank === 3 ? less5PitCount(cat) :
-                                    less5AreaCount(cat))) + ((item[cat.rateField] / 2) * (item.itemKramank === 3 ?
-                                    more5PitCount(cat) : more5AreaCount(cat)))) | number:'1.2-2' }}
+                                    {{(((item[cat.rateField] *(item.itemKramank === 3 ? less5PitCount(cat) :
+                                    less5AreaCount(cat)))
+                                    +
+                                    ((item[cat.rateField] / 2) *(item.itemKramank === 3 ? more5PitCount(cat) :
+                                    more5AreaCount(cat))))
+                                    -
+                                    getAlreadyPaidAmount(cat, item.itemKramank, 1)
+                                    )
+                                    | number:'1.2-2'
+                                    }}
                                 </td>
                             </tr>
 
@@ -236,11 +240,11 @@
                                     [style.font-weight]="item.fontweight">
                                     {{ item.karyaVivran }}
                                 </td>
-                                <td>
+                                <td class="checkbox-cell">
                                     <input type="checkbox" class="form-check-input"
                                         [(ngModel)]="cat.rowGrantMap[2][item.itemKramank]" />
                                 </td>
-                                <td>
+                                <td class="status-cell">
                                     {{ cat.rowGrantMap[selectedYear!][item.itemKramank] ? 'Yes' : 'No' }}
                                 </td>
                                 <td class="detail-td detail-count"> {{ item.itemKramank === 3 ? less5PitCount(cat) :
@@ -250,9 +254,16 @@
                                 <td class="detail-td detail-rate">{{ item[cat.rateField] }}</td>
                                 <td class="detail-td detail-rate">{{ item[cat.rateField] / 2 }}</td>
                                 <td class="detail-td detail-amount">
-                                    {{ ((item[cat.rateField] * (item.itemKramank === 3 ? less5PitCount(cat) :
-                                    less5AreaCount(cat))) + ((item[cat.rateField] / 2) * (item.itemKramank === 3 ?
-                                    more5PitCount(cat) : more5AreaCount(cat)))) | number:'1.2-2' }}
+                                    {{(((item[cat.rateField] *(item.itemKramank === 3 ? less5PitCount(cat) :
+                                    less5AreaCount(cat)))
+                                    +
+                                    ((item[cat.rateField] / 2) *(item.itemKramank === 3 ? more5PitCount(cat) :
+                                    more5AreaCount(cat))))
+                                    -
+                                    getAlreadyPaidAmount(cat, item.itemKramank, 2)
+                                    )
+                                    | number:'1.2-2'
+                                    }}
                                 </td>
                             </tr>
 
@@ -280,11 +291,11 @@
                                     [style.font-weight]="item.fontweight">
                                     {{ item.karyaVivran }}
                                 </td>
-                                <td>
+                                <td class="checkbox-cell">
                                     <input type="checkbox" class="form-check-input"
                                         [(ngModel)]="cat.rowGrantMap[3][item.itemKramank]" />
                                 </td>
-                                <td>
+                                <td class="status-cell">
                                     {{ cat.rowGrantMap[selectedYear!][item.itemKramank] ? 'Yes' : 'No' }}
                                 </td>
                                 <td class="detail-td detail-count"> {{ item.itemKramank === 3 ? less5PitCount(cat) :
@@ -294,9 +305,16 @@
                                 <td class="detail-td detail-rate">{{ item[cat.rateField] }}</td>
                                 <td class="detail-td detail-rate">{{ item[cat.rateField] / 2 }}</td>
                                 <td class="detail-td detail-amount">
-                                    {{ ((item[cat.rateField] * (item.itemKramank === 3 ? less5PitCount(cat) :
-                                    less5AreaCount(cat))) + ((item[cat.rateField] / 2) * (item.itemKramank === 3 ?
-                                    more5PitCount(cat) : more5AreaCount(cat)))) | number:'1.2-2' }}
+                                    {{(((item[cat.rateField] *(item.itemKramank === 3 ? less5PitCount(cat) :
+                                    less5AreaCount(cat)))
+                                    +
+                                    ((item[cat.rateField] / 2) *(item.itemKramank === 3 ? more5PitCount(cat) :
+                                    more5AreaCount(cat))))
+                                    -
+                                    getAlreadyPaidAmount(cat, item.itemKramank, 3)
+                                    )
+                                    | number:'1.2-2'
+                                    }}
                                 </td>
                             </tr>
 
@@ -317,7 +335,7 @@
         </ng-container>
 
         <div *ngIf="categoriesToShow.length">
-            <ion-card class="goswara-card" style="margin-top: 20px;">
+            <ion-card class="goswara-card">
                 <ion-card-header>
                     <div style="display: flex; justify-content: space-between; align-items: center;">
                         <ion-card-title class="goswara-title">गोस्वारा एस्टीमेट</ion-card-title>
@@ -360,7 +378,15 @@
                                         {{ getYearTotal(cat, year3Rows, 3 ) | number:'1.2-2' }}
                                     </td>
                                 </tr>
+                                <tr class="goswara-data-row">
+                                    <td class="goswara-amount">
+                                        पिछली भुगतान राशि :
 
+                                    </td>
+                                    <td class="goswara-words-text">
+                                        {{this.totalYearAmount | number:'1.2-2'}}
+                                    </td>
+                                </tr>
 
                                 <!-- Amount in words row -->
                                 <tr class="goswara-words-row">
@@ -385,13 +411,98 @@
                         </table>
                     </div>
                 </ion-card-content>
-                <div class="payment-button-container">
-                    <ion-button (click)="makePayment()" >make payment</ion-button>
+                <div class="payment-button-container" *ngIf="finalRowTotal !== undefined && finalRowTotal > 0">
+                    <ion-button class="my-ion-button" (click)="makePayment()">
+                        Make Payment
+                    </ion-button>
                 </div>
             </ion-card>
-
-
         </div>
     </div>
+
+    <!-- Confirmation Modal -->
+    <ion-modal [isOpen]="isPaymentModalOpen" (didDismiss)="closeModal()" class="confirmation-modal">
+        <ng-template>
+            <ion-content scroll-y="false">
+                <div class="confirm-content">
+
+                    <div class="confirm-icon-wrapper">
+                        <ion-icon name="card-outline" class="confirm-icon"></ion-icon>
+                    </div>
+
+                    <h3>क्या आप सुनिश्चित हैं?</h3>
+                    <p class="confirm-message">
+                        आप वेंडर के लिए भुगतान सबमिट करने जा रहे हैं।
+                    </p>
+
+                    <div class="confirm-details">
+                        <div class="confirm-detail-row">
+                            <span>आवेदक क्रमांक:</span>
+                            <strong>{{ application_number }}</strong>
+                        </div>
+                        <div class="confirm-detail-row">
+                            <span>कुल राशि:</span>
+                            <strong> ₹{{ getAllPrajatiYearTotal(selectedYear!) | number:'1.2-2' }}</strong>
+                        </div>
+
+                    </div>
+
+                    <div class="confirm-checkbox-wrapper">
+                        <ion-checkbox [(ngModel)]="confirmationChecked" labelPlacement="end">
+                            मैं पुष्टि करता/करती हूँ कि उपरोक्त जानकारी सही है
+                        </ion-checkbox>
+                    </div>
+
+                    <div class="confirm-actions">
+                        <ion-button expand="block" color="success" (click)="confirmAndSubmitPayment()"
+                            [disabled]="!confirmationChecked || isSubmitting">
+
+                            <ion-spinner *ngIf="isSubmitting" name="crescent" slot="start">
+                            </ion-spinner>
+
+                            भुगतान सबमिट करें
+                        </ion-button>
+
+                        <ion-button expand="block" fill="clear" color="medium" (click)="closeModal()">
+                            रद्द करें
+                        </ion-button>
+                    </div>
+
+                </div>
+            </ion-content>
+        </ng-template>
+    </ion-modal>
+
+    <!-- Status Message Modal (Success/Error) -->
+    <ion-modal [isOpen]="isStatusModalOpen" (didDismiss)="closeStatusModal()" class="confirmation-modal status-modal">
+        <ng-template>
+            <ion-content scroll-y="false">
+                <div class="confirm-content">
+                    <div class="confirm-icon-wrapper" [class.success]="statusType === 'success'"
+                        [class.error]="statusType === 'error'">
+                        <ion-icon
+                            [name]="statusType === 'success' ? 'checkmark-circle-outline' : 'alert-circle-outline'"
+                            class="confirm-icon"></ion-icon>
+                    </div>
+
+                    <h3 class="confirm-title" [class.success-text]="statusType === 'success'"
+                        [class.error-text]="statusType === 'error'">
+                        {{ statusType === 'success' ? 'सफल' : 'त्रुटि' }}
+                    </h3>
+
+                    <h1 class="confirm-message">
+                        {{ statusMessage }}
+                    </h1>
+
+                    <div class="confirm-actions">
+                        <ion-button expand="block" [color]="statusType === 'success' ? 'success' : 'danger'"
+                            (click)="closeStatusModal()">
+                            ठीक है
+                        </ion-button>
+                    </div>
+                </div>
+            </ion-content>
+        </ng-template>
+    </ion-modal>
 
 </ion-content>

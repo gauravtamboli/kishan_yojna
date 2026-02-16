@@ -67,7 +67,22 @@ export class PrajatiGoswaraReportHeadPage implements OnInit {
   }
 
   ngOnInit(): void {
+    this.restoreSavedTheme();
     this.loadReport();
+  }
+
+  private restoreSavedTheme(): void {
+    const savedTheme = localStorage.getItem('theme-mode');
+    const isDarkMode = savedTheme === 'dark';
+    const isDarkClass = 'ion-palette-dark';
+    
+    if (isDarkMode) {
+      document.documentElement.classList.add(isDarkClass);
+      document.body.classList.add(isDarkClass);
+    } else {
+      document.documentElement.classList.remove(isDarkClass);
+      document.body.classList.remove(isDarkClass);
+    }
   }
 
   showLoading(msg: string) {

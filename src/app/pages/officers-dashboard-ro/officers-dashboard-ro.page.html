@@ -4,22 +4,20 @@
   <!-- <ion-menu class="custom-menu" side="start" content-id="main-content"> -->
   <ion-menu menuId="ro-menu" class="custom-menu" side="start" contentId="main-content">
 
-    <ion-header class="ion-header-class-for-menu dashboard-menu-header">
-      <div class="bg"></div>
-
-      <ion-item lines="none">
-        <ion-avatar slot="start">
-          <img src="assets/img/app_logo.png" />
-        </ion-avatar>
-        <ion-label class="ion-label" style=" text-wrap: nowrap;">
-          {{ getTranslation('app_name')}}
-          <p class="p">
-
-            <ion-text style="font-size: small ;"> ({{ getTranslation('state_name')}}) </ion-text>
-          </p>
-
-        </ion-label>
-      </ion-item>
+    <ion-header class="dashboard-menu-header">
+      <ion-toolbar>
+        <ion-item lines="none" style="--background: transparent; --color: white;">
+          <ion-avatar slot="start">
+            <img src="assets/img/app_logo.png" />
+          </ion-avatar>
+          <ion-label class="ion-label" style="text-wrap: nowrap; color: white;">
+            {{ getTranslation('app_name')}}
+            <p class="p" style="color: white; margin-top: 2px;">
+              <ion-text style="font-size: small; color: white;"> ({{ getTranslation('state_name')}}) </ion-text>
+            </p>
+          </ion-label>
+        </ion-item>
+      </ion-toolbar>
     </ion-header>
 
     <ion-content>
@@ -70,7 +68,7 @@
 
   <div class="ion-page" id="main-content">
     <ion-header>
-      <ion-toolbar color="primary" style="padding: 8px;">
+      <ion-toolbar style="padding: 8px;">
 
         <!-- START : MENU BUTTON -->
         <ion-buttons slot="start">
@@ -94,6 +92,9 @@
         <!-- END : DROPDOWN -->
 
         <ion-buttons slot="end">
+          <ion-button (click)="toggleTheme()">
+            <ion-icon [name]="isDarkMode ? 'sunny-outline' : 'moon-outline'"></ion-icon>
+          </ion-button>
           <ion-button fill="clear" class="icon-btn-options" (click)="openUserMenu($event)">
             <ion-icon name="options-outline"></ion-icon>
           </ion-button>

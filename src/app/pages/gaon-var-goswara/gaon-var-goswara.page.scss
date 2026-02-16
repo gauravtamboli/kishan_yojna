@@ -2,8 +2,8 @@
 .header-card {
   margin-bottom: 20px;
   border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  background: linear-gradient(135deg, #2d5aa0 0%, #1e3a5f 100%);
+  box-shadow: var(--theme-shadow-md);
+  background: var(--theme-primary-gradient);
   color: white;
 }
 
@@ -64,12 +64,12 @@
   width: 48px;
   height: 48px;
   margin-bottom: 20px;
-  --color: #2d5aa0;
+  --color: var(--theme-primary);
 }
 
 .loader-text {
   font-size: 16px;
-  color: #555;
+  color: var(--theme-text-primary);
   font-weight: 500;
 }
 
@@ -77,8 +77,8 @@
 .search-card {
   margin-bottom: 20px;
   border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-  border: 1px solid #e8e8e8;
+  box-shadow: var(--theme-shadow-sm);
+  border: 1px solid var(--theme-border);
 }
 
 .search-card-content {
@@ -88,14 +88,14 @@
 .search-header {
   margin-bottom: 16px;
   padding-bottom: 12px;
-  border-bottom: 2px solid #f0f0f0;
+  border-bottom: 2px solid var(--theme-border-light);
 }
 
 .search-title {
   margin: 0;
   font-size: 18px;
   font-weight: 600;
-  color: #2d5aa0;
+  color: var(--theme-primary);
 }
 
 .search-grid {
@@ -115,7 +115,7 @@
   margin-bottom: 8px;
   font-size: 14px;
   font-weight: 600;
-  color: #555;
+  color: var(--theme-text-primary);
 }
 
 .custom-select {
@@ -124,27 +124,28 @@
   --padding-end: 14px;
   --padding-top: 12px;
   --padding-bottom: 12px;
-  --background: #ffffff;
+  --background: var(--theme-card-bg);
   --border-radius: 8px;
-  --border-color: #d0d0d0;
+  --border-color: var(--theme-border);
   --border-style: solid;
   --border-width: 1px;
   --min-height: 48px;
+  --color: var(--theme-text-primary);
   font-size: 15px;
   font-weight: 500;
-  color: #333;
+  color: var(--theme-text-primary);
   transition: all 0.2s ease;
   
   &:hover {
-    --border-color: #2d5aa0;
-    --background: #f8f9ff;
-    box-shadow: 0 2px 6px rgba(45, 90, 160, 0.15);
+    --border-color: var(--theme-primary);
+    --background: var(--theme-bg-secondary);
+    box-shadow: var(--theme-shadow-sm);
   }
 }
 
 .search-button {
   --border-radius: 8px;
-  --box-shadow: 0 2px 6px rgba(45, 90, 160, 0.2);
+  --box-shadow: var(--theme-shadow-sm);
   font-weight: 600;
   height: 48px;
   margin-top: 0;
@@ -170,8 +171,8 @@
   justify-content: space-between;
   align-items: center;
   padding: 20px;
-  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-  border-bottom: 2px solid #e0e0e0;
+  background: var(--theme-bg-secondary);
+  border-bottom: 2px solid var(--theme-border);
   flex-wrap: wrap;
   gap: 16px;
 }
@@ -189,16 +190,17 @@
   --padding-top: 10px;
   --padding-bottom: 10px;
   --border-radius: 8px;
-  --border-color: #d0d0d0;
+  --border-color: var(--theme-border);
   --border-width: 1px;
-  --background: #ffffff;
+  --background: var(--theme-card-bg);
+  --color: var(--theme-text-primary);
   min-width: 250px;
   max-width: 350px;
   font-size: 14px;
   
   &:focus-within {
-    --border-color: #2d5aa0;
-    --box-shadow: 0 2px 6px rgba(45, 90, 160, 0.15);
+    --border-color: var(--theme-primary);
+    --box-shadow: var(--theme-shadow-sm);
   }
 }
 
@@ -206,17 +208,17 @@
   margin: 0;
   font-size: 20px;
   font-weight: 700;
-  color: #2d5aa0;
+  color: var(--theme-primary);
 }
 
 .record-count {
   font-size: 14px;
-  color: #2d5aa0;
+  color: var(--theme-text-primary);
   font-weight: 600;
-  background: white;
+  background: var(--theme-card-bg);
   padding: 6px 14px;
   border-radius: 20px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--theme-shadow-xs);
   white-space: nowrap;
 }
 
@@ -231,18 +233,19 @@
   width: 100%;
   border-collapse: collapse;
   font-size: 13px;
-  background: white;
+  background: var(--theme-card-bg);
 }
 
 .professional-table th,
 .professional-table td {
   padding: 12px 10px;
   text-align: center;
-  border: 1px solid #e2e8f0;
+  border: 1px solid var(--theme-border);
+  color: var(--theme-text-primary);
 }
 
 .professional-table th {
-  background: linear-gradient(135deg, #2d5aa0 0%, #1e3a5f 100%);
+  background: var(--theme-primary-gradient);
   color: white;
   font-weight: 700;
   font-size: 13px;
@@ -259,7 +262,7 @@
   transition: background-color 0.2s ease;
   
   &:hover {
-    background: linear-gradient(135deg, #3d6bb0 0%, #2e4b6f 100%) !important;
+    background: linear-gradient(135deg, var(--theme-primary-light), var(--theme-primary-dark)) !important;
   }
 }
 
@@ -290,17 +293,17 @@
 }
 
 .professional-table tbody tr.table-data-row:nth-child(even) {
-  background-color: #f8f9fa;
+  background-color: var(--theme-bg-secondary);
 }
 
 .professional-table tbody tr.table-data-row:nth-child(odd) {
-  background-color: #ffffff;
+  background-color: var(--theme-card-bg);
 }
 
 .professional-table tbody tr.table-data-row:hover {
-  background-color: #e8f0fe;
+  background-color: var(--theme-surface-overlay);
   transform: scale(1.005);
-  box-shadow: 0 2px 8px rgba(45, 90, 160, 0.15);
+  box-shadow: var(--theme-shadow-sm);
 }
 
 .professional-table .text-left {
@@ -311,7 +314,7 @@
 .professional-table .serial-col {
   width: 50px;
   font-weight: 600;
-  color: #2d5aa0;
+  color: var(--theme-primary);
 }
 
 .professional-table .village-col {
@@ -321,7 +324,7 @@
 
 .professional-table .number-col {
   font-weight: 600;
-  color: #2d3748;
+  color: var(--theme-text-primary);
   font-family: 'Courier New', monospace;
 }
 
@@ -358,7 +361,7 @@
 .no-search-results {
   padding: 40px 20px;
   text-align: center;
-  color: #718096;
+  color: var(--theme-text-secondary);
   font-size: 16px;
   font-weight: 500;
 }
@@ -367,8 +370,8 @@
 .no-data-card {
   margin: 40px 0;
   border-radius: 12px;
-  border: 2px dashed #e2e8f0;
-  background: #f8f9fa;
+  border: 2px dashed var(--theme-border);
+  background: var(--theme-bg-secondary);
 }
 
 .no-data-content {
@@ -382,20 +385,20 @@
 
 .no-data-icon {
   font-size: 64px;
-  color: #cbd5e0;
+  color: var(--theme-text-quaternary);
   margin-bottom: 16px;
 }
 
 .no-data-text {
   font-size: 18px;
   font-weight: 600;
-  color: #718096;
+  color: var(--theme-text-secondary);
   margin: 0 0 8px 0;
 }
 
 .no-data-subtext {
   font-size: 14px;
-  color: #a0aec0;
+  color: var(--theme-text-tertiary);
   margin: 0;
 }
 

@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import {
   IonContent, IonHeader, IonToolbar, IonTitle, IonButtons, IonBackButton,
   IonButton, IonInput, IonCard, IonCardContent,
-  IonRow, IonCol, IonLoading, IonIcon, IonText
+  IonRow, IonCol, IonLoading, IonIcon, IonText, IonModal, IonSpinner
 } from '@ionic/angular/standalone';
 import { TableModule } from 'primeng/table';
 import { Router } from '@angular/router';
@@ -12,7 +12,7 @@ import { ApiService } from 'src/app/services/api.service';
 import { OfficersLoginResponseModel } from '../officer-login/OfficersLoginResponse.model';
 import { Toast } from '@capacitor/toast';
 import { addIcons } from 'ionicons';
-import { chevronBackOutline, chevronForwardOutline, searchOutline, personOutline, locationOutline, leafOutline, documentTextOutline, checkmarkCircleOutline } from 'ionicons/icons';
+import { chevronBackOutline, chevronForwardOutline, searchOutline, personOutline, locationOutline, leafOutline, documentTextOutline, checkmarkCircleOutline, alertCircleOutline, helpCircleOutline } from 'ionicons/icons';
 import {
   GetRopitAwedanResponse,
   RopitKisanAwedanListResponseModel,
@@ -29,7 +29,7 @@ import Swal from 'sweetalert2';
     CommonModule, FormsModule, TableModule,
     IonContent, IonHeader, IonToolbar, IonTitle, IonButtons, IonBackButton,
     IonButton, IonInput, IonCard, IonCardContent,
-    IonRow, IonCol, IonLoading, IonIcon,
+    IonRow, IonCol, IonLoading, IonIcon, IonModal, IonSpinner, IonText
     // IonicModule
   ]
 })
@@ -63,8 +63,13 @@ export class RopitPaudhoKiSankhyaPage implements OnInit {
   totalRecords: number = 0;
   totalPages: number = 0;
 
-  // Store input values for each plant: { applicationNumber: { plantIndex: value } }
   ropitSankhyaInputs: { [applicationNumber: string]: { [plantIndex: number]: number } } = {};
+
+  // Modal State
+  isStatusModalOpen = false;
+  statusType: 'success' | 'error' | 'question' = 'success';
+  statusMessage = '';
+  pendingAction: (() => void) | null = null;
 
   constructor(
     private apiService: ApiService,
@@ -79,7 +84,9 @@ export class RopitPaudhoKiSankhyaPage implements OnInit {
       locationOutline,
       leafOutline,
       documentTextOutline,
-      checkmarkCircleOutline
+      checkmarkCircleOutline,
+      alertCircleOutline,
+      helpCircleOutline
     });
   }
 
@@ -222,40 +229,26 @@ export class RopitPaudhoKiSankhyaPage implements OnInit {
     const pitLimit = Number(maxPit || 0);
 
     if (!totalRopit || totalRopit <= 0) {
-      Swal.fire({
-        icon: 'warning',
-        title: 'अमान्य संख्या',
-        text: 'कृपया सही पौध संख्या दर्ज करें',
-        confirmButtonText: 'ठीक है'
-      });
+      this.statusType = 'error';
+      this.statusMessage = 'कृपया सही पौध संख्या दर्ज करें';
+      this.isStatusModalOpen = true;
       return;
     }
 
     if (totalRopit > pitLimit) {
-      Swal.fire({
-        icon: 'error',
-        title: 'सीमा पार',
-        text: `रोपित पौधों की संख्या गड्ढों की संख्या (${pitLimit}) से अधिक नहीं हो सकती।`,
-        confirmButtonText: 'ठीक है',
-        heightAuto: false
-      });
+      this.statusType = 'error';
+      this.statusMessage = `रोपित पौधों की संख्या गड्ढों की संख्या (${pitLimit}) से अधिक नहीं हो सकती।`;
+      this.isStatusModalOpen = true;
       return;
     }
 
-    const result = await Swal.fire({
-      title: 'क्या आप सुनिश्चित हैं?',
-      text: `आवेदन ${applicationNumber} के लिए ${totalRopit} पौधों की संख्या दर्ज करें?`,
-      icon: 'question',
-      showCancelButton: true,
-      confirmButtonText: 'हाँ, दर्ज करें',
-      cancelButtonText: 'नहीं',
-      heightAuto: false
-    });
+    this.statusType = 'question';
+    this.statusMessage = `आवेदन ${applicationNumber} के लिए ${totalRopit} पौधों की संख्या दर्ज करें?`;
+    this.pendingAction = () => this.submitRopitPlant(applicationNumber, plantId, totalRopit);
+    this.isStatusModalOpen = true;
+  }
 
-    if (!result.isConfirmed) {
-      return;
-    }
-
+  private submitRopitPlant(applicationNumber: string, plantId: number, totalRopit: number) {
     this.isLoading = true;
     this.loadingMessage = 'दर्ज किया जा रहा है...';
 
@@ -270,31 +263,39 @@ export class RopitPaudhoKiSankhyaPage implements OnInit {
         await this.dismissLoading();
 
         if (res?.response?.code === 200) {
-          Swal.fire({
-            icon: 'success',
-            title: 'Success ',
-            text: 'पौधे सफलतापूर्वक जोड़े गए',
-            confirmButtonText: 'ठीक है'
-          }).then(() => this.reloadPage());
+          this.statusType = 'success';
+          this.statusMessage = 'पौधे सफलतापूर्वक जोड़े गए';
+          this.isStatusModalOpen = true;
         } else {
-          Swal.fire({
-            icon: 'error',
-            title: 'असफल',
-            text: res?.response?.msg || 'कुछ गलत हो गया',
-            confirmButtonText: 'ठीक है'
-          });
+          this.statusType = 'error';
+          this.statusMessage = res?.response?.msg || 'कुछ गलत हो गया';
+          this.isStatusModalOpen = true;
         }
       },
       error: async (err: any) => {
         await this.dismissLoading();
-        Swal.fire({
-          icon: 'error',
-          title: 'त्रुटि',
-          text: err?.error?.response?.msg || 'सर्वर त्रुटि हुई',
-          confirmButtonText: 'ठीक है'
-        });
+        this.statusType = 'error';
+        this.statusMessage = err?.error?.response?.msg || 'सर्वर त्रुटि हुई';
+        this.isStatusModalOpen = true;
       }
     });
+  }
+
+  confirmAction() {
+    if (this.pendingAction) {
+      const action = this.pendingAction;
+      this.pendingAction = null;
+      this.isStatusModalOpen = false;
+      action();
+    }
+  }
+
+  closeStatusModal() {
+    this.isStatusModalOpen = false;
+    this.pendingAction = null;
+    if (this.statusType === 'success') {
+      this.reloadPage();
+    }
   }
 
 

@@ -1,18 +1,19 @@
 <ion-split-pane contentId="main-content" when="md">
   <ion-menu menuId="year-two-menu" class="custom-menu" side="start" content-id="main-content">
-    <ion-header class="ion-header-class-for-menu dashboard-menu-header">
-      <!-- <div class="bg"></div> -->
-      <ion-item lines="none">
-        <ion-avatar slot="start">
-          <img src="assets/img/app_logo.png" />
-        </ion-avatar>
-        <ion-label class="ion-label" style=" text-wrap: nowrap;">
-          {{ getTranslation('app_name')}}
-          <p class="p">
-            <ion-text style="font-size: small ;"> ({{ getTranslation('state_name')}}) </ion-text>
-          </p>
-        </ion-label>
-      </ion-item>
+    <ion-header class="dashboard-menu-header">
+      <ion-toolbar>
+        <ion-item lines="none" style="--background: transparent; --color: white;">
+          <ion-avatar slot="start">
+            <img src="assets/img/app_logo.png" />
+          </ion-avatar>
+          <ion-label class="ion-label" style="text-wrap: nowrap; color: white;">
+            {{ getTranslation('app_name')}}
+            <p class="p" style="color: white; margin-top: 2px;">
+              <ion-text style="font-size: small; color: white;"> ({{ getTranslation('state_name')}}) </ion-text>
+            </p>
+          </ion-label>
+        </ion-item>
+      </ion-toolbar>
     </ion-header>
 
     <ion-content>
@@ -38,27 +39,42 @@
   <div class="ion-page" id="main-content">
     <ion-header>
       <ion-toolbar color="primary" class="dashboard-toolbar">
-        <ion-title class="ion-text-center">{{ getLoginedOfficerName() }}</ion-title>
-        <ion-menu-button menu="year-two-menu" style="color: white" slot="start"></ion-menu-button>
-        <ion-buttons slot="end">
-          <ion-buttons slot="end">
-            <ion-button fill="clear" id="userMenuBtn" class="icon-btn-options">
-              <ion-icon name="options-outline"></ion-icon>
-            </ion-button>
-            <ion-popover trigger="userMenuBtn" side="bottom" alignment="end" dismissOnSelect="true">
-              <ng-template>
-                <ion-list>
-                  <ion-item button (click)="onYearSelect(1)">प्रथम वर्ष</ion-item>
-                  <ion-item button (click)="onYearSelect(3)">तृतीय वर्ष</ion-item>
-                  <ion-item button (click)="goToProfile()">Profile</ion-item>
-                  <ion-item button (click)="changePassword()">Change Password</ion-item>
-                  <ion-item button color="danger" (click)="logoutFunction()">Logout <ion-icon slot="start"
-                      name="log-out-outline"></ion-icon> </ion-item>
-                </ion-list>
-              </ng-template>
-            </ion-popover>
+        <ion-buttons slot="start">
+          <ion-menu-button menu="year-two-menu" class="icon-btn-menu"></ion-menu-button>
+        </ion-buttons>
 
-          </ion-buttons> </ion-buttons>
+        <ion-label class="header-label ion-text-center">
+          <span class="officer-name">
+            {{ getLoginedOfficerName() }}
+          </span>
+
+          <span class="session-text">
+            (Session : {{curent_session }})
+          </span>
+        </ion-label>
+
+        <ion-buttons slot="end">
+          <ion-button (click)="toggleTheme()" class="icon-btn-options">
+            <ion-icon [name]="isDarkMode ? 'sunny-outline' : 'moon-outline'"></ion-icon>
+          </ion-button>
+          <ion-button fill="clear" class="icon-btn-options" (click)="openUserMenu($event)">
+            <ion-icon name="options-outline"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+
+        <ion-popover [event]="popoverEvent" side="bottom" alignment="end" dismiss-on-select="true"
+          [isOpen]="isUserMenuOpen" (didDismiss)="isUserMenuOpen = false">
+          <ng-template>
+            <ion-list>
+              <ion-item button (click)="onYearSelect(1)">प्रथम वर्ष</ion-item>
+              <ion-item button (click)="onYearSelect(3)">तृतीय वर्ष</ion-item>
+              <ion-item button (click)="goToProfile()">Profile</ion-item>
+              <ion-item button (click)="changePassword()">Change Password</ion-item>
+              <ion-item button color="danger" (click)="logoutFunction()">Logout <ion-icon slot="start"
+                  name="log-out-outline"></ion-icon> </ion-item>
+            </ion-list>
+          </ng-template>
+        </ion-popover>
       </ion-toolbar>
     </ion-header>
 

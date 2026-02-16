@@ -7,10 +7,12 @@ import { TableModule } from 'primeng/table';
 import { ApiService } from '../../services/api.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { addIcons } from 'ionicons';
-import { searchOutline } from 'ionicons/icons';
+import { searchOutline, moonOutline, sunnyOutline } from 'ionicons/icons';
 
 addIcons({
   'search-outline': searchOutline,
+  'moon-outline': moonOutline,
+  'sunny-outline': sunnyOutline
 });
 
 @Component({
@@ -42,6 +44,7 @@ export class PaymentComponent implements OnInit {
   filteredAwedans: any[] = [];
 
   searchText: string = '';
+  fin_year: any;
 
   constructor(
     private platform: Platform,
@@ -50,18 +53,26 @@ export class PaymentComponent implements OnInit {
     // private route: ActivatedRoute
   ) { }
 
-  ngOnInit(): void {
+  isDarkMode = false;
+  toggleTheme() {
+    this.isDarkMode = !this.isDarkMode;
+  }
 
+  ngOnInit(): void {
+    this.setSelectInterface();
+  }
+
+  ionViewWillEnter(): void {
     const navigationState = history.state;
 
-    this.rangeId = navigationState.range_id;
-    this.year = navigationState.year;
-    console.log('Navigation State:', navigationState);
+    if (navigationState?.range_id) {
+      this.rangeId = navigationState.range_id;
+      this.year = navigationState.year;
+      this.fin_year = navigationState.fin_year;
+    }
+
+    // console.log('Navigation State:', navigationState);
     this.onLoadPayment((this.year ?? 1).toString());
-    this.setSelectInterface();
-    // const storedData = sessionStorage.getItem('logined_officer_data');
-    // console.log('logined_officer_data', storedData);
-    // const rang_id = storedData ? JSON.parse(storedData).rang_id : null;
   }
 
   /** Detect Mobile vs Web */
@@ -77,7 +88,7 @@ export class PaymentComponent implements OnInit {
   onLoadPayment(selectedPaymentYear: string) {
     this.currentPage = 1;
 
-    this.api.VendorPaymentListData(selectedPaymentYear, this.rangeId).subscribe({
+    this.api.HitgrahiPaymentListData(selectedPaymentYear, this.rangeId, this.fin_year || '').subscribe({
       next: (res: any) => {
         this.paymentList = res?.data || [];
 
@@ -159,7 +170,8 @@ export class PaymentComponent implements OnInit {
     this.router.navigate(['/payment-create'], {
       queryParams: {
         application_number: item.application_number,
-        year: this.year
+        year: this.year,
+        fin_year: this.fin_year
       }
     });
   }

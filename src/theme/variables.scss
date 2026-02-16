@@ -1,13 +1,43 @@
-// For information on how to create your own theme, please see:
-// http://ionicframework.com/docs/theming/
-:root{
-    --ion-color-primary : green;    
-    --ion-color-secondary : #90EE90;    
-    --ion-menu-button-background: #FF5733; /* Set background color */
+/* Ionic Theme Variables */
+
+:root {
+
+  /** Primary **/
+  --ion-color-primary: green;
+  --ion-color-primary-rgb: 0, 128, 0;
+  --ion-color-primary-contrast: #ffffff;
+  --ion-color-primary-contrast-rgb: 255, 255, 255;
+  --ion-color-primary-shade: #007000;
+  --ion-color-primary-tint: #1a8a1a;
+
+  /** Secondary **/
+  --ion-color-secondary: #90EE90;
+  --ion-color-secondary-rgb: 144, 238, 144;
+  --ion-color-secondary-contrast: #000000;
+  --ion-color-secondary-contrast-rgb: 0, 0, 0;
+  --ion-color-secondary-shade: #7dd27d;
+  --ion-color-secondary-tint: #9df19d;
+
+  /** Rose Gold Custom Color **/
+  --ion-color-rosegold: #b76e79;
+  --ion-color-rosegold-rgb: 183, 110, 121;
+  --ion-color-rosegold-contrast: #ffffff;
+  --ion-color-rosegold-contrast-rgb: 255, 255, 255;
+  --ion-color-rosegold-shade: #a0616b;
+  --ion-color-rosegold-tint: #c27f89;
 }
+
+/* Register Rose Gold Color */
+.ion-color-rosegold {
+  --ion-color-base: var(--ion-color-rosegold);
+  --ion-color-base-rgb: var(--ion-color-rosegold-rgb);
+  --ion-color-contrast: var(--ion-color-rosegold-contrast);
+  --ion-color-contrast-rgb: var(--ion-color-rosegold-contrast-rgb);
+  --ion-color-shade: var(--ion-color-rosegold-shade);
+  --ion-color-tint: var(--ion-color-rosegold-tint);
+}
+
+/* Safe area spacing */
 ion-header {
-    margin-top: calc(env(safe-area-inset-top) + 15px); /* Adjust as needed */
+  margin-top: calc(env(safe-area-inset-top) + 15px);
 }
-// ion-content {
-//     --background: #f8fbe8;  /* Replace with your desired color */
-// } 

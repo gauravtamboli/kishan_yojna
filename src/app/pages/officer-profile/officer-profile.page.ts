@@ -13,7 +13,7 @@ import { personOutline, mailOutline, callOutline, businessOutline, ribbonOutline
     templateUrl: './officer-profile.page.html',
     styleUrls: ['./officer-profile.page.scss'],
     standalone: true,
-    imports: [IonContent, IonHeader, IonTitle, IonToolbar, IonButtons, IonBackButton, IonList, IonItem, IonLabel, IonText, IonAvatar, IonCard, IonCardHeader, IonCardSubtitle, IonCardTitle, IonCardContent, IonIcon, IonGrid, IonRow, IonCol, CommonModule, FormsModule]
+    imports: [IonContent, IonHeader, IonTitle, IonToolbar, IonButtons, IonBackButton, IonList, IonItem, IonLabel, IonCard, IonCardHeader, IonCardTitle, IonCardContent, IonIcon, IonGrid, IonRow, IonCol, CommonModule, FormsModule]
 })
 export class OfficerProfilePage implements OnInit {
     officerData: OfficersLoginResponseModel | null = null;

@@ -1,7 +1,7 @@
-<ion-header>
+<ion-header shadow="none">
   <ion-toolbar class="govt-toolbar" color="primary">
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="/officers-dashboard-ro"></ion-back-button>
+      <ion-back-button defaultHref="/officers-dashboard-ro" icon="chevron-back-outline"></ion-back-button>
     </ion-buttons>
     <ion-title class="govt-title">
       रोपित पौधों की संख्या दर्ज करें
@@ -24,16 +24,8 @@
               (ionInput)="onSearch()" (keyup.enter)="onSearchEnter()">
               <ion-icon name="search-outline" slot="start"></ion-icon>
             </ion-input>
-
-            <!-- <div class="results-info" slot="end" *ngIf="filteredData.length > 0">
-              <ion-text color="medium">
-                <small>{{ filteredData.length }} परिणाम मिले</small>
-              </ion-text>
-            </div> -->
           </ion-col>
-
         </ion-row>
-
       </ion-card-content>
     </ion-card>
 
@@ -90,9 +82,6 @@
                     <div class="plant-left">
                       <ion-icon name="leaf-outline" class="plant-icon-small"></ion-icon>
                       <strong class="plant-name">{{ plant.PlantName }}</strong>
-                      <!-- <span class="plant-details">
-                        (क्षेत्र: {{ plant.TotalArea }} हे., पौधे: {{ plant.TotalTree }})
-                      </span> -->
                     </div>
 
                     <!-- MIDDLE: Input -->
@@ -184,11 +173,13 @@
             </ion-col>
 
             <ion-col size="auto">
-              <ion-button [disabled]="currentPage === totalPages" (click)="goToNextPage()" fill="outline" size="small"
-                class="pagination-btn">
-                अगला
-                <ion-icon name="chevron-forward-outline" slot="end"></ion-icon>
-              </ion-button>
+              <div class="pagination-container">
+                <ion-button [disabled]="currentPage === totalPages" (click)="goToNextPage()" fill="outline" size="small"
+                  class="pagination-btn">
+                  अगला
+                  <ion-icon name="chevron-forward-outline" slot="end"></ion-icon>
+                </ion-button>
+              </div>
             </ion-col>
 
             <ion-col size="auto" class="pagination-info">
@@ -202,4 +193,50 @@
       </ion-card-content>
     </ion-card>
   </div>
+
+  <!-- Status/Action Modal -->
+  <ion-modal [isOpen]="isStatusModalOpen" (didDismiss)="closeStatusModal()" [backdropDismiss]="false"
+    class="confirmation-modal">
+    <ng-template>
+      <ion-content scroll-y="false">
+        <div class="confirm-content">
+          <div class="confirm-icon-wrapper" [class.success]="statusType === 'success'"
+            [class.error]="statusType === 'error'" [class.question]="statusType === 'question'">
+            <ion-icon [name]="statusType === 'success' ? 'checkmark-circle-outline' : 
+                         (statusType === 'error' ? 'alert-circle-outline' : 'help-circle-outline')"
+              class="confirm-icon"></ion-icon>
+          </div>
+
+          <h3 class="confirm-title" [class.success-text]="statusType === 'success'"
+            [class.error-text]="statusType === 'error'">
+            {{ statusType === 'success' ? 'सफल' : (statusType === 'error' ? 'त्रुटि' : 'पुष्टि करें') }}
+          </h3>
+
+          <p class="confirm-message">
+            {{ statusMessage }}
+          </p>
+
+          <div class="confirm-actions">
+            <!-- Confirm/OK Button -->
+            <ion-button *ngIf="statusType === 'question'" expand="block" color="success" (click)="confirmAction()">
+              हाँ, दर्ज करें
+            </ion-button>
+
+            <!-- Regular OK Button for success/error -->
+            <ion-button *ngIf="statusType !== 'question'" expand="block"
+              [color]="statusType === 'success' ? 'success' : 'danger'" (click)="closeStatusModal()">
+              ठीक है
+            </ion-button>
+
+            <!-- Cancel Button for Question -->
+            <ion-button *ngIf="statusType === 'question'" expand="block" fill="clear" color="medium"
+              (click)="closeStatusModal()">
+              नहीं
+            </ion-button>
+          </div>
+        </div>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+
 </ion-content>

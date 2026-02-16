@@ -56,7 +56,37 @@ interface MenuPage {
 export class OfficersDashboardROPage implements OnInit {
 
 
+  isDarkMode = false;
 
+  toggleTheme() {
+    this.isDarkMode = !this.isDarkMode;
+    this.applyTheme();
+    // Save preference to localStorage
+    localStorage.setItem('theme-mode', this.isDarkMode ? 'dark' : 'light');
+  }
+  
+  // Apply dark mode class to document
+  private applyTheme() {
+    const isDarkClass = 'ion-palette-dark';
+    if (this.isDarkMode) {
+      document.documentElement.classList.add(isDarkClass);
+      document.body.classList.add(isDarkClass);
+    } else {
+      document.documentElement.classList.remove(isDarkClass);
+      document.body.classList.remove(isDarkClass);
+    }
+  }
+  
+  // Restore saved theme preference on component load
+  private restoreSavedTheme() {
+    const savedTheme = localStorage.getItem('theme-mode');
+    if (savedTheme === 'dark') {
+      this.isDarkMode = true;
+    } else {
+      this.isDarkMode = false;
+    }
+    this.applyTheme();
+  }
 
   toggleSubMenu(index: number, page: any) {
     if (!page.is_submenu) {
@@ -161,8 +191,8 @@ export class OfficersDashboardROPage implements OnInit {
   }
 
   async ngOnInit() {
-
-
+    // Restore saved theme preference
+    this.restoreSavedTheme();
 
     this.curent_session = await this.storageService.get('current_session');
     const current_year = await this.storageService.get('current_year');
@@ -242,8 +272,8 @@ export class OfficersDashboardROPage implements OnInit {
               url: 'vendor-payment-list',
               state: {
                 range_id: rangid,
-                year: 1
-
+                year: 1,
+                fin_year: this.curent_session
               },
               is_submenu: false
             },
@@ -253,7 +283,8 @@ export class OfficersDashboardROPage implements OnInit {
               url: 'payment',
               state: {
                 range_id: rangid,
-                year: 1
+                year: 1,
+                fin_year: this.curent_session
               },
               is_submenu: false
 
