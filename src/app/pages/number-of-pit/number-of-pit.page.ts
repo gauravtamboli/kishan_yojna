@@ -157,21 +157,27 @@ export class NumberOfPitPage implements OnInit {
                 if (res && res.response && res.response.code === 200) {
                     this.statusType = 'success';
                     this.statusMessage = 'गड्ढों की संख्या सफलतापूर्वक दर्ज की गई';
-                    this.isStatusModalOpen = true;
                 } else {
                     this.statusType = 'error';
                     this.statusMessage = res?.response?.message || 'दर्ज करने में त्रुटि हुई';
-                    this.isStatusModalOpen = true;
                 }
-                this.cdRef.detectChanges();
+
+                // Small delay to ensure loader is dismissed before modal appears
+                setTimeout(() => {
+                    this.isStatusModalOpen = true;
+                    this.cdRef.detectChanges();
+                }, 100);
             },
             error: async (err) => {
                 this.isLoading = false;
                 console.error('Error adding gadda count:', err);
                 this.statusType = 'error';
                 this.statusMessage = 'सर्वर त्रुटि';
-                this.isStatusModalOpen = true;
-                this.cdRef.detectChanges();
+                // Small delay to ensure loader is dismissed before modal appears
+                setTimeout(() => {
+                    this.isStatusModalOpen = true;
+                    this.cdRef.detectChanges();
+                }, 100);
             }
         });
     }
@@ -181,15 +187,27 @@ export class NumberOfPitPage implements OnInit {
             const action = this.pendingAction;
             this.pendingAction = null;
             this.isStatusModalOpen = false;
-            action();
+            // Small delay to allow modal to dismiss before starting loader/API
+            setTimeout(() => {
+                action();
+            }, 300);
         }
     }
 
     closeStatusModal() {
+        if (!this.isStatusModalOpen) return;
+
         this.isStatusModalOpen = false;
+        const wasSuccess = this.statusType === 'success';
+
+        // Clear pending action just in case (e.g. if cancelled)
         this.pendingAction = null;
-        if (this.statusType === 'success') {
-            this.loadData(this.currentPage);
+
+        if (wasSuccess) {
+            // Delay reload to ensure modal animation doesn't jitter
+            setTimeout(() => {
+                this.loadData(this.currentPage);
+            }, 300);
         }
     }
 

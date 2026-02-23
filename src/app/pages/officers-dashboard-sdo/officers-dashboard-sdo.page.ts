@@ -10,7 +10,7 @@ import { ChangeDetectorRef } from '@angular/core';
 import { ApiService } from 'src/app/services/api.service';
 import { OfficersLoginResponseModel } from '../officer-login/OfficersLoginResponse.model';
 import { addIcons } from 'ionicons';
-import { appsOutline, homeOutline, informationOutline, informationCircle, buildOutline, logOutOutline, chevronBackOutline, chevronForwardOutline, optionsOutline, reorderThreeOutline, downloadOutline, chevronDownOutline } from 'ionicons/icons';
+import { appsOutline, homeOutline, informationOutline, informationCircle, buildOutline, logOutOutline, chevronBackOutline, chevronForwardOutline, optionsOutline, reorderThreeOutline, downloadOutline, chevronDownOutline, moonOutline, sunnyOutline } from 'ionicons/icons';
 import { Browser } from '@capacitor/browser';
 import { Platform, AlertController } from '@ionic/angular';
 import { NetworkCheckService } from 'src/app/services/network-check.service';
@@ -23,6 +23,8 @@ import { GetAwedanResponseModel } from '../registeration-status/AwedanResponseLi
 import { ModalController } from '@ionic/angular';
 import { MessageDialogComponent } from 'src/app/message-dialog/message-dialog.component';
 import { StorageService } from 'src/app/services/storage.service';
+import { AuthServiceService } from 'src/app/services/auth-service.service';
+
 
 
 
@@ -41,6 +43,37 @@ export class OfficersDashboardSDOPage implements OnInit {
 
   isUserMenuOpen = false;
   popoverEvent: any;
+  isDarkMode = false;
+
+  toggleTheme() {
+    this.isDarkMode = !this.isDarkMode;
+    this.applyTheme();
+    // Save preference to localStorage
+    localStorage.setItem('theme-mode', this.isDarkMode ? 'dark' : 'light');
+  }
+
+  // Apply dark mode class to document
+  private applyTheme() {
+    const isDarkClass = 'ion-palette-dark';
+    if (this.isDarkMode) {
+      document.documentElement.classList.add(isDarkClass);
+      document.body.classList.add(isDarkClass);
+    } else {
+      document.documentElement.classList.remove(isDarkClass);
+      document.body.classList.remove(isDarkClass);
+    }
+  }
+
+  // Restore saved theme preference on component load
+  private restoreSavedTheme() {
+    const savedTheme = localStorage.getItem('theme-mode');
+    if (savedTheme === 'dark') {
+      this.isDarkMode = true;
+    } else {
+      this.isDarkMode = false;
+    }
+    this.applyTheme();
+  }
 
 
   changePassword() {
@@ -85,9 +118,10 @@ export class OfficersDashboardSDOPage implements OnInit {
     private networkCheckService: NetworkCheckService,
     private platform: Platform,
     private navController: NavController, private langService: LanguageService, private cdRef: ChangeDetectorRef,
-    private apiService: ApiService, private sharedPreference: SharedserviceService) {
+    private apiService: ApiService, private sharedPreference: SharedserviceService, private authService: AuthServiceService) {
     this.addAllIcon();
   }
+
 
   languageData: any = {};
 
@@ -142,6 +176,8 @@ export class OfficersDashboardSDOPage implements OnInit {
   }
 
   async ngOnInit() {
+    // Restore saved theme preference
+    this.restoreSavedTheme();
 
     this.curent_session = await this.storageService.get('current_session');
     const current_year = await this.storageService.get('current_year');
@@ -337,7 +373,7 @@ export class OfficersDashboardSDOPage implements OnInit {
   addAllIcon() {
     addIcons({
       appsOutline, homeOutline, informationOutline, informationCircle, buildOutline, logOutOutline, reorderThreeOutline,
-      chevronBackOutline, chevronForwardOutline, chevronDownOutline, optionsOutline, downloadOutline,
+      chevronBackOutline, chevronForwardOutline, chevronDownOutline, optionsOutline, downloadOutline, moonOutline, sunnyOutline
     });
   }
 
@@ -809,10 +845,10 @@ export class OfficersDashboardSDOPage implements OnInit {
 
     modal.onDidDismiss().then((result) => {
       if (result.data?.confirmed) {
-        sessionStorage.clear();
-        this.router.navigateByUrl('/officer-login', { replaceUrl: true });
+        this.authService.logout();
       }
     });
+
 
     await modal.present();
   }

@@ -29,12 +29,27 @@ export const ngrokInterceptor: HttpInterceptorFn = (req, next) => {
 
   console.log('NgrokInterceptor: Processing request', req.url);
 
+  // Retrieve JWT from session storage
+  const officerData = sessionStorage.getItem('logined_officer_data');
+  let token = '';
+  if (officerData) {
+    const parsedData = JSON.parse(officerData);
+    token = parsedData.token;
+  }
+
+  const headers: any = {
+    'ngrok-skip-browser-warning': 'true',
+    'X-Ngrok-Skip-Browser-Warning': 'true'
+  };
+
+  if (token) {
+    headers['Authorization'] = `Bearer ${token}`;
+  }
+
   const clonedRequest = req.clone({
-    setHeaders: {
-      'ngrok-skip-browser-warning': 'true',
-      'X-Ngrok-Skip-Browser-Warning': 'true'
-    }
+    setHeaders: headers
   });
+
 
   return next(clonedRequest);
 };

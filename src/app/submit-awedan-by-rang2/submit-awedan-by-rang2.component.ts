@@ -87,7 +87,11 @@ import { SpeciesMaster, AnyaPlantRequest, AddSpeciesMasterRequest } from '../mod
     IonLoading,
     IonTextarea,
     IonRadioGroup,
-    IonRadio],
+    IonRadio,
+    IonCardHeader,
+    IonCardTitle,
+    IonCardContent
+],
 })
 export class SubmitAwedanByRang2Component implements OnInit {
   onAreaChange($event: IonInputCustomEvent<InputInputEventDetail>) {

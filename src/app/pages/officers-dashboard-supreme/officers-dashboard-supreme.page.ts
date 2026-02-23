@@ -23,6 +23,8 @@ import { GetAwedanResponseModel } from '../registeration-status/AwedanResponseLi
 import { ModalController } from '@ionic/angular';
 import { MessageDialogComponent } from 'src/app/message-dialog/message-dialog.component';
 import { GetMastersResponse } from '../../services/response_classes/GetMastsersResponseModel';
+import { AuthServiceService } from 'src/app/services/auth-service.service';
+
 
 import * as XLSX from 'xlsx';
 import * as FileSaver from 'file-saver';
@@ -68,9 +70,10 @@ export class OfficersDashboardSupremePage implements OnInit {
   isNoRecordFound: boolean = true;
 
   constructor(private modalCtrl: ModalController, private alertController: AlertController, private router: Router, private menuCtrl: MenuController, private networkCheckService: NetworkCheckService, private platform: Platform, private navController: NavController, private langService: LanguageService, private cdRef: ChangeDetectorRef,
-    private apiService: ApiService, private sharedPreference: SharedserviceService) {
+    private apiService: ApiService, private sharedPreference: SharedserviceService, private authService: AuthServiceService) {
     this.addAllIcon();
   }
+
 
   languageData: any = {};
 
@@ -604,10 +607,10 @@ export class OfficersDashboardSupremePage implements OnInit {
 
     modal.onDidDismiss().then((result) => {
       if (result.data?.confirmed) {
-        sessionStorage.clear();
-        this.router.navigateByUrl('/splash', { replaceUrl: true });
+        this.authService.logout();
       }
     });
+
 
     await modal.present();
   }

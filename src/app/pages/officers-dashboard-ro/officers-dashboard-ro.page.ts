@@ -24,6 +24,7 @@ import { SharedserviceService } from 'src/app/services/sharedservice.service';
 import { GetAwedanResponseModel } from '../registeration-status/AwedanResponseList.model';
 import { ModalController } from '@ionic/angular';
 import { MessageDialogComponent } from 'src/app/message-dialog/message-dialog.component';
+import { AuthServiceService } from 'src/app/services/auth-service.service';
 
 import { PaginatorModule } from 'primeng/paginator';
 import * as XLSX from 'xlsx';
@@ -64,7 +65,7 @@ export class OfficersDashboardROPage implements OnInit {
     // Save preference to localStorage
     localStorage.setItem('theme-mode', this.isDarkMode ? 'dark' : 'light');
   }
-  
+
   // Apply dark mode class to document
   private applyTheme() {
     const isDarkClass = 'ion-palette-dark';
@@ -76,7 +77,7 @@ export class OfficersDashboardROPage implements OnInit {
       document.body.classList.remove(isDarkClass);
     }
   }
-  
+
   // Restore saved theme preference on component load
   private restoreSavedTheme() {
     const savedTheme = localStorage.getItem('theme-mode');
@@ -132,9 +133,12 @@ export class OfficersDashboardROPage implements OnInit {
     private langService: LanguageService,
     private cdRef: ChangeDetectorRef,
     private apiService: ApiService,
-    private sharedPreference: SharedserviceService) {
+    private sharedPreference: SharedserviceService,
+    private authService: AuthServiceService
+  ) {
     this.addAllIcon();
   }
+
 
   languageData: any = {};
 
@@ -956,10 +960,10 @@ export class OfficersDashboardROPage implements OnInit {
 
     modal.onDidDismiss().then((result) => {
       if (result.data?.confirmed) {
-        sessionStorage.clear();
-        this.router.navigateByUrl('/officer-login', { replaceUrl: true });
+        this.authService.logout();
       }
     });
+
 
     await modal.present();
   }

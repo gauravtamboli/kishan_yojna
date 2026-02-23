@@ -61,6 +61,18 @@
   font-weight: bold;
 }
 
+/* Global Shared Utilities */
+.dark-gradient-toolbar {
+  --background: var(--theme-primary-gradient) !important;
+  --color: #ffffff !important;
+}
+
+.responsive-toolbar-title {
+  color: #ffffff !important;
+  font-size: 18px !important;
+  font-weight: 700 !important;
+}
+
 .custom-dialog-modal {
   --width: 90vw;
   --max-width: 400px;

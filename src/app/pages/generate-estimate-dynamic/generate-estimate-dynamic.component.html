@@ -37,11 +37,10 @@
       </ion-card>
 
       <div class="details-section">
-
-        <strong style="font-size: 20px; text-align: center !important ;">
-          आवेदक विवरण :
-        </strong>
-        <hr />
+        <div class="section-header-div">
+          <strong class="section-title-text">आवेदक विवरण :</strong>
+        </div>
+        <hr class="section-hr" />
         <ion-grid>
 
           <ion-row>
@@ -307,30 +306,28 @@
                 <ion-row class="center-columns">
 
                   <!--DFO COLUMN -->
-                  <ion-col size="12" style="border: 2px dashed black;" size-md="4" size-lg="4">
+                  <ion-col size="12" size-md="4" size-lg="4">
 
                     <!-- When DFO Can Take Action -->
-                    <div *ngIf="singleData.awedan_status === '4' && isDFO">
+                    <div *ngIf="singleData.awedan_status === '4' && isDFO" class="custome-declearation">
 
                       <ng-select [(ngModel)]="vanMandalAdhikari" [items]="vanMandalOptions" bindLabel="label"
                         bindValue="value" placeholder="विकल्प चुनें" class="custom-ngselect"
                         (change)="changeDFODeclaration($event)">
                       </ng-select>
-                      <ion-item lines="none" class="file-item">
-                        <ion-label position="stacked">
+                      <div style="padding: 10px;">
+                        <ion-label class="upload-label">
                           {{vanMandalAdhikari === '5' ? 'पत्र अपलोड करे' : 'अग्रेषण पत्र अपलोड करे'}}
                         </ion-label>
+                      </div>
 
-                        <div class="upload-wrapper">
-                          <!-- <input type="file" id="uploadFile2" accept="application/pdf" class="file-input" /> -->
-                          <input type="file" class="file-input" #uploadFile (change)="onDfoFileSelected($event)" />
+                      <div class="upload-wrapper">
+                        <input type="file" class="file-input" #uploadFile (change)="onDfoFileSelected($event)" />
 
-
-                          <ion-button class="upload-btn" (click)="uploadDfo()">
-                            <ion-icon name="cloud-upload-outline" slot="start"></ion-icon>
-                          </ion-button>
-                        </div>
-                      </ion-item>
+                        <ion-button class="upload-btn" (click)="uploadDfo()">
+                          <ion-icon name="cloud-upload-outline"></ion-icon>
+                        </ion-button>
+                      </div>
                       <ion-item *ngIf="estimate_data?.dfo_file != null">
                         <a [href]="getFileUrl2(estimate_data?.dfo_file)" target="_blank"
                           style="color: blue; text-decoration: underline; font-weight: 600;">
@@ -347,7 +344,7 @@
                     </div>
 
                     <!-- After DFO Submitted -->
-                    <div *ngIf="singleData.awedan_status > '4'">
+                    <div *ngIf="singleData.awedan_status > '4'" class="custome-declearation">
                       <ion-label>
                         {{
                         existingApplicationStatus == '5'
@@ -379,31 +376,28 @@
                   </ion-col>
 
                   <!--SDO COLUMN-->
-                  <ion-col size="12" style="border: 2px dashed black;" size-md="4" size-lg="4">
+                  <ion-col size="12" size-md="4" size-lg="4">
 
                     <!-- When SDO Can Take Action -->
-                    <div *ngIf="singleData.awedan_status === '2' && isSDO">
+                    <div *ngIf="singleData.awedan_status === '2' && isSDO" class="custome-declearation">
 
                       <ng-select [(ngModel)]="upVanMandalAdhikari" [items]="upVanMandalOptions" bindLabel="label"
                         bindValue="value" placeholder="विकल्प चुनें" class="custom-ngselect"
                         (change)="changesdoDeclaration($event)">
                       </ng-select>
-                      <ion-item lines="none" class="file-item">
-                        <ion-label position="stacked">
+                      <div style="padding: 10px;">
+                        <ion-label class="upload-label">
                           {{upVanMandalAdhikari === '3' ? 'पत्र अपलोड करे' : 'अग्रेषण पत्र अपलोड करे'}}
                         </ion-label>
+                      </div>
 
-                        <div class="upload-wrapper">
-                          <!-- <input type="file" id="uploadFile1" accept="application/pdf" class="file-input" /> -->
-                          <input type="file" class="file-input" #uploadFile (change)="onSdoFileSelected($event)" />
+                      <div class="upload-wrapper">
+                        <input type="file" class="file-input" #uploadFile (change)="onSdoFileSelected($event)" />
 
-
-                          <ion-button class="upload-btn" (click)="uploadSdo()">
-                            <ion-icon name="cloud-upload-outline" slot="start"></ion-icon>
-                          </ion-button>
-                        </div>
-
-                      </ion-item>
+                        <ion-button class="upload-btn" (click)="uploadSdo()">
+                          <ion-icon name="cloud-upload-outline"></ion-icon>
+                        </ion-button>
+                      </div>
                       <ion-item *ngIf="estimate_data?.sdo_file != null">
                         <a [href]="getFileUrl1(estimate_data?.sdo_file)" target="_blank"
                           style="color: blue; text-decoration: underline; font-weight: 600;">
@@ -418,7 +412,7 @@
                     </div>
 
                     <!-- After SDO Submitted -->
-                    <div *ngIf="singleData.awedan_status >= '3'">
+                    <div *ngIf="singleData.awedan_status >= '3'" class="custome-declearation">
 
                       <ion-label>
                         {{
@@ -445,11 +439,7 @@
 
                         </ion-label>
                       </ion-item>
-                      <!-- <br />
 
-                      <ion-label position="stacked">
-                        विवरण (SDO) :- {{ getSafeString(existingSDODescription) }}
-                      </ion-label> -->
 
                       <div class="dropdown-label">उप-वनमंडलाधिकारी</div>
                     </div>
@@ -457,31 +447,30 @@
                   </ion-col>
 
                   <!--RO COLUMN-->
-                  <ion-col size="12" style="border: 2px dashed black;" size-md="4" size-lg="4">
+                  <ion-col size="12" size-md="4" size-lg="4">
 
                     <!-- When RO Can Take Action -->
-                    <div *ngIf="singleData.awedan_status === '1' && isRO">
+                    <div *ngIf="singleData.awedan_status === '1' && isRO" class="custome-declearation">
 
                       <ng-select [(ngModel)]="vanParikshanAdhikari" [items]="vanParikshanOptions" bindLabel="label"
                         bindValue="value" placeholder="विकल्प चुनें" class="custom-ngselect">
                       </ng-select>
+                      <div style="padding: 10px;">
+                        <ion-label class="upload-label">
+                          अग्रेषण पत्र अपलोड करे :-
+                        </ion-label>
+                      </div>
 
 
+                      <div class="upload-wrapper">
+                        <input type="file" #uploadFile (change)="onRoFileSelected($event)" class="file-input" />
 
-                      <ion-item lines="none" class="file-item">
-                        <ion-label position="stacked">अग्रेषण पत्र अपलोड करे</ion-label>
+                        <ion-button (click)="uploadRoFile()" class="upload-btn">
+                          <ion-icon name="cloud-upload-outline"></ion-icon>
+                        </ion-button>
 
-                        <div class="upload-wrapper">
+                      </div>
 
-                          <!-- <input type="file" id="uploadFile" accept="application/pdf" class="file-input" /> -->
-                          <input type="file" class="file-input" #uploadFile (change)="onRoFileSelected($event)" />
-
-
-                          <ion-button class="upload-btn" (click)="uploadRoFile()">
-                            <ion-icon name="cloud-upload-outline" slot="start"></ion-icon>
-                          </ion-button>
-                        </div>
-                      </ion-item>
                       <ion-item *ngIf="estimate_data">
                         <a [href]="getFileUrl(estimate_data.ro_file)" target="_blank"
                           style="color: blue; text-decoration: underline; font-weight: 600;">
@@ -491,8 +480,7 @@
                     </div>
 
                     <!-- After RO Submitted -->
-                    <div *ngIf="singleData.awedan_status > '1'">
-
+                    <div *ngIf="singleData.awedan_status > '1'" class="custome-declearation">
 
                       <ion-label>उप-वन मंडलाधिकारी की ओर स्वीकृत हेतु प्रेषित है |</ion-label>
                       <br />
@@ -533,7 +521,7 @@
                     <ion-button
                       *ngIf="upVanMandalAdhikari === '3' && estimate_data?.sdo_file !=null && isSDO  &&singleData.awedan_status ==='2'"
                       style="float: right;" color="danger" (click)="sdoReturnToRO()">
-                      Send Back to RO sdfs
+                      Send Back to RO
                     </ion-button>
 
                     <!-- SDO: Send to DFO Button (only when SDO can update and has selected value '4') -->
@@ -595,5 +583,48 @@
       </ion-grid>
     </div>
   </div>
+
+  <!-- Status/Action Modal -->
+  <ion-modal [isOpen]="isStatusModalOpen" (didDismiss)="closeStatusModal()" [backdropDismiss]="false"
+    class="confirmation-modal">
+    <ng-template>
+      <div class="confirm-content">
+        <div class="confirm-icon-wrapper" [class.success]="statusType === 'success'"
+          [class.error]="statusType === 'error'" [class.question]="statusType === 'question'">
+          <ion-icon [name]="statusType === 'success' ? 'checkmark-circle-outline' : 
+                       (statusType === 'error' ? 'alert-circle-outline' : 'help-circle-outline')"
+            class="confirm-icon"></ion-icon>
+        </div>
+
+        <h3 class="confirm-title" [class.success-text]="statusType === 'success'"
+          [class.error-text]="statusType === 'error'">
+          {{ statusType === 'success' ? 'सफल' : (statusType === 'error' ? 'त्रुटि' : 'पुष्टि करें') }}
+        </h3>
+
+        <p class="confirm-message">
+          {{ statusMessage }}
+        </p>
+
+        <div class="confirm-actions">
+          <!-- Confirm/OK Button -->
+          <ion-button *ngIf="statusType === 'question'" expand="block" color="success" (click)="confirmAction()">
+            हाँ, दर्ज करें
+          </ion-button>
+
+          <!-- Regular OK Button for success/error -->
+          <ion-button *ngIf="statusType !== 'question'" expand="block"
+            [color]="statusType === 'success' ? 'success' : 'danger'" (click)="closeStatusModal()">
+            ठीक है
+          </ion-button>
+
+          <!-- Cancel Button for Question -->
+          <ion-button *ngIf="statusType === 'question'" expand="block" fill="clear" color="medium"
+            (click)="closeStatusModal()">
+            नहीं
+          </ion-button>
+        </div>
+      </div>
+    </ng-template>
+  </ion-modal>
 
 </ion-content>

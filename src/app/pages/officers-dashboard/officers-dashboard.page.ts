@@ -10,7 +10,7 @@ import { ChangeDetectorRef } from '@angular/core';
 import { ApiService } from 'src/app/services/api.service';
 import { OfficersLoginResponseModel } from '../officer-login/OfficersLoginResponse.model';
 import { addIcons } from 'ionicons';
-import { appsOutline, homeOutline, informationOutline, informationCircle, buildOutline, logOutOutline, chevronBackOutline, chevronForwardOutline, optionsOutline } from 'ionicons/icons';
+import { appsOutline, homeOutline, informationOutline, informationCircle, buildOutline, logOutOutline, chevronBackOutline, chevronForwardOutline, downloadOutline, chevronDownOutline, optionsOutline, reorderThreeOutline, documentTextOutline, statsChartOutline, mapOutline, peopleOutline, personOutline, addCircleOutline, trendingUpOutline, leafOutline, hammerOutline, clipboardOutline, businessOutline, receiptOutline, cashOutline, listOutline, walletOutline, moonOutline, sunnyOutline } from 'ionicons/icons';
 import { Browser } from '@capacitor/browser';
 import { Platform, AlertController } from '@ionic/angular';
 import { NetworkCheckService } from 'src/app/services/network-check.service';
@@ -22,10 +22,12 @@ import { SharedserviceService } from 'src/app/services/sharedservice.service';
 import { GetAwedanResponseModel } from '../registeration-status/AwedanResponseList.model';
 import { ModalController } from '@ionic/angular';
 import { MessageDialogComponent } from 'src/app/message-dialog/message-dialog.component';
+import { AuthServiceService } from 'src/app/services/auth-service.service';
 
 
 import * as XLSX from 'xlsx';
 import * as FileSaver from 'file-saver';
+import { StorageService } from 'src/app/services/storage.service';
 
 
 @Component({
@@ -38,6 +40,40 @@ import * as FileSaver from 'file-saver';
 export class OfficersDashboardPage implements OnInit {
   isUserMenuOpen = false;
   popoverEvent: any;
+  isDarkMode = false;
+  curent_session: any;
+
+
+
+  toggleTheme() {
+    this.isDarkMode = !this.isDarkMode;
+    this.applyTheme();
+    // Save preference to localStorage
+    localStorage.setItem('theme-mode', this.isDarkMode ? 'dark' : 'light');
+  }
+
+  // Apply dark mode class to document
+  private applyTheme() {
+    const isDarkClass = 'ion-palette-dark';
+    if (this.isDarkMode) {
+      document.documentElement.classList.add(isDarkClass);
+      document.body.classList.add(isDarkClass);
+    } else {
+      document.documentElement.classList.remove(isDarkClass);
+      document.body.classList.remove(isDarkClass);
+    }
+  }
+
+  // Restore saved theme preference on component load
+  private restoreSavedTheme() {
+    const savedTheme = localStorage.getItem('theme-mode');
+    if (savedTheme === 'dark') {
+      this.isDarkMode = true;
+    } else {
+      this.isDarkMode = false;
+    }
+    this.applyTheme();
+  }
 
   openUserMenu($event: any) {
     this.popoverEvent = $event;
@@ -62,8 +98,23 @@ export class OfficersDashboardPage implements OnInit {
 
   addAllIcon() {
     addIcons({
-      appsOutline, homeOutline, informationOutline, informationCircle, buildOutline, logOutOutline,
-      chevronBackOutline, chevronForwardOutline, optionsOutline
+      appsOutline, homeOutline, informationOutline, informationCircle, buildOutline, logOutOutline, reorderThreeOutline,
+      chevronBackOutline, chevronForwardOutline, chevronDownOutline, optionsOutline, downloadOutline, walletOutline,
+      moonOutline, sunnyOutline,
+      'document-text-outline': documentTextOutline,
+      'stats-chart-outline': statsChartOutline,
+      'map-outline': mapOutline,
+      'people-outline': peopleOutline,
+      'person-outline': personOutline,
+      'add-circle-outline': addCircleOutline,
+      'trending-up-outline': trendingUpOutline,
+      'leaf-outline': leafOutline,
+      'hammer-outline': hammerOutline,
+      'clipboard-outline': clipboardOutline,
+      'business-outline': businessOutline,
+      'receipt-outline': receiptOutline,
+      'cash-outline': cashOutline,
+      'list-outline': listOutline
     });
   }
 
@@ -106,10 +157,23 @@ export class OfficersDashboardPage implements OnInit {
 
   isNoRecordFound: boolean = true;
 
-  constructor(private modalCtrl: ModalController, private alertController: AlertController, private router: Router, private menuCtrl: MenuController, private networkCheckService: NetworkCheckService, private platform: Platform, private navController: NavController, private langService: LanguageService, private cdRef: ChangeDetectorRef,
-    private apiService: ApiService, private sharedPreference: SharedserviceService) {
+  constructor(
+    private modalCtrl: ModalController,
+    private storageService: StorageService,
+    private alertController: AlertController,
+    private router: Router,
+    private menuCtrl: MenuController,
+    private networkCheckService: NetworkCheckService,
+    private platform: Platform,
+    private navController: NavController,
+    private langService: LanguageService,
+    private cdRef: ChangeDetectorRef,
+    private apiService: ApiService,
+    private sharedPreference: SharedserviceService,
+    private authService: AuthServiceService) {
     this.addAllIcon();
   }
+
 
   languageData: any = {};
 
@@ -170,10 +234,11 @@ export class OfficersDashboardPage implements OnInit {
   }
 
   async ngOnInit() {
-
+    // Restore saved theme preference
+    this.restoreSavedTheme();
     this.updateTranslation();
     this.getDashboardDataFromServer();
-
+    this.curent_session = await this.storageService.get('current_session');
 
 
     this.langService.language$.subscribe(() => {
@@ -762,10 +827,10 @@ export class OfficersDashboardPage implements OnInit {
 
     modal.onDidDismiss().then((result) => {
       if (result.data?.confirmed) {
-        sessionStorage.clear();
-        this.router.navigateByUrl('/officer-login', { replaceUrl: true });
+        this.authService.logout();
       }
     });
+
 
     await modal.present();
   }

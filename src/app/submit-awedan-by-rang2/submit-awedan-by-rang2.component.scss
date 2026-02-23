@@ -427,3 +427,18 @@ ion-content {
 ::ng-deep ng-select.custom-select .ng-select-container:hover {
   border-color: var(--ion-color-primary) !important;
 }
+
+
+.form-container {
+  padding: 16px;
+}
+
+.form-section {
+  margin-bottom: 24px;
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}

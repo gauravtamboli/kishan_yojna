@@ -46,20 +46,38 @@
   <div class="ion-page" id="main-content">
 
     <ion-header>
-      <ion-toolbar color="primary" class="dashboard-toolbar">
-        <ion-title class="ion-text-center">{{ getLoginedOfficerName() }}</ion-title>
-        <ion-menu-button menu="officer-menu" style="color: white;" slot="start"></ion-menu-button>
-        <!-- <ion-buttons slot="end">
-            <img src="assets/img/cg_image.png" alt="Logo" class="toolbar-logo" />
-          </ion-buttons> -->
+      <ion-toolbar style="padding: 8px;">
+        <!-- START : MENU BUTTON -->
+        <ion-buttons slot="start">
+          <ion-menu-button menu="officer-menu" class="icon-btn-menu"></ion-menu-button>
+        </ion-buttons>
+
+        <!-- CENTER : OFFICER NAME -->
+        <ion-label class="header-label ion-text-center">
+          <span class="officer-name">
+            {{ getLoginedOfficerName() }}
+          </span>
+
+          <span class="session-text">
+            (Session : {{curent_session }})
+          </span>
+        </ion-label>
+
+
+        <!-- END : DROPDOWN -->
+
         <ion-buttons slot="end">
+          <ion-button (click)="toggleTheme()">
+            <ion-icon [name]="isDarkMode ? 'sunny-outline' : 'moon-outline'"></ion-icon>
+          </ion-button>
           <ion-button fill="clear" class="icon-btn-options" (click)="openUserMenu($event)">
-            <ion-icon name="options-outline" style="color: white;"></ion-icon>
+            <ion-icon name="options-outline"></ion-icon>
           </ion-button>
         </ion-buttons>
 
         <ion-popover [event]="popoverEvent" side="bottom" alignment="end" dismiss-on-select="true"
           [isOpen]="isUserMenuOpen" (didDismiss)="isUserMenuOpen = false">
+
           <ng-template>
             <ion-list>
               <ion-item button (click)="onYearSelect(2)">द्वितीय वर्ष</ion-item>
@@ -70,10 +88,8 @@
                   name="log-out-outline"></ion-icon> </ion-item>
             </ion-list>
           </ng-template>
+
         </ion-popover>
-        <!-- <ion-buttons slot="end">
-            <img src="assets/img/cg_image.png" alt="Logo" class="toolbar-logo" />
-          </ion-buttons> -->
       </ion-toolbar>
     </ion-header>
 
@@ -207,28 +223,25 @@
         </ion-row>
       </ion-grid>
 
-      <hr class="divider">
+      <!-- <hr class="divider"> -->
 
 
       <div class="ion-padding">
-        <ion-card class="species-card">
-          <ion-row>
+        <ion-row class="mb-3 align-items-center">
+          <ion-col size="12" size-lg="6">
+            <ion-input class="custom-input shadow-sm" [(ngModel)]="searchMobile" fill="outline"
+              placeholder="मोबाइल नंबर / हितग्राही नाम / पिता का नाम" (ionInput)="onSearch($event)"
+              (keyup.enter)="onEnter()">
+            </ion-input>
+          </ion-col>
 
-            <ion-col size="6" size-lg="6">
-              <ion-input class="custom-input no-outline small-input" [(ngModel)]="searchMobile"
-                placeholder="मोबाइल नंबर / हितग्राही नाम / पिता का नाम" (ionInput)="onSearch($event)"
-                (keyup.enter)="onEnter()">
-              </ion-input>
-
-            </ion-col>
-            <ion-col size="6" size-lg="6">
-              <ion-button style="float: right;" (click)="export()">
-                Export To Excel
-              </ion-button>
-            </ion-col>
-
-          </ion-row>
-        </ion-card>
+          <ion-col size="6" size-lg="6" class="text-end" style="text-align: right;">
+            <ion-button color="success" (click)="export()">
+              <ion-icon name="download-outline" slot="start"></ion-icon>
+              Export To Excel
+            </ion-button>
+          </ion-col>
+        </ion-row>
 
 
         <p-table [value]="filteredAwedans" [paginator]="false" responsiveLayout="stack" class="custom-dashboard-table"

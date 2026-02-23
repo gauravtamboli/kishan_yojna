@@ -294,7 +294,7 @@
       <ion-card-content>
         <!-- Plants Less Than 5 Acres -->
         <div *ngIf="getPlantsLessThan5Acre().length > 0" style="margin-bottom: 24px;">
-          <h3 style="margin-bottom: 12px; color: #333; font-weight: 600;">5 एकड़ से कम</h3>
+          <h3 class="group-title">5 एकड़ से कम</h3>
           <div style="overflow-x: auto;">
             <table class="plant-table">
               <thead>
@@ -321,7 +321,7 @@
 
         <!-- Plants More Than or Equal to 5 Acres -->
         <div *ngIf="getPlantsMoreThanOrEqual5Acre().length > 0">
-          <h3 style="margin-bottom: 12px; color: #333; font-weight: 600;">5 एकड़ या अधिक</h3>
+          <h3 class="group-title">5 एकड़ या अधिक</h3>
           <div style="overflow-x: auto;">
             <table class="plant-table">
               <thead>
@@ -348,7 +348,7 @@
 
         <!-- No Plants Message -->
         <div *ngIf="getPlantsLessThan5Acre().length === 0 && getPlantsMoreThanOrEqual5Acre().length === 0"
-          style="text-align: center; padding: 20px; color: #666;">
+          class="no-plants-msg">
           <p>कोई पौधे की जानकारी उपलब्ध नहीं है</p>
         </div>
       </ion-card-content>

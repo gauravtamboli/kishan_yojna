@@ -42,7 +42,7 @@
 
   <div class="ion-page" id="main-content">
     <ion-header>
-      <ion-toolbar color="primary" class="dashboard-toolbar">
+      <ion-toolbar style="padding: 8px;">
 
         <!-- START : MENU BUTTON -->
         <ion-buttons slot="start">
@@ -64,6 +64,9 @@
         <!-- END : DROPDOWN -->
 
         <ion-buttons slot="end">
+          <ion-button (click)="toggleTheme()">
+            <ion-icon [name]="isDarkMode ? 'sunny-outline' : 'moon-outline'"></ion-icon>
+          </ion-button>
           <ion-button fill="clear" class="icon-btn-options" (click)="openUserMenu($event)">
             <ion-icon name="options-outline"></ion-icon>
           </ion-button>
@@ -232,12 +235,12 @@
                     </ion-row>
                   </ion-grid>
 
-                  <hr style="background-color: black; height: 1px" />
+                  <!-- <hr style="background-color: black; height: 1px" /> -->
                 </ion-col>
               </ion-row>
             </ion-grid>
 
-            <hr style="background-color: black; height: 1px" />
+            <!-- <hr style="background-color: black; height: 1px" /> -->
           </ion-col>
         </ion-row>
       </ion-grid>
@@ -257,7 +260,8 @@
             </ion-input>
           </ion-col>
           <ion-col size="6" size-lg="6">
-            <ion-button style="float: right;" (click)="export()">
+            <ion-button color="success" style="float: right;" (click)="export()">
+              <ion-icon name="download-outline" slot="start"></ion-icon>
               Export To Excel
             </ion-button>
           </ion-col>

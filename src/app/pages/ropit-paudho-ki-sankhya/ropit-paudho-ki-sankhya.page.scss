@@ -202,28 +202,17 @@ p {
 ================================ */
 
 .confirmation-modal {
-  --height: 380px;
-  /* Compact height for dialog */
+  --height: fit-content;
   --width: 90%;
   --max-width: 400px;
   --border-radius: var(--theme-radius-xl);
   --box-shadow: var(--theme-shadow-lg);
-  --font-size: 16px;
-
-  @media (min-width: 992px) {
-    --height: 350px;
-    /* Slightly more compact on desktop */
-  }
 
   &::part(content) {
-    background: var(--theme-card-bg);
     border: 1px solid var(--theme-border);
     border-radius: var(--theme-radius-xl);
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    padding: 0;
+    background: var(--theme-card-bg);
+    margin: auto;
   }
 }
 
@@ -232,9 +221,10 @@ p {
   flex-direction: column;
   align-items: center;
   text-align: center;
-  padding: 12px 20px 24px;
-  height: 100%;
-  justify-content: space-between;
+  padding: 24px 20px;
+  background: var(--theme-card-bg);
+  border-radius: var(--theme-radius-xl);
+  gap: 16px;
 
   .confirm-title {
     margin: 16px 0 8px;

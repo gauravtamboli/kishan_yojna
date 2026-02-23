@@ -2,12 +2,12 @@
   <ion-toolbar class="dark-gradient-toolbar">
     <!-- LEFT -->
     <ion-buttons slot="start">
-      <ion-back-button class="custom-back-button" (click)="goBack()" defaultHref="/landingpage">
+      <ion-back-button class="custom-back-button" (click)="goBack()" defaultHref="/landingpage" text="">
       </ion-back-button>
-      <ion-title class="responsive-toolbar-title toolbar-center">
-        भुगतान
-      </ion-title>
     </ion-buttons>
+    <ion-title class="responsive-toolbar-title">
+      भुगतान
+    </ion-title>
 
 
     <!-- RIGHT -->
@@ -418,7 +418,7 @@
           </div>
         </ion-card-content>
         <div class="payment-button-container" style=" margin-bottom: 20px;">
-          <ion-button  class="my-ion-button" (click)="makePayment()">Create Payment</ion-button>
+          <ion-button class="my-ion-button" (click)="makePayment()">Create Payment</ion-button>
         </div>
       </ion-card>
 

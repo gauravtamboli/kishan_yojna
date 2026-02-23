@@ -860,6 +860,14 @@ ion-button {
   background: var(--theme-card-bg, #fff);
 }
 
+.label-divider {
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+}
+
 .label-text {
   font-size: 15px;
   padding: 15px;

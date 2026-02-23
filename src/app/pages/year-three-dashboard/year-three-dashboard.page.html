@@ -1,5 +1,5 @@
 <ion-split-pane contentId="main-content" when="md">
-  <ion-menu menuId="year-three-menu" class="custom-menu" side="start" content-id="main-content">
+  <ion-menu menuId="year-three-menu" class="custom-menu" side="start" contentId="main-content">
     <ion-header class="dashboard-menu-header">
       <ion-toolbar>
         <ion-item lines="none" style="--background: transparent; --color: white;">
@@ -15,11 +15,36 @@
         </ion-item>
       </ion-toolbar>
     </ion-header>
+
+    <ion-content>
+      <ion-list>
+        <ng-container *ngFor="let page of pages; let i = index">
+          <ion-item class="no-gap-item" lines="none">
+            <ion-icon *ngIf="page.icon" [name]="page.icon" class="menu-icon"></ion-icon>
+            <ion-text class="responsive-menu-title" style="width: 100%; margin-left: 10px"
+              (click)="toggleSubMenu(i, page)">
+              {{ page.title }}
+            </ion-text>
+          </ion-item>
+
+          <ion-list *ngIf="page.is_submenu && page.open">
+            <ion-item *ngFor="let child of page.children" class="no-gap-item" lines="none" style="padding-left: 30px"
+              (click)="onMenuItemClick(child.url!)">
+              <ion-icon *ngIf="child.icon" [name]="child.icon" class="menu-icon"
+                style="margin-right: 10px; font-size: 18px;"></ion-icon>
+              <ion-text class="responsive-menu-title">
+                {{ child.title }}
+              </ion-text>
+            </ion-item>
+          </ion-list>
+        </ng-container>
+      </ion-list>
+    </ion-content>
   </ion-menu>
 
   <div class="ion-page" id="main-content">
     <ion-header>
-      <ion-toolbar color="primary" class="dashboard-toolbar">
+      <ion-toolbar style="padding: 8px;">
         <ion-buttons slot="start">
           <ion-menu-button menu="year-three-menu" class="icon-btn-menu"></ion-menu-button>
         </ion-buttons>
@@ -35,7 +60,7 @@
         </ion-label>
 
         <ion-buttons slot="end">
-          <ion-button (click)="toggleTheme()" class="icon-btn-options">
+          <ion-button (click)="toggleTheme()">
             <ion-icon [name]="isDarkMode ? 'sunny-outline' : 'moon-outline'"></ion-icon>
           </ion-button>
           <ion-button fill="clear" class="icon-btn-options" (click)="openUserMenu($event)">
@@ -72,7 +97,7 @@
                   <ion-card class="custom-card" (click)="onBoxClick(1)">
                     <ion-grid style="background: linear-gradient(135deg, #198edb 0%, #1565c0 100%);">
                       <ion-row>
-                        <ion-col size="9" class="ion-text-center">
+                        <ion-col size="12" class="ion-text-center">
 
                           <ion-label class="responsive-label-count label-divider">
                             <span class="label-text">कुल आवेदन</span>
@@ -90,7 +115,7 @@
                   <ion-card class="custom-card" (click)="onBoxClick(2)">
                     <ion-grid style="background: linear-gradient(135deg, #4caf50 0%, #388e3c 100%);">
                       <ion-row>
-                        <ion-col size="9" class="ion-text-center">
+                        <ion-col size="12" class="ion-text-center">
                           <ion-label class="responsive-label-count label-divider">
                             <span class="label-text">तृतीय वर्ष की पूर्ण प्रविष्टि</span>
                             <span class="label-count">{{ countYes }}</span>
@@ -105,7 +130,7 @@
                   <ion-card class="custom-card" (click)="onBoxClick(3)">
                     <ion-grid style="background: linear-gradient(135deg, #ff9800 0%, #f57c00 100%);">
                       <ion-row>
-                        <ion-col size="9" class="ion-text-center">
+                        <ion-col size="12" class="ion-text-center">
                           <ion-label class="responsive-label-count label-divider">
                             <span class="label-text">तृतीय वर्ष की अपूर्ण प्रविष्टि</span>
                             <span class="label-count">{{ countNo }}</span>

@@ -9,7 +9,7 @@ import { ChangeDetectorRef } from '@angular/core';
 import { ApiService } from 'src/app/services/api.service';
 import { OfficersLoginResponseModel } from '../officer-login/OfficersLoginResponse.model';
 import { addIcons } from 'ionicons';
-import { appsOutline, homeOutline, informationOutline, informationCircle, buildOutline, logOutOutline, downloadOutline, chevronBackOutline, chevronForwardOutline, chevronDownOutline, optionsOutline, reorderThreeOutline } from 'ionicons/icons';
+import { appsOutline, homeOutline, informationOutline, informationCircle, buildOutline, logOutOutline, downloadOutline, chevronBackOutline, chevronForwardOutline, chevronDownOutline, optionsOutline, reorderThreeOutline, documentTextOutline, statsChartOutline, peopleOutline, addCircleOutline, hammerOutline, leafOutline, mapOutline, clipboardOutline, cashOutline, businessOutline, personOutline, receiptOutline, walletOutline, trendingUpOutline } from 'ionicons/icons';
 import { Platform } from '@ionic/angular';
 import { NetworkCheckService } from 'src/app/services/network-check.service';
 import { Router } from '@angular/router';
@@ -25,6 +25,16 @@ import { YearThreeAwedanListResponseModel, YearThreeAwedanResponse, PlantDataMod
 import { YearThreeAwedanCountsResponse } from './YearThreeAwedanCountsResponse.model';
 import { SubmitPlantRequestYearThreeModel, PlantRequestYearThreeItem } from './YearThreePlantResponse.model';
 
+
+interface MenuPage {
+  title: string;
+  is_submenu: boolean;
+  url?: string;
+  state?: any;
+  children?: MenuPage[];
+  open?: boolean;
+  icon?: string;
+}
 
 @Component({
   selector: 'app-year-three-dashboard',
@@ -49,7 +59,7 @@ export class YearThreeDashboardPage implements OnInit {
   }
 
   curent_session: any;
-  pages: { title: string, url: string, is_submenu: boolean }[] = [];
+  pages: MenuPage[] = [];
   isConnected: boolean = false;
 
   isDarkMode = false;
@@ -128,8 +138,131 @@ export class YearThreeDashboardPage implements OnInit {
     this.getYearThreeAwedanList();
 
     this.langService.language$.subscribe(() => {
-      this.pages = [];
+      this.populateMenu();
     });
+  }
+
+  private populateMenu() {
+    const storedData = sessionStorage.getItem('logined_officer_data');
+    const rangid = storedData ? JSON.parse(storedData).rang_id : null;
+
+    this.pages = [
+      {
+        title: 'गोस्वारा रिपोर्ट ',
+        url: 'goswara-report',
+        is_submenu: false,
+        icon: 'document-text-outline'
+      },
+      {
+        title: 'प्रजातिवार गोस्वारा रिपोर्ट ',
+        url: 'prajati-goswara-report',
+        is_submenu: false,
+        icon: 'stats-chart-outline'
+      },
+      {
+        title: 'गाँव वार गोस्वारा',
+        url: 'gaon-var-goswara',
+        is_submenu: false,
+        icon: 'map-outline'
+      },
+      {
+        title: 'किसान रिपोर्ट ',
+        url: 'kissan-wise-report',
+        is_submenu: false,
+        icon: 'people-outline'
+      },
+      {
+        title: 'दर्ज करें',
+        is_submenu: true,
+        icon: 'add-circle-outline',
+        children: [
+          {
+            title: 'गड्ढों की संख्या दर्ज करें',
+            url: 'number-of-pit',
+            is_submenu: false,
+            icon: 'hammer-outline'
+          },
+          {
+            title: 'पौधों की संख्या दर्ज करें',
+            url: 'ropit-paudho-ki-sankhya',
+            is_submenu: false,
+            icon: 'leaf-outline'
+          },
+          {
+            title: 'रेंज रिपोर्ट (रोपण/गड्ढे)',
+            url: 'range-plant-report',
+            is_submenu: false,
+            icon: 'clipboard-outline'
+          }
+        ]
+      },
+      {
+        title: 'भुगतान',
+        is_submenu: true,
+        icon: 'cash-outline',
+        children: [
+          {
+            icon: 'business-outline',
+            title: 'वेंडर भुगतान बनाए ',
+            url: 'vendor-payment-list',
+            state: {
+              range_id: rangid,
+              year: 3,
+              fin_year: this.curent_session
+            },
+            is_submenu: false
+          },
+          {
+            title: 'हितग्राही भुगतान बनाएं',
+            icon: 'person-outline',
+            url: 'payment',
+            state: {
+              range_id: rangid,
+              year: 3,
+              fin_year: this.curent_session
+            },
+            is_submenu: false
+          },
+          {
+            title: 'भुगतान करे ',
+            icon: 'receipt-outline',
+            url: 'create-bill',
+            state: {
+              range_id: rangid,
+              year: 3
+            },
+            is_submenu: false
+          },
+          {
+            title: 'भुगतान रिपोर्ट',
+            icon: 'wallet-outline',
+            url: 'ropit-paudho-ki-sankhya/report',
+            is_submenu: false
+          }
+        ]
+      },
+      {
+        title: 'प्रगति प्रतिवेदन',
+        url: 'pragati-prativedan',
+        is_submenu: false,
+        icon: 'trending-up-outline'
+      }
+    ];
+  }
+
+  toggleSubMenu(index: number, page: any) {
+    if (!page.is_submenu) {
+      this.onMenuItemClick(page);
+      return;
+    }
+
+    this.pages.forEach((p, i) => {
+      if (i !== index) {
+        p.open = false;
+      }
+    });
+
+    page.open = !page.open;
   }
 
   ionViewWillEnter() {
@@ -282,6 +415,8 @@ export class YearThreeDashboardPage implements OnInit {
     addIcons({
       appsOutline, homeOutline, informationOutline, informationCircle, buildOutline, logOutOutline, reorderThreeOutline,
       chevronBackOutline, chevronForwardOutline, chevronDownOutline, optionsOutline, downloadOutline,
+      documentTextOutline, statsChartOutline, peopleOutline, addCircleOutline, hammerOutline, leafOutline,
+      mapOutline, clipboardOutline, cashOutline, businessOutline, personOutline, receiptOutline, walletOutline, trendingUpOutline
     });
   }
 
@@ -455,11 +590,11 @@ export class YearThreeDashboardPage implements OnInit {
     await modal.present();
   }
 
-  async onMenuItemClick(page: string) {
+  async onMenuItemClick(page: any) {
     this.isConnected = await this.networkCheckService.getCurrentStatus();
 
     if (this.isConnected) {
-      this.router.navigate([page]);
+      this.router.navigate([page.url], { state: page.state });
     } else {
       this.longToast(this.getTranslation("no_internet"));
       return;

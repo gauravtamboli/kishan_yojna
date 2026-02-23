@@ -14,7 +14,7 @@
   <ion-loading [isOpen]="isLoading" [message]="loadingMessage" inert />
 
 
-  <div style="border: 2px solid black; border-radius: 2px;">
+  <div style="padding: 10px;">
     <ion-row style="margin-bottom: 10px;">
       <ion-col>
         <ion-card style="background-color: #e8f5e8; padding: 15px; border-left: 4px solid #28a745;">
@@ -61,16 +61,16 @@
           </div>
         </ion-col>
       </ion-row>
-      <ion-row style="margin-top: 10px">
-        <ion-col size="12" size-lg="3">
+      <ion-row style="margin-top: 10px; ">
+        <ion-col size="12" size-lg="3" style="padding: 5px;">
           <ion-input [(ngModel)]="hitgrahiName" label="कृषक/हितग्राही का नाम" label-placement="floating"
             fill="outline" />
         </ion-col>
-        <ion-col size="12" size-lg="3">
+        <ion-col size="12" size-lg="3" style="padding: 5px;">
           <ion-input [(ngModel)]="fatherName" label="पिता का नाम" label-placement="floating" fill="outline" />
         </ion-col>
 
-        <ion-col size="12" size-lg="3">
+        <ion-col size="12" size-lg="3" style="padding-right: 5px;">
           <!-- <ion-label class="item-style-label">जाति वर्ग</ion-label> -->
           <ng-select [items]="listOfCastCategory" bindLabel="name" bindValue="id" [(ngModel)]="selectedCastCatId"
             (change)="onCastCategoryChange()" [searchable]="true" [clearable]="false" placeholder="जाति वर्ग चुनें"
@@ -79,7 +79,8 @@
         </ion-col>
 
 
-        <ion-col size="12" size-lg="3" style="display: flex; flex-direction: column; justify-content: flex-end;">
+        <ion-col size="12" size-lg="3"
+          style="display: flex; flex-direction: column; justify-content: flex-end; padding: 6px;">
           <ion-input [(ngModel)]="adhaar" type="number" label="आधार कार्ड नम्बर" label-placement="floating"
             fill="outline" maxlength="12" />
         </ion-col>
@@ -98,7 +99,7 @@
             [items]="[{id: 'true', name: 'हाँ'}, {id: 'false', name: 'नहीं'}]" bindLabel="name" bindValue="id"
             [(ngModel)]="isPvtg" [searchable]="false" placeholder="चुनें" class="custom-select" />
         </ion-col>
-        <ion-col size="12" size-lg="8">
+        <ion-col size="12" size-lg="8" style="padding: 6px;">
           <ion-textarea [(ngModel)]="address" fill="outline" label="पता" label-placement="floating" rows="1"
             autoGrow="true"></ion-textarea>
         </ion-col>
@@ -106,7 +107,7 @@
       </ion-row>
 
       <ion-row style="margin-top: 5px">
-        <ion-col size="12" size-lg="4">
+        <ion-col size="12" size-lg="4" style="padding: 5px;">
           <!-- <ion-label class="item-style-label">बैंक का नाम</ion-label> -->
           <ng-select [items]="listOfBank" bindLabel="name" bindValue="id" [(ngModel)]="selectedBankName"
             [searchable]="true" [clearable]="false" placeholder="बैंक का नाम चुनें" class="custom-select">
@@ -115,10 +116,11 @@
 
 
 
-        <ion-col size="12" size-lg="4" style="display: flex; flex-direction: column; justify-content: flex-end;">
+        <ion-col size="12" size-lg="4"
+          style="display: flex; flex-direction: column; justify-content: flex-end; padding: 5px;">
           <ion-input [(ngModel)]="ifsc_code" label="IFSC कोड" label-placement="floating" fill="outline" />
         </ion-col>
-        <ion-col size="12" size-lg="4">
+        <ion-col size="12" size-lg="4" style="padding: 5px;">
           <ion-input [(ngModel)]="bank_account_no" type="number" label="बैंक खाता नम्बर" label-placement="floating"
             fill="outline" />
         </ion-col>
@@ -136,44 +138,45 @@
 
     <div style="padding: 30px;">
       <ion-row>
-        <ion-col size="12" size-lg="3">
+        <ion-col size="12" size-lg="3" style="padding: 5px;">
 
           <ion-input [(ngModel)]="area" type="number" label="हितग्राही का कुल रकबा  (एकड़ में)"
             label-placement="floating" fill="outline" (ionInput)="onAreaChange($event)">
           </ion-input>
         </ion-col>
-        <ion-col size="12" size-lg="3">
+        <ion-col size="12" size-lg="3" style="padding: 5px;">
           <ion-input [(ngModel)]="available_area" type="number" label="किसान द्वारा रोपण योग्य भूमि"
             label-placement="floating" fill="outline" (ionInput)="onAvailableAreaChange($event)">
           </ion-input>
         </ion-col>
-        <ion-col size="12" size-lg="3">
+        <ion-col size="12" size-lg="3" style="padding: 5px;">
           <ion-input [(ngModel)]="halka_no" label="पटवारी हल्का नम्बर व हल्का नाम दर्ज करें" label-placement="floating"
             fill="outline" />
         </ion-col>
-        <ion-col size="12" size-lg="3">
+        <ion-col size="12" size-lg="3" style="padding: 5px;">
           <ion-input [(ngModel)]="village_name" label="ग्राम का नाम" label-placement="floating" fill="outline" />
         </ion-col>
-        <ion-col size="12" size-lg="3" style="display: flex; flex-direction: column; justify-content: center;">
+        <ion-col size="12" size-lg="3">
           <ion-row>
-            <ion-col size="12" size-lg="12">
+            <ion-col size="12" size-lg="12"
+              style="display: flex; flex-direction: column; justify-content: center; padding: 5px;">
               <ion-label style="font-size: 12px; display: flex; flex-direction: column;"
                 class="ion-justify-content-center">
                 भूमि सिंचित है या असिंचित?
               </ion-label>
-              <ion-radio-group [(ngModel)]="sinchitOrA_sinchit">
+              <ion-radio-group [(ngModel)]="sinchitOrA_sinchit"  >
                 <ion-row>
                   <ion-col size="6" size-lg="6">
                     <ion-item lines="none">
                       <ion-radio slot="start" value="asinchit"></ion-radio>
-                      <ion-label style="font-size: 12px;">असिंचित</ion-label>
+                      <ion-label style="font-size: 12px;"> &nbsp; असिंचित</ion-label>
                     </ion-item>
                   </ion-col>
 
                   <ion-col size="6" size-lg="6">
                     <ion-item lines="none">
                       <ion-radio slot="start" value="sinchit"></ion-radio>
-                      <ion-label style="font-size: 12px;">सिंचित</ion-label>
+                      <ion-label style="font-size: 12px;"> &nbsp; सिंचित</ion-label>
                     </ion-item>
                   </ion-col>
                 </ion-row>
@@ -183,68 +186,72 @@
           </ion-row>
         </ion-col>
 
-        <ion-col size="12" size-lg="3" style="display: flex; flex-direction: column; justify-content: flex-end;">
+        <ion-col size="12" size-lg="3">
           <ion-label style="font-size: 12px">
             क्या आपके द्वारा वन अधिकार क्षेत्र में वृक्षारोपण कार्य किया गया है?
           </ion-label>
           <ion-radio-group [(ngModel)]="selectedYesNoForKakshaKramank" (ionChange)="onselect_no()">
             <ion-row>
-              <ion-col size="6" size-lg="3">
+              <ion-col size="6" size-lg="6">
                 <ion-item lines="none">
                   <ion-radio slot="start" value="no"></ion-radio>
-                  <ion-label style="font-size: 12px;">नहीं</ion-label>
+                  <ion-label style="font-size: 12px;"> &nbsp;नहीं</ion-label>
                 </ion-item>
               </ion-col>
-              <ion-col size="6" size-lg="3">
+              <ion-col size="6" size-lg="6">
                 <ion-item lines="none">
                   <ion-radio slot="start" value="yes"></ion-radio>
-                  <ion-label style="font-size: 12px;">हाँ</ion-label>
+                  <ion-label style="font-size: 12px;"> &nbsp;हाँ</ion-label>
                 </ion-item>
               </ion-col>
             </ion-row>
           </ion-radio-group>
         </ion-col>
 
-        <ion-col *ngIf="selectedYesNoForKakshaKramank === 'yes'" size="12" size-lg="3"
-          style="display: flex; flex-direction: column; justify-content: flex-end;">
-          <ion-input [(ngModel)]="kaksha_kramank" label="कक्ष क्रमांक" label-placement="floating" fill="outline" />
-        </ion-col>
 
 
 
-        <ion-col size="12" size-lg="3" style="display: flex; flex-direction: column; justify-content: flex-end;">
+
+        <ion-col size="12" size-lg="3" style="padding-left: 5px;">
           <ion-label style="font-size: 12px">अपनी भूमि का प्रकार चुनें:</ion-label>
 
           <ion-radio-group [(ngModel)]="selectfrarevenue" (ionChange)="onselect()">
-            <ion-row>
-              <ion-col size="6" size-lg="4">
+            <ion-row  >
+              <ion-col size="6" size-lg="6">
                 <ion-item lines="none">
                   <ion-radio slot="start" value="2"></ion-radio>
-                  <ion-label style="font-size: 12px;">Revenue Land</ion-label>
+                  <ion-label style="font-size: 12px;">&nbsp;Revenue Land</ion-label>
                 </ion-item>
               </ion-col>
-              <ion-col size="6" size-lg="4">
+              <ion-col size="6" size-lg="6">
                 <ion-item lines="none">
                   <ion-radio slot="start" value="1"></ion-radio>
-                  <ion-label style="font-size: 12px;">FRA Land</ion-label>
+                  <ion-label style="font-size: 12px;">&nbsp;FRA Land</ion-label>
                 </ion-item>
               </ion-col>
 
             </ion-row>
           </ion-radio-group>
         </ion-col>
-
-        <ion-col size="12" size-lg="3" *ngIf="selectfrarevenue === '1'">
+        <ion-col *ngIf="selectedYesNoForKakshaKramank === 'yes'" size="12" size-lg="3"
+          style="display: flex; flex-direction: column; justify-content: flex-end; padding: 8px;">
+          <ion-input [(ngModel)]="kaksha_kramank" label="वृक्षारोपण कक्ष क्रमांक" label-placement="floating" fill="outline" />
+        </ion-col>
+        <ion-col size="12" size-lg="3" *ngIf="selectfrarevenue === '1'"
+          style="display: flex; flex-direction: column; justify-content: flex-end; padding: 8px;">
           <ion-input [(ngModel)]="compartment_no" label="कक्ष क्रमांक" label-placement="floating" fill="outline" />
         </ion-col>
-        <ion-col size="12" size-lg="3" *ngIf="selectfrarevenue === '1'">
+        <ion-col size="12" size-lg="3" *ngIf="selectfrarevenue === '1'"
+          style="display: flex; flex-direction: column; justify-content: flex-end; padding: 8px;">
           <ion-input [(ngModel)]="patta_no" label="वन अधिकार पत्र क्रमांक (पट्टा नंबर)" label-placement="floating"
             fill="outline" />
         </ion-col>
-        <ion-col size="12" size-lg="3" *ngIf="selectfrarevenue === '2'">
+        <ion-col size="12" size-lg="3" *ngIf="selectfrarevenue === '2'"
+          style="display: flex; flex-direction: column; justify-content: flex-end; padding: 8px;">
           <ion-input [(ngModel)]="khasra_no" label="खसरा नंबर" label-placement="floating" fill="outline" />
         </ion-col>
-        <ion-col size="12" size-lg="3">
+        <ion-col size="12" size-lg="3"
+          style="display: flex; flex-direction: column; justify-content: flex-end; padding: 8px;">
           <ion-input [(ngModel)]="gram_panchayat_name" label="ग्राम पंचायत का नाम" label-placement="floating"
             fill="outline" />
         </ion-col>
@@ -347,7 +354,7 @@
       </ion-row> -->
 
       <ion-row style="margin-top: 5px">
-        <ion-col size="12" size-lg="6">
+        <ion-col size="12" size-lg="3" style="padding: 5px;">
           <ion-label class="item-style-label">
             वृक्षारोपण मॉडल का प्रकार (ब्लॉक/खेत का मेड़/अंतरफसल)
           </ion-label>
@@ -355,7 +362,7 @@
             bindValue="id" [(ngModel)]="selectedPlantationType" [searchable]="true"
             placeholder="वृक्षारोपण मॉडल का प्रकार चुनें" />
         </ion-col>
-        <ion-col size="12" size-lg="6">
+        <ion-col size="12" size-lg="3" style="padding: 5px;">
           <ion-label class="item-style-label">मिट्टी का प्रकार</ion-label>
           <ng-select [clearable]="false" style="margin-top: 5px" [items]="listOfSandType" bindLabel="name"
             bindValue="id" [(ngModel)]="selected_sand_type" [searchable]="true" placeholder="मिट्टी का प्रकार चुनें" />
@@ -363,7 +370,7 @@
       </ion-row>
 
       <ion-row style="margin-top: 10px">
-        <ion-col size="12" size-md="6" size-lg="3">
+        <ion-col size="12" size-md="6" size-lg="3" style="padding: 5px;">
           <div>
             <label for="fileInput1" style="margin-bottom: 6px; font-weight: bold">
               📁 आधार कार्ड के दोनों पृष्ठों का संयुक्त पीडीएफ
@@ -378,7 +385,7 @@
             </div>
           </div>
         </ion-col>
-        <ion-col size="12" size-md="6" size-lg="3">
+        <ion-col size="12" size-md="6" size-lg="3" style="padding: 5px;">
           <div>
             <label for="fileInput2" style="margin-bottom: 6px; font-weight: bold">
               📁 बैंक पासबुक के पहले पृष्ठ की फोटो की पीडीएफ
@@ -393,9 +400,7 @@
             </div>
           </div>
         </ion-col>
-
-
-        <ion-col size="12" size-md="6" size-lg="3">
+        <ion-col size="12" size-md="6" size-lg="3" style="padding: 5px;">
           <div>
             <label for="fileInput3" style="margin-bottom: 6px; font-weight: bold">
               📁 जमीन संबंधी B1 और P1 की संयुक्त पीडीएफ
@@ -410,7 +415,7 @@
             </div>
           </div>
         </ion-col>
-        <ion-col size="12" size-md="6" size-lg="3">
+        <ion-col size="12" size-md="6" size-lg="3" style="padding: 5px;">
           <div>
             <label for="fileInput4" style="margin-bottom: 6px; font-weight: bold">
               📁 अपलोड KML FILE

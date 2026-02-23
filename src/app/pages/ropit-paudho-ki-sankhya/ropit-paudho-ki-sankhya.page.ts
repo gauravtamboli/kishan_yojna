@@ -223,28 +223,29 @@ export class RopitPaudhoKiSankhyaPage implements OnInit {
 
 
 
-  async addPlantRow(applicationNumber: string, plantId: number, qty: any, maxPit: any = 0) {
+  async addPlantRow(applicationNumber: string, plantId: number, qty: any, plant: any) {
+    const enteredRopit = Number(qty);
+    const existingRopit = Number(plant?.TotalRopit || 0);
+    const pitLimit = Number(plant?.TotalPit || 0);
+    const cumulativeTotal = enteredRopit + existingRopit;
 
-    const totalRopit = Number(qty);
-    const pitLimit = Number(maxPit || 0);
-
-    if (!totalRopit || totalRopit <= 0) {
+    if (!enteredRopit || enteredRopit <= 0) {
       this.statusType = 'error';
       this.statusMessage = 'कृपया सही पौध संख्या दर्ज करें';
       this.isStatusModalOpen = true;
       return;
     }
 
-    if (totalRopit > pitLimit) {
+    if (cumulativeTotal > pitLimit) {
       this.statusType = 'error';
-      this.statusMessage = `रोपित पौधों की संख्या गड्ढों की संख्या (${pitLimit}) से अधिक नहीं हो सकती।`;
+      this.statusMessage = `कुल रोपित संख्या (${cumulativeTotal}) गड्ढों की संख्या (${pitLimit}) से अधिक नहीं हो सकती। (पहले से रोपित: ${existingRopit})`;
       this.isStatusModalOpen = true;
       return;
     }
 
     this.statusType = 'question';
-    this.statusMessage = `आवेदन ${applicationNumber} के लिए ${totalRopit} पौधों की संख्या दर्ज करें?`;
-    this.pendingAction = () => this.submitRopitPlant(applicationNumber, plantId, totalRopit);
+    this.statusMessage = `आवेदन ${applicationNumber} के लिए ${enteredRopit} पौधों की संख्या दर्ज करें?`;
+    this.pendingAction = () => this.submitRopitPlant(applicationNumber, plantId, enteredRopit);
     this.isStatusModalOpen = true;
   }
 
@@ -265,18 +266,27 @@ export class RopitPaudhoKiSankhyaPage implements OnInit {
         if (res?.response?.code === 200) {
           this.statusType = 'success';
           this.statusMessage = 'पौधे सफलतापूर्वक जोड़े गए';
-          this.isStatusModalOpen = true;
         } else {
           this.statusType = 'error';
           this.statusMessage = res?.response?.msg || 'कुछ गलत हो गया';
-          this.isStatusModalOpen = true;
         }
+
+        // Small delay to ensure loader is dismissed before modal appears
+        setTimeout(() => {
+          this.isStatusModalOpen = true;
+          this.cdRef.detectChanges();
+        }, 100);
       },
       error: async (err: any) => {
         await this.dismissLoading();
         this.statusType = 'error';
         this.statusMessage = err?.error?.response?.msg || 'सर्वर त्रुटि हुई';
-        this.isStatusModalOpen = true;
+
+        // Small delay to ensure loader is dismissed before modal appears
+        setTimeout(() => {
+          this.isStatusModalOpen = true;
+          this.cdRef.detectChanges();
+        }, 100);
       }
     });
   }
@@ -286,15 +296,27 @@ export class RopitPaudhoKiSankhyaPage implements OnInit {
       const action = this.pendingAction;
       this.pendingAction = null;
       this.isStatusModalOpen = false;
-      action();
+      // Small delay to allow modal to dismiss before starting loader/API
+      setTimeout(() => {
+        action();
+      }, 300);
     }
   }
 
   closeStatusModal() {
+    if (!this.isStatusModalOpen) return;
+
     this.isStatusModalOpen = false;
+    const wasSuccess = this.statusType === 'success';
+
+    // Clear pending action just in case (e.g. if cancelled)
     this.pendingAction = null;
-    if (this.statusType === 'success') {
-      this.reloadPage();
+
+    if (wasSuccess) {
+      // Delay reload to ensure modal animation doesn't jitter
+      setTimeout(() => {
+        this.reloadPage();
+      }, 300);
     }
   }
 

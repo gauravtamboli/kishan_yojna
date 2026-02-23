@@ -1,7 +1,12 @@
+:host {
+  --row-alt: var(--theme-surface-overlay);
+}
+
 .header-card {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
   margin-bottom: 16px;
+  border: none;
 
   .application-number {
     font-size: 1.2rem;
@@ -17,16 +22,19 @@
 
 ion-card {
   margin-bottom: 16px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  background: var(--theme-card-bg);
+  border: 1px solid var(--theme-border-light);
+  box-shadow: var(--theme-shadow-sm);
 
   ion-card-header {
-    background-color: #f5f5f5;
+    background-color: var(--theme-bg-secondary);
     padding: 12px 16px;
+    border-bottom: 1px solid var(--theme-border-light);
 
     ion-card-title {
       font-size: 1.1rem;
-      font-weight: 600;
-      color: #333;
+      font-weight: 700;
+      color: var(--theme-primary);
     }
   }
 
@@ -37,13 +45,33 @@ ion-card {
       display: block;
       margin-bottom: 12px;
       line-height: 1.6;
+      color: var(--theme-text-primary);
 
       strong {
-        color: #555;
+        color: var(--theme-text-secondary);
         margin-right: 8px;
+        font-weight: 600;
       }
     }
   }
+}
+
+.group-title {
+  margin-bottom: 12px;
+  color: var(--theme-text-primary);
+  font-weight: 700;
+  font-size: 1.1rem;
+  padding-left: 4px;
+  border-left: 4px solid var(--theme-primary);
+}
+
+.no-plants-msg {
+  text-align: center;
+  padding: 24px;
+  color: var(--theme-text-tertiary);
+  background: var(--theme-bg-secondary);
+  border-radius: var(--theme-radius-md);
+  margin-top: 8px;
 }
 
 .plant-item {
@@ -82,8 +110,10 @@ ion-badge {
   width: 100%;
   border-collapse: collapse;
   margin-bottom: 16px;
-  background-color: white;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  background-color: var(--theme-card-bg);
+  border: 1px solid var(--theme-border);
+  border-radius: var(--theme-radius-md);
+  overflow: hidden;
 
   thead {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -91,20 +121,27 @@ ion-badge {
 
     th {
       padding: 12px 8px;
-      text-align: left;
-      font-weight: 600;
-      font-size: 0.9rem;
-      border: 1px solid rgba(255, 255, 255, 0.2);
+      text-align: center;
+      font-weight: 700;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
     }
   }
 
   tbody {
     tr {
-      border-bottom: 1px solid #e0e0e0;
+      border-bottom: 1px solid var(--theme-border-light);
       transition: background-color 0.2s;
+      background-color: var(--theme-card-bg);
+
+      &:nth-child(even) {
+        background-color: var(--theme-surface-overlay);
+      }
 
       &:hover {
-        background-color: #f5f5f5;
+        background-color: var(--theme-bg-tertiary);
       }
 
       &:last-child {
@@ -112,10 +149,15 @@ ion-badge {
       }
 
       td {
-        padding: 10px 8px;
-        text-align: left;
+        padding: 12px 8px;
+        text-align: center;
         font-size: 0.9rem;
-        color: #333;
+        color: var(--theme-text-primary);
+        border-right: 1px solid var(--theme-border-light);
+
+        &:last-child {
+          border-right: none;
+        }
       }
     }
   }
@@ -123,7 +165,7 @@ ion-badge {
 
 @media (max-width: 768px) {
   .plant-table {
-    font-size: 0.85rem;
+    font-size: 0.8rem;
 
     thead th,
     tbody td {
@@ -133,27 +175,23 @@ ion-badge {
 }
 
 .file-link {
-  color: #0066cc;
-  text-decoration: underline;
+  color: var(--theme-primary);
+  text-decoration: none;
+  font-weight: 600;
   cursor: pointer;
-  transition: color 0.2s;
+  transition: all 0.2s;
+  border-bottom: 1px dashed var(--theme-primary);
 
   &:hover {
-    color: #0052a3;
-    text-decoration: underline;
-  }
-
-  &:active {
-    color: #003d7a;
+    color: var(--theme-primary-light);
+    border-bottom-style: solid;
   }
 }
 
 .app-row {
   display: flex;
   justify-content: space-between;
-  /* badge to end */
   align-items: center;
-  /* vertical center */
 }
 
 .application-number {
@@ -163,4 +201,20 @@ ion-badge {
 
 .status-badge {
   white-space: nowrap;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Dark Mode Overrides for specific elements that need more contrast */
+html.ion-palette-dark {
+  .header-card {
+    background: linear-gradient(135deg, #434190 0%, #4c1d95 100%);
+  }
+
+  .plant-table {
+    thead {
+      background: linear-gradient(135deg, #4c51bf 0%, #553c9a 100%);
+    }
+  }
 }

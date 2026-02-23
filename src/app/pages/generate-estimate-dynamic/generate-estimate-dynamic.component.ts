@@ -8,10 +8,9 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ApiService } from '../../services/api.service';
 import { tableData } from '../generate-estimate/estimate-table';
-import Swal from 'sweetalert2';
-import { addIcons } from 'ionicons';
-import { cloudUploadOutline } from 'ionicons/icons';
 import { NgZone } from '@angular/core';
+import { checkmarkCircleOutline, alertCircleOutline, helpCircleOutline, cloudUploadOutline } from 'ionicons/icons';
+import { addIcons } from 'ionicons';
 import * as pdfFontsBold from "../../../assets/fonts/vfs_fonts_bold_custom";
 import * as pdfFontsNormal from "../../../assets/fonts/vfs_fonts_custom";
 import pdfMake from 'pdfmake/build/pdfmake';
@@ -164,6 +163,12 @@ export class GenerateEstimateDynamicComponent implements OnInit {
   sdo_declaration: any;
   dfo_declaration: any;
 
+  // Modal State
+  isStatusModalOpen = false;
+  statusType: 'success' | 'error' | 'question' = 'success';
+  statusMessage = '';
+  pendingAction: (() => void) | null = null;
+
   constructor(
     private location: Location,
     private route: ActivatedRoute,
@@ -176,7 +181,10 @@ export class GenerateEstimateDynamicComponent implements OnInit {
     private zone: NgZone
   ) {
     addIcons({
-      cloudUploadOutline
+      cloudUploadOutline,
+      checkmarkCircleOutline,
+      alertCircleOutline,
+      helpCircleOutline
     });
   }
 
@@ -186,6 +194,7 @@ export class GenerateEstimateDynamicComponent implements OnInit {
     // Subscribe to workPlanData to populate year rows
     this.estimateService.loadWorkPlanData();
     this.estimateService.workPlanData$.subscribe(data => {
+      console.log('Received work plan data:', data);
       // Handle array format (old)
       if (Array.isArray(data) && data.length > 0) {
         this.year1Rows = data.filter(x => x.year === 1);
@@ -613,6 +622,35 @@ export class GenerateEstimateDynamicComponent implements OnInit {
     }
   }
 
+  // Modal Methods
+  confirmAction() {
+    if (this.pendingAction) {
+      const action = this.pendingAction;
+      this.pendingAction = null;
+      this.isStatusModalOpen = false;
+      action();
+    }
+  }
+
+  closeStatusModal() {
+    this.isStatusModalOpen = false;
+    const wasSuccess = this.statusType === 'success';
+    this.pendingAction = null;
+    if (wasSuccess) {
+      this.zone.run(() => {
+        this.reloadPage();
+      });
+    }
+  }
+
+  showStatusModal(message: string, type: 'success' | 'error' | 'question' = 'success', action: (() => void) | null = null) {
+    this.statusMessage = message;
+    this.statusType = type;
+    this.pendingAction = action;
+    this.isStatusModalOpen = true;
+    this.cdRef.detectChanges();
+  }
+
   // ============================================================================
   // STEP 12: APPROVAL WORKFLOW - BUILD APPROVAL ITEMS
   // ============================================================================
@@ -792,7 +830,13 @@ export class GenerateEstimateDynamicComponent implements OnInit {
 
   //  * RO: Send to SDO (status 2)
 
-  async roSendToSDO(description?: string) {
+  roSendToSDO() {
+    this.showStatusModal('क्या आप सुनिश्चित हैं कि आप SDO को भेजना चाहते हैं?', 'question', () => {
+      this.executeRoSendToSDO();
+    });
+  }
+
+  async executeRoSendToSDO(description?: string) {
     await this.showLoading('SDO को भेजा जा रहा है...');
 
     const officerId = this.getLoggedInOfficerId();
@@ -811,25 +855,9 @@ export class GenerateEstimateDynamicComponent implements OnInit {
         await this.dismissLoading();
 
         if (response?.response?.code === 200) {
-
-          Swal.fire({
-            title: 'सफलतापूर्वक SDO को भेजा गया',
-            // text: response.response.msg || '',
-            icon: 'success',
-            confirmButtonText: 'ठीक है'
-          }).then(() => {
-            this.zone.run(() => {
-              this.reloadPage();
-            });
-          });
+          this.showStatusModal('सफलतापूर्वक SDO को भेजा गया', 'success');
         } else {
-          Swal.fire({
-            title: 'भेजना असफल',
-            text: response?.response?.msg || '',
-            icon: 'error',
-            confirmButtonText: 'ठीक है'
-          });
-          //
+          this.showStatusModal('भेजना असफल', 'error');
         }
       },
       error: async (err) => {
@@ -842,7 +870,13 @@ export class GenerateEstimateDynamicComponent implements OnInit {
 
 
   //  * SDO: Return to RO (status 3)
-  async sdoReturnToRO(description?: string) {
+  sdoReturnToRO() {
+    this.showStatusModal('क्या आप सुनिश्चित हैं कि आप RO को वापस भेजना चाहते हैं?', 'question', () => {
+      this.executeSdoReturnToRO();
+    });
+  }
+
+  async executeSdoReturnToRO(description?: string) {
     await this.showLoading('RO को वापस भेजा जा रहा है...');
 
     const officerId = this.getLoggedInOfficerId();
@@ -861,24 +895,9 @@ export class GenerateEstimateDynamicComponent implements OnInit {
         await this.dismissLoading();
 
         if (response?.response?.code === 200) {
-
-          Swal.fire({
-            title: 'सफलतापूर्वक RO को वापस भेजा गया',
-            // text: response.response.msg || '',
-            icon: 'success',
-            confirmButtonText: 'ठीक है'
-          }).then(() => {
-            this.zone.run(() => {
-              this.reloadPage();
-            });
-          });
+          this.showStatusModal('सफलतापूर्वक RO को वापस भेजा गया', 'success');
         } else {
-          Swal.fire({
-            title: 'वापस भेजना असफल',
-            text: response?.response?.msg || '',
-            icon: 'error',
-            confirmButtonText: 'ठीक है'
-          });
+          this.showStatusModal('वापस भेजना असफल', 'error');
         }
       },
       error: async (err) => {
@@ -889,7 +908,13 @@ export class GenerateEstimateDynamicComponent implements OnInit {
   }
 
   //  * SDO: Send to DFO (status 4)
-  async sdoSendToDFO(description?: string, dfoId?: number) {
+  sdoSendToDFO() {
+    this.showStatusModal('क्या आप सुनिश्चित हैं कि आप DFO को भेजना चाहते हैं?', 'question', () => {
+      this.executeSdoSendToDFO();
+    });
+  }
+
+  async executeSdoSendToDFO(description?: string, dfoId?: number) {
     await this.showLoading('DFO को भेजा जा रहा है...');
 
     const officerId = this.getLoggedInOfficerId();
@@ -908,23 +933,9 @@ export class GenerateEstimateDynamicComponent implements OnInit {
         await this.dismissLoading();
 
         if (response?.response?.code === 200) {
-          Swal.fire({
-            title: 'सफलतापूर्वक DFO को भेजा गया',
-            // text: response.response.msg || '',
-            icon: 'success',
-            confirmButtonText: 'ठीक है'
-          }).then(() => {
-            this.zone.run(() => {
-              this.reloadPage();
-            });
-          });
+          this.showStatusModal('सफलतापूर्वक DFO को भेजा गया', 'success');
         } else {
-          Swal.fire({
-            title: 'भेजना असफल',
-            text: response?.response?.msg || '',
-            icon: 'error',
-            confirmButtonText: 'ठीक है'
-          });
+          this.showStatusModal('भेजना असफल', 'error');
         }
       },
       error: async (err) => {
@@ -937,7 +948,13 @@ export class GenerateEstimateDynamicComponent implements OnInit {
 
   //  * DFO: Return to RO (status 5)
 
-  async dfoReturnToRO(description?: string) {
+  dfoReturnToRO() {
+    this.showStatusModal('क्या आप सुनिश्चित हैं कि आप RO को वापस भेजना चाहते हैं?', 'question', () => {
+      this.executeDfoReturnToRO();
+    });
+  }
+
+  async executeDfoReturnToRO(description?: string) {
     await this.showLoading('RO को वापस भेजा जा रहा है...');
 
     const officerId = this.getLoggedInOfficerId();
@@ -956,24 +973,9 @@ export class GenerateEstimateDynamicComponent implements OnInit {
         await this.dismissLoading();
 
         if (response?.response?.code === 200) {
-          Swal.fire({
-            title: 'सफलतापूर्वक RO को वापस भेजा गया',
-            // text: response.response.msg || '',
-            icon: 'success',
-            confirmButtonText: 'ठीक है'
-          }).then(() => {
-            this.zone.run(() => {
-              this.reloadPage();
-            });
-          });
+          this.showStatusModal('सफलतापूर्वक RO को वापस भेजा गया', 'success');
         } else {
-
-          Swal.fire({
-            title: 'वापस भेजना असफल',
-            text: response?.response?.msg || '',
-            icon: 'error',
-            confirmButtonText: 'ठीक है'
-          });
+          this.showStatusModal('वापस भेजना असफल', 'error');
         }
       },
       error: async (err) => {
@@ -986,7 +988,13 @@ export class GenerateEstimateDynamicComponent implements OnInit {
 
   //  * DFO: Accept (status 6 - final)
 
-  async dfoAccept(description?: string) {
+  dfoAccept() {
+    this.showStatusModal('क्या आप सुनिश्चित हैं कि आप प्राकलन स्वीकृत करना चाहते हैं?', 'question', () => {
+      this.executeDfoAccept();
+    });
+  }
+
+  async executeDfoAccept(description?: string) {
     await this.showLoading('प्राकलन स्वीकृत किया जा रहा है...');
 
     const officerId = this.getLoggedInOfficerId();
@@ -1005,23 +1013,9 @@ export class GenerateEstimateDynamicComponent implements OnInit {
         await this.dismissLoading();
 
         if (response?.response?.code === 200) {
-          Swal.fire({
-            title: 'प्राकलन सफलतापूर्वक स्वीकृत किया गया',
-            // text: response.response.msg || '',
-            icon: 'success',
-            confirmButtonText: 'ठीक है'
-          }).then(() => {
-            this.zone.run(() => {
-              this.reloadPage();
-            });
-          });
+          this.showStatusModal('प्राकलन सफलतापूर्वक स्वीकृत किया गया', 'success');
         } else {
-          Swal.fire({
-            title: 'स्वीकृति असफल',
-            text: response?.response?.msg || '',
-            icon: 'error',
-            confirmButtonText: 'ठीक है'
-          });
+          this.showStatusModal('स्वीकृति असफल', 'error');
         }
       },
       error: async (err) => {
@@ -1041,33 +1035,8 @@ export class GenerateEstimateDynamicComponent implements OnInit {
 
 
   confirmDelete() {
-    Swal.fire({
-      title: 'क्या आप सुनिश्चित हैं?',
-      text: 'आप इस डेटा को हटाना चाहते हैं?',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonText: 'हाँ, Delete करें',
-      cancelButtonText: 'नहीं',
-
-      // 🔥 FIX for Ionic
-      target: '#swal-portal',
-      heightAuto: false
-    }).then(result => {
-      if (result.isConfirmed) {
-
-        this.roSoftDelete();
-
-        Swal.fire({
-          icon: 'success',
-          title: 'हटा दिया गया',
-          timer: 1500,
-          showConfirmButton: false,
-
-          // 🔥 FIX for Ionic
-          target: '#swal-portal',
-          heightAuto: false
-        });
-      }
+    this.showStatusModal('क्या आप सुनिश्चित हैं? आप इस डेटा को हटाना चाहते हैं?', 'question', () => {
+      this.roSoftDelete();
     });
   }
 
@@ -1078,16 +1047,8 @@ export class GenerateEstimateDynamicComponent implements OnInit {
 
 
   uploadRoFile() {
-
     if (!this.selectedRoFile) {
-      Swal.fire({
-        title: 'त्रुटि',
-        text: 'कृपया एक फ़ाइल चुनें।',
-        icon: 'error',
-        confirmButtonText: 'ठीक है',
-        target: '#swal-portal',
-        heightAuto: false
-      });
+      this.showStatusModal('कृपया एक फ़ाइल चुनें।', 'error');
       return;
     }
 
@@ -1099,7 +1060,6 @@ export class GenerateEstimateDynamicComponent implements OnInit {
 
     this.api.uploadRo(formData).subscribe({
       next: async (response: any) => {
-
         const res = response?.response || response;
         const code = res?.code;
         const message = res?.msg;
@@ -1107,33 +1067,13 @@ export class GenerateEstimateDynamicComponent implements OnInit {
         await this.dismissLoading();
 
         if (code === 200) {
-          Swal.fire({
-            title: 'सफलता',
-            text: message || "RO फ़ाइल सफलतापूर्वक अपलोड हुई",
-            icon: 'success',
-            confirmButtonText: 'ठीक है',
-            target: '#swal-portal',
-            heightAuto: false
-          }).then(() => {
-            this.zone.run(() => {
-              this.reloadPage();
-            });
-          });
-
+          this.showStatusModal(message || "RO फ़ाइल सफलतापूर्वक अपलोड हुई", 'success');
           this.selectedRoFile = null;
           this.uploadFileRef.nativeElement.value = '';
-
-        } else if (code === 101) {
-          Swal.fire("Application number is required.", "", "error");
-
-        } else if (code === 102) {
-          Swal.fire("RO file is required.", "", "error");
-
         } else {
-          Swal.fire("फ़ाइल अपलोड असफल", "", "error");
+          this.showStatusModal(message || "फ़ाइल अपलोड असफल", 'error');
         }
       },
-
       error: async (err) => {
         console.error("UPLOAD ERROR", err);
         await this.dismissLoading();
@@ -1142,30 +1082,20 @@ export class GenerateEstimateDynamicComponent implements OnInit {
     });
   }
 
-
   uploadSdo() {
-
     if (!this.selectedSdoFile) {
-      Swal.fire({
-        title: 'त्रुटि',
-        text: 'कृपया एक फ़ाइल चुनें।(SDO)',
-        icon: 'error',
-        confirmButtonText: 'ठीक है',
-        target: '#swal-portal',
-        heightAuto: false
-      });
+      this.showStatusModal('कृपया एक फ़ाइल चुनें।(SDO)', 'error');
       return;
     }
 
     const formData = new FormData();
     formData.append("applicationNumber", this.singleData.applicationNumber);
-    formData.append("sdoFile", this.selectedSdoFile);  // ⬅️ FIXED
+    formData.append("sdoFile", this.selectedSdoFile);
 
     this.showLoading();
 
     this.api.uploadSdo(formData).subscribe({
       next: async (response: any) => {
-
         const res = response?.response || response;
         const code = res?.code;
         const message = res?.msg;
@@ -1173,53 +1103,23 @@ export class GenerateEstimateDynamicComponent implements OnInit {
         await this.dismissLoading();
 
         if (code === 200) {
-          Swal.fire({
-            title: 'सफलता',
-            text: message || "RO फ़ाइल सफलतापूर्वक अपलोड हुई",
-            icon: 'success',
-            confirmButtonText: 'ठीक है',
-            target: '#swal-portal',
-            heightAuto: false
-          }).then(() => {
-            this.zone.run(() => {
-              this.reloadPage();
-            });
-          });
-
+          this.showStatusModal(message || "SDO फ़ाइल सफलतापूर्वक अपलोड हुई", 'success');
           this.selectedSdoFile = null;
           this.uploadFileRef.nativeElement.value = '';
-
-        } else if (code === 101) {
-          Swal.fire("Application number is required.", "", "error");
-
-        } else if (code === 102) {
-          Swal.fire("RO file is required.", "", "error");
-
         } else {
-          Swal.fire("फ़ाइल अपलोड असफल", "", "error");
+          this.showStatusModal(message || "फ़ाइल अपलोड असफल", 'error');
         }
       },
-
       error: async () => {
         await this.dismissLoading();
         await this.showError("Server Error");
       }
     });
-
   }
 
-
   uploadDfo() {
-
     if (!this.selectedDfoFile) {
-      Swal.fire({
-        title: 'त्रुटि',
-        text: 'कृपया एक फ़ाइल चुनें।',
-        icon: 'error',
-        confirmButtonText: 'ठीक है',
-        target: '#swal-portal',
-        heightAuto: false
-      });
+      this.showStatusModal('कृपया एक फ़ाइल चुनें।', 'error');
       return;
     }
 
@@ -1227,9 +1127,7 @@ export class GenerateEstimateDynamicComponent implements OnInit {
     formData.append("applicationNumber", this.singleData.applicationNumber);
     formData.append("DfoFile", this.selectedDfoFile);
 
-
-
-    this.showLoading();  // your loading
+    this.showLoading();
 
     this.api.uploadDfo(formData).subscribe({
       next: async (response: any) => {
@@ -1240,39 +1138,18 @@ export class GenerateEstimateDynamicComponent implements OnInit {
         await this.dismissLoading();
 
         if (code === 200) {
-          Swal.fire({
-            title: 'सफलता',
-            text: message || "RO फ़ाइल सफलतापूर्वक अपलोड हुई",
-            icon: 'success',
-            confirmButtonText: 'ठीक है',
-            target: '#swal-portal',
-            heightAuto: false
-          }).then(() => {
-            this.zone.run(() => {
-              this.reloadPage();
-            });
-          });
-
-          this.selectedSdoFile = null;
+          this.showStatusModal(message || "DFO फ़ाइल सफलतापूर्वक अपलोड हुई", 'success');
+          this.selectedDfoFile = null;
           this.uploadFileRef.nativeElement.value = '';
-
-        } else if (code === 101) {
-          Swal.fire("Application number is required.", "", "error");
-
-        } else if (code === 102) {
-          Swal.fire("RO file is required.", "", "error");
-
         } else {
-          Swal.fire("फ़ाइल अपलोड असफल", "", "error");
+          this.showStatusModal(message || "फ़ाइल अपलोड असफल", 'error');
         }
       },
-
       error: async () => {
         await this.dismissLoading();
         await this.showError("Server Error");
       }
     });
-
   }
 
 

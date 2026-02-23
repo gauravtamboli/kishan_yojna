@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage-angular';
-import { User } from '../login/login_response.model'; 
+import { User } from '../login/login_response.model';
 
 @Injectable({
   providedIn: 'root'
@@ -10,9 +10,9 @@ export class StorageService {
 
   private _storage: Storage | null = null;
 
-  constructor(private storage:Storage) {
+  constructor(private storage: Storage) {
     this.initStorage();
-   }
+  }
 
   private async initStorage() {
     if (!this._storage) {
@@ -38,9 +38,19 @@ export class StorageService {
   }
 
   getStoredNGRokUrl(): Promise<string | null> {
-      return this.get('ng_rok_url');
+    return this.get('ng_rok_url');
   }
 
 
-  
+  public async remove(key: string) {
+    await this.initStorage();
+    await this._storage!.remove(key);
+  }
+
+  public async clear() {
+    await this.initStorage();
+    await this._storage!.clear();
+  }
+
 }
+

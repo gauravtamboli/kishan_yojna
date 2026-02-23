@@ -76,7 +76,16 @@
                         </ion-card-content>
                     </ion-card>
                 </ion-col>
+                <ion-col size="12">
+                    <div class="ion-padding">
+                        <ion-button expand="block" color="danger" (click)="onLogout()">
+                            <ion-icon name="log-out-outline" slot="start"></ion-icon>
+                            Logout
+                        </ion-button>
+                    </div>
+                </ion-col>
             </ion-row>
         </ion-grid>
     </div>
+
 </ion-content>

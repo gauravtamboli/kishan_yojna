@@ -36,17 +36,8 @@ ion-content {
   --words-text-color: var(--theme-primary);
 }
 
-/* --------- Toolbar --------- */
-.dark-gradient-toolbar {
-  --background: var(--theme-primary-gradient);
-  --color: #ffffff;
-}
+/* --------- Toolbar styles are now global --------- */
 
-.responsive-toolbar-title {
-  color: white;
-  font-size: 20px;
-  font-weight: 800;
-}
 
 .custom-back-button {
   --color: white;
@@ -472,9 +463,9 @@ ion-content {
   font-weight: 800;
 }
 
-.payment-button-container{
+.payment-button-container {
 
-display: flex;
+  display: flex;
   justify-content: end;
   padding: 24px;
   background: var(--theme-bg-secondary);

@@ -239,6 +239,25 @@ ion-content {
   color: var(--theme-text-secondary);
 }
 
+/* --------- Section Headers --------- */
+.section-header-div {
+  margin-bottom: 4px;
+}
+
+.section-title-text {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--theme-primary);
+  letter-spacing: 0.5px;
+}
+
+.section-hr {
+  margin: 8px 0 16px 0;
+  border: 0;
+  border-top: 1px solid var(--theme-border);
+  opacity: 0.6;
+}
+
 /* --------- Goswara Table Styles --------- */
 .goswara-card {
   background: var(--card-bg);
@@ -308,26 +327,48 @@ ion-content {
 }
 
 /* --------- Form Controls --------- */
-.file-input {
+.upload-wrapper {
+  display: flex;
   width: 100%;
+  overflow: hidden;
+  /* IMPORTANT */
+  border-radius: 8px;
+  /* Outer radius */
+}
+
+.file-input {
+  flex: 1;
+  min-width: 0;
+  height: 44px;
   padding: 10px;
   border: 1px solid var(--theme-border);
-  border-radius: 8px 0 0 8px;
+  border-right: none;
+  border-radius: 0;
+  /* Remove individual radius */
+  --border-radius: 0;
+  /* Ionic CSS variable */
   background: var(--theme-bg-light);
   color: var(--theme-text-primary);
-  font-size: 14px;
-  height: 44px;
+
+
 }
 
 .upload-btn {
   margin: 0;
   height: 44px;
-  border-radius: 0 8px 8px 0;
+
+  /* Remove individual radius */
+  border-radius: 0;
+
+  /* Ionic CSS variable */
+  --border-radius: 0;
+
   --padding-start: 16px;
   --padding-end: 16px;
   --background: var(--theme-primary);
-  font-weight: 700;
 }
+
+
 
 .custom-textarea {
   border: 1px solid var(--theme-border);
@@ -356,4 +397,156 @@ ion-content {
   .my-ion-button {
     display: none !important;
   }
+}
+
+.upload-label {
+  font-weight: 600;
+}
+
+/* ================================
+   MODAL STYLES (MATCHING THEME)
+================================ */
+
+.confirmation-modal {
+  --height: fit-content;
+  --width: 90%;
+  --max-width: 400px;
+  --border-radius: var(--theme-radius-xl);
+  --box-shadow: var(--theme-shadow-lg);
+  --overflow: hidden;
+
+  /* Force centering in the viewport */
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+
+  &::part(content) {
+    position: relative;
+    background: var(--theme-card-bg);
+    border: 1px solid var(--theme-border);
+    border-radius: var(--theme-radius-xl);
+    padding: 0;
+    margin: auto;
+    /* Standard Ionic trick for centering fit-content content part */
+  }
+}
+
+.confirm-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 24px 20px;
+  height: auto;
+  max-height: 80vh;
+  overflow-y: auto;
+  gap: 16px;
+
+  .confirm-title {
+    margin: 16px 0 8px;
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--theme-text-primary);
+
+    &.success-text {
+      color: var(--theme-success) !important;
+    }
+
+    &.error-text {
+      color: var(--theme-error) !important;
+    }
+  }
+
+  .confirm-message {
+    font-size: 15px;
+    color: var(--theme-text-secondary);
+    margin-bottom: 24px;
+    line-height: 1.5;
+  }
+
+  h3 {
+    margin: 8px 0;
+    font-weight: 800;
+    color: var(--theme-text-primary);
+    font-size: 24px;
+  }
+}
+
+.confirm-icon-wrapper {
+  width: 56px;
+  height: 56px;
+  min-width: 56px;
+  min-height: 56px;
+  flex-shrink: 0;
+  background: var(--theme-bg-secondary);
+  border-radius: 50%;
+  border: 1px solid var(--theme-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 8px;
+  aspect-ratio: 1 / 1;
+
+  .confirm-icon {
+    font-size: 28px;
+    width: 28px;
+    height: 28px;
+    color: var(--theme-text-secondary);
+    display: block;
+  }
+
+  &.success {
+    background: rgba(var(--ion-color-success-rgb), 0.1);
+    border-color: var(--ion-color-success);
+
+    .confirm-icon {
+      color: var(--ion-color-success);
+    }
+  }
+
+  &.error {
+    background: rgba(var(--ion-color-danger-rgb), 0.1);
+    border-color: var(--ion-color-danger);
+
+    .confirm-icon {
+      color: var(--ion-color-danger);
+    }
+  }
+
+  &.question {
+    background: rgba(var(--ion-color-primary-rgb), 0.1);
+    border-color: var(--ion-color-primary);
+
+    .confirm-icon {
+      color: var(--ion-color-primary);
+    }
+  }
+}
+
+.confirm-actions {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  gap: 12px;
+  margin-top: auto;
+
+  ion-button {
+    flex: 1;
+    height: 48px;
+    margin: 0;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    --border-radius: var(--theme-radius-md);
+  }
+}
+
+.custome-declearation {
+  margin-left: 25px;
+  background: var(--theme-bg-secondary);
+  border: 1px solid var(--theme-border);
+  border-radius: var(--theme-radius-lg);
+  padding: 16px;
+  box-shadow: var(--theme-shadow-sm);
+  text-align: center;
 }
