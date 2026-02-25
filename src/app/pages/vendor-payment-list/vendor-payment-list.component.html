@@ -58,7 +58,7 @@
 
           </td> -->
                     <td>
-                        <ion-button size="small" fill="outline" (click)="viewApplication(item)">
+                        <ion-button size="small" fill="clear" (click)="viewApplication(item)">
                             भुगतान बनाए / देखें
                         </ion-button>
                     </td>
@@ -71,16 +71,17 @@
     <!-- PAGINATION -->
     <div *ngIf="year && totalPages > 1" class="pagination-container">
         <ion-row class="justify-content-center">
-            <ion-button size="small" fill="outline" [disabled]="currentPage === 1" (click)="goToPreviousPage()">
+            <ion-button size="small" fill="clear" [disabled]="currentPage === 1" (click)="goToPreviousPage()">
                 पिछला
             </ion-button>
-
-            <ion-button size="small" *ngFor="let p of getPageNumbers()" [fill]="p === currentPage ? 'solid' : 'outline'"
+            &nbsp;&nbsp;
+            <ion-button size="small" *ngFor="let p of getPageNumbers()" [fill]="p === currentPage ? 'solid' : 'clear'"
                 (click)="goToPage(p)">
                 {{ p }}
             </ion-button>
+            &nbsp;&nbsp;
 
-            <ion-button size="small" fill="outline" [disabled]="currentPage === totalPages" (click)="goToNextPage()">
+            <ion-button size="small" fill="clear" [disabled]="currentPage === totalPages" (click)="goToNextPage()">
                 अगला
             </ion-button>
         </ion-row>

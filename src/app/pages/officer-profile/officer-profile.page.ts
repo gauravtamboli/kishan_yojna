@@ -6,7 +6,7 @@ import { NavController } from '@ionic/angular';
 import { LanguageService } from '../../services/language.service';
 import { OfficersLoginResponseModel } from '../officer-login/OfficersLoginResponse.model';
 import { addIcons } from 'ionicons';
-import { personOutline, mailOutline, callOutline, businessOutline, ribbonOutline, logOutOutline } from 'ionicons/icons';
+import { personOutline, mailOutline, callOutline, businessOutline, ribbonOutline, logOutOutline, documentTextOutline, locationOutline, person } from 'ionicons/icons';
 import { AuthServiceService } from '../../services/auth-service.service';
 import { AlertController } from '@ionic/angular';
 
@@ -16,7 +16,7 @@ import { AlertController } from '@ionic/angular';
     templateUrl: './officer-profile.page.html',
     styleUrls: ['./officer-profile.page.scss'],
     standalone: true,
-    imports: [IonContent, IonHeader, IonTitle, IonToolbar, IonButtons, IonBackButton, IonList, IonItem, IonLabel, IonCard, IonCardHeader, IonCardTitle, IonCardContent, IonIcon, IonGrid, IonRow, IonCol, IonButton, CommonModule, FormsModule]
+    imports: [IonContent, IonHeader, IonTitle, IonToolbar, IonButtons, IonBackButton, IonIcon, IonButton, CommonModule, FormsModule]
 })
 export class OfficerProfilePage implements OnInit {
     officerData: OfficersLoginResponseModel | null = null;
@@ -28,7 +28,7 @@ export class OfficerProfilePage implements OnInit {
         private authService: AuthServiceService,
         private alertController: AlertController
     ) {
-        addIcons({ personOutline, mailOutline, callOutline, businessOutline, ribbonOutline, logOutOutline });
+        addIcons({ logOutOutline, person, documentTextOutline, locationOutline, personOutline, mailOutline, callOutline, businessOutline, ribbonOutline });
     }
 
 

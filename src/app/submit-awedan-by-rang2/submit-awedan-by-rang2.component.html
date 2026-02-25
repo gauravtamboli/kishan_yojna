@@ -1,11 +1,12 @@
 <ion-header>
-  <ion-toolbar>
+  <ion-toolbar color="primary">
     <ion-buttons slot="start">
-      <ion-back-button class="custom-back-button" (click)="goBack()" defaultHref="/landigpage"></ion-back-button>
-    </ion-buttons>
-    <ion-title class="responsive-toolbar-title">
+      <ion-back-button (click)="goBack()" defaultHref="/landigpage"></ion-back-button>
+        <ion-title class="responsive-toolbar-title"> &nbsp;&nbsp; &nbsp;
       आवेदन संपादित करें
     </ion-title>
+    </ion-buttons> 
+  
   </ion-toolbar>
 </ion-header>
 
@@ -164,7 +165,7 @@
                 class="ion-justify-content-center">
                 भूमि सिंचित है या असिंचित?
               </ion-label>
-              <ion-radio-group [(ngModel)]="sinchitOrA_sinchit"  >
+              <ion-radio-group [(ngModel)]="sinchitOrA_sinchit">
                 <ion-row>
                   <ion-col size="6" size-lg="6">
                     <ion-item lines="none">
@@ -216,7 +217,7 @@
           <ion-label style="font-size: 12px">अपनी भूमि का प्रकार चुनें:</ion-label>
 
           <ion-radio-group [(ngModel)]="selectfrarevenue" (ionChange)="onselect()">
-            <ion-row  >
+            <ion-row>
               <ion-col size="6" size-lg="6">
                 <ion-item lines="none">
                   <ion-radio slot="start" value="2"></ion-radio>
@@ -235,7 +236,8 @@
         </ion-col>
         <ion-col *ngIf="selectedYesNoForKakshaKramank === 'yes'" size="12" size-lg="3"
           style="display: flex; flex-direction: column; justify-content: flex-end; padding: 8px;">
-          <ion-input [(ngModel)]="kaksha_kramank" label="वृक्षारोपण कक्ष क्रमांक" label-placement="floating" fill="outline" />
+          <ion-input [(ngModel)]="kaksha_kramank" label="वृक्षारोपण कक्ष क्रमांक" label-placement="floating"
+            fill="outline" />
         </ion-col>
         <ion-col size="12" size-lg="3" *ngIf="selectfrarevenue === '1'"
           style="display: flex; flex-direction: column; justify-content: flex-end; padding: 8px;">
@@ -439,7 +441,7 @@
 
 
       <!-- <ion-row> -->
-
+<hr style="margin-top: 20px; margin-bottom: 20px; border: 0; border-top: 1px solid #ccc;" />
       <ion-row class="ion-margin-top" style="justify-content: flex-end; gap: 10px;">
         <ion-col size="12" size-md="3" size-lg="2">
           <ion-button (click)="doYouWantToCancelDialog()" expand="block" color="danger">

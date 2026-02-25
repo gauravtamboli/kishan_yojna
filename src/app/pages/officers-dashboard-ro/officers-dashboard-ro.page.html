@@ -92,8 +92,8 @@
         <!-- END : DROPDOWN -->
 
         <ion-buttons slot="end">
-          <ion-button (click)="toggleTheme()">
-            <ion-icon [name]="isDarkMode ? 'sunny-outline' : 'moon-outline'"></ion-icon>
+          <ion-button (click)="toggleTheme()" class="theme-toggle-btn" fill="clear">
+            <ion-icon slot="icon-only" [name]="isDarkMode ? 'moon' : 'sunny'"></ion-icon>
           </ion-button>
           <ion-button fill="clear" class="icon-btn-options" (click)="openUserMenu($event)">
             <ion-icon name="options-outline"></ion-icon>
@@ -157,7 +157,7 @@
                 <ion-col size="6" size-lg="3">
                   <ion-card class="custom-card" (click)="getListOfAwedanAfterClickOnBoxes(2)">
                     <ion-grid class="ion-my-grid"
-                      style="background: linear-gradient(135deg, #bcf420 0%, #319d27 100%);">
+                      style="background: linear-gradient(135deg, #ff9800 0%, #f57c00 100%);">
                       <ion-row>
                         <ion-col size="12" class="ion-text-center">
                           <ion-label class="responsive-label-count label-divider">
@@ -191,12 +191,12 @@
                 <ion-col size="6" size-lg="3">
                   <ion-card class="custom-card" (click)="getListOfAwedanAfterClickOnBoxes(7)">
                     <ion-grid class="ion-my-grid"
-                      style="background: linear-gradient(135deg, #aa0f0f 0%, #8de22c 100%);">
+                      style="background: linear-gradient(135deg, #f44336 0%, #b71c1c 100%);">
                       <ion-row>
                         <ion-col size="12" class="ion-text-center">
                           <ion-label class="responsive-label-count label-divider">
                             <span class="label-text">अस्वीकृत</span>
-                            <span class="label-count">{{ totalApproved }}</span>
+                            <span class="label-count">{{ totalRejected }}</span>
                           </ion-label>
                         </ion-col>
                       </ion-row>
@@ -268,22 +268,22 @@
 
       <div class="ion-padding">
         <ion-row class="mb-3 align-items-center">
-          <ion-col size="12" size-lg="6">
-            <ion-input class="custom-input shadow-sm" [(ngModel)]="searchMobile" fill="outline"
+          <ion-col size="12" size-lg="5" style="margin-left: 20px;">
+            <ion-input class="custom-input shadow-sm" [(ngModel)]="searchMobile" fill="clear"
               placeholder="मोबाइल नंबर / हितग्राही नाम / पिता का नाम" (ionInput)="onSearch($event)"
               (keyup.enter)="onEnter()">
             </ion-input>
           </ion-col>
 
           <ion-col size="6" size-lg="6" class="text-end">
-            <ion-button color="success" (click)="export()" style="height: 4px;">
-              <ion-icon name="download-outline" slot="start"></ion-icon>
+            <ion-button class="my-btn" (click)="export()">
+              <ion-icon name="download-outline" slot="start"></ion-icon> &nbsp;
               Export To Excel
             </ion-button>
           </ion-col>
         </ion-row>
 
-        <div class="table-responsive shadow-sm rounded-4">
+        <div class="table-responsive shadow-sm rounded-4" style="margin-top: 10px;">
           <p-table [value]="filteredAwedans" [paginator]="false" [responsiveLayout]="'scroll'"
             class="bootstrap-table p-datatable-striped p-datatable-hoverable-rows custom-dashboard-table"
             id="dashboard_table">
@@ -317,8 +317,9 @@
                   <span class="status-badge" [ngClass]="{
               'status-approved': item.awedan_status == 6,
               'status-pending': item.awedan_status == 2,
-              'status-draft': item.awedan_status < 1,
-              'status-rejected': item.awedan_status == 3
+              'status-draft': item.awedan_status == 1,
+              'status-edit-pending': item.awedan_status == 0,
+              'status-rejected': item.awedan_status == 3 || item.awedan_status == 5
             }">
                     {{ getStatusText(item) }}
                   </span>
@@ -350,11 +351,12 @@
         <div *ngIf="totalPages > 1" class="pagination-container mt-3">
           <ion-row class="align-items-center justify-content-center">
             <ion-col size="auto">
-              <ion-button [disabled]="currentPage === 1" (click)="goToPreviousPage()" fill="outline" size="small">
+              <ion-button [disabled]="currentPage === 1" (click)="goToPreviousPage()" fill="clear" size="small">
                 <ion-icon name="chevron-back-outline" slot="start"></ion-icon>
                 पिछला
               </ion-button>
             </ion-col>
+            &nbsp;
 
             <ion-col size="auto">
               <div class="page-numbers">
@@ -365,9 +367,9 @@
                 </ion-button>
               </div>
             </ion-col>
-
+            &nbsp;
             <ion-col size="auto">
-              <ion-button [disabled]="currentPage === totalPages" (click)="goToNextPage()" fill="outline" size="small">
+              <ion-button [disabled]="currentPage === totalPages" (click)="goToNextPage()" fill="clear" size="small">
                 अगला
                 <ion-icon name="chevron-forward-outline" slot="end"></ion-icon>
               </ion-button>

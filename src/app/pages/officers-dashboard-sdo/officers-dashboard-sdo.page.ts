@@ -10,7 +10,7 @@ import { ChangeDetectorRef } from '@angular/core';
 import { ApiService } from 'src/app/services/api.service';
 import { OfficersLoginResponseModel } from '../officer-login/OfficersLoginResponse.model';
 import { addIcons } from 'ionicons';
-import { appsOutline, homeOutline, informationOutline, informationCircle, buildOutline, logOutOutline, chevronBackOutline, chevronForwardOutline, optionsOutline, reorderThreeOutline, downloadOutline, chevronDownOutline, moonOutline, sunnyOutline } from 'ionicons/icons';
+import { appsOutline, homeOutline, informationOutline, informationCircle, buildOutline, logOutOutline, chevronBackOutline, chevronForwardOutline, optionsOutline, reorderThreeOutline, downloadOutline, chevronDownOutline, moon, sunny } from 'ionicons/icons';
 import { Browser } from '@capacitor/browser';
 import { Platform, AlertController } from '@ionic/angular';
 import { NetworkCheckService } from 'src/app/services/network-check.service';
@@ -134,6 +134,7 @@ export class OfficersDashboardSDOPage implements OnInit {
   totalSDOPending: number = 0;            // उपवनमंडलाधिकारी स्तर पर लंबित (2)
   totalDFOPending: number = 0;            // वनमंडलाधिकारी स्तर पर लंबित (4)
   totalApproved: number = 0;               // स्वीकृत (6)
+  totalRejected: number = 0;               // अस्वीकृत (3, 5, 7 or similar)
   total_or_pending_or_accept_or_reject_label: string = "कुल आवेदन";
   whichBoxClicked: number = 1;
 
@@ -143,6 +144,7 @@ export class OfficersDashboardSDOPage implements OnInit {
   totalSDOPendingTextColor = "#9c27b0";     // Purple for SDO Pending
   totalDFOPendingTextColor = "#673ab7";     // Deep Purple for DFO Pending
   totalApprovedTextColor = "#4caf50";        // Green for Approved
+  totalRejectedTextColor = "#f44336";        // Red for Rejected
 
   // Pagination
   currentPage: number = 1;
@@ -313,6 +315,8 @@ export class OfficersDashboardSDOPage implements OnInit {
             this.totalDFOPending = findCount(4);
             // स्वीकृत (6)
             this.totalApproved = findCount(6);
+            // अस्वीकृत (3, 5) - Treated as rejected/return for correction
+            this.totalRejected = findCount(3) + findCount(5);
 
             await this.dismissDialog();
             this.cdRef.detectChanges();
@@ -373,7 +377,7 @@ export class OfficersDashboardSDOPage implements OnInit {
   addAllIcon() {
     addIcons({
       appsOutline, homeOutline, informationOutline, informationCircle, buildOutline, logOutOutline, reorderThreeOutline,
-      chevronBackOutline, chevronForwardOutline, chevronDownOutline, optionsOutline, downloadOutline, moonOutline, sunnyOutline
+      chevronBackOutline, chevronForwardOutline, chevronDownOutline, optionsOutline, downloadOutline, moon, sunny
     });
   }
 
@@ -395,8 +399,12 @@ export class OfficersDashboardSDOPage implements OnInit {
 
 
   getListOfAwedanAfterClickOnBoxes(whichBoxClickeddd: number, page: number = 1) {
+    if (this.whichBoxClicked !== whichBoxClickeddd) {
+      this.currentPage = 1; // reset page on new box click
+    } else {
+      this.currentPage = page;
+    }
     this.whichBoxClicked = whichBoxClickeddd;
-    this.currentPage = page;
 
     switch (this.whichBoxClicked) {
       case 1:
@@ -465,7 +473,8 @@ export class OfficersDashboardSDOPage implements OnInit {
       officersLoginModel.rang_id,
       officersLoginModel.officerId.toString(),
       this.currentPage,
-      this.pageSize
+      this.pageSize,
+      this.curent_session
     ).subscribe(
       (response) => {
         if (response.response.code === 200) {

@@ -714,7 +714,8 @@ export class ApiService {
     rang_id: string,
     officers_id: string,
     page: number = 1,
-    pageSize: number = 10
+    pageSize: number = 10,
+    curent_session: string = ''
   ): Observable<GetAwedanResponse> {
 
     const headers = { 'Content-Type': 'application/json' };
@@ -727,7 +728,8 @@ export class ApiService {
       rang_id: rang_id ? rang_id.toString() : null,
       officers_id: officers_id.toString(),
       page: page,
-      pageSize: pageSize
+      pageSize: pageSize,
+      curent_session: curent_session
     };
     console.log(body);
     ////debugger;
@@ -751,7 +753,8 @@ export class ApiService {
     circle_id: string,
     devision_id: string,
     rang_id: string,
-    officers_id: string
+    officers_id: string,
+    curent_session: string = ''
   ): Observable<any> {
     const headers = { 'Content-Type': 'application/json' };
 
@@ -761,8 +764,9 @@ export class ApiService {
       division_id: devision_id ? devision_id.toString() : null,
       rang_id: rang_id ? rang_id.toString() : null,
       officers_id: officers_id.toString(),
+      curent_session: curent_session
     };
-
+    console.log('Request body for getAwedanStatusCounts:', body); // Debug log
     return from(this.buildApiUrl(this.apiUrlGetAwedanStatusCounts)).pipe(
       switchMap((url) => {
         if (!url) return throwError(() => new Error('No API URL configured'));
@@ -1883,7 +1887,7 @@ export class ApiService {
   }
 
 
-    VendorPaymentListData(selectedPaymentYear: string, rangeId: number , fin_year : string): Observable<any> {
+  VendorPaymentListData(selectedPaymentYear: string, rangeId: number, fin_year: string): Observable<any> {
     return from(
       this.buildApiUrl(`/api/KissanMitraYojnaRegisteration/VendorPaymentListData?selectedPaymentYear=${encodeURIComponent(selectedPaymentYear)}&rangeId=${rangeId}&fin_year=${encodeURIComponent(fin_year)}`)).pipe(
         switchMap((url) => {
@@ -1894,7 +1898,7 @@ export class ApiService {
       );
   }
 
-    HitgrahiPaymentListData(selectedPaymentYear: string, rangeId: number, fin_year: string): Observable<any> {
+  HitgrahiPaymentListData(selectedPaymentYear: string, rangeId: number, fin_year: string): Observable<any> {
     return from(
       this.buildApiUrl(`/api/KissanMitraYojnaRegisteration/HitgrahiPaymentListData?selectedPaymentYear=${encodeURIComponent(selectedPaymentYear)}&rangeId=${rangeId}&fin_year=${encodeURIComponent(fin_year)}`)).pipe(
         switchMap((url) => {
@@ -2138,7 +2142,7 @@ export class ApiService {
   }
 
 
-    GetAllPaymentDetailsByApplication(application_number: string): Observable<any> {
+  GetAllPaymentDetailsByApplication(application_number: string): Observable<any> {
     return from(
       this.buildApiUrl(`/api/KissanMitraYojnaRegisteration/GetAllPaymentDetailsByApplication?application_number=${encodeURIComponent(application_number)}`)).pipe(
         switchMap((url) => {

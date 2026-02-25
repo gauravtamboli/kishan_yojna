@@ -3,6 +3,26 @@
 }
 
 // Use Global Theme Variables
+.theme-toggle-btn {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  --border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 10px !important;
+
+  ion-icon {
+    font-size: 24px;
+    color: white;
+  }
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.2);
+  }
+}
+
 ion-content {
   --background: var(--theme-bg-light);
   --text-color: var(--theme-text-primary);
@@ -175,11 +195,14 @@ ion-content {
     --color: var(--theme-text-primary);
   }
 
-  .glass-card, .custom-card {
+  .glass-card,
+  .custom-card {
     background: var(--theme-card-bg);
     border-color: var(--theme-border);
-    
-    ion-label, ion-text, .label {
+
+    ion-label,
+    ion-text,
+    .label {
       color: var(--theme-text-primary) !important;
     }
   }

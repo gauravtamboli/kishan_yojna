@@ -482,20 +482,32 @@ ion-select {
 }
 
 .custom-card {
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  position: relative;
+  overflow: hidden;
   border: none;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  border-radius: 12px;
   margin: 8px;
-
-  &:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
-  }
+  --background: transparent;
+  --box-shadow: none;
+  box-shadow: none;
 
   ion-grid {
     border-radius: 12px;
     padding: 16px;
   }
+}
+
+.glass-card::before,
+.custom-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 5px;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0.1) 100%);
+  border-radius: var(--theme-radius-xl) var(--theme-radius-xl) 0 0;
+  z-index: 10;
 }
 
 ::ng-deep .custom-margin-table {
@@ -883,6 +895,26 @@ ion-button {
     }
   }
 
+}
+
+.theme-toggle-btn {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  --color: white;
+  margin-right: 8px;
+
+  ion-icon {
+    font-size: 24px;
+    color: white;
+  }
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.2);
+  }
 }
 
 .ion-my-grid {

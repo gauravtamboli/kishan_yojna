@@ -8,7 +8,7 @@ import { ApiService } from '../../services/api.service';
 import { tableData } from '../generate-estimate-dynamic/estimate-table';
 import Swal from 'sweetalert2';
 import { addIcons } from 'ionicons';
-import { cloudUploadOutline, moonOutline, sunnyOutline, cardOutline, closeOutline, checkmarkCircleOutline, alertCircleOutline } from 'ionicons/icons';
+import { cloudUploadOutline, moon, sunny, cardOutline, closeOutline, checkmarkCircleOutline, alertCircleOutline } from 'ionicons/icons';
 import pdfMake from 'pdfmake/build/pdfmake';
 import * as pdfFontsBold from "../../../assets/fonts/vfs_fonts_bold_custom";
 import * as pdfFontsNormal from "../../../assets/fonts/vfs_fonts_custom";
@@ -96,15 +96,35 @@ export class PaymentCreateComponent implements OnInit {
     private toastController: ToastController,
     private router: Router
   ) {
-    addIcons({ cloudUploadOutline, moonOutline, sunnyOutline, cardOutline, closeOutline, checkmarkCircleOutline, alertCircleOutline });
+    addIcons({ cloudUploadOutline, moon, sunny, cardOutline, closeOutline, checkmarkCircleOutline, alertCircleOutline });
   }
 
   isDarkMode = false;
   toggleTheme() {
     this.isDarkMode = !this.isDarkMode;
+    this.applyTheme();
+    localStorage.setItem('theme-mode', this.isDarkMode ? 'dark' : 'light');
+  }
+
+  private applyTheme() {
+    const isDarkClass = 'ion-palette-dark';
+    if (this.isDarkMode) {
+      document.documentElement.classList.add(isDarkClass);
+      document.body.classList.add(isDarkClass);
+    } else {
+      document.documentElement.classList.remove(isDarkClass);
+      document.body.classList.remove(isDarkClass);
+    }
+  }
+
+  private restoreSavedTheme() {
+    const savedTheme = localStorage.getItem('theme-mode');
+    this.isDarkMode = savedTheme === 'dark';
+    this.applyTheme();
   }
 
   ngOnInit(): void {
+    this.restoreSavedTheme();
 
     const storedData = sessionStorage.getItem('logined_officer_data');
     if (storedData) {

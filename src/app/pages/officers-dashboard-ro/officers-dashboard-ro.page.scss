@@ -117,15 +117,7 @@ ion-select {
 }
 
 
-.status-approved {
-  color: green;
-  font-weight: bold;
-}
 
-.status-pending {
-  color: orange;
-  font-weight: bold;
-}
 
 .status-rejected {
   color: red;
@@ -430,20 +422,32 @@ ion-select {
 }
 
 .custom-card {
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  position: relative;
+  overflow: hidden;
   border: none;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  border-radius: 12px;
   margin: 8px;
-
-  &:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
-  }
+  --background: transparent;
+  --box-shadow: none;
+  box-shadow: none;
 
   ion-grid {
     border-radius: 12px;
     padding: 16px;
   }
+}
+
+.glass-card::before,
+.custom-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 5px;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0.1) 100%);
+  border-radius: var(--theme-radius-xl) var(--theme-radius-xl) 0 0;
+  z-index: 10;
 }
 
 ::ng-deep .custom-margin-table {
@@ -510,15 +514,8 @@ ion-select {
   }
 }
 
-.status-approved {
-  color: #10e610;
-  font-weight: 600;
-}
 
-.status-pending {
-  color: #FFD700;
-  font-weight: 600;
-}
+
 
 .status-rejected {
   color: #e41212;
@@ -714,23 +711,28 @@ ion-menu-button {
   }
 
   .status-approved {
-    background-color: #e8f5e9;
-    color: #2e7d32;
+    background: var(--ion-color-success);
+    color: var(--ion-color-success-contrast);
   }
 
   .status-pending {
-    background-color: #fff8e1;
-    color: #f57c00;
+    background: var(--ion-color-warning);
+    color: var(--ion-color-warning-contrast);
   }
 
   .status-draft {
-    background-color: #e3f2fd;
-    color: #1565c0;
+    background: var(--ion-color-primary);
+    color: var(--ion-color-primary-contrast);
+  }
+
+  .status-edit-pending {
+    background: var(--ion-color-secondary);
+    color: var(--ion-color-secondary-contrast);
   }
 
   .status-rejected {
-    background-color: #ffebee;
-    color: #c62828;
+    background: var(--ion-color-danger);
+    color: var(--ion-color-danger-contrast);
   }
 
   .action-buttons {
@@ -833,6 +835,26 @@ ion-button {
 
 }
 
+.theme-toggle-btn {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  --color: white;
+  margin-right: 8px;
+
+  ion-icon {
+    font-size: 24px;
+    color: white;
+  }
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.2);
+  }
+}
+
 .ion-my-grid {
   min-height: 10px; // mobile
   padding: 10px;
@@ -892,4 +914,12 @@ ion-button {
   font-size: 0.85rem;
   font-weight: 600;
   opacity: 0.9;
+}
+
+.my-btn {
+  font-size: 13px;
+  min-width: 90px;
+  background: var(--ion-color-primary);
+  color: var(--ion-color-primary-contrast);
+  border-radius: 12px;
 }

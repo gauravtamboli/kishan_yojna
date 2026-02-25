@@ -4,7 +4,7 @@
   --height: auto;
   --border-radius: 16px;
   --box-shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
-  --background: #fff;
+  --background: var(--theme-card-bg, #fff);
 
   // prevent fullscreen on small devices
   ion-modal {

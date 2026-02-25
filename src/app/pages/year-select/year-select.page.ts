@@ -81,6 +81,7 @@ export class YearSelectPage implements OnInit {
         case 4:
           route = '/officers-dashboard-ro'; // RO
           break;
+        case 6:
         case 7:
           route = '/officers-dashboard-supreme'; // SUPER ADMIN
           break;

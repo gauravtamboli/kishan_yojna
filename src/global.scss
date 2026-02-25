@@ -79,7 +79,7 @@
   --height: auto;
   --border-radius: 16px;
   --box-shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
-  --background: #fff;
+  --background: var(--theme-card-bg, #fff);
   --overflow: visible;
 
   ion-modal {
@@ -91,7 +91,7 @@
 
 .custom-dialog-modal::part(content) {
   z-index: 9999; // Try increasing
-  background: white;
+  background: var(--theme-card-bg, #fff);
   border-radius: var(--border-radius);
   padding: 1rem;
   width: 90vw;
@@ -100,7 +100,6 @@
   max-height: 90vh;
   overflow: auto; // Allows scrolling when content is too long
   box-shadow: var(--box-shadow);
-  background: var(--background);
   transition: transform 0.3s ease, opacity 0.3s ease;
 }
 
@@ -609,7 +608,9 @@ body.ion-palette-dark {
     &[style*="color:#333"],
     &[style*="color:black"],
     &[style*="color:#000"],
+    &[style*="color: rgb("],
     &[style*="color: #2d5a2d"],
+    &[style*="color: #856404"],
     &[style*="color: #6A5ACD"],
     &[style*="color: #0066cc"],
     &[style*="color: #2c3e50"] {
@@ -652,8 +653,21 @@ body.ion-palette-dark {
   /* Dark Mode - Select/Dropdown Options */
   .ng-select-container,
   .ng-dropdown-panel,
+  .ng-dropdown-panel .ng-dropdown-panel-items .ng-option,
   .ng-option {
     background: var(--theme-card-bg) !important;
+    color: var(--theme-text-primary) !important;
+  }
+
+  .ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-marked,
+  .ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-selected,
+  .ng-dropdown-panel .ng-dropdown-panel-items .ng-option:hover {
+    background: var(--theme-bg-tertiary) !important;
+    color: var(--theme-text-primary) !important;
+  }
+
+  .ng-value-container .ng-value .ng-value-label,
+  .ng-dropdown-panel .ng-dropdown-panel-items .ng-option .ng-option-label {
     color: var(--theme-text-primary) !important;
   }
 
@@ -665,9 +679,12 @@ body.ion-palette-dark {
   [style*="background-color: #f5f5f5"],
   [style*="background-color: #f9f9f9"],
   [style*="background-color: #e8f5e9"],
+  [style*="background-color: #e8f5e8"],
   [style*="background-color: #f0f7f0"],
   [style*="background-color: #e0f0f0"],
   [style*="background-color: #f2f2f2"],
+  [style*="background-color: #fff3cd"],
+  [style*="background: #fff3cd"],
   [style*="background: #e9ecef"],
   [style*="background-color: #e9ecef"] {
     background: var(--theme-bg-secondary) !important;
@@ -751,7 +768,7 @@ ion-button {
   font-weight: var(--theme-font-weight-semibold);
   letter-spacing: 0.5px;
   text-transform: none;
-  box-shadow: var(--theme-shadow-sm);
+  --box-shadow: var(--theme-shadow-sm);
 
   &[color="primary"] {
     --background: var(--theme-primary);
@@ -761,7 +778,7 @@ ion-button {
 
     &:hover,
     &:active {
-      box-shadow: var(--theme-shadow-lg);
+      --box-shadow: var(--theme-shadow-lg);
       transform: translateY(-1px);
     }
   }
@@ -782,13 +799,14 @@ ion-button {
 
   &[fill="outline"] {
     --border-color: var(--theme-border);
+    --border-width: 1.5px;
+    --border-style: solid;
     --color: var(--theme-text-primary);
     --background: transparent;
-    border: 1.5px solid var(--theme-border);
 
     &:hover {
-      background-color: var(--theme-surface-overlay);
-      border-color: var(--theme-primary);
+      --background: var(--theme-surface-overlay);
+      --border-color: var(--theme-primary);
     }
   }
 
@@ -797,648 +815,628 @@ ion-button {
     font-weight: var(--theme-font-weight-semibold);
 
     &:hover {
-      background-color: var(--theme-surface-overlay);
+      --background: var(--theme-surface-overlay);
     }
   }
 }
 
-ion-button[color="primary"] {
-  &[color="secondary"] {
-    --background: var(--theme-secondary);
-    --box-shadow: 0 4px 12px rgba(45, 80, 22, 0.3);
-  }
-
-  &[color="accent"] {
-    --background: var(--theme-accent);
-    --box-shadow: 0 4px 12px rgba(230, 126, 34, 0.3);
-  }
-
-  &[fill="outline"] {
-    --border-color: var(--theme-border);
-    --color: var(--theme-text-primary);
-    --background: transparent;
-
-    &:hover {
-      background-color: var(--theme-bg-secondary);
-    }
-  }
 
 
-  /* ========================================
+/* ========================================
    CARD & CONTAINER STYLING - Premium
    ======================================== */
-  ion-card {
-    --background: var(--theme-card-bg);
-    --box-shadow: var(--theme-shadow-sm);
-    border: 1px solid var(--theme-card-border);
-    border-radius: var(--theme-radius-xl);
-    transition: var(--theme-transition-base);
-    overflow: hidden;
+ion-card {
+  --background: var(--theme-card-bg);
+  --box-shadow: var(--theme-shadow-sm);
+  border: 1px solid var(--theme-card-border);
+  border-radius: var(--theme-radius-xl);
+  transition: var(--theme-transition-base);
+  overflow: hidden;
 
-    &:hover {
-      box-shadow: var(--theme-shadow-lg);
-      transform: translateY(-4px);
-      border-color: var(--theme-primary-lighter);
-    }
+  &:hover {
+    box-shadow: var(--theme-shadow-lg);
+    transform: translateY(-4px);
+    border-color: var(--theme-primary-lighter);
+  }
+}
+
+.glass-card,
+.custom-card {
+  background: var(--theme-card-bg);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--theme-card-border);
+  border-radius: var(--theme-radius-xl);
+  box-shadow: var(--theme-shadow-md);
+  transition: var(--theme-transition-base);
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: var(--theme-primary-gradient);
+    border-radius: var(--theme-radius-xl) var(--theme-radius-xl) 0 0;
   }
 
-  .glass-card,
-  .custom-card {
-    background: var(--theme-card-bg);
-    backdrop-filter: blur(10px);
-    border: 1px solid var(--theme-card-border);
-    border-radius: var(--theme-radius-xl);
-    box-shadow: var(--theme-shadow-md);
-    transition: var(--theme-transition-base);
-    position: relative;
-
-    &::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 4px;
-      background: var(--theme-primary-gradient);
-      border-radius: var(--theme-radius-xl) var(--theme-radius-xl) 0 0;
-    }
-
-    &:hover {
-      box-shadow: var(--theme-shadow-xl);
-      transform: translateY(-2px);
-    }
+  &:hover {
+    box-shadow: var(--theme-shadow-xl);
+    transform: translateY(-2px);
   }
+}
 
-  /* ========================================
+/* ========================================
    FORM ELEMENTS - Premium
    ======================================== */
-  ion-input,
-  ion-textarea,
-  ion-select,
-  ion-datetime {
-    --background: var(--theme-card-bg);
-    --color: var(--theme-text-primary);
-    --border-color: var(--theme-border);
-    --placeholder-color: var(--theme-text-quaternary);
-    --padding-start: var(--theme-spacing-lg);
-    --padding-end: var(--theme-spacing-lg);
-    --padding-top: var(--theme-spacing-md);
-    --padding-bottom: var(--theme-spacing-md);
-    border: 1.5px solid var(--theme-border);
-    border-radius: var(--theme-radius-lg);
-    transition: var(--theme-transition-base);
-    --min-height: 44px;
-    transition: var(--theme-transition-base);
+ion-input,
+ion-textarea,
+ion-select,
+ion-datetime {
+  --background: var(--theme-card-bg);
+  --color: var(--theme-text-primary);
+  --border-color: var(--theme-border);
+  --border-width: 1.5px;
+  --border-style: solid;
+  --placeholder-color: var(--theme-text-quaternary);
+  --padding-start: var(--theme-spacing-lg);
+  --padding-end: var(--theme-spacing-lg);
+  --padding-top: var(--theme-spacing-md);
+  --padding-bottom: var(--theme-spacing-md);
+  border-radius: var(--theme-radius-lg);
+  transition: var(--theme-transition-base);
+  --min-height: 44px;
 
-    &:focus {
-      --border-color: var(--theme-primary);
-      box-shadow: inset 0 0 0 1px var(--theme-primary), 0 0 0 3px rgba(44, 122, 123, 0.1);
-      outline: none;
-    }
-
-    &:hover:not(:focus) {
-      --border-color: var(--theme-primary-lighter);
-    }
+  &:focus {
+    --border-color: var(--theme-primary);
+    box-shadow: 0 0 0 3px rgba(44, 122, 123, 0.1);
+    outline: none;
   }
 
-  ion-label {
-    color: var(--theme-text-secondary);
-    font-weight: var(--theme-font-weight-medium);
-    margin-bottom: var(--theme-spacing-md);
-    font-size: 0.875rem;
-    letter-spacing: 0.3px;
+  &:hover:not(:focus) {
+    --border-color: var(--theme-primary-lighter);
   }
+}
 
-  /* ========================================
+ion-label {
+  color: var(--theme-text-secondary);
+  font-weight: var(--theme-font-weight-medium);
+  margin-bottom: var(--theme-spacing-md);
+  font-size: 0.875rem;
+  letter-spacing: 0.3px;
+}
+
+/* ========================================
    TABLE STYLING - Premium
    ======================================== */
-  table,
-  .p-datatable {
-    background: var(--theme-card-bg);
-    border-collapse: collapse;
-    border-radius: var(--theme-radius-lg);
-    overflow: hidden;
-    box-shadow: var(--theme-shadow-sm);
+table,
+.p-datatable {
+  background: var(--theme-card-bg);
+  border-collapse: collapse;
+  border-radius: var(--theme-radius-lg);
+  overflow: hidden;
+  box-shadow: var(--theme-shadow-sm);
 
-    thead {
-      background: var(--theme-primary-gradient);
-      color: white;
-    }
-
-    th {
-      padding: var(--theme-spacing-lg) var(--theme-spacing-md);
-      font-weight: var(--theme-font-weight-bold);
-      text-align: left;
-      border: none;
-      font-size: 0.875rem;
-      letter-spacing: 0.5px;
-      text-transform: uppercase;
-    }
-
-    td {
-      padding: var(--theme-spacing-lg) var(--theme-spacing-md);
-      border-bottom: 1px solid var(--theme-border-light);
-      color: var(--theme-text-primary);
-      font-size: 0.9375rem;
-    }
-
-    tbody tr {
-      transition: background-color var(--theme-transition-fast);
-
-      &:hover {
-        background-color: var(--theme-surface-overlay);
-      }
-
-      &:nth-child(even) {
-        background-color: transparent;
-      }
-    }
+  thead {
+    background: var(--theme-primary-gradient);
+    color: white;
   }
 
-  /* Dark Mode Table Styles */
-  html.ion-palette-dark table,
-  html.ion-palette-dark .p-datatable,
-  body.ion-palette-dark table,
-  body.ion-palette-dark .p-datatable {
-    background: var(--theme-card-bg) !important;
-
-    thead {
-      background: linear-gradient(135deg, var(--theme-primary-light), var(--theme-primary)) !important;
-    }
-
-    th {
-      background: inherit !important;
-      color: white !important;
-      border-color: var(--theme-border) !important;
-    }
-
-    td {
-      color: var(--theme-text-primary) !important;
-      border-color: var(--theme-border) !important;
-    }
-
-    tbody tr {
-      &:hover {
-        background-color: var(--theme-bg-tertiary) !important;
-      }
-
-      &:nth-child(even) {
-        background-color: var(--theme-bg-secondary) !important;
-      }
-    }
+  th {
+    padding: var(--theme-spacing-lg) var(--theme-spacing-md);
+    font-weight: var(--theme-font-weight-bold);
+    text-align: left;
+    border: none;
+    font-size: 0.875rem;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
   }
 
-  html.ion-palette-dark .p-paginator,
-  html.ion-palette-dark .p-datatable .p-datatable-paginator,
-  body.ion-palette-dark .p-paginator,
-  body.ion-palette-dark .p-datatable .p-datatable-paginator {
-    background: var(--theme-card-bg) !important;
+  td {
+    padding: var(--theme-spacing-lg) var(--theme-spacing-md);
+    border-bottom: 1px solid var(--theme-border-light);
+    color: var(--theme-text-primary);
+    font-size: 0.9375rem;
+  }
+
+  tbody tr {
+    transition: background-color var(--theme-transition-fast);
+
+    &:hover {
+      background-color: var(--theme-surface-overlay);
+    }
+
+    &:nth-child(even) {
+      background-color: transparent;
+    }
+  }
+}
+
+/* Dark Mode Table Styles */
+html.ion-palette-dark table,
+html.ion-palette-dark .p-datatable,
+body.ion-palette-dark table,
+body.ion-palette-dark .p-datatable {
+  background: var(--theme-card-bg) !important;
+
+  thead {
+    background: linear-gradient(135deg, var(--theme-primary-light), var(--theme-primary)) !important;
+  }
+
+  th {
+    background: inherit !important;
+    color: white !important;
+    border-color: var(--theme-border) !important;
+  }
+
+  td {
     color: var(--theme-text-primary) !important;
     border-color: var(--theme-border) !important;
   }
 
-  html.ion-palette-dark .p-paginator .p-paginator-pages .p-paginator-page,
-  body.ion-palette-dark .p-paginator .p-paginator-pages .p-paginator-page {
-    color: var(--theme-text-primary) !important;
+  tbody tr {
+    &:hover {
+      background-color: var(--theme-bg-tertiary) !important;
+    }
 
-    &.p-highlight {
-      background: var(--theme-primary) !important;
-      color: white !important;
+    &:nth-child(even) {
+      background-color: var(--theme-bg-secondary) !important;
     }
   }
+}
 
-  /* ========================================
+html.ion-palette-dark .p-paginator,
+html.ion-palette-dark .p-datatable .p-datatable-paginator,
+body.ion-palette-dark .p-paginator,
+body.ion-palette-dark .p-datatable .p-datatable-paginator {
+  background: var(--theme-card-bg) !important;
+  color: var(--theme-text-primary) !important;
+  border-color: var(--theme-border) !important;
+}
+
+html.ion-palette-dark .p-paginator .p-paginator-pages .p-paginator-page,
+body.ion-palette-dark .p-paginator .p-paginator-pages .p-paginator-page {
+  color: var(--theme-text-primary) !important;
+
+  &.p-highlight {
+    background: var(--theme-primary) !important;
+    color: white !important;
+  }
+}
+
+/* ========================================
    STATUS BADGES
    ======================================== */
-  .status-badge {
-    padding: var(--theme-spacing-xs) var(--theme-spacing-sm);
-    border-radius: var(--theme-radius-sm);
-    font-size: 0.75rem;
-    font-weight: var(--theme-font-weight-bold);
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
+.status-badge {
+  padding: var(--theme-spacing-xs) var(--theme-spacing-sm);
+  border-radius: var(--theme-radius-sm);
+  font-size: 0.75rem;
+  font-weight: var(--theme-font-weight-bold);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 
-    &.status-approved,
-    &.success {
-      background: rgba(39, 174, 96, 0.1);
-      color: var(--theme-success);
-    }
-
-    &.status-pending,
-    &.warning {
-      background: rgba(243, 156, 18, 0.1);
-      color: var(--theme-warning);
-    }
-
-    &.status-rejected,
-    &.danger {
-      background: rgba(231, 76, 60, 0.1);
-      color: var(--theme-danger);
-    }
-
-    &.status-draft {
-      background: rgba(52, 152, 219, 0.1);
-      color: var(--theme-info);
-    }
-  }
-
-  /* ========================================
-   DARK MODE - ION-SELECT & SELECT OPTIONS
-   ======================================== */
-  html.ion-palette-dark ion-select,
-  html.ion-palette-dark ion-select-option,
-  body.ion-palette-dark ion-select,
-  body.ion-palette-dark ion-select-option {
-    --background: var(--theme-card-bg) !important;
-    --color: var(--theme-text-primary) !important;
-    color: var(--theme-text-primary) !important;
-  }
-
-  html.ion-palette-dark ion-select::part(label),
-  body.ion-palette-dark ion-select::part(label) {
-    color: var(--theme-text-primary) !important;
-  }
-
-  html.ion-palette-dark ion-select-option,
-  body.ion-palette-dark ion-select-option {
-    color: var(--theme-text-primary) !important;
-    background: var(--theme-card-bg) !important;
-  }
-
-  html.ion-palette-dark .ionselect,
-  body.ion-palette-dark .ionselect {
-    color: var(--theme-text-primary) !important;
-  }
-
-  /* ========================================
-   UTILITY CLASSES
-   ======================================== */
-  .shadow-sm {
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  }
-
-  .shadow-md {
-    box-shadow: var(--theme-card-shadow);
-  }
-
-  .shadow-lg {
-    box-shadow: var(--theme-card-shadow-hover);
-  }
-
-  .rounded-sm {
-    border-radius: var(--theme-radius-sm);
-  }
-
-  .rounded-md {
-    border-radius: var(--theme-radius-md);
-  }
-
-  .rounded-lg {
-    border-radius: var(--theme-radius-lg);
-  }
-
-  .rounded-full {
-    border-radius: var(--theme-radius-round);
-  }
-
-  .text-primary {
-    color: var(--theme-primary);
-  }
-
-  .text-secondary {
-    color: var(--theme-secondary);
-  }
-
-  .text-accent {
-    color: var(--theme-accent);
-  }
-
-  .text-success {
+  &.status-approved,
+  &.success {
+    background: rgba(39, 174, 96, 0.1);
     color: var(--theme-success);
   }
 
-  .text-warning {
+  &.status-pending,
+  &.warning {
+    background: rgba(243, 156, 18, 0.1);
     color: var(--theme-warning);
   }
 
-  .text-danger {
+  &.status-rejected,
+  &.danger {
+    background: rgba(231, 76, 60, 0.1);
     color: var(--theme-danger);
   }
 
-  /* ========================================
+  &.status-draft {
+    background: rgba(52, 152, 219, 0.1);
+    color: var(--theme-info);
+  }
+}
+
+/* ========================================
+   DARK MODE - ION-SELECT & SELECT OPTIONS
+   ======================================== */
+html.ion-palette-dark ion-select,
+html.ion-palette-dark ion-select-option,
+body.ion-palette-dark ion-select,
+body.ion-palette-dark ion-select-option {
+  --background: var(--theme-card-bg) !important;
+  --color: var(--theme-text-primary) !important;
+  color: var(--theme-text-primary) !important;
+}
+
+html.ion-palette-dark ion-select::part(label),
+body.ion-palette-dark ion-select::part(label) {
+  color: var(--theme-text-primary) !important;
+}
+
+html.ion-palette-dark ion-select-option,
+body.ion-palette-dark ion-select-option {
+  color: var(--theme-text-primary) !important;
+  background: var(--theme-card-bg) !important;
+}
+
+html.ion-palette-dark .ionselect,
+body.ion-palette-dark .ionselect {
+  color: var(--theme-text-primary) !important;
+}
+
+/* ========================================
+   UTILITY CLASSES
+   ======================================== */
+.shadow-sm {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.shadow-md {
+  box-shadow: var(--theme-card-shadow);
+}
+
+.shadow-lg {
+  box-shadow: var(--theme-card-shadow-hover);
+}
+
+.rounded-sm {
+  border-radius: var(--theme-radius-sm);
+}
+
+.rounded-md {
+  border-radius: var(--theme-radius-md);
+}
+
+.rounded-lg {
+  border-radius: var(--theme-radius-lg);
+}
+
+.rounded-full {
+  border-radius: var(--theme-radius-round);
+}
+
+.text-primary {
+  color: var(--theme-primary);
+}
+
+.text-secondary {
+  color: var(--theme-secondary);
+}
+
+.text-accent {
+  color: var(--theme-accent);
+}
+
+.text-success {
+  color: var(--theme-success);
+}
+
+.text-warning {
+  color: var(--theme-warning);
+}
+
+.text-danger {
+  color: var(--theme-danger);
+}
+
+/* ========================================
    ANIMATIONS
    ======================================== */
-  @keyframes fadeIn {
-    from {
-      opacity: 0;
-    }
-
-    to {
-      opacity: 1;
-    }
+@keyframes fadeIn {
+  from {
+    opacity: 0;
   }
 
-  @keyframes slideInUp {
-    from {
-      transform: translateY(20px);
-      opacity: 0;
-    }
+  to {
+    opacity: 1;
+  }
+}
 
-    to {
-      transform: translateY(0);
-      opacity: 1;
-    }
+@keyframes slideInUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
   }
 
-  @keyframes pulse {
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
 
-    0%,
-    100% {
-      opacity: 1;
-    }
+@keyframes pulse {
 
-    50% {
-      opacity: 0.5;
-    }
+  0%,
+  100% {
+    opacity: 1;
   }
 
-  .fade-in {
-    animation: fadeIn 0.3s ease;
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.fade-in {
+  animation: fadeIn 0.3s ease;
+}
+
+.slide-in-up {
+  animation: slideInUp 0.3s ease;
+}
+
+.pulse {
+  animation: pulse 2s infinite;
+}
+
+.responsive-title {
+  font-size: 12px;
+
+  @media (min-width: 600px) {
+    font-size: 16px;
   }
 
-  .slide-in-up {
-    animation: slideInUp 0.3s ease;
+  @media (min-width: 1024px) {
+    font-size: 20px;
   }
+}
 
-  .pulse {
-    animation: pulse 2s infinite;
-  }
+/* Standardized Dashboard Headers - Premium */
+.dashboard-toolbar {
+  --min-height: 70px !important;
+  --padding-top: env(safe-area-inset-top) !important;
+  --background: var(--theme-primary-gradient) !important;
+  --color: white !important;
+  display: flex;
+  align-items: center;
+  box-shadow: var(--theme-shadow-elevation-2) !important;
+}
 
-  .responsive-title {
-    font-size: 12px;
+/* Global Primary Toolbar Styling - Premium */
+ion-toolbar[color="primary"] {
+  --background: var(--theme-primary-gradient) !important;
+  --color: #ffffff !important;
+  box-shadow: var(--theme-shadow-elevation-2) !important;
+}
 
-    @media (min-width: 600px) {
-      font-size: 16px;
-    }
+.dashboard-menu-header {
+  height: 70px !important;
+  display: flex !important;
+  align-items: center !important;
+  background: var(--theme-primary-gradient) !important;
+  --border-width: 0 !important;
+  box-shadow: var(--theme-shadow-elevation-2) !important;
 
-    @media (min-width: 1024px) {
-      font-size: 20px;
-    }
-  }
-
-  /* Standardized Dashboard Headers - Premium */
-  .dashboard-toolbar {
-    --min-height: 70px !important;
-    --padding-top: env(safe-area-inset-top) !important;
-    --background: var(--theme-primary-gradient) !important;
-    --color: white !important;
-    display: flex;
-    align-items: center;
-    box-shadow: var(--theme-shadow-elevation-2) !important;
-  }
-
-  /* Global Primary Toolbar Styling - Premium */
-  ion-toolbar[color="primary"] {
-    --background: var(--theme-primary-gradient) !important;
-    --color: #ffffff !important;
-    box-shadow: var(--theme-shadow-elevation-2) !important;
-  }
-
-  .dashboard-menu-header {
-    height: 70px !important;
-    display: flex !important;
-    align-items: center !important;
-    background: var(--theme-primary-gradient) !important;
-    --border-width: 0 !important;
-    box-shadow: var(--theme-shadow-elevation-2) !important;
-
-    ion-item {
-      --background: transparent !important;
-      --padding-start: 16px !important;
-      --inner-padding-end: 16px !important;
-      width: 100% !important;
-      margin: 0 !important;
-      position: static !important;
-      --min-height: 70px !important;
-
-      ion-avatar {
-        width: 40px !important;
-        height: 40px !important;
-        margin-inline-end: 12px !important;
-      }
-
-      ion-label {
-        color: white !important;
-        font-weight: 600 !important;
-        margin: 0 !important;
-
-        p {
-          color: rgba(255, 255, 255, 0.8) !important;
-          font-size: 0.75rem !important;
-          margin: 0 !important;
-        }
-      }
-    }
-
-    .bg {
-      display: none !important;
-    }
-  }
-
-  /* ===================================== */
-  /* SweetAlert2 PERFECT CENTER FIX (Ionic) */
-  /* ===================================== */
-
-  /* Remove Ionic transform that breaks fixed positioning */
-  ion-content,
-  ion-router-outlet,
-  .inner-scroll {
-    transform: none !important;
-  }
-
-  /* Force Swal container to true viewport center */
-  body>.swal2-container {
-    position: fixed !important;
-    top: 0 !important;
-    left: 0 !important;
-    width: 100vw !important;
-    height: 100vh !important;
-
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-
-    z-index: 1000000 !important;
-  }
-
-  /* Remove default Swal top margin */
-  .swal2-popup {
+  ion-item {
+    --background: transparent !important;
+    --padding-start: 16px !important;
+    --inner-padding-end: 16px !important;
+    width: 100% !important;
     margin: 0 !important;
+    position: static !important;
+    --min-height: 70px !important;
+
+    ion-avatar {
+      width: 40px !important;
+      height: 40px !important;
+      margin-inline-end: 12px !important;
+    }
+
+    ion-label {
+      color: white !important;
+      font-weight: 600 !important;
+      margin: 0 !important;
+
+      p {
+        color: rgba(255, 255, 255, 0.8) !important;
+        font-size: 0.75rem !important;
+        margin: 0 !important;
+      }
+    }
   }
 
+  .bg {
+    display: none !important;
+  }
+}
+
+/* ===================================== */
+/* SweetAlert2 PERFECT CENTER FIX (Ionic) */
+/* ===================================== */
+
+/* Remove Ionic transform that breaks fixed positioning */
+ion-content,
+ion-router-outlet,
+.inner-scroll {
+  transform: none !important;
+}
+
+/* Force Swal container to true viewport center */
+body>.swal2-container {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+
+  z-index: 1000000 !important;
+}
+
+/* Remove default Swal top margin */
+.swal2-popup {
+  margin: 0 !important;
+}
 
 
 
 
-  /* ========================================
+
+/* ========================================
    DARK MODE - COMPREHENSIVE TEXT VISIBILITY
    ENSURES ALL PAGES HAVE READABLE TEXT
    ======================================== */
 
-  /* Force white text on all elements in dark mode */
-  html.ion-palette-dark {
-    /* Override all hard-coded dark colors */
-    color: var(--theme-text-primary) !important;
+/* Force white text on all elements in dark mode */
+html.ion-palette-dark {
+  /* Override all hard-coded dark colors */
+  color: var(--theme-text-primary) !important;
 
-    /* Ensure all text elements are readable */
-    h1,
-    h2,
-    h3,
-    h4,
-    h5,
-    h6 {
-      color: var(--theme-text-primary) !important;
-    }
-
-    p,
-    span,
-    div,
-    a,
-    li,
-    label,
-    strong,
-    em {
-      color: var(--theme-text-primary) !important;
-    }
-
-    /* Form elements */
-    input,
-    textarea,
-    select,
-    ion-input,
-    ion-textarea,
-    ion-select {
-      --color: var(--theme-text-primary) !important;
-      color: var(--theme-text-primary) !important;
-    }
-
-    /* Table text */
-    table,
-    td,
-    th,
-    tr {
-      color: var(--theme-text-primary) !important;
-    }
-
-    /* Card content */
-    ion-card-content,
-    ion-card-title,
-    ion-card-subtitle {
-      color: var(--theme-text-primary) !important;
-    }
-
-    /* Button text */
-    ion-button {
-      --color: white !important;
-      color: white !important;
-    }
-
-    /* List items */
-    ion-item,
-    ion-item-option,
-    ion-list {
-      --color: var(--theme-text-primary) !important;
-      color: var(--theme-text-primary) !important;
-    }
-
-    /* Menu & navigation */
-    ion-menu,
-    ion-menu-toggle {
-      --color: var(--theme-text-primary) !important;
-    }
-  }
-
-  body.ion-palette-dark {
-    /* Override all hard-coded dark colors */
-    color: var(--theme-text-primary) !important;
-
-    /* Ensure all text elements are readable */
-    h1,
-    h2,
-    h3,
-    h4,
-    h5,
-    h6 {
-      color: var(--theme-text-primary) !important;
-    }
-
-    p,
-    span,
-    div,
-    a,
-    li,
-    label,
-    strong,
-    em {
-      color: var(--theme-text-primary) !important;
-    }
-
-    /* Form elements */
-    input,
-    textarea,
-    select,
-    ion-input,
-    ion-textarea,
-    ion-select {
-      --color: var(--theme-text-primary) !important;
-      color: var(--theme-text-primary) !important;
-    }
-
-    /* Table text */
-    table,
-    td,
-    th,
-    tr {
-      color: var(--theme-text-primary) !important;
-    }
-
-    /* Card content */
-    ion-card-content,
-    ion-card-title,
-    ion-card-subtitle {
-      color: var(--theme-text-primary) !important;
-    }
-
-    /* Button text */
-    ion-button {
-      --color: white !important;
-      color: white !important;
-    }
-
-    /* List items */
-    ion-item,
-    ion-item-option,
-    ion-list {
-      --color: var(--theme-text-primary) !important;
-      color: var(--theme-text-primary) !important;
-    }
-
-    /* Menu & navigation */
-    ion-menu,
-    ion-menu-toggle {
-      --color: var(--theme-text-primary) !important;
-    }
-  }
-
-  /* Aggressive catch-all for inline styled text in dark mode */
-  html.ion-palette-dark [style*="color:"] {
+  /* Ensure all text elements are readable */
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     color: var(--theme-text-primary) !important;
   }
 
-  body.ion-palette-dark [style*="color:"] {
+  p,
+  span,
+  div,
+  a,
+  li,
+  label,
+  strong,
+  em {
     color: var(--theme-text-primary) !important;
+  }
+
+  /* Form elements */
+  input,
+  textarea,
+  select,
+  ion-input,
+  ion-textarea,
+  ion-select {
+    --color: var(--theme-text-primary) !important;
+    color: var(--theme-text-primary) !important;
+  }
+
+  /* Table text */
+  table,
+  td,
+  th,
+  tr {
+    color: var(--theme-text-primary) !important;
+  }
+
+  /* Card content */
+  ion-card-content,
+  ion-card-title,
+  ion-card-subtitle {
+    color: var(--theme-text-primary) !important;
+  }
+
+  /* Button text */
+  ion-button {
+    --color: white !important;
+    color: white !important;
+  }
+
+  /* List items */
+  ion-item,
+  ion-item-option,
+  ion-list {
+    --color: var(--theme-text-primary) !important;
+    color: var(--theme-text-primary) !important;
+  }
+
+  /* Menu & navigation */
+  ion-menu,
+  ion-menu-toggle {
+    --color: var(--theme-text-primary) !important;
   }
 }
+
+body.ion-palette-dark {
+  /* Override all hard-coded dark colors */
+  color: var(--theme-text-primary) !important;
+
+  /* Ensure all text elements are readable */
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    color: var(--theme-text-primary) !important;
+  }
+
+  p,
+  span,
+  div,
+  a,
+  li,
+  label,
+  strong,
+  em {
+    color: var(--theme-text-primary) !important;
+  }
+
+  /* Form elements */
+  input,
+  textarea,
+  select,
+  ion-input,
+  ion-textarea,
+  ion-select {
+    --color: var(--theme-text-primary) !important;
+    color: var(--theme-text-primary) !important;
+  }
+
+  /* Table text */
+  table,
+  td,
+  th,
+  tr {
+    color: var(--theme-text-primary) !important;
+  }
+
+  /* Card content */
+  ion-card-content,
+  ion-card-title,
+  ion-card-subtitle {
+    color: var(--theme-text-primary) !important;
+  }
+
+  /* Button text */
+  ion-button {
+    --color: white !important;
+    color: white !important;
+  }
+
+  /* List items */
+  ion-item,
+  ion-item-option,
+  ion-list {
+    --color: var(--theme-text-primary) !important;
+    color: var(--theme-text-primary) !important;
+  }
+
+  /* Menu & navigation */
+  ion-menu,
+  ion-menu-toggle {
+    --color: var(--theme-text-primary) !important;
+  }
+}
+
+/* Aggressive catch-all for inline styled text in dark mode */
+html.ion-palette-dark [style*="color:"] {
+  color: var(--theme-text-primary) !important;
+}
+
+body.ion-palette-dark [style*="color:"] {
+  color: var(--theme-text-primary) !important;
+}
+
 
 /* --------- SweetAlert2 Premium Theme Overrides --------- */
 .swal2-container {
@@ -1576,4 +1574,59 @@ ion-button[color="primary"] {
     font-size: 0.9rem;
     line-height: 1.4;
   }
+}
+
+/*======================================================*/
+/* SOFT & STANDARD DARK MODE TOGGLE (Govt Style)        */
+/*======================================================*/
+.theme-toggle-btn {
+  --background: transparent;
+  --background-hover: transparent;
+  --background-focused: transparent;
+  width: 40px;
+  height: 40px;
+  margin: 0 4px;
+  border-radius: 50%;
+  position: relative;
+  transition: all 0.2s ease-in-out;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.theme-toggle-btn:hover {
+  background: rgba(255, 255, 255, 0.15) !important;
+}
+
+.theme-toggle-btn:active {
+  transform: scale(0.95);
+}
+
+.theme-toggle-btn ion-icon {
+  font-size: 22px;
+  transition: color 0.3s ease;
+}
+
+/* Light Mode state */
+html:not(.ion-palette-dark) .theme-toggle-btn ion-icon {
+  color: #fdb813;
+  /* Classic soft sun yellow */
+}
+
+/* Dark Mode state */
+html.ion-palette-dark .theme-toggle-btn {
+  background: transparent !important;
+}
+
+html.ion-palette-dark .theme-toggle-btn ion-icon {
+  color: #e2e8f0;
+  /* Soft light gray for dark mode */
+}
+
+html.ion-palette-dark .theme-toggle-btn:hover {
+  background: rgba(255, 255, 255, 0.1) !important;
+}
+
+ion-button {
+  margin-right: 6px;
+  margin-bottom: 6px;
 }

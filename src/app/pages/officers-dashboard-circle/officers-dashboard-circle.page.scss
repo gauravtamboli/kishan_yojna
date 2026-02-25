@@ -175,20 +175,31 @@ ion-select {
 // Header styles are now handled globally via .dashboard-menu-header and .dashboard-toolbar
 
 .custom-card {
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  position: relative;
+  overflow: hidden;
   border: none;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  border-radius: 12px;
   margin: 8px;
-
-  &:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
-  }
+  --box-shadow: none;
+  box-shadow: none;
 
   ion-grid {
     border-radius: 12px;
     padding: 16px;
   }
+}
+
+.glass-card::before,
+.custom-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 5px;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0.1) 100%);
+  border-radius: var(--theme-radius-xl) var(--theme-radius-xl) 0 0;
+  z-index: 10;
 }
 
 .responsive-label {

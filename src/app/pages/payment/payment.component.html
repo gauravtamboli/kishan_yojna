@@ -5,8 +5,8 @@
     </ion-buttons>
     <ion-title> हितग्राही भुगतान</ion-title>
     <ion-buttons slot="end">
-      <ion-button (click)="toggleTheme()">
-        <ion-icon [name]="isDarkMode ? 'sunny-outline' : 'moon-outline'"></ion-icon>
+      <ion-button (click)="toggleTheme()" class="theme-toggle-btn" fill="clear">
+        <ion-icon slot="icon-only" [name]="isDarkMode ? 'moon' : 'sunny'"></ion-icon>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>

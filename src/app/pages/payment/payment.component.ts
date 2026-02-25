@@ -7,12 +7,11 @@ import { TableModule } from 'primeng/table';
 import { ApiService } from '../../services/api.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { addIcons } from 'ionicons';
-import { searchOutline, moonOutline, sunnyOutline } from 'ionicons/icons';
+import { searchOutline, moon, sunny } from 'ionicons/icons';
 
 addIcons({
   'search-outline': searchOutline,
-  'moon-outline': moonOutline,
-  'sunny-outline': sunnyOutline
+  moon, sunny
 });
 
 @Component({
@@ -56,9 +55,29 @@ export class PaymentComponent implements OnInit {
   isDarkMode = false;
   toggleTheme() {
     this.isDarkMode = !this.isDarkMode;
+    this.applyTheme();
+    localStorage.setItem('theme-mode', this.isDarkMode ? 'dark' : 'light');
+  }
+
+  private applyTheme() {
+    const isDarkClass = 'ion-palette-dark';
+    if (this.isDarkMode) {
+      document.documentElement.classList.add(isDarkClass);
+      document.body.classList.add(isDarkClass);
+    } else {
+      document.documentElement.classList.remove(isDarkClass);
+      document.body.classList.remove(isDarkClass);
+    }
+  }
+
+  private restoreSavedTheme() {
+    const savedTheme = localStorage.getItem('theme-mode');
+    this.isDarkMode = savedTheme === 'dark';
+    this.applyTheme();
   }
 
   ngOnInit(): void {
+    this.restoreSavedTheme();
     this.setSelectInterface();
   }
 

@@ -9,7 +9,7 @@ import { ChangeDetectorRef } from '@angular/core';
 import { ApiService } from 'src/app/services/api.service';
 import { OfficersLoginResponseModel } from '../officer-login/OfficersLoginResponse.model';
 import { addIcons } from 'ionicons';
-import { appsOutline, homeOutline, informationOutline, informationCircle, buildOutline, logOutOutline, downloadOutline, chevronBackOutline, chevronForwardOutline, chevronDownOutline, optionsOutline, reorderThreeOutline, documentTextOutline, statsChartOutline, peopleOutline, addCircleOutline, hammerOutline, leafOutline, mapOutline, clipboardOutline, cashOutline, businessOutline, personOutline, receiptOutline, walletOutline, trendingUpOutline } from 'ionicons/icons';
+import { appsOutline, homeOutline, informationOutline, informationCircle, buildOutline, logOutOutline, downloadOutline, chevronBackOutline, chevronForwardOutline, chevronDownOutline, optionsOutline, reorderThreeOutline, documentTextOutline, statsChartOutline, peopleOutline, addCircleOutline, hammerOutline, leafOutline, mapOutline, clipboardOutline, cashOutline, businessOutline, personOutline, receiptOutline, walletOutline, trendingUpOutline, moon, sunny } from 'ionicons/icons';
 import { Platform } from '@ionic/angular';
 import { NetworkCheckService } from 'src/app/services/network-check.service';
 import { Router } from '@angular/router';
@@ -43,7 +43,7 @@ interface MenuPage {
   standalone: true,
   imports: [IonPopover, IonSplitPane, PaginatorModule, IonMenu, IonMenuButton, IonList, IonAvatar, IonCard,
     IonLoading, IonText, IonButton, IonInput, IonLabel, IonItem, IonGrid, IonRow, IonCol, IonButtons, IonContent, IonHeader,
-    IonTitle, IonToolbar, CommonModule, FormsModule, IonIcon, TableModule, IonBadge]
+    IonToolbar, CommonModule, FormsModule, IonIcon, TableModule, IonBadge]
 })
 
 
@@ -144,9 +144,16 @@ export class YearThreeDashboardPage implements OnInit {
 
   private populateMenu() {
     const storedData = sessionStorage.getItem('logined_officer_data');
-    const rangid = storedData ? JSON.parse(storedData).rang_id : null;
+    const officerData = storedData ? JSON.parse(storedData) : null;
+    const rangid = officerData ? officerData.rang_id : null;
+    const designation = officerData ? officerData.designation : null;
 
-    this.pages = [
+    const isRO = designation === '4';
+    const isSDO = designation === '3';
+    const isDFO = designation === '2';
+
+    // Base menu visible to everyone (RO, SDO, DFO)
+    let dynamicPages: any[] = [
       {
         title: 'गोस्वारा रिपोर्ट ',
         url: 'goswara-report',
@@ -170,8 +177,12 @@ export class YearThreeDashboardPage implements OnInit {
         url: 'kissan-wise-report',
         is_submenu: false,
         icon: 'people-outline'
-      },
-      {
+      }
+    ];
+
+    // Only RO can enter details
+    if (isRO) {
+      dynamicPages.push({
         title: 'दर्ज करें',
         is_submenu: true,
         icon: 'add-circle-outline',
@@ -195,59 +206,83 @@ export class YearThreeDashboardPage implements OnInit {
             icon: 'clipboard-outline'
           }
         ]
-      },
-      {
+      });
+    }
+
+    // Payment menu
+    let paymentChildren: any[] = [];
+
+    // DFO can make vendor payments
+    if (isDFO) {
+      paymentChildren.push({
+        icon: 'business-outline',
+        title: 'वेंडर भुगतान बनाए ',
+        url: 'vendor-payment-list',
+        state: {
+          range_id: rangid,
+          year: 3,
+          fin_year: this.curent_session
+        },
+        is_submenu: false
+      });
+    }
+
+    // RO can make hitgrahi payments
+    if (isRO) {
+      paymentChildren.push({
+        title: 'हितग्राही भुगतान बनाएं',
+        icon: 'person-outline',
+        url: 'payment',
+        state: {
+          range_id: rangid,
+          year: 3,
+          fin_year: this.curent_session
+        },
+        is_submenu: false
+      });
+    }
+
+    // Both DFO and RO need to create bills for their respective payments
+    if (isDFO || isRO) {
+      paymentChildren.push({
+        title: 'भुगतान करे ',
+        icon: 'receipt-outline',
+        url: 'create-bill',
+        state: {
+          range_id: rangid,
+          year: 3
+        },
+        is_submenu: false
+      });
+    }
+
+    // Everyone (RO, SDO, DFO) can view payment reports
+    paymentChildren.push({
+      title: 'भुगतान रिपोर्ट',
+      icon: 'wallet-outline',
+      url: 'ropit-paudho-ki-sankhya/report',
+      is_submenu: false
+    });
+
+    // If there are payment children, add the payment menu
+    if (paymentChildren.length > 0) {
+      dynamicPages.push({
         title: 'भुगतान',
         is_submenu: true,
         icon: 'cash-outline',
-        children: [
-          {
-            icon: 'business-outline',
-            title: 'वेंडर भुगतान बनाए ',
-            url: 'vendor-payment-list',
-            state: {
-              range_id: rangid,
-              year: 3,
-              fin_year: this.curent_session
-            },
-            is_submenu: false
-          },
-          {
-            title: 'हितग्राही भुगतान बनाएं',
-            icon: 'person-outline',
-            url: 'payment',
-            state: {
-              range_id: rangid,
-              year: 3,
-              fin_year: this.curent_session
-            },
-            is_submenu: false
-          },
-          {
-            title: 'भुगतान करे ',
-            icon: 'receipt-outline',
-            url: 'create-bill',
-            state: {
-              range_id: rangid,
-              year: 3
-            },
-            is_submenu: false
-          },
-          {
-            title: 'भुगतान रिपोर्ट',
-            icon: 'wallet-outline',
-            url: 'ropit-paudho-ki-sankhya/report',
-            is_submenu: false
-          }
-        ]
-      },
-      {
-        title: 'प्रगति प्रतिवेदन',
-        url: 'pragati-prativedan',
-        is_submenu: false,
-        icon: 'trending-up-outline'
-      }
-    ];
+        children: paymentChildren
+      });
+    }
+
+    // Everyone sees Pragati Prativedan
+    dynamicPages.push({
+      title: 'प्रगति प्रतिवेदन',
+      url: 'pragati-prativedan',
+      is_submenu: false,
+      icon: 'trending-up-outline'
+    });
+
+    this.pages = dynamicPages;
   }
 
   toggleSubMenu(index: number, page: any) {
@@ -416,7 +451,8 @@ export class YearThreeDashboardPage implements OnInit {
       appsOutline, homeOutline, informationOutline, informationCircle, buildOutline, logOutOutline, reorderThreeOutline,
       chevronBackOutline, chevronForwardOutline, chevronDownOutline, optionsOutline, downloadOutline,
       documentTextOutline, statsChartOutline, peopleOutline, addCircleOutline, hammerOutline, leafOutline,
-      mapOutline, clipboardOutline, cashOutline, businessOutline, personOutline, receiptOutline, walletOutline, trendingUpOutline
+      mapOutline, clipboardOutline, cashOutline, businessOutline, personOutline, receiptOutline, walletOutline, trendingUpOutline,
+      moon, sunny
     });
   }
 
@@ -791,10 +827,32 @@ export class YearThreeDashboardPage implements OnInit {
         state: { year }
       });
     } else {
-
-      this.router.navigateByUrl('/');
-
-
+      let route = '/officers-dashboard';
+      const officerData = this.getOfficersSessionData() as any;
+      if (officerData && officerData.designation) {
+        switch (officerData.designation) {
+          case '1':
+          case 'Circle':
+          case 'CFO':
+            route = '/officers-dashboard-circle';
+            break;
+          case '2':
+            route = '/officers-dashboard'; // DFO
+            break;
+          case '3':
+            route = '/officers-dashboard-sdo'; // SDO
+            break;
+          case '4':
+            route = '/officers-dashboard-ro'; // RO
+            break;
+          case '6':
+          case '7':
+          case 'SUPREME':
+            route = '/officers-dashboard-supreme'; // ADMIN
+            break;
+        }
+      }
+      this.router.navigateByUrl(route);
     }
   }
 

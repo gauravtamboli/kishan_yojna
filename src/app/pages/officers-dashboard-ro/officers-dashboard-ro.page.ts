@@ -11,7 +11,7 @@ import { MenuController } from '@ionic/angular';
 import { ApiService } from 'src/app/services/api.service';
 import { OfficersLoginResponseModel } from '../officer-login/OfficersLoginResponse.model';
 import { addIcons } from 'ionicons';
-import { appsOutline, homeOutline, informationOutline, informationCircle, buildOutline, logOutOutline, chevronBackOutline, chevronForwardOutline, downloadOutline, chevronDownOutline, optionsOutline, reorderThreeOutline, documentTextOutline, statsChartOutline, mapOutline, peopleOutline, personOutline, addCircleOutline, trendingUpOutline, leafOutline, hammerOutline, clipboardOutline, businessOutline, receiptOutline, cashOutline, listOutline, walletOutline } from 'ionicons/icons';
+import { appsOutline, homeOutline, informationOutline, informationCircle, buildOutline, logOutOutline, chevronBackOutline, chevronForwardOutline, downloadOutline, chevronDownOutline, optionsOutline, reorderThreeOutline, documentTextOutline, statsChartOutline, mapOutline, peopleOutline, personOutline, addCircleOutline, trendingUpOutline, leafOutline, hammerOutline, clipboardOutline, businessOutline, receiptOutline, cashOutline, listOutline, walletOutline, moon, sunny } from 'ionicons/icons';
 import { Browser } from '@capacitor/browser';
 import { Platform, AlertController } from '@ionic/angular';
 import { NetworkCheckService } from 'src/app/services/network-check.service';
@@ -58,6 +58,7 @@ export class OfficersDashboardROPage implements OnInit {
 
 
   isDarkMode = false;
+  current_year: any;
 
   toggleTheme() {
     this.isDarkMode = !this.isDarkMode;
@@ -153,7 +154,7 @@ export class OfficersDashboardROPage implements OnInit {
   totalApproved: number = 0;               // स्वीकृत (6)
   total_or_pending_or_accept_or_reject_label: string = "कुल आवेदन";
   whichBoxClicked: number = 1;
-
+  totalRejected: number = 0;               // अस्वीकृत (3,5)
 
   totalAwedanTextColor = "#198edb";
   totalEditPendingTextColor = "#caf102ff";    // Orange for Edit Pending
@@ -161,7 +162,7 @@ export class OfficersDashboardROPage implements OnInit {
   totalSDOPendingTextColor = "#9c27b0";     // Purple for SDO Pending
   totalDFOPendingTextColor = "#673ab7";     // Deep Purple for DFO Pending
   totalApprovedTextColor = "#4caf50";        // Green for Approved
-
+  totalRejectedTextColor = "#f44336";        // Red for Rejected
   // Pagination
   currentPage: number = 1;
   pageSize: number = 10;
@@ -199,7 +200,7 @@ export class OfficersDashboardROPage implements OnInit {
     this.restoreSavedTheme();
 
     this.curent_session = await this.storageService.get('current_session');
-    const current_year = await this.storageService.get('current_year');
+    this.current_year = await this.storageService.get('current_year');
     // console.log('Current Year in RO Dashboard:', current_year);
     // console.log('Current Session in RO Dashboard:', this.curent_session);
 
@@ -392,7 +393,9 @@ export class OfficersDashboardROPage implements OnInit {
         officersLoginModel.circle_id,
         officersLoginModel.devision_id,
         officersLoginModel.rang_id,
-        officersLoginModel.officerId.toString()
+        officersLoginModel.officerId.toString(),
+        this.curent_session
+
       ).subscribe(
         async (countsResponse) => {
           if (countsResponse.response.code === 200) {
@@ -416,6 +419,8 @@ export class OfficersDashboardROPage implements OnInit {
             this.totalDFOPending = findCount(4);
             // स्वीकृत (6)
             this.totalApproved = findCount(6);
+            // अस्वीकृत (3,5)
+            this.totalRejected = findCount(3) + findCount(5);
 
             await this.dismissDialog();
             this.cdRef.detectChanges();
@@ -490,7 +495,8 @@ export class OfficersDashboardROPage implements OnInit {
       'business-outline': businessOutline,
       'receipt-outline': receiptOutline,
       'cash-outline': cashOutline,
-      'list-outline': listOutline
+      'list-outline': listOutline,
+      moon, sunny
     });
   }
 
@@ -505,6 +511,8 @@ export class OfficersDashboardROPage implements OnInit {
       return this.totalSDOPendingTextColor;
     } else if (this.whichBoxClicked == 5) {
       return this.totalDFOPendingTextColor;
+    } else if (this.whichBoxClicked == 7) {
+      return this.totalRejectedTextColor;
     } else {
       return this.totalApprovedTextColor;
     }
@@ -512,8 +520,12 @@ export class OfficersDashboardROPage implements OnInit {
 
 
   getListOfAwedanAfterClickOnBoxes(whichBoxClickeddd: number, page: number = 1) {
+    if (this.whichBoxClicked !== whichBoxClickeddd) {
+      this.currentPage = 1; // reset page on new box click
+    } else {
+      this.currentPage = page;
+    }
     this.whichBoxClicked = whichBoxClickeddd;
-    this.currentPage = page;
 
     switch (this.whichBoxClicked) {
       case 1:
@@ -534,6 +546,9 @@ export class OfficersDashboardROPage implements OnInit {
       case 6:
         this.total_or_pending_or_accept_or_reject_label = "स्वीकृत";
         break;
+      case 7:
+        this.total_or_pending_or_accept_or_reject_label = "अस्वीकृत";
+        break;
     }
 
     this.showDialog("कृपया प्रतीक्षा करें.....");
@@ -546,7 +561,7 @@ export class OfficersDashboardROPage implements OnInit {
       whichData = 1; // Total - all applications
     } else if (this.whichBoxClicked === 2) {
       whichData = 2; // Status 0 (संपादन लंबित)
-      // Note: This only gets status 0. For status 3 and 5, you may need separate calls
+      // Note: This only gets status 0.
     } else if (this.whichBoxClicked === 3) {
       whichData = 3; // Status 1 (परिक्षेत्र अधिकारी स्तर पर लंबित)
     } else if (this.whichBoxClicked === 4) {
@@ -555,6 +570,9 @@ export class OfficersDashboardROPage implements OnInit {
       whichData = 6; // Status 4 (वनमंडलाधिकारी स्तर पर लंबित)
     } else if (this.whichBoxClicked === 6) {
       whichData = 8; // Status 6 (स्वीकृत)
+    }
+    else if (this.whichBoxClicked === 7) {
+      whichData = 9; // Status 3,5 (अस्वीकृत)
     }
 
     // Calculate totalRecords based on which box is clicked
@@ -570,6 +588,8 @@ export class OfficersDashboardROPage implements OnInit {
       this.totalRecords = this.totalDFOPending;
     } else if (this.whichBoxClicked === 6) {
       this.totalRecords = this.totalApproved;
+    } else if (this.whichBoxClicked === 7) {
+      this.totalRecords = this.totalRejected;
     }
 
     this.totalPages = Math.ceil(this.totalRecords / this.pageSize);
@@ -582,7 +602,8 @@ export class OfficersDashboardROPage implements OnInit {
       officersLoginModel.rang_id,
       officersLoginModel.officerId.toString(),
       this.currentPage,
-      this.pageSize
+      this.pageSize,
+      this.curent_session
     ).subscribe(
       (response) => {
         if (response.response.code === 200) {

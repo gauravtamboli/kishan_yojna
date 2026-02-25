@@ -36,11 +36,31 @@ export class LandingpagePage implements OnInit {
   ionViewWillEnter() {
     if (sessionStorage.getItem('logined_officer_data') != null) {
       const officerData = JSON.parse(sessionStorage.getItem('logined_officer_data')!);
-      if(officerData.designation == "4") { // RO designation
-        this.router.navigateByUrl('/officers-dashboard-ro', { replaceUrl: true })
-      } else {
-        this.router.navigateByUrl('/officers-dashboard', { replaceUrl: true })
+      let route = '/officers-dashboard';
+      if (officerData && officerData.designation) {
+        switch (officerData.designation) {
+          case '1':
+          case 'Circle':
+          case 'CFO':
+            route = '/officers-dashboard-circle';
+            break;
+          case '2':
+            route = '/officers-dashboard'; // DFO
+            break;
+          case '3':
+            route = '/officers-dashboard-sdo'; // SDO
+            break;
+          case '4':
+            route = '/officers-dashboard-ro'; // RO
+            break;
+          case '6':
+          case '7':
+          case 'SUPREME':
+            route = '/officers-dashboard-supreme'; // ADMIN
+            break;
+        }
       }
+      this.router.navigateByUrl(route, { replaceUrl: true });
     }
   }
 
@@ -325,7 +345,7 @@ export class LandingpagePage implements OnInit {
 
   async navigateToKisanAwedan() {
     this.isConnected = await this.networkCheckService.getCurrentStatus();
-    
+
     if (this.isConnected) {
       this.router.navigate(['kisan-awedan']);
     } else {

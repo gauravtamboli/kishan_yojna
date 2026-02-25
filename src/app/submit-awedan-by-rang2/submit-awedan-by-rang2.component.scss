@@ -1,11 +1,9 @@
-.custom-back-button {
-  color: green;
-}
+/* .custom-back-button legacy rule removed to support color="primary" header */
 
 .custom-ion-label {
   font-size: 12px;
   font-weight: 700;
-  color: black;
+  color: var(--theme-text-primary, black);
   font-style: bold;
 }
 
@@ -32,8 +30,10 @@
   justify-content: center;
   align-items: center;
   text-align: center;
-  padding: 4px 0; /* Smaller height */
-  font-size: 14px; /* Optional: Make text a bit smaller */
+  padding: 4px 0;
+  /* Smaller height */
+  font-size: 14px;
+  /* Optional: Make text a bit smaller */
 }
 
 .sub-header {
@@ -116,8 +116,8 @@ ion-select {
 }
 
 .custom-loading .loading-wrapper {
-  background-color: white;
-  color: black;
+  background-color: var(--theme-card-bg, white);
+  color: var(--theme-text-primary, black);
 }
 
 .custom-hyperlink-label {
@@ -130,7 +130,7 @@ ion-select {
   border: none;
   height: 1px;
   /* Thickness */
-  background-color: black;
+  background-color: var(--theme-border, black);
   /* Ionic primary color or any custom color */
   margin: 16px 0;
   /* Optional spacing */
@@ -212,16 +212,16 @@ ion-textarea {
   --padding-start: 12px;
   --padding-end: 12px;
   --padding-bottom: 12px;
-  --background: #f8f9fa;
+  --background: var(--theme-bg-secondary, #f8f9fa);
   --border-radius: 8px;
-  --border-color: #e0e0e0;
+  --border-color: var(--theme-border, #e0e0e0);
   --border-style: solid;
   --border-width: 1px;
   margin-bottom: 16px;
 
   &:focus-within {
     --border-color: var(--ion-color-primary);
-    --background: #ffffff;
+    --background: var(--theme-card-bg, #ffffff);
   }
 }
 
@@ -229,8 +229,8 @@ ion-textarea {
 ng-select {
   .ng-select-container {
     border-radius: 8px;
-    border: 1px solid #e0e0e0;
-    background: #f8f9fa;
+    border: 1px solid var(--theme-border, #e0e0e0);
+    background: var(--theme-bg-secondary, #f8f9fa);
     min-height: 48px;
 
     &:hover {
@@ -364,7 +364,7 @@ input[type="file"] {
   --height: auto;
   --border-radius: 16px;
   --box-shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
-  --background: #fff;
+  --background: var(--theme-card-bg, #fff);
   --overflow: visible;
 
   ion-modal {
@@ -385,7 +385,7 @@ input[type="file"] {
 }
 
 ion-content {
-    --keyboard-offset: 150px; // optional tweak
+  --keyboard-offset: 150px; // optional tweak
 }
 
 .spin-animation {
@@ -393,18 +393,23 @@ ion-content {
 }
 
 @keyframes spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 
-  /* Make all ng-select boxes look like ion-input */
+/* Make all ng-select boxes look like ion-input */
 ::ng-deep ng-select.custom-select .ng-select-container {
   height: 58px !important;
   min-height: 58px !important;
   border-radius: 8px !important;
-  border: 1px solid #e0e0e0 !important;
-  background: #f8f9fa !important;
+  border: 1px solid var(--theme-border, #e0e0e0) !important;
+  background: var(--theme-bg-secondary, #f8f9fa) !important;
   display: flex;
   align-items: center;
   padding: 0 12px !important;
@@ -415,13 +420,14 @@ ion-content {
   padding: 0 !important;
 }
 
-::ng-deep ng-select.custom-select .ng-input > input {
-  height: 38px !important; /* vertically center text */
+::ng-deep ng-select.custom-select .ng-input>input {
+  height: 38px !important;
+  /* vertically center text */
 }
 
 ::ng-deep ng-select.custom-select.ng-select-focused .ng-select-container {
   border-color: var(--ion-color-primary) !important;
-  background: #ffffff !important;
+  background: var(--theme-card-bg, #ffffff) !important;
 }
 
 ::ng-deep ng-select.custom-select .ng-select-container:hover {

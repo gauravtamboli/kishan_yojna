@@ -10,7 +10,7 @@ import { ChangeDetectorRef } from '@angular/core';
 import { ApiService } from 'src/app/services/api.service';
 import { OfficersLoginResponseModel } from '../officer-login/OfficersLoginResponse.model';
 import { addIcons } from 'ionicons';
-import { appsOutline, homeOutline, informationOutline, informationCircle, buildOutline, logOutOutline, chevronBackOutline, chevronForwardOutline, downloadOutline, chevronDownOutline, optionsOutline, reorderThreeOutline, documentTextOutline, statsChartOutline, mapOutline, peopleOutline, personOutline, addCircleOutline, trendingUpOutline, leafOutline, hammerOutline, clipboardOutline, businessOutline, receiptOutline, cashOutline, listOutline, walletOutline, moonOutline, sunnyOutline } from 'ionicons/icons';
+import { appsOutline, homeOutline, informationOutline, informationCircle, buildOutline, logOutOutline, chevronBackOutline, chevronForwardOutline, downloadOutline, chevronDownOutline, optionsOutline, reorderThreeOutline, documentTextOutline, statsChartOutline, mapOutline, peopleOutline, personOutline, addCircleOutline, trendingUpOutline, leafOutline, hammerOutline, clipboardOutline, businessOutline, receiptOutline, cashOutline, listOutline, walletOutline, moon, sunny } from 'ionicons/icons';
 import { Browser } from '@capacitor/browser';
 import { Platform, AlertController } from '@ionic/angular';
 import { NetworkCheckService } from 'src/app/services/network-check.service';
@@ -35,7 +35,7 @@ import { StorageService } from 'src/app/services/storage.service';
   templateUrl: './officers-dashboard.page.html',
   styleUrls: ['./officers-dashboard.page.scss'],
   standalone: true,
-  imports: [IonSplitPane, IonMenuToggle, IonMenu, IonMenuButton, IonList, IonAvatar, IonCard, IonLoading, IonText, IonButton, IonInput, IonLabel, IonItem, IonGrid, IonRow, IonCol, IonButtons, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, IonIcon, TableModule, IonPopover]
+  imports: [IonSplitPane, IonMenuToggle, IonMenu, IonMenuButton, IonList, IonAvatar, IonCard, IonLoading, IonText, IonButton, IonInput, IonLabel, IonItem, IonGrid, IonRow, IonCol, IonButtons, IonContent, IonHeader, IonToolbar, CommonModule, FormsModule, IonIcon, TableModule, IonPopover]
 })
 export class OfficersDashboardPage implements OnInit {
   isUserMenuOpen = false;
@@ -100,7 +100,7 @@ export class OfficersDashboardPage implements OnInit {
     addIcons({
       appsOutline, homeOutline, informationOutline, informationCircle, buildOutline, logOutOutline, reorderThreeOutline,
       chevronBackOutline, chevronForwardOutline, chevronDownOutline, optionsOutline, downloadOutline, walletOutline,
-      moonOutline, sunnyOutline,
+      moon, sunny,
       'document-text-outline': documentTextOutline,
       'stats-chart-outline': statsChartOutline,
       'map-outline': mapOutline,
@@ -186,6 +186,7 @@ export class OfficersDashboardPage implements OnInit {
   totalSDOPending: number = 0;            // उपवनमंडलाधिकारी स्तर पर लंबित (2)
   totalDFOPending: number = 0;            // वनमंडलाधिकारी स्तर पर लंबित (4)
   totalApproved: number = 0;               // स्वीकृत (6)
+  totalRejected: number = 0;               // अस्वीकृत (3, 5)
   total_or_pending_or_accept_or_reject_label: string = "कुल आवेदन";
   whichBoxClicked: number = 1;
 
@@ -332,6 +333,8 @@ export class OfficersDashboardPage implements OnInit {
             this.totalDFOPending = findCount(4);
             // स्वीकृत (6)
             this.totalApproved = findCount(6);
+            // अस्वीकृत (3, 5)
+            this.totalRejected = findCount(3) + findCount(5);
 
             await this.dismissDialog();
             this.cdRef.detectChanges();

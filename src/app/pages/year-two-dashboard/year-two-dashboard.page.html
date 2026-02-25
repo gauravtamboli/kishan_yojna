@@ -38,7 +38,7 @@
             </ion-item>
           </ion-list>
         </ng-container>
-      </ion-list>
+      </ion-list>curent_session
     </ion-content>
   </ion-menu>
 
@@ -60,8 +60,8 @@
         </ion-label>
 
         <ion-buttons slot="end">
-          <ion-button (click)="toggleTheme()" class="icon-btn-options">
-            <ion-icon [name]="isDarkMode ? 'sunny-outline' : 'moon-outline'"></ion-icon>
+          <ion-button (click)="toggleTheme()" class="theme-toggle-btn" fill="clear">
+            <ion-icon slot="icon-only" [name]="isDarkMode ? 'moon' : 'sunny'"></ion-icon>
           </ion-button>
           <ion-button fill="clear" class="icon-btn-options" (click)="openUserMenu($event)">
             <ion-icon name="options-outline"></ion-icon>

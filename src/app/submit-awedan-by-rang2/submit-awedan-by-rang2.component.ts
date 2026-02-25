@@ -88,8 +88,6 @@ import { SpeciesMaster, AnyaPlantRequest, AddSpeciesMasterRequest } from '../mod
     IonTextarea,
     IonRadioGroup,
     IonRadio,
-    IonCardHeader,
-    IonCardTitle,
     IonCardContent
 ],
 })

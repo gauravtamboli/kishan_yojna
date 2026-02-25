@@ -21,5 +21,7 @@ export interface OfficersLoginResponseModel {
     rang_name: string,
     mobile_no: string,
     email: string,
-    token?: string;
+    token?: string,
+    curent_session?: string
+
 }

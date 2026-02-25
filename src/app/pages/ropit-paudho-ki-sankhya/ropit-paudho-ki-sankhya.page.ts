@@ -29,9 +29,8 @@ import Swal from 'sweetalert2';
     CommonModule, FormsModule, TableModule,
     IonContent, IonHeader, IonToolbar, IonTitle, IonButtons, IonBackButton,
     IonButton, IonInput, IonCard, IonCardContent,
-    IonRow, IonCol, IonLoading, IonIcon, IonModal, IonSpinner, IonText
-    // IonicModule
-  ]
+    IonRow, IonCol, IonLoading, IonIcon, IonModal
+]
 })
 export class RopitPaudhoKiSankhyaPage implements OnInit {
 

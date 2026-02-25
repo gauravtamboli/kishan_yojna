@@ -12,7 +12,7 @@ import {
     searchOutline, receiptOutline, peopleOutline,
     businessOutline, refreshOutline, listOutline,
     checkmarkCircleOutline, alertCircleOutline,
-    moonOutline, sunnyOutline
+    moon, sunny
 } from 'ionicons/icons';
 
 @Component({
@@ -69,17 +69,36 @@ export class CreateBillComponent implements OnInit {
             searchOutline, receiptOutline, peopleOutline,
             businessOutline, refreshOutline, listOutline,
             checkmarkCircleOutline, alertCircleOutline,
-            moonOutline, sunnyOutline
+            moon, sunny
         });
     }
 
     isDarkMode = false;
-
     toggleTheme() {
         this.isDarkMode = !this.isDarkMode;
+        this.applyTheme();
+        localStorage.setItem('theme-mode', this.isDarkMode ? 'dark' : 'light');
+    }
+
+    private applyTheme() {
+        const isDarkClass = 'ion-palette-dark';
+        if (this.isDarkMode) {
+            document.documentElement.classList.add(isDarkClass);
+            document.body.classList.add(isDarkClass);
+        } else {
+            document.documentElement.classList.remove(isDarkClass);
+            document.body.classList.remove(isDarkClass);
+        }
+    }
+
+    private restoreSavedTheme() {
+        const savedTheme = localStorage.getItem('theme-mode');
+        this.isDarkMode = savedTheme === 'dark';
+        this.applyTheme();
     }
 
     ngOnInit(): void {
+        this.restoreSavedTheme();
         const storedData = sessionStorage.getItem('logined_officer_data');
         if (storedData) {
             try {
