@@ -24,7 +24,7 @@ import { SmsRetriever } from 'capacitor-sms-retriever';
   selector: 'app-otpdialog',
   templateUrl: './otpdialog.component.html',
   styleUrls: ['./otpdialog.component.scss'],
-  imports: [IonLoading, IonInput, IonText, IonRow, IonCol, IonGrid, IonButton, FormsModule, CommonModule]
+  imports: [IonLoading, IonInput, IonText, IonRow, IonCol, IonGrid, IonButton, FormsModule, CommonModule, IonContent]
 })
 export class OTPDialogComponent implements OnInit, OnDestroy {
   enteredOTP: string = "";

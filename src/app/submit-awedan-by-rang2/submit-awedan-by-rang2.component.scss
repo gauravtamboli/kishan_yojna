@@ -139,31 +139,69 @@ ion-select {
 }
 
 .grid-bordered {
-  border: 1px solid #ccc;
+  border: 1px solid var(--theme-border, #ccc);
+  border-radius: 12px;
+  box-shadow: var(--theme-shadow-sm);
+  background: var(--theme-card-bg, #ffffff);
+  margin: 16px 0;
+  overflow: hidden;
 
   ion-row {
-    border-bottom: 1px solid #ccc;
+    border-bottom: 1px solid var(--theme-border, #ccc);
+
+    &:last-child {
+      border-bottom: none;
+    }
   }
 
   ion-col {
-    border-right: 1px solid #ccc;
+    border-right: 1px solid var(--theme-border, #ccc);
     padding: 8px;
 
-    // Remove the last column's right border
     &:last-child {
       border-right: none;
     }
   }
 
-  // Optional: Bold header
-  .grid-header {
+  .grid-header-row {
+    background: var(--theme-primary-gradient, green) !important;
+    color: white !important;
     font-weight: bold;
-    background: #f0f0f0;
+    text-align: center;
   }
 
-  // Optional: Hover effect
-  .grid-row:hover {
-    background-color: #f9f9f9;
+  .grid-footer-row {
+    background: var(--theme-primary-dark, green) !important;
+    color: white !important;
+    font-weight: bold;
+  }
+
+  .total-cell {
+    background-color: var(--theme-warning-bg, #fff3cd) !important;
+    border-left: 4px solid var(--theme-warning, #ffc107) !important;
+    padding: 12px !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .total-text {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--theme-warning, #856404) !important;
+  }
+}
+
+.info-card-green {
+  background-color: var(--theme-success-bg, #e8f5e8) !important;
+  padding: 15px;
+  border-left: 4px solid var(--theme-success, #28a745) !important;
+  margin: 0;
+
+  .info-text {
+    font-size: 14px;
+    color: var(--theme-success, #2d5a2d) !important;
+    font-weight: 600;
   }
 }
 
@@ -266,24 +304,7 @@ ion-grid {
 }
 
 // Improve card-like sections
-.grid-bordered {
-  border-radius: 12px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  background: #ffffff;
-  margin: 16px 0;
-
-  ion-row {
-    &:first-child {
-      border-top-left-radius: 12px;
-      border-top-right-radius: 12px;
-    }
-
-    &:last-child {
-      border-bottom-left-radius: 12px;
-      border-bottom-right-radius: 12px;
-    }
-  }
-}
+// Grid-bordered styling is now handled above more comprehensively
 
 // Improve header styling
 // ion-header {

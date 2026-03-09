@@ -119,7 +119,10 @@ ion-content {
 ::ng-deep ng-select.custom-select .ng-select-container:hover {
   border-color: var(--ion-color-primary) !important;
 }
+.my-col{
+  padding: 0 6px;
 
+}
 
 /* Default: Mobile & Tablet */
 .custom-submit {

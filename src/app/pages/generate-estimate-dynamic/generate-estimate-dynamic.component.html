@@ -311,7 +311,7 @@
                     <!-- When DFO Can Take Action -->
                     <div *ngIf="singleData.awedan_status === '4' && isDFO" class="custome-declearation">
 
-                      <ng-select [(ngModel)]="vanMandalAdhikari" [items]="vanMandalOptions" bindLabel="label"
+                      <ng-select *ngIf="estimate_data?.dfo_file != null" [(ngModel)]="vanMandalAdhikari" [items]="vanMandalOptions" bindLabel="label"
                         bindValue="value" placeholder="विकल्प चुनें" class="custom-ngselect"
                         (change)="changeDFODeclaration($event)">
                       </ng-select>
@@ -381,7 +381,7 @@
                     <!-- When SDO Can Take Action -->
                     <div *ngIf="singleData.awedan_status === '2' && isSDO" class="custome-declearation">
 
-                      <ng-select [(ngModel)]="upVanMandalAdhikari" [items]="upVanMandalOptions" bindLabel="label"
+                      <ng-select *ngIf="estimate_data?.sdo_file != null" [(ngModel)]="upVanMandalAdhikari" [items]="upVanMandalOptions" bindLabel="label"
                         bindValue="value" placeholder="विकल्प चुनें" class="custom-ngselect"
                         (change)="changesdoDeclaration($event)">
                       </ng-select>
@@ -414,7 +414,7 @@
                     <!-- After SDO Submitted -->
                     <div *ngIf="singleData.awedan_status >= '3'" class="custome-declearation">
 
-                      <ion-label>
+                      <ion-label >
                         {{
                         singleData.awedan_status == '3'
                         ? 'वन परिक्षेत्राधिकारी , त्रुटि सुधार कर प्राक्कलन पुनः प्रस्तुत करें |'
@@ -452,7 +452,7 @@
                     <!-- When RO Can Take Action -->
                     <div *ngIf="singleData.awedan_status === '1' && isRO" class="custome-declearation">
 
-                      <ng-select [(ngModel)]="vanParikshanAdhikari" [items]="vanParikshanOptions" bindLabel="label"
+                      <ng-select *ngIf="estimate_data"  [(ngModel)]="vanParikshanAdhikari" [items]="vanParikshanOptions" bindLabel="label"
                         bindValue="value" placeholder="विकल्प चुनें" class="custom-ngselect">
                       </ng-select>
                       <div style="padding: 10px;">

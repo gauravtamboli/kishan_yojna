@@ -2,11 +2,11 @@
   <ion-toolbar color="primary">
     <ion-buttons slot="start">
       <ion-back-button (click)="goBack()" defaultHref="/landigpage"></ion-back-button>
-        <ion-title class="responsive-toolbar-title"> &nbsp;&nbsp; &nbsp;
-      आवेदन संपादित करें
-    </ion-title>
-    </ion-buttons> 
-  
+      <ion-title class="responsive-toolbar-title"> &nbsp;&nbsp; &nbsp;
+        आवेदन संपादित करें
+      </ion-title>
+    </ion-buttons>
+
   </ion-toolbar>
 </ion-header>
 
@@ -18,8 +18,8 @@
   <div style="padding: 10px;">
     <ion-row style="margin-bottom: 10px;">
       <ion-col>
-        <ion-card style="background-color: #e8f5e8; padding: 15px; border-left: 4px solid #28a745;">
-          <ion-text style="font-size: 14px; color: #2d5a2d;">
+        <ion-card class="info-card-green">
+          <ion-text class="info-text">
             <strong>आवेदक की जानकारी भरे :- </strong>
           </ion-text>
         </ion-card>
@@ -129,8 +129,8 @@
     </div>
     <ion-row style="margin-bottom: 15px;">
       <ion-col>
-        <ion-card style="background-color: #e8f5e8; padding: 15px; border-left: 4px solid #28a745;">
-          <ion-text style="font-size: 14px; color: #2d5a2d;">
+        <ion-card class="info-card-green">
+          <ion-text class="info-text">
             <strong>भूमि की जानकारी भरे :- </strong>
           </ion-text>
         </ion-card>
@@ -157,37 +157,32 @@
         <ion-col size="12" size-lg="3" style="padding: 5px;">
           <ion-input [(ngModel)]="village_name" label="ग्राम का नाम" label-placement="floating" fill="outline" />
         </ion-col>
-        <ion-col size="12" size-lg="3">
-          <ion-row>
-            <ion-col size="12" size-lg="12"
-              style="display: flex; flex-direction: column; justify-content: center; padding: 5px;">
-              <ion-label style="font-size: 12px; display: flex; flex-direction: column;"
-                class="ion-justify-content-center">
-                भूमि सिंचित है या असिंचित?
-              </ion-label>
-              <ion-radio-group [(ngModel)]="sinchitOrA_sinchit">
-                <ion-row>
-                  <ion-col size="6" size-lg="6">
-                    <ion-item lines="none">
-                      <ion-radio slot="start" value="asinchit"></ion-radio>
-                      <ion-label style="font-size: 12px;"> &nbsp; असिंचित</ion-label>
-                    </ion-item>
-                  </ion-col>
+        <ion-col size="12" size-lg="3"
+          style="display: flex; flex-direction: column; justify-content: center; padding: 5px;">
+          <ion-label style="font-size: 12px">
+            भूमि सिंचित है या असिंचित?
+          </ion-label>
+          <ion-radio-group [(ngModel)]="sinchitOrA_sinchit">
+            <ion-row>
+              <ion-col size="6" size-lg="6">
+                <ion-item lines="none">
+                  <ion-radio slot="start" value="asinchit"></ion-radio>
+                  <ion-label style="font-size: 12px;"> &nbsp; असिंचित</ion-label>
+                </ion-item>
+              </ion-col>
 
-                  <ion-col size="6" size-lg="6">
-                    <ion-item lines="none">
-                      <ion-radio slot="start" value="sinchit"></ion-radio>
-                      <ion-label style="font-size: 12px;"> &nbsp; सिंचित</ion-label>
-                    </ion-item>
-                  </ion-col>
-                </ion-row>
-              </ion-radio-group>
-
-            </ion-col>
-          </ion-row>
+              <ion-col size="6" size-lg="6">
+                <ion-item lines="none">
+                  <ion-radio slot="start" value="sinchit"></ion-radio>
+                  <ion-label style="font-size: 12px;"> &nbsp; सिंचित</ion-label>
+                </ion-item>
+              </ion-col>
+            </ion-row>
+          </ion-radio-group>
         </ion-col>
 
-        <ion-col size="12" size-lg="3">
+        <ion-col size="12" size-lg="3"
+          style="padding: 5px; display: flex; flex-direction: column; justify-content: center;">
           <ion-label style="font-size: 12px">
             क्या आपके द्वारा वन अधिकार क्षेत्र में वृक्षारोपण कार्य किया गया है?
           </ion-label>
@@ -209,11 +204,8 @@
           </ion-radio-group>
         </ion-col>
 
-
-
-
-
-        <ion-col size="12" size-lg="3" style="padding-left: 5px;">
+        <ion-col size="12" size-lg="3"
+          style="padding: 5px; display: flex; flex-direction: column; justify-content: center;">
           <ion-label style="font-size: 12px">अपनी भूमि का प्रकार चुनें:</ion-label>
 
           <ion-radio-group [(ngModel)]="selectfrarevenue" (ionChange)="onselect()">
@@ -234,6 +226,7 @@
             </ion-row>
           </ion-radio-group>
         </ion-col>
+
         <ion-col *ngIf="selectedYesNoForKakshaKramank === 'yes'" size="12" size-lg="3"
           style="display: flex; flex-direction: column; justify-content: flex-end; padding: 8px;">
           <ion-input [(ngModel)]="kaksha_kramank" label="वृक्षारोपण कक्ष क्रमांक" label-placement="floating"
@@ -261,10 +254,10 @@
 
       <ion-row>
         <ion-col size="12" size-lg="12">
-          <ion-label style="color: green; margin-left: 10px ">
+          <ion-label style="color: var(--theme-success); margin-left: 10px ">
             किसान द्वारा हेतु चयनित प्रजातीय :-
           </ion-label>
-          <ion-label style="color: rgb(0, 0, 0); margin-left: 10px; font-weight: bold;">
+          <ion-label style="color: var(--theme-text-primary); margin-left: 10px; font-weight: bold;">
             {{ plantTypeFinalNames }}
           </ion-label>
 
@@ -278,9 +271,9 @@
     <!-- New Dynamic Plant Selection System -->
     <ion-row>
       <ion-col>
-        <ion-card style="background-color: #e8f5e8; padding: 15px; border-left: 4px solid #28a745;">
+        <ion-card class="info-card-green">
           <div style="overflow: hidden;">
-            <ion-text style="font-size: 14px; color: #2d5a2d; line-height: 30px;">
+            <ion-text class="info-text" style="line-height: 30px;">
               <strong>पौधों की जानकारी भरने के लिए बटन को क्लिक करें:-</strong>
             </ion-text>
             <ion-button fill="solid" color="success" size="small" (click)="openPlantModal()" style="float: inline-end;">
@@ -296,7 +289,7 @@
     <div style="padding: 30px;">
       <ion-grid *ngIf="getTotalTree() > 0" style="margin-top: 10px" class="grid-bordered">
         <ion-col size="12" size-lg="12">
-          <ion-row class="ion-padding ion-text-bold" style="background-color: green; color: white; text-align: center;">
+          <ion-row class="grid-header-row">
             <ion-col size="3" class="centered-cell">पौधों की प्रजाति</ion-col>
             <ion-col size="3" class="centered-cell">पौधों की संख्या</ion-col>
             <ion-col size="3" class="centered-cell">कुल भूमि (रकबा मे)</ion-col>
@@ -320,24 +313,19 @@
             </ion-col>
           </ion-row>
 
-          <ion-row class="ion-padding"
-            style="background-color: green; color: white; font-weight: bold; min-height: 20px;" class="ion-padding">
-            <ion-col size="3" class="centered-cell"
-              style="background-color: #fff3cd; padding: 15px; border-left: 4px solid #ffc107;">
-              <ion-text style="font-size: 16px; font-weight: bold; color: #856404;"> कुल योग</ion-text>
+          <ion-row class="grid-footer-row">
+            <ion-col size="3" class="total-cell">
+              <ion-text class="total-text"> कुल योग</ion-text>
             </ion-col>
-            <ion-col size="3" class="centered-cell"
-              style="background-color: #fff3cd; padding: 15px; border-left: 4px solid #ffc107;">
-              <ion-text style="font-size: 16px; font-weight: bold; color: #856404;">{{getTotalTree()}}</ion-text>
+            <ion-col size="3" class="total-cell">
+              <ion-text class="total-text">{{getTotalTree()}}</ion-text>
             </ion-col>
-            <ion-col size="3" class="centered-cell"
-              style="background-color: #fff3cd; padding: 15px; border-left: 4px solid #ffc107;">
-              <ion-text style="font-size: 16px; font-weight: bold; color: #856404;">{{ getTotalAreaUsed() }}</ion-text>
+            <ion-col size="3" class="total-cell">
+              <ion-text class="total-text">{{ getTotalAreaUsed() }}</ion-text>
             </ion-col>
-            <ion-col size="3" class="centered-cell"
-              style="background-color: #fff3cd; padding: 15px; border-left: 4px solid #ffc107;">
-              <ion-text style="font-size: 16px; font-weight: bold; color: #856404;">
-                <strong>शेष उपलब्ध रकबा: {{ getRemainingArea() }} एकड़</strong>
+            <ion-col size="3" class="total-cell">
+              <ion-text class="total-text" style="font-size: 13px;">
+                शेष उपलब्ध: {{ getRemainingArea() }}
               </ion-text>
             </ion-col>
           </ion-row>
@@ -380,7 +368,7 @@
             <input id="fileInput1" type="file" (change)="onAdharPdfFileSelect($event)" accept="application/pdf"
               required />
             <div *ngIf="adharFilename" style="margin-top: 5px;">
-              <ion-text style="color: #007bff; cursor: pointer; text-decoration: underline;"
+              <ion-text style="color: var(--theme-info); cursor: pointer; text-decoration: underline;"
                 (click)="downloadAdharPdf()">
                 📥 {{ adharFilename }}
               </ion-text>
@@ -395,7 +383,7 @@
             <input id="fileInput2" type="file" (change)="onBankPassbookPdfFileSelect($event)" accept="application/pdf"
               required />
             <div *ngIf="bankPassbookFilename" style="margin-top: 5px;">
-              <ion-text style="color: #007bff; cursor: pointer; text-decoration: underline;"
+              <ion-text style="color: var(--theme-info); cursor: pointer; text-decoration: underline;"
                 (click)="downloadBankPassbookPdf()">
                 📥 {{ bankPassbookFilename }}
               </ion-text>
@@ -410,7 +398,7 @@
             <input id="fileInput3" type="file" (change)="onB1P1PdfFileSelect($event)" accept="application/pdf"
               required />
             <div *ngIf="b1P1Filename" style="margin-top: 5px;">
-              <ion-text style="color: #007bff; cursor: pointer; text-decoration: underline;"
+              <ion-text style="color: var(--theme-info); cursor: pointer; text-decoration: underline;"
                 (click)="downloadB1P1Pdf()">
                 📥 {{ b1P1Filename }}
               </ion-text>
@@ -425,7 +413,7 @@
             <input id="fileInput4" type="file" (change)="onKmlFileSelect($event)"
               accept=".kml,.kmz,application/vnd.google-earth.kml+xml" required />
             <div *ngIf="kmlFilename" style="margin-top: 5px;">
-              <ion-text style="color: #007bff; cursor: pointer; text-decoration: underline;"
+              <ion-text style="color: var(--theme-info); cursor: pointer; text-decoration: underline;"
                 (click)="downloadKmlFile()">
                 📥 {{ kmlFilename }}
               </ion-text>
@@ -441,7 +429,7 @@
 
 
       <!-- <ion-row> -->
-<hr style="margin-top: 20px; margin-bottom: 20px; border: 0; border-top: 1px solid #ccc;" />
+      <hr style="margin-top: 20px; margin-bottom: 20px; border: 0; border-top: 1px solid var(--theme-border);" />
       <ion-row class="ion-margin-top" style="justify-content: flex-end; gap: 10px;">
         <ion-col size="12" size-md="3" size-lg="2">
           <ion-button (click)="doYouWantToCancelDialog()" expand="block" color="danger">

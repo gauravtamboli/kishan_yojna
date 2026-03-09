@@ -15,9 +15,9 @@ export class YearSelectPage implements OnInit {
   // years = [2025, 2026, 2027];
 
   years = [
-    { label: '2025-26', years: 2025 },
-    { label: '2026-27', years: 2026 },
-    { label: '2027-28', years: 2027 }
+    { label: '2025_26', years: 2025 },
+    { label: '2026_27', years: 2026 },
+    { label: '2027_28', years: 2027 }
   ];
 
   userName = '';

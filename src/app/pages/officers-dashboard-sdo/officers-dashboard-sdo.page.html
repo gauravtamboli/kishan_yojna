@@ -111,7 +111,7 @@
 
 
                       <!-- कुल आवेदन -->
-                      <ion-col size="6" size-lg="3">
+                      <ion-col size="12" size-lg="4">
                         <ion-card class="custom-card" (click)="getListOfAwedanAfterClickOnBoxes(1)">
                           <ion-grid class="ion-my-grid"
                             style="background: linear-gradient(135deg, #198edb 0%, #1565c0 100%);">
@@ -127,25 +127,8 @@
                         </ion-card>
                       </ion-col>
 
-                      <!-- संपादन लंबित -->
-                      <ion-col size="6" size-lg="3">
-                        <ion-card class="custom-card" (click)="getListOfAwedanAfterClickOnBoxes(2)">
-                          <ion-grid class="ion-my-grid"
-                            style="background: linear-gradient(135deg, #ff9800 0%, #f57c00 100%);">
-                            <ion-row>
-                              <ion-col size="12" class="ion-text-center">
-                                <ion-label class="responsive-label-count label-divider">
-                                  <span class="label-text">संपादन लंबित</span>
-                                  <span class="label-count">{{ totalEditPending }}</span>
-                                </ion-label>
-                              </ion-col>
-                            </ion-row>
-                          </ion-grid>
-                        </ion-card>
-                      </ion-col>
-
                       <!-- स्वीकृत -->
-                      <ion-col size="6" size-lg="3">
+                      <ion-col size="12" size-lg="4">
                         <ion-card class="custom-card" (click)="getListOfAwedanAfterClickOnBoxes(6)">
                           <ion-grid class="ion-my-grid"
                             style="background: linear-gradient(135deg, #4caf50 0%, #388e3c 100%);">
@@ -162,7 +145,7 @@
                       </ion-col>
 
                       <!-- अस्वीकृत -->
-                      <ion-col size="6" size-lg="3">
+                      <ion-col size="12" size-lg="4">
                         <ion-card class="custom-card" (click)="getListOfAwedanAfterClickOnBoxes(7)">
                           <ion-grid class="ion-my-grid"
                             style="background: linear-gradient(135deg, #f44336 0%, #b71c1c 100%);">
@@ -308,11 +291,6 @@
                 <div class="action-buttons">
                   <ion-button fill="outline" color="primary" size="small" (click)="viewApplication(item)">
                     विवरण देखें
-                  </ion-button>
-
-                  <ion-button *ngIf="item.awedan_status < 1" fill="outline" color="warning" size="small"
-                    (click)="editAwedan(item)">
-                    संपादित करें
                   </ion-button>
 
                   <ion-button *ngIf="canViewEstimate(item)" fill="solid" color="tertiary" size="small"

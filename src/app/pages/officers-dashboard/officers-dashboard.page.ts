@@ -681,7 +681,7 @@ export class OfficersDashboardPage implements OnInit {
       });
     } else {
       this.router.navigate(['view-awedan-bykisanRO'], {
-        queryParams: {
+        state: {
           applicationNumber: model.application_number
         }
       });

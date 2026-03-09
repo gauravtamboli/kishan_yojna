@@ -71,6 +71,7 @@ ion-content {
   border: 1px solid var(--input-border);
   border-radius: 10px;
   transition: var(--transition);
+  min-height: 44px; // Explicit height for alignment
 }
 
 .custom-select ::ng-deep .ng-value-label {
@@ -100,8 +101,79 @@ ion-content {
   margin-top: 1rem;
 }
 
+.flex-align {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  ion-icon {
+    font-size: 1.2rem;
+    color: var(--theme-primary);
+  }
+}
+
+.cutome_padding {
+  padding: 8px !important;
+}
+
+.search-btn {
+  margin: 0;
+  --border-radius: 10px;
+  height: 44px; // Match ng-select height
+}
+
+.description-section {
+  margin-top: 1.5rem;
+}
+
+.custom-textarea {
+  --background: var(--input-bg);
+  --color: var(--text-color);
+  --placeholder-color: rgba(255, 255, 255, 0.4);
+  --padding-start: 15px;
+  --padding-end: 15px;
+  --padding-top: 15px;
+  --padding-bottom: 15px;
+  border: 1px solid var(--input-border);
+  border-radius: 12px;
+  margin-top: 5px;
+  min-height: 100px;
+  transition: var(--transition);
+
+  &:focus-within {
+    border-color: var(--theme-primary);
+    box-shadow: 0 0 0 2px rgba(var(--ion-color-primary-rgb), 0.2);
+  }
+}
+
+.table-actions {
+  display: flex;
+  flex-direction: column;
+}
+
+.select-all-btn {
+  --color: var(--theme-primary);
+  font-weight: 500;
+  margin: 0;
+  height: 30px;
+}
+
+.selection-column {
+  text-align: center;
+  padding: 5px !important;
+
+  ion-checkbox {
+    --size: 20px;
+    --checkbox-background-checked: var(--theme-primary);
+    --border-color: rgba(var(--theme-primary-rgb), 0.5);
+    --border-color-checked: var(--theme-primary);
+    margin: 0 auto;
+  }
+}
+
 .table-container {
   overflow-x: auto;
+  padding: 20px;
 }
 
 /* PRIMENG TABLE STYLES */
@@ -122,6 +194,14 @@ ion-content {
   background: transparent;
   color: var(--table-row-color);
   border-bottom: 1px solid var(--card-border);
+}
+
+.batch-table ::ng-deep .p-datatable-tbody>tr:nth-child(even) {
+  background: rgba(var(--theme-primary-rgb), 0.05) !important;
+}
+
+.batch-table ::ng-deep .p-datatable-tbody>tr:hover {
+  background: rgba(var(--theme-primary-rgb), 0.1) !important;
 }
 
 .batch-table ::ng-deep .p-paginator {
@@ -157,7 +237,14 @@ ion-content {
   color: var(--text-color);
 }
 
+
+.amount-column {
+  text-align: right !important;
+  padding-right: 40px !important;
+}
+
 .amount {
+  display: inline-block;
   color: #2db84c;
   /* Keep green for money */
   font-weight: bold;
@@ -240,8 +327,12 @@ ion-content {
     border-color: var(--theme-border) !important;
   }
 
+  .batch-table ::ng-deep .p-datatable-tbody>tr:nth-child(even) {
+    background: rgba(255, 255, 255, 0.03) !important;
+  }
+
   .batch-table ::ng-deep tbody tr:hover {
-    background: var(--theme-bg-secondary) !important;
+    background: rgba(var(--theme-primary-rgb), 0.15) !important;
   }
 
   .batch-table ::ng-deep .p-paginator {

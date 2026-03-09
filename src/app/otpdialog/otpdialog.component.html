@@ -1,38 +1,45 @@
-<div>
+<div class="dialog-wrapper">
   <ion-loading cssClass="custom-loading" [isOpen]="isLoading" [message]="loadingMessage"></ion-loading>
-  <ion-text>आपके मोबाइल पे OTP भेजा जा चूका है</ion-text>
+
+  <div class="header-section">
+    <h3>मोबाइल नंबर सत्यापन</h3>
+    <p>आपके मोबाइल पे OTP भेजा जा चुका है</p>
+  </div>
+
   <ion-grid>
-
-    <ion-row style="margin-top: 10px;">
-      <ion-col size="6" style="display: flex; flex-direction: row; align-items: center;">
-        <ion-text>OTP डालें</ion-text>
-      </ion-col>
-      <ion-col size="6">
-        <ion-text style="color: green; font-size: 15px; display: flex; flex-direction: column; align-items: end; justify-content: end;" *ngIf="!isResendEnabled">
-          {{ counter }} seconds
-        </ion-text>
-
-        <ion-button class="rounded-success-button" style="display: flex; flex-direction: column; align-items: end; justify-content: end;" *ngIf="isResendEnabled" (click)="resendOtp()">
-          ओटीपी पुनः भेजें
-        </ion-button>
-
+    <!-- OTP Input Row -->
+    <ion-row class="ion-justify-content-center" style="margin-top: 10px; margin-bottom: 20px;">
+      <ion-col size="auto" *ngFor="let digit of otpArray; let i = index" style="padding: 4px;">
+        <ion-input #otpInput type="text" maxlength="1" inputmode="numeric" class="custom-otp-box" [(ngModel)]="otp[i]"
+          (ionInput)="onOtpInput($event, i)">
+        </ion-input>
       </ion-col>
     </ion-row>
 
-    <ion-row>
+    <!-- Resend/Timer Section -->
+    <ion-row class="ion-justify-content-center ion-align-items-center" style="margin-bottom: 20px;">
+      <ion-col size="12" class="ion-text-center">
+        <ion-text *ngIf="!isResendEnabled" class="timer-text">
+          कृपया प्रतीक्षा करें... {{ counter }} सेकंड
+        </ion-text>
 
-      <ion-row class="ion-justify-content-center">
-        <ion-col size="2" *ngFor="let digit of otpArray; let i = index">
-          <ion-input #otpInput type="text" maxlength="1" inputmode="numeric" class="otp-input" [(ngModel)]="otp[i]"
-            (ionInput)="onOtpInput($event, i)"></ion-input>
-        </ion-col>
-      </ion-row>
-
-      <ion-col size="6" size-lg="6">
-        <ion-button style="width: 100%;" class="cancel-button" (click)="cancelOtpDialog()">समाप्त</ion-button>
+        <ion-button fill="clear" class="resend-btn" *ngIf="isResendEnabled" (click)="resendOtp()">
+          ओटीपी पुनः भेजें
+        </ion-button>
       </ion-col>
-      <ion-col size="6" size-lg="6">
-        <ion-button style="width: 100%;" class="otp-verify-button" (click)="onSubmitOTP()">सत्यापित</ion-button>
+    </ion-row>
+
+    <!-- Action Buttons Row -->
+    <ion-row class="ion-justify-content-center">
+      <ion-col size="6">
+        <ion-button expand="block" shape="round" fill="outline" color="medium" (click)="cancelOtpDialog()">
+          रद्द करें
+        </ion-button>
+      </ion-col>
+      <ion-col size="6">
+        <ion-button expand="block" shape="round" color="success" (click)="onSubmitOTP()">
+          सत्यापित
+        </ion-button>
       </ion-col>
     </ion-row>
   </ion-grid>

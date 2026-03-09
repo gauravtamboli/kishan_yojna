@@ -717,7 +717,7 @@ export class OfficersDashboardSDOPage implements OnInit {
       });
     } else {
       this.router.navigate(['view-awedan-bykisanRO'], {
-        queryParams: {
+        state: {
           applicationNumber: model.application_number
         }
       });
@@ -876,16 +876,7 @@ export class OfficersDashboardSDOPage implements OnInit {
     );
   }
 
-  editAwedan(item: GetAwedanResponseModel) {
-    // Navigate to submit-awedan-by-rang2 component with application data
-    this.router.navigate(['submit-awedan-by-ro2'], {
-      queryParams: {
-        applicationNumber: item.application_number,
-        id: item.id,
-        editMode: 'true'
-      }
-    });
-  }
+
 
   generateEstimate(item: GetAwedanResponseModel) {
     this.router.navigate(['generate-estimate'], {

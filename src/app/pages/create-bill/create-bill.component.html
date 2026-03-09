@@ -21,23 +21,50 @@
 
       <!-- FILTERS -->
       <div class="section">
-        <ion-row class="ion-align-items-end">
-          <ion-col size="12" size-md="4">
+        <ion-row class="ion-align-items-end g-3">
+          <ion-col size="12" size-md="4" class="cutome_padding">
             <label class="label">Select Type</label>
             <ng-select [items]="billTypes" bindLabel="name" bindValue="id" [(ngModel)]="selectedBillType"
               [searchable]="false" [clearable]="false" class="custom-select">
+              <ng-template ng-label-tmp let-item="item">
+                <div class="flex-align">
+                  <ion-icon [name]="item.icon"></ion-icon>
+                  <span>{{item.name}}</span>
+                </div>
+              </ng-template>
+              <ng-template ng-option-tmp let-item="item">
+                <div class="flex-align">
+                  <ion-icon [name]="item.icon"></ion-icon>
+                  <span>{{item.name}}</span>
+                </div>
+              </ng-template>
             </ng-select>
           </ion-col>
 
-          <ion-col size="12" size-md="4">
+          <ion-col size="12" size-md="4" class="cutome_padding">
             <label class="label">Select Year</label>
             <ng-select [items]="years" bindLabel="name" bindValue="id" [(ngModel)]="selectedYear" [searchable]="false"
               [clearable]="false" class="custom-select">
+              <ng-template ng-label-tmp let-item="item">
+                <div class="flex-align">
+                  <ion-icon name="calendar-outline"></ion-icon>
+                  <span>{{item.name}}</span>
+                </div>
+              </ng-template>
+              <ng-template ng-option-tmp let-item="item">
+                <div class="flex-align">
+                  <ion-icon name="calendar-outline"></ion-icon>
+                  <span>{{item.name}}</span>
+                </div>
+              </ng-template>
             </ng-select>
           </ion-col>
 
-          <ion-col size="12" size-md="4">
-            <ion-button expand="block" (click)="loadData()">Search</ion-button>
+          <ion-col size="12" size-md="4" class="cutome_padding">
+            <ion-button expand="block" (click)="loadData()" class="search-btn">
+              <ion-icon name="search-outline" slot="start"></ion-icon>
+              Search
+            </ion-button>
           </ion-col>
         </ion-row>
 
@@ -47,33 +74,43 @@
             (ionInput)="applyFilters()">
           </ion-input>
         </ion-item>
+
+        <div class="description-section mt-3">
+          <label class="label">Batch Description</label>
+          <ion-textarea [(ngModel)]="description" placeholder="Enter batch description here..." rows="3"
+            class="custom-textarea">
+          </ion-textarea>
+        </div>
       </div>
 
       <!-- TABLE -->
+
+
       <div class="table-container">
-        <p-table [value]="filteredAwedans" [(selection)]="selectedAwedans" dataKey="application_number"
-          responsiveLayout="stack" breakpoint="768px" [paginator]="true" [rows]="10" class="batch-table">
+        <p-table [value]="filteredAwedans" dataKey="application_number" responsiveLayout="stack" breakpoint="768px"
+          [paginator]="true" [rows]="10" class="batch-table">
 
           <ng-template pTemplate="header">
             <tr>
-              <th style="width: 3rem">
-                <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
-              </th>
-              <th>Application No</th>
+
+              <th style="padding-left: 20px;">Application No</th>
               <th>Bill Number</th>
               <th>Name</th>
-              <th>Plants</th>
-              <th>Amount</th>
+              <th style="width: 4rem" class="selection-column">
+                <ion-checkbox
+                  [checked]="selectedAwedans.length === filteredAwedans.length && filteredAwedans.length > 0"
+                  (ionChange)="selectAllFiltered($event)" mode="md">
+                </ion-checkbox>
+              </th>
+              <th class="amount-column text-end">Amount</th>
             </tr>
           </ng-template>
 
           <ng-template pTemplate="body" let-item>
-            <tr [pSelectableRow]="item">
-              <td>
-                <p-tableCheckbox [value]="item"></p-tableCheckbox>
-              </td>
+            <tr>
 
-              <td>
+
+              <td style="padding-left: 20px;">
                 <span class="p-column-title">Application</span>
                 <span class="badge-app">{{ item.application_number }}</span>
               </td>
@@ -91,13 +128,12 @@
                 </div>
               </td>
 
-              <td>
-                <span class="p-column-title">Plants</span>
-                {{ getPlantNames(item) }}
+              <td class="selection-column">
+                <ion-checkbox [checked]="isSelected(item)" (ionChange)="toggleSelection(item, $event)" mode="md">
+                </ion-checkbox>
               </td>
 
-              <td>
-                <span class="p-column-title">Amount</span>
+              <td class="amount-column text-end">
                 <span class="amount">₹{{ getAmount(item) | number:'1.2-2' }}</span>
               </td>
             </tr>

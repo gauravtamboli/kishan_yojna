@@ -12,8 +12,11 @@ import {
     searchOutline, receiptOutline, peopleOutline,
     businessOutline, refreshOutline, listOutline,
     checkmarkCircleOutline, alertCircleOutline,
+    calendarOutline,
     moon, sunny
 } from 'ionicons/icons';
+import * as XLSX from 'xlsx';
+import { saveAs } from 'file-saver';
 
 @Component({
     standalone: true,
@@ -52,6 +55,7 @@ export class CreateBillComponent implements OnInit {
 
     // Batch info
     batchRefNo: string = '';
+    description: string = '';
 
     // UI State
     isLoading = false;
@@ -69,6 +73,7 @@ export class CreateBillComponent implements OnInit {
             searchOutline, receiptOutline, peopleOutline,
             businessOutline, refreshOutline, listOutline,
             checkmarkCircleOutline, alertCircleOutline,
+            calendarOutline,
             moon, sunny
         });
     }
@@ -159,13 +164,35 @@ export class CreateBillComponent implements OnInit {
         this.selectedAwedans = []; // Reset selection when filters change
     }
 
+    selectAllFiltered(event?: any) {
+        const isChecked = event ? event.detail.checked : (this.selectedAwedans.length !== this.filteredAwedans.length);
+
+        if (!isChecked) {
+            this.selectedAwedans = [];
+        } else {
+            this.selectedAwedans = [...this.filteredAwedans];
+        }
+    }
+
+    isSelected(item: any): boolean {
+        return this.selectedAwedans.some(s => s.application_number === item.application_number);
+    }
+
+    toggleSelection(item: any, event: any) {
+        if (event.detail.checked) {
+            if (!this.isSelected(item)) {
+                this.selectedAwedans = [...this.selectedAwedans, item];
+            }
+        } else {
+            this.selectedAwedans = this.selectedAwedans.filter(s => s.application_number !== item.application_number);
+        }
+    }
+
     getAmount(item: any): number {
         return item.total_amount || 0;
     }
 
-    getPlantNames(item: any): string {
-        return item.plant_names || item.plant_name || 'Checked Plants';
-    }
+
 
     calculateTotalSelectedAmount(): number {
         return this.selectedAwedans.reduce((sum, item) => sum + this.getAmount(item), 0);
@@ -181,23 +208,24 @@ export class CreateBillComponent implements OnInit {
             return;
         }
 
-        const totalAmount = this.selectedAwedans.reduce((sum, item) => sum + this.getAmount(item), 0);
+        const totalAmount = this.calculateTotalSelectedAmount();
+        this.batchRefNo = 'BCH-' + Math.floor(Math.random() * 900000 + 100000);
 
         const confirmResult = await Swal.fire({
             title: 'Batch Bill Construction',
             html: `
         <div style="text-align: left;">
-          <p><strong>Reference No:</strong> ${this.batchRefNo}</p>
-          <p><strong>Type:</strong> ${this.selectedBillType.toUpperCase()}</p>
+          <p><strong>Ref No:</strong> ${this.batchRefNo}</p>
+          <p><strong>Description:</strong> ${this.description || 'N/A'}</p>
           <p><strong>Total Items:</strong> ${this.selectedAwedans.length}</p>
           <p><strong>Total Amount:</strong> ₹${totalAmount.toLocaleString('en-IN')}</p>
           <hr>
-          <p>Do you want to proceed with creating this batch bill?</p>
+          <p>Do you want to proceed with creating and downloading this batch bill?</p>
         </div>
       `,
             icon: 'question',
             showCancelButton: true,
-            confirmButtonText: 'Yes, Create Batch',
+            confirmButtonText: 'Yes, Download Batch',
             cancelButtonText: 'Cancel',
             confirmButtonColor: '#2e7d32',
         });
@@ -205,17 +233,49 @@ export class CreateBillComponent implements OnInit {
         if (confirmResult.isConfirmed) {
             this.isLoading = true;
 
-            // Simulate API call
-            setTimeout(async () => {
+            try {
+                // Prepare data for Excel
+                const exportData = this.selectedAwedans.map(item => ({
+                    'Application Number': item.application_number,
+                    'Bill Number': item.BillNumber,
+                    'Hitgrahi Name': item.hitgrahi_name,
+                    'Father Name': item.father_name,
+                    'Amount': this.getAmount(item),
+                    'Batch Reference': this.batchRefNo,
+                    'Batch Description': this.description
+                }));
+
+                const worksheet = XLSX.utils.json_to_sheet(exportData);
+                const workbook = XLSX.utils.book_new();
+                XLSX.utils.book_append_sheet(workbook, worksheet, 'Batch Bill');
+
+                // Generate Excel file
+                const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+                const data: Blob = new Blob([excelBuffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+
+                // Save the file
+                saveAs(data, `Batch_Bill_${this.batchRefNo}.xlsx`);
+
                 this.isLoading = false;
                 await Swal.fire({
                     icon: 'success',
                     title: 'Batch Created',
-                    text: `Batch Bill ${this.batchRefNo} has been created successfully for ${this.selectedAwedans.length} items.`
+                    text: `Batch Bill ${this.batchRefNo} has been created and downloaded successfully.`
                 });
+
+                // Optional: Clear selection and description
                 this.selectedAwedans = [];
+                this.description = '';
                 this.cdRef.detectChanges();
-            }, 1500);
+            } catch (error) {
+                console.error('Error creating batch bill:', error);
+                this.isLoading = false;
+                await Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'An error occurred while creating the batch file.'
+                });
+            }
         }
     }
 

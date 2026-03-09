@@ -148,7 +148,20 @@
   --box-shadow: var(--theme-shadow-sm);
   font-weight: 600;
   height: 48px;
-  margin-top: 0;
+  transition: all 0.2s ease;
+  width: 50%;
+  
+
+}
+.search-button:hover {
+  --box-shadow: var(--theme-shadow-md);
+  transform: translateY(-2px);
+}
+.search-button-col{
+  display: flex;
+  justify-content: flex-end;
+justify-items: baseline;
+
 }
 
 // Report Container

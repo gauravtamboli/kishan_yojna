@@ -69,7 +69,7 @@
 
           <!-- District, Division, Range Selection -->
           <ion-row>
-            <ion-col size="12" size-md="4">
+            <ion-col size="12" size-md="4" class="my-col">
               <ion-label class="item-style-label">जिला</ion-label>
               <ng-select [items]="listOfDist" bindLabel="name" bindValue="id" [(ngModel)]="formData.district_id"
                 name="district" [searchable]="true" [clearable]="false" placeholder="जिला चुनें"
@@ -77,7 +77,7 @@
               </ng-select>
             </ion-col>
 
-            <ion-col size="12" size-md="4">
+            <ion-col size="12" size-md="4"class="my-col">
               <ion-label class="item-style-label">वनमण्डल</ion-label>
               <ng-select [items]="listOfDivision" bindLabel="name" bindValue="id" [(ngModel)]="formData.division_id"
                 name="division" [searchable]="true" [clearable]="false" placeholder="वनमण्डल चुनें"
@@ -85,7 +85,7 @@
               </ng-select>
             </ion-col>
 
-            <ion-col size="12" size-md="4">
+            <ion-col size="12" size-md="4"class="my-col">
               <ion-label class="item-style-label">परिक्षेत्र</ion-label>
               <ng-select [items]="listOfRang" bindLabel="name" bindValue="id" [(ngModel)]="formData.range_id"
                 name="range" [searchable]="true" [clearable]="false" placeholder="परिक्षेत्र चुनें" required
@@ -96,17 +96,17 @@
 
           <!-- Beneficiary Details -->
           <ion-row style="margin-top: 15px">
-            <ion-col size="12" size-md="4">
+            <ion-col size="12" size-md="4" class="my-col">
               <ion-input [(ngModel)]="formData.hitgrahi_name" name="hitgrahi" label="हितग्राही का नाम"
                 label-placement="floating" fill="outline" required />
             </ion-col>
 
-            <ion-col size="12" size-md="4">
+            <ion-col size="12" size-md="4" class="my-col">
               <ion-input [(ngModel)]="formData.father_husband_name" name="father" label="पिता/पति का नाम"
                 label-placement="floating" fill="outline" />
             </ion-col>
 
-            <ion-col size="12" size-md="4">
+            <ion-col size="12" size-md="4" class="my-col">
               <ion-input [(ngModel)]="formData.mobile_no" name="mobile" type="number" label="मोबाइल नंबर"
                 label-placement="floating" fill="outline" maxlength="10" [disabled]="true"
                 style="--background: #f0f0f0;">
@@ -118,7 +118,7 @@
 
           <!-- Caste and Mobile -->
           <ion-row style="margin-top: 15px">
-            <ion-col size="12" size-md="4">
+            <ion-col size="12" size-md="4" class="my-col">
               <ion-label class="item-style-label">जाति वर्ग</ion-label>
               <ng-select [items]="listOfCastCategory" bindLabel="name" bindValue="id" [(ngModel)]="formData.caste"
                 name="caste" [searchable]="true" [clearable]="false" placeholder="जाति वर्ग चुनें" required
@@ -126,21 +126,21 @@
               </ng-select>
             </ion-col>
 
-            <ion-col size="12" size-md="4">
+            <ion-col size="12" size-md="4" class="my-col">
               <ion-radio-group [(ngModel)]="formData.isMale" name="gender">
                 <ion-grid>
                   <ion-row>
                     <ion-col size="6">
                       <ion-item lines="none">
-                        <ion-label>पुरुष</ion-label>
-                        <ion-radio slot="start" [value]="true"></ion-radio>
+                        <ion-radio slot="start" [value]="true"></ion-radio>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <ion-label>पुरुष</ion-label> 
                       </ion-item>
                     </ion-col>
 
                     <ion-col size="6">
                       <ion-item lines="none">
+                        <ion-radio slot="start" [value]="false"></ion-radio>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         <ion-label>महिला</ion-label>
-                        <ion-radio slot="start" [value]="false"></ion-radio>
                       </ion-item>
                     </ion-col>
                   </ion-row>
@@ -148,7 +148,7 @@
               </ion-radio-group>
             </ion-col>
 
-            <ion-col size="12" size-md="4">
+            <ion-col size="12" size-md="4" class="my-col">
               <ion-input [(ngModel)]="formData.gram_panchayat" name="panchayat" label="ग्राम पंचायत / नगरीय निकाय "
                 label-placement="floating" fill="outline" required />
             </ion-col>
@@ -156,11 +156,11 @@
               <ion-input [(ngModel)]="formData.area" name="area" type="text" label="हितग्राही का कुल रकबा  (एकड़ में)"
                 label-placement="floating" fill="outline" required />
             </ion-col> -->
-            <ion-col size="12" size-md="4">
+            <ion-col size="12" size-md="4" class="my-col">
               <ion-input [(ngModel)]="formData.village_city" name="village" label="गांव/शहर" label-placement="floating"
                 fill="outline" required />
             </ion-col>
-            <ion-col size="12" size-md="8">
+            <ion-col size="12" size-md="8" class="my-col">
               <ion-textarea [(ngModel)]="formData.address" name="address" fill="outline" label="पूरा पता"
                 label-placement="floating" autosize="true" required />
             </ion-col>
@@ -169,11 +169,11 @@
           <!-- Area Details -->
 
           <ion-row style="margin-top: 15px">
-            <ion-col size="12" size-md="4">
+            <ion-col size="12" size-md="4" class="my-col">
               <ion-input [(ngModel)]="formData.area" name="area" type="text" label="हितग्राही का कुल रकबा  (एकड़ में)"
                 label-placement="floating" fill="outline" required />
             </ion-col>
-            <ion-col size="12" size-md="4">
+            <ion-col size="12" size-md="4" class="my-col">
               <ion-input [(ngModel)]="formData.available_area" name="available_area" type="text"
                 label="इस योजना अंतर्गत उपलब्ध रोपण योग्य भूमि का रकबा (एकड़ मे )" label-placement="floating"
                 fill="outline" required />
@@ -189,8 +189,6 @@
       <ion-row style="padding-left: 15px; padding-right: 15px;">
 
         <ion-col size="12">
-
-
 
           <!-- Plant Type Selection -->
           <ion-row style="margin-top: 15px">
@@ -235,7 +233,9 @@
                   किसान वृक्ष मित्र योजना अंतर्गत उपर्युक्तानुसार पौधे प्रदान करने का सादर अनुरोध है।
                 </p>
               </ion-text>
-            </ion-card>
+            </ion-card> 
+            <hr style="margin: 20px 0; border: none; border-top: 1px solid #ddd;" />
+
             <ion-text style="font-size: 13px; line-height: 1.4; color: #2d5a2d;">
               <p style="margin: 0 0 8px 0; font-weight: 600; color: #1e7e34;text-align: center;">
                 टीप :-

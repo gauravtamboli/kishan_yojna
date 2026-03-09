@@ -8,13 +8,20 @@ import { SingleAwedanDataResponseModel } from '../view-awedan/SingleAwedanDataRe
 import { Toast } from '@capacitor/toast';
 import { MessageDialogComponent } from 'src/app/message-dialog/message-dialog.component';
 import * as XLSX from 'xlsx';
-import jsPDF from 'jspdf';
-import autoTable from 'jspdf-autotable';
 import FileSaver from 'file-saver';
 import { KisanAwedanData } from './KisanAwedanResponse.model';
+import * as pdfFontsBold from "../../../assets/fonts/vfs_fonts_bold_custom";
+import * as pdfFontsNormal from "../../../assets/fonts/vfs_fonts_custom";
+import pdfMake from 'pdfmake/build/pdfmake';
+(pdfMake as any).vfs = {
+  ...pdfFontsBold.vfs,
+  ...pdfFontsNormal.vfs
+};
 import { NgSelectModule } from '@ng-select/ng-select';
 import { NotoSansDevanagari } from 'src/assets/fonts/NotoSansDevanagari';
 import Swal from 'sweetalert2';
+import { addIcons } from 'ionicons';
+import { documentTextOutline, downloadOutline, personCircleOutline, locationOutline, leafOutline, informationCircleOutline, warningOutline, swapHorizontalOutline, closeCircleOutline, checkmarkCircleOutline, searchOutline } from 'ionicons/icons';
 
 
 @Component({
@@ -63,10 +70,33 @@ export class ViewAwedanBykisanROPage implements OnInit {
     private modalCtrl: ModalController,
     private apiService: ApiService,
     private cdRef: ChangeDetectorRef
-  ) { }
+  ) {
+    addIcons({
+      documentTextOutline, downloadOutline, personCircleOutline, locationOutline,
+      leafOutline, informationCircleOutline, warningOutline, swapHorizontalOutline,
+      closeCircleOutline, checkmarkCircleOutline, searchOutline
+    });
+  }
 
   ngOnInit() {
-
+    (pdfMake as any).fonts = {
+      Roboto: {
+        normal: 'Roboto-Regular.ttf',
+        bold: 'Roboto-Medium.ttf',
+        italics: 'Roboto-Italic.ttf',
+        bolditalics: 'Roboto-MediumItalic.ttf'
+      },
+      NotoSansDevanagari: {
+        normal: "NotoSansDevanagari-Regular.ttf",
+        bold: "NotoSansDevanagari-Bold.ttf",
+      },
+      Lohit: {
+        normal: "Lohit-Devanagari.ttf",
+      },
+      KrutiDev: {
+        normal: "KRDEV010.ttf",
+      }
+    };
 
     // Check if data was passed via navigation state
 
@@ -75,12 +105,12 @@ export class ViewAwedanBykisanROPage implements OnInit {
     const navigation = this.router.getCurrentNavigation();
     const stateData = navigation?.extras.state;
 
-    // this.route.queryParams.subscribe(params => {
-    //   if (params['applicationNumber']) {
-    //     this.applicationNumber = params['applicationNumber'];
-    //     this.fetchAwedanData();
-    //   }
-    // });
+    this.route.queryParams.subscribe(params => {
+      if (params['applicationNumber']) {
+        this.applicationNumber = params['applicationNumber'];
+        this.fetchAwedanData();
+      }
+    });
 
     if (stateData && stateData['applicationNumber']) {
       this.applicationNumber = stateData['applicationNumber'];
@@ -99,45 +129,107 @@ export class ViewAwedanBykisanROPage implements OnInit {
       return;
     }
 
-    const fontName = 'NotoSans';
-    const fontFile = 'NotoSans.ttf';
+    const today = new Date();
+    const dateString = today.toLocaleDateString('en-IN');
+    const plantNamesString = this.getPlantTypeNames().join(', ');
 
-    const base64Font = NotoSansDevanagari.normal.replace(
-      /^data:font\/truetype;charset=utf-8;base64,/,
-      ''
-    );
-
-    const doc = new jsPDF();
-
-    doc.addFileToVFS(fontFile, base64Font);
-    doc.addFont(fontFile, fontName, 'normal');
-    doc.setFont(fontName);
-    // Prepare data for PDF
-    const pdfData = this.prepareDataForExport();
-
-    const headers = Object.keys(pdfData);
-    const rows = [Object.values(pdfData)];
-
-    doc.text('किसान आवेदन विवरण', 14, 15);
-
-    autoTable(doc, {
-      head: [headers],
-      body: rows,
-      startY: 20,
-      styles: {
-        font: fontName,
-        fontStyle: 'normal',
+    const docDefinition: any = {
+      pageSize: 'A4',
+      pageOrientation: 'portrait',
+      pageMargins: [40, 40, 40, 40],
+      defaultStyle: {
+        font: 'NotoSansDevanagari',
         fontSize: 10,
+        color: '#000000'
       },
-      headStyles: {
-        font: fontName,
-        fontStyle: 'normal',
-        fontSize: 12,
-        fillColor: [22, 160, 133],
-      }
-    });
+      content: [
+        {
+          columns: [
+            {
+              text: `सत्र: ${this.awedanData.vrikharopan_gap}\nआवेदन संख्या: ${this.awedanData.application_number}`,
+              style: 'headerLeft'
+            },
+            {
+              text: `दिनांक: ${dateString}`,
+              style: 'headerRight',
+              alignment: 'right'
+            }
+          ],
+          margin: [0, 0, 0, 20]
+        },
+        {
+          text: 'किसान आवेदन विवरण',
+          style: 'mainTitle',
+          alignment: 'center',
+          margin: [0, 0, 0, 15]
+        },
+        {
+          table: {
+            widths: ['40%', '60%'],
+            body: [
+              // Personal Details
+              [{ text: 'व्यक्तिगत विवरण', style: 'sectionHeader', colSpan: 2, alignment: 'center' }, {}],
+              [{ text: 'हितग्राही का नाम:', style: 'fieldLabel' }, { text: this.awedanData.hitgrahi_name || '-', style: 'fieldValue' }],
+              [{ text: 'पिता/पति का नाम:', style: 'fieldLabel' }, { text: this.awedanData.father_name || '-', style: 'fieldValue' }],
+              [{ text: 'जाति वर्ग:', style: 'fieldLabel' }, { text: this.awedanData.cast_name || '-', style: 'fieldValue' }],
+              [{ text: 'मोबाइल नंबर:', style: 'fieldLabel' }, { text: this.awedanData.mobile_no || '-', style: 'fieldValue' }],
 
-    doc.save(`किसान_आवेदन_${this.awedanData.application_number}.pdf`);
+              // Address Details
+              [{ text: 'पता विवरण', style: 'sectionHeader', colSpan: 2, alignment: 'center' }, {}],
+              [{ text: 'गाँव/शहर:', style: 'fieldLabel' }, { text: this.awedanData.village_name || '-', style: 'fieldValue' }],
+              [{ text: 'ग्राम पंचायत:', style: 'fieldLabel' }, { text: this.awedanData.gram_panchayat_name || '-', style: 'fieldValue' }],
+              [{ text: 'कुल क्षेत्रफल (एकड़ में):', style: 'fieldLabel' }, { text: this.awedanData.area || '-', style: 'fieldValue' }],
+              [{ text: 'उपलब्ध भूमि (एकड़ में):', style: 'fieldLabel' }, { text: this.awedanData.available_area || '-', style: 'fieldValue' }],
+              [{ text: 'पूरा पता:', style: 'fieldLabel' }, { text: this.awedanData.address || '-', style: 'fieldValue' }],
+
+              // Region Details
+              [{ text: 'वन मंडल एवं परिक्षेत्र विवरण', style: 'sectionHeader', colSpan: 2, alignment: 'center' }, {}],
+              [{ text: 'जिला:', style: 'fieldLabel' }, { text: this.awedanData.dist_name || '-', style: 'fieldValue' }],
+              [{ text: 'वन मंडल:', style: 'fieldLabel' }, { text: this.awedanData.div_name || '-', style: 'fieldValue' }],
+              [{ text: 'परिक्षेत्र:', style: 'fieldLabel' }, { text: this.awedanData.rang_name || '-', style: 'fieldValue' }],
+
+              // Plant Details
+              [{ text: 'पौधों की प्रजाति विवरण', style: 'sectionHeader', colSpan: 2, alignment: 'center' }, {}],
+              [{ text: 'चयनित पौधों की प्रजातियाँ:', style: 'fieldLabel' }, { text: plantNamesString || '-', style: 'fieldValue' }],
+              [{ text: 'अन्य पौधों का विवरण:', style: 'fieldLabel' }, { text: this.awedanData.other_plant || '-', style: 'fieldValue' }]
+            ]
+          },
+          layout: {
+            hLineWidth: (i: any, node: any) => 0.5,
+            vLineWidth: (i: any, node: any) => 0.5,
+            hLineColor: (i: any, node: any) => '#aaaaaa',
+            vLineColor: (i: any, node: any) => '#aaaaaa',
+          }
+        }
+      ],
+      styles: {
+        headerLeft: { fontSize: 10, bold: true },
+        headerRight: { fontSize: 10, bold: true },
+        mainTitle: {
+          fontSize: 14,
+          bold: true,
+          decoration: 'underline',
+          margin: [0, 0, 0, 10]
+        },
+        sectionHeader: {
+          fontSize: 11,
+          bold: true,
+          fillColor: '#f0f0f0',
+          margin: [0, 3, 0, 3]
+        },
+        fieldLabel: {
+          fontSize: 10,
+          bold: true,
+          margin: [5, 4, 5, 4]
+        },
+        fieldValue: {
+          fontSize: 10,
+          margin: [5, 4, 5, 4]
+        }
+      }
+    };
+
+    pdfMake.createPdf(docDefinition).download(`किसान_आवेदन_${this.awedanData.application_number}.pdf`);
   }
 
   exportToExcel() {

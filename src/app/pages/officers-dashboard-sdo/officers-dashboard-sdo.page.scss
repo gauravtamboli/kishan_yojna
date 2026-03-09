@@ -362,7 +362,7 @@ ion-select {
 ::ng-deep .custom-table-row {
   margin-bottom: 100px;
   /* Adjust as needed */
-  background: white;
+  background: var(--theme-card-bg, white);
   /* Optional for spacing visibility */
   border-radius: 40px;
   /* Optional for nice styling */
@@ -712,7 +712,7 @@ ion-menu-button {
 }
 
 .table-responsive {
-  background: var(--theme-card-bg);
+  background: var(--theme-card-bg, white);
   border-radius: 12px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
   padding: 10px;
@@ -733,7 +733,7 @@ ion-menu-button {
   border-radius: 12px;
   overflow: hidden;
   box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
-  background: var(--theme-card-bg);
+  background: var(--theme-card-bg, white);
   font-family: 'Poppins', sans-serif;
 
   th {
@@ -778,23 +778,23 @@ ion-menu-button {
   }
 
   .status-approved {
-    background-color: #e8f5e9;
-    color: #2e7d32;
+    background-color: var(--theme-success-bg, #e8f5e9);
+    color: var(--theme-success, #2e7d32);
   }
 
   .status-pending {
-    background-color: #fff8e1;
-    color: #f57c00;
+    background-color: var(--theme-warning-bg, #fff8e1);
+    color: var(--theme-warning, #f57c00);
   }
 
   .status-draft {
-    background-color: #e3f2fd;
-    color: #1565c0;
+    background-color: var(--theme-info-bg, #e3f2fd);
+    color: var(--theme-info, #1565c0);
   }
 
   .status-rejected {
-    background-color: #ffebee;
-    color: #c62828;
+    background-color: var(--theme-danger-bg, #ffebee);
+    color: var(--theme-danger, #c62828);
   }
 
   .action-buttons {
@@ -830,7 +830,7 @@ ion-button {
   height: 100px;
   font-weight: 600;
   color: var(--ion-color-medium);
-  background-color: #fff;
+  background-color: var(--theme-card-bg, #fff);
 }
 
 .custom-paginator {

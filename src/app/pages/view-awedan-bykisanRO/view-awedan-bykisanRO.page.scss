@@ -1,173 +1,303 @@
+// Custom Variables and Mixins
+$primary-color: var(--ion-color-primary, #1565c0);
+$secondary-color: var(--ion-color-secondary, #4782c5);
+$success-color: var(--ion-color-success, #28a745);
+$warning-color: var(--ion-color-warning, #ffc107);
+$danger-color: var(--ion-color-danger, #dc3545);
+$background-light: var(--ion-background-color, #f4f6f8);
+$card-bg: var(--ion-item-background, #ffffff);
+$text-main: var(--ion-text-color, #333333);
+$text-muted: var(--ion-color-medium, #666666);
+$border-color: var(--ion-border-color, #e0e0e0);
 
+.page-container {
+  --background: #{$background-light};
+}
 
-.custom-back-button {
-  color: #4CAF50;
-  font-weight: 500;
-  border-radius: 6px;
-  transition: all 0.2s ease;
-  
-  &:hover {
-    background-color: rgba(76, 175, 80, 0.1);
+// Header styling
+ion-header {
+  ion-toolbar {
+    --background: #{$primary-color};
+    --color: #ffffff;
+
+    ion-back-button {
+      --color: #ffffff;
+    }
+
+    .responsive-toolbar-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+    }
   }
 }
 
-.responsive-toolbar-title {
-  font-size: 14px;
-  font-weight: 700;
-
-  @media (min-width: 600px) {
-    font-size: 18px;
-  }
-
-  @media (min-width: 1024px) {
-    font-size: 20px;
-  }
-}
-
-.label-title {
-  display: block;
-  font-weight: 600;
-  font-size: 13px;
-  color: #4CAF50;
-  margin-bottom: 8px;
-
-  @media (min-width: 600px) {
-    font-size: 14px;
-  }
-
-  @media (min-width: 1024px) {
-    font-size: 15px;
-  }
-}
-
-.label-value {
-  display: block;
-  font-size: 14px;
-  color: #333;
-  padding: 10px;
-  background-color: #f8f9fa;
-  border-radius: 8px;
-  border-left: 3px solid #4CAF50;
-
-  @media (min-width: 600px) {
-    font-size: 15px;
-  }
-
-  @media (min-width: 1024px) {
-    font-size: 16px;
-  }
-}
-
-ion-card {
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+// Global Card Styling
+.form-card {
+  margin: 16px;
   border-radius: 12px;
-}
+  background: $card-bg;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+  border: 1px solid $border-color;
+  overflow: hidden;
 
-ion-card-title {
-  font-size: 16px;
+  ion-card-header {
+    background: rgba(21, 101, 192, 0.05);
+    border-bottom: 1px solid $border-color;
+    padding: 12px 16px;
 
-  @media (min-width: 600px) {
-    font-size: 18px;
-  }
+    ion-card-title {
+      color: $primary-color;
+      font-size: 1.1rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
 
-  @media (min-width: 1024px) {
-    font-size: 20px;
-  }
-}
-
-ion-input {
-  --background: #ffffff;
-  --padding-start: 16px;
-  --padding-end: 16px;
-  --border-radius: 10px;
-  --border: 1px solid #e0e0e0;
-  --box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-  margin: 0;
-  transition: all 0.3s ease;
-
-  &:focus-within {
-    --border-color: #4CAF50;
-    --box-shadow: 0 4px 12px rgba(76, 175, 80, 0.15);
-  }
-}
-
-ion-button {
-  --background: linear-gradient(to right, #4CAF50, #45a049);
-  --border-radius: 10px;
-  --box-shadow: 0 4px 12px rgba(76, 175, 80, 0.2);
-  font-weight: 600;
-  height: 48px;
-  transition: all 0.3s ease;
-
-  &:hover {
-    transform: translateY(-2px);
-    --box-shadow: 0 6px 16px rgba(76, 175, 80, 0.3);
-  }
-}
-
-ion-chip {
-  font-size: 13px;
-  
-  @media (min-width: 600px) {
-    font-size: 14px;
-  }
-}
-
-// ng-select dropdown styling to ensure all items are visible
-::ng-deep {
-  .ng-dropdown-panel {
-    z-index: 10000 !important;
-    
-    .ng-dropdown-panel-items {
-      max-height: 500px !important; // Increased to show more items
-      overflow-y: auto !important;
+      ion-icon {
+        font-size: 1.4rem;
+      }
     }
   }
 
-  // Ensure parent containers don't clip the dropdown
-  ion-card {
-    overflow: visible !important;
+  ion-card-content {
+    padding: 16px;
   }
 }
 
-// Style for ng-select components
-ng-select {
-  width: 100%;
-  
-  .ng-select-container {
+// Highlight Card (Application Number)
+.highlight-card {
+  background: linear-gradient(135deg, $primary-color, $secondary-color);
+  color: white;
+  border: none;
+
+  .app-number-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+
+    .app-number {
+      font-size: 1.2rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .action-buttons {
+      display: flex;
+      gap: 10px;
+
+      ion-button {
+        --box-shadow: none;
+        font-weight: 600;
+        margin: 0;
+        --border-radius: 8px;
+        --padding-start: 12px;
+        --padding-end: 12px;
+
+        &.btn-pdf {
+          --background: #e53935;
+          --background-hover: #d32f2f;
+        }
+
+        &.btn-excel {
+          --background: #43a047;
+          --background-hover: #388e3c;
+        }
+
+        ion-icon {
+          margin-right: 6px;
+        }
+      }
+    }
+  }
+}
+
+// Detail Items
+.detail-item {
+  margin-bottom: 16px;
+
+  .detail-label {
+    font-size: 0.85rem;
+    color: $text-muted;
+    font-weight: 600;
+    margin-bottom: 6px;
+    display: block;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+  }
+
+  .detail-value {
+    font-size: 1rem;
+    color: $text-main;
+    font-weight: 500;
+    background: rgba(0, 0, 0, 0.02);
+    padding: 10px 12px;
     border-radius: 8px;
-    border: 1px solid #e0e0e0;
-    background: #ffffff;
-    min-height: 48px;
-    transition: border-color 0.2s ease;
-
-    &:hover {
-      border-color: #4CAF50;
-    }
-
-    &:focus-within {
-      border-color: #4CAF50;
-      box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.1);
-    }
-  }
-
-  .ng-placeholder {
-    color: #999;
+    border-left: 3px solid $primary-color;
+    word-break: break-word;
   }
 }
 
-.cst-btn{
-  width: fit-content;
-  float: right;
-  --background: #ff9800;
+// Chips
+.custom-chip {
+  --background: rgba(21, 101, 192, 0.1);
+  --color: #{$primary-color};
+  font-weight: 600;
+  font-size: 0.9rem;
+  padding: 12px;
+  border-radius: 8px;
+  margin-left: 8px;
+}
+
+// Important Info
+.info-card {
+  background-color: rgba(40, 167, 69, 0.1);
+  border-left: 4px solid $success-color;
+  box-shadow: none;
+
+  .info-title {
+    color: #1e7e34;
+    font-weight: 700;
+    margin-bottom: 8px;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    ion-icon {
+      font-size: 1.2rem;
+    }
+  }
+
+  .info-text {
+    color: #2d5a2d;
+    font-size: 0.9rem;
+    line-height: 1.5;
+  }
+}
+
+// Transfer Section
+.transfer-section {
+  .transfer-note {
+    font-size: 0.9rem;
+    color: $danger-color;
+    background: rgba(220, 53, 69, 0.1);
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 16px;
+    font-weight: 500;
+    display: flex;
+    gap: 8px;
+    align-items: center;
+  }
+
+  .transfer-form {
+    background: #f8f9fa;
+    padding: 16px;
+    border-radius: 8px;
+    border: 1px dashed $border-color;
+    margin-top: 16px;
+
+    .form-group {
+      margin-bottom: 16px;
+
+      .form-label {
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: $text-main;
+        margin-bottom: 8px;
+        display: block;
+      }
+    }
+  }
+}
+
+// NG-Select overrides
+::ng-deep {
+  .custom-ng-select {
+    .ng-select-container {
+      border-radius: 8px;
+      border: 1px solid $border-color;
+      min-height: 48px;
+      background: $card-bg;
+
+      &:hover {
+        border-color: $primary-color;
+      }
+    }
+
+    &.ng-select-focused .ng-select-container {
+      border-color: $primary-color;
+      box-shadow: 0 0 0 2px rgba(21, 101, 192, 0.2);
+    }
+  }
+
+  // Dark mode support
+  html.ion-palette-dark {
+    .detail-value {
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .custom-ng-select .ng-select-container {
+      background: var(--ion-item-background);
+      border-color: var(--ion-border-color);
+      color: var(--ion-text-color);
+    }
+
+    .ng-dropdown-panel {
+      background: var(--ion-item-background);
+      border-color: var(--ion-border-color);
+
+      .ng-option {
+        color: var(--ion-text-color);
+        background: transparent;
+
+        &.ng-option-marked {
+          background: rgba(255, 255, 255, 0.1);
+        }
+      }
+    }
+
+    .transfer-form {
+      background: var(--ion-background-color);
+    }
+
+    .info-card {
+      background-color: rgba(40, 167, 69, 0.2);
+
+      .info-title,
+      .info-text {
+        color: #81c784;
+      }
+    }
+  }
+}
+
+.cst-btn {
   --border-radius: 8px;
   font-weight: 600;
   height: 44px;
-  transition: all 0.3s ease;
-  margin-bottom: 20px;
+  text-transform: none;
+  letter-spacing: 0.5px;
+}
 
-  &:hover {
-    transform: translateY(-2px);
-    --box-shadow: 0 6px 16px rgba(255, 152, 0, 0.3);
+.no-data-card {
+  text-align: center;
+  padding: 40px 20px;
+
+  ion-icon {
+    font-size: 3rem;
+    color: $text-muted;
+    margin-bottom: 12px;
+  }
+
+  p {
+    color: $text-muted;
+    font-size: 1.1rem;
+    margin: 0;
   }
 }

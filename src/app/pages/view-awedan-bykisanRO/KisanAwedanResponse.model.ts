@@ -35,6 +35,7 @@ interface SuccessResponse {
     div_name: string;
     rang_name: string;
     cast_name: string;
+    vrikharopan_gap: string;
   }
   
   export interface GetKisanAwedanDataRequest {
