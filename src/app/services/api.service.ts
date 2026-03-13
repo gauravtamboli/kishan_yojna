@@ -2143,13 +2143,25 @@ export class ApiService {
 
 
   GetAllPaymentDetailsByApplication(application_number: string): Observable<any> {
-    return from(
-      this.buildApiUrl(`/api/KissanMitraYojnaRegisteration/GetAllPaymentDetailsByApplication?application_number=${encodeURIComponent(application_number)}`)).pipe(
-        switchMap((url) => {
-          if (!url) return throwError(() => new Error("No API URL configured"));
-          return this.http.get<any>(url);
-        })
-      );
+    return from(this.buildApiUrl(`/api/KissanMitraYojnaRegisteration/GetAllPaymentDetailsByApplication?application_number=${encodeURIComponent(application_number)}`)).pipe(
+      switchMap((url) => {
+        if (!url) return throwError(() => new Error("No API URL configured"));
+        return this.http.get<any>(url);
+      })
+    );
+  }
+
+  SavePaymentDetails(data: any) {
+    return from(this.buildApiUrl(`/api/KissanMitraYojnaRegisteration/SavePaymentDetails`)).pipe(
+      switchMap((url) => {
+        if (!url) return throwError(() => new Error("No API URL configured"));
+
+        return this.http.post<any>(url, data, {
+          headers: { 'Content-Type': 'application/json' }
+        });
+
+      })
+    );
   }
 
 }

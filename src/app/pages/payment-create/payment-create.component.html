@@ -187,7 +187,9 @@
 
                 </td>
                 <td>
-                  <input type="checkbox" class="form-check-input" [(ngModel)]="cat.rowGrantMap[1][item.itemKramank]" />
+                  <input type="checkbox" class="form-check-input"
+                    [(ngModel)]="cat.rowGrantMap[1][item.itemKramank]"
+                    [disabled]="calculateRowAmount(cat, item, 1) <= 0" />
                 </td>
                 <td>
                   {{ cat.rowGrantMap[selectedYear!][item.itemKramank] ? 'Yes' : 'No' }}
@@ -201,16 +203,7 @@
                 <td class="detail-td detail-rate">{{ item[cat.rateField] }}</td>
                 <td class="detail-td detail-rate">{{ item[cat.rateField] / 2 }}</td>
                 <td class="detail-td detail-amount">
-                  {{(((item[cat.rateField] *(item.itemKramank === 3 ? less5PitCount(cat) :
-                  less5AreaCount(cat)))
-                  +
-                  ((item[cat.rateField] / 2) *(item.itemKramank === 3 ? more5PitCount(cat) :
-                  more5AreaCount(cat))))
-                  -
-                  getAlreadyPaidAmount(cat, item.itemKramank, 1)
-                  )
-                  | number:'1.2-2'
-                  }}
+                  {{ calculateRowAmount(cat, item, 1) | number:'1.2-2' }}
                 </td>
 
               </tr>
@@ -243,7 +236,9 @@
                   {{ item.karyaVivran }}
                 </td>
                 <td>
-                  <input type="checkbox" class="form-check-input" [(ngModel)]="cat.rowGrantMap[2][item.itemKramank]" />
+                  <input type="checkbox" class="form-check-input"
+                    [(ngModel)]="cat.rowGrantMap[2][item.itemKramank]"
+                    [disabled]="calculateRowAmount(cat, item, 2) <= 0" />
                 </td>
                 <td>
                   {{ cat.rowGrantMap[selectedYear!][item.itemKramank] ? 'Yes' : 'No' }}
@@ -257,16 +252,7 @@
                 <td class="detail-td detail-rate">{{ item[cat.rateField] }}</td>
                 <td class="detail-td detail-rate">{{ item[cat.rateField] / 2 }}</td>
                 <td class="detail-td detail-amount">
-                  {{(((item[cat.rateField] *(item.itemKramank === 3 ? less5PitCount(cat) :
-                  less5AreaCount(cat)))
-                  +
-                  ((item[cat.rateField] / 2) *(item.itemKramank === 3 ? more5PitCount(cat) :
-                  more5AreaCount(cat))))
-                  -
-                  getAlreadyPaidAmount(cat, item.itemKramank, 2)
-                  )
-                  | number:'1.2-2'
-                  }}
+                  {{ calculateRowAmount(cat, item, 2) | number:'1.2-2' }}
                 </td>
               </tr>
 
@@ -295,7 +281,9 @@
                   {{ item.karyaVivran }}
                 </td>
                 <td>
-                  <input type="checkbox" class="form-check-input" [(ngModel)]="cat.rowGrantMap[3][item.itemKramank]" />
+                  <input type="checkbox" class="form-check-input"
+                    [(ngModel)]="cat.rowGrantMap[3][item.itemKramank]"
+                    [disabled]="calculateRowAmount(cat, item, 3) <= 0" />
                 </td>
                 <td>
                   {{ cat.rowGrantMap[selectedYear!][item.itemKramank] ? 'Yes' : 'No' }}
@@ -309,16 +297,7 @@
                 <td class="detail-td detail-rate">{{ item[cat.rateField] }}</td>
                 <td class="detail-td detail-rate">{{ item[cat.rateField] / 2 }}</td>
                 <td class="detail-td detail-amount">
-                  {{(((item[cat.rateField] *(item.itemKramank === 3 ? less5PitCount(cat) :
-                  less5AreaCount(cat)))
-                  +
-                  ((item[cat.rateField] / 2) *(item.itemKramank === 3 ? more5PitCount(cat) :
-                  more5AreaCount(cat))))
-                  -
-                  getAlreadyPaidAmount(cat, item.itemKramank, 3)
-                  )
-                  | number:'1.2-2'
-                  }}
+                  {{ calculateRowAmount(cat, item, 3) | number:'1.2-2' }}
                 </td>
               </tr>
 
@@ -417,9 +396,19 @@
             </table>
           </div>
         </ion-card-content>
-        <div class="payment-button-container" style=" margin-bottom: 20px;">
-          <ion-button class="my-ion-button" (click)="makePayment()">Create Payment</ion-button>
+        <div *ngIf="showYear1" class="payment-button-container" style=" margin-bottom: 20px;">
+          <ion-button *ngIf="getAllPrajatiYearTotal(1) > 0" class="my-ion-button" (click)="makePayment()">Create
+            Payment</ion-button>
         </div>
+        <div *ngIf="showYear2" class="payment-button-container" style=" margin-bottom: 20px;">
+          <ion-button *ngIf="getAllPrajatiYearTotal(2) > 0" class="my-ion-button" (click)="makePayment()">Create
+            Payment</ion-button>
+        </div>
+        <div *ngIf="showYear3" class="payment-button-container" style=" margin-bottom: 20px;">
+          <ion-button *ngIf="getAllPrajatiYearTotal(3) > 0" class="my-ion-button" (click)="makePayment()">Create
+            Payment</ion-button>
+        </div>
+
       </ion-card>
 
 

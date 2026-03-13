@@ -169,6 +169,7 @@ export class ViewVivranAfterSampaditPage implements OnInit {
       case 4: return 'वनमंडलाधिकारी स्तर पर लंबित';
       case 5: return 'त्रुटि सुधार कर प्राकलन पुनः प्रस्तुत करें (DFO)';
       case 6: return 'स्वीकृत';
+      case 7: return 'ड्राफ्ट';
       default: return 'अज्ञात';
     }
   }
@@ -183,6 +184,7 @@ export class ViewVivranAfterSampaditPage implements OnInit {
       case 4: return 'secondary'; // वनमंडलाधिकारी स्तर पर लंबित - Teal
       case 5: return 'warning';  // त्रुटि सुधार कर प्राकलन पुनः प्रस्तुत करें (DFO) - Orange
       case 6: return 'success';  // स्वीकृत - Green
+      case 7: return 'tertiary';  // स्वीकृत - Green
       default: return 'medium';
     }
   }

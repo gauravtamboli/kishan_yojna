@@ -155,7 +155,7 @@ export class OfficersDashboardROPage implements OnInit {
   total_or_pending_or_accept_or_reject_label: string = "कुल आवेदन";
   whichBoxClicked: number = 1;
   totalRejected: number = 0;               // अस्वीकृत (3,5)
-
+  totalBatch: number = 0;                  // प्रकटन बैच (7)
   totalAwedanTextColor = "#198edb";
   totalEditPendingTextColor = "#caf102ff";    // Orange for Edit Pending
   totalROPendingTextColor = "#2196f3";      // Blue for RO Pending
@@ -163,6 +163,7 @@ export class OfficersDashboardROPage implements OnInit {
   totalDFOPendingTextColor = "#673ab7";     // Deep Purple for DFO Pending
   totalApprovedTextColor = "#4caf50";        // Green for Approved
   totalRejectedTextColor = "#f44336";        // Red for Rejected
+  totalBatchTextColor = "#7581da";        // Red for Rejected
   // Pagination
   currentPage: number = 1;
   pageSize: number = 10;
@@ -422,6 +423,9 @@ export class OfficersDashboardROPage implements OnInit {
             // अस्वीकृत (3,5)
             this.totalRejected = findCount(3) + findCount(5);
 
+            // प्रकटन बैच (7)
+            this.totalBatch = findCount(7);
+
             await this.dismissDialog();
             this.cdRef.detectChanges();
             this.getListOfAwedanAfterClickOnBoxes(1);
@@ -513,6 +517,8 @@ export class OfficersDashboardROPage implements OnInit {
       return this.totalDFOPendingTextColor;
     } else if (this.whichBoxClicked == 7) {
       return this.totalRejectedTextColor;
+    } else if (this.whichBoxClicked == 8) {
+      return this.totalBatchTextColor;
     } else {
       return this.totalApprovedTextColor;
     }
@@ -549,6 +555,12 @@ export class OfficersDashboardROPage implements OnInit {
       case 7:
         this.total_or_pending_or_accept_or_reject_label = "अस्वीकृत";
         break;
+      case 8:
+        this.total_or_pending_or_accept_or_reject_label = "प्रकटन बैच";
+        break;
+      default:
+        this.total_or_pending_or_accept_or_reject_label = "अज्ञात";
+
     }
 
     this.showDialog("कृपया प्रतीक्षा करें.....");
@@ -574,6 +586,9 @@ export class OfficersDashboardROPage implements OnInit {
     else if (this.whichBoxClicked === 7) {
       whichData = 9; // Status 3,5 (अस्वीकृत)
     }
+    else if (this.whichBoxClicked === 8) {
+      whichData = 10; // Status 7 (प्रकटन बैच)
+    }
 
     // Calculate totalRecords based on which box is clicked
     if (this.whichBoxClicked === 1) {
@@ -590,6 +605,11 @@ export class OfficersDashboardROPage implements OnInit {
       this.totalRecords = this.totalApproved;
     } else if (this.whichBoxClicked === 7) {
       this.totalRecords = this.totalRejected;
+    }
+    else if (this.whichBoxClicked === 8) {
+      this.totalRecords = this.totalBatch; // For batch, we will get count from API response
+    } else {
+      this.totalRecords = 0;
     }
 
     this.totalPages = Math.ceil(this.totalRecords / this.pageSize);

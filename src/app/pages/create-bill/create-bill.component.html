@@ -76,7 +76,7 @@
         </ion-item>
 
         <div class="description-section mt-3">
-          <label class="label">Batch Description</label>
+          <label class="label">Description</label>
           <ion-textarea [(ngModel)]="description" placeholder="Enter batch description here..." rows="3"
             class="custom-textarea">
           </ion-textarea>
@@ -93,8 +93,8 @@
           <ng-template pTemplate="header">
             <tr>
 
-              <th style="padding-left: 20px;">Application No</th>
-              <th>Bill Number</th>
+              <th style="padding-left: 35px;">Bill Number</th>
+              <th style="padding-left: 20px;" >Application No</th>
               <th>Name</th>
               <th style="width: 4rem" class="selection-column">
                 <ion-checkbox
@@ -109,19 +109,16 @@
           <ng-template pTemplate="body" let-item>
             <tr>
 
-
+              
               <td style="padding-left: 20px;">
-                <span class="p-column-title">Application</span>
+                <span class="badge-app text-white">{{ item.billNumber }}</span>
+              </td>
+              
+              <td>
                 <span class="badge-app">{{ item.application_number }}</span>
               </td>
 
               <td>
-                <span class="p-column-title">Bill Number</span>
-                <span class="text-white">{{ item.BillNumber }}</span>
-              </td>
-
-              <td>
-                <span class="p-column-title">Name</span>
                 <div class="name-info">
                   <div class="primary-name">{{ item.hitgrahi_name }}</div>
                   <div class="secondary-name">{{ item.father_name }}</div>
@@ -134,7 +131,7 @@
               </td>
 
               <td class="amount-column text-end">
-                <span class="amount">₹{{ getAmount(item) | number:'1.2-2' }}</span>
+                <span class="amount">{{ getAmount(item) | number:'1.2-2' }} &nbsp;₹</span>
               </td>
             </tr>
           </ng-template>

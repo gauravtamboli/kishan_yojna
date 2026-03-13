@@ -17,6 +17,7 @@ import {
 } from 'ionicons/icons';
 import * as XLSX from 'xlsx';
 import { saveAs } from 'file-saver';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
     standalone: true,
@@ -62,6 +63,7 @@ export class CreateBillComponent implements OnInit {
     isPageLoading = false;
 
     constructor(
+
         private location: Location,
         private api: ApiService,
         private cdRef: ChangeDetectorRef,
@@ -120,31 +122,77 @@ export class CreateBillComponent implements OnInit {
 
 
 
+    // loadData() {
+    //     if (!this.rangeId) {
+    //         this.showToast('Range ID not found. Please login again.');
+    //         return;
+    //     }
+
+    //     const paymentType = this.selectedBillType === 'vendor' ? 1 : 2;
+    //     this.isPageLoading = true;
+
+    //     this.api.paymentlistdata(this.selectedYear, this.rangeId, paymentType).subscribe({
+    //         next: (res: any) => {
+    //             console.log('Payment data loaded', res);
+    //             this.allAwedans = res?.data || [];
+    //             this.applyFilters();
+    //             this.isPageLoading = false;
+    //             this.cdRef.detectChanges();
+    //         },
+    //         error: (err) => {
+    //             console.error('Error loading payment data', err);
+    //             this.allAwedans = [];
+    //             this.filteredAwedans = [];
+    //             this.isPageLoading = false;
+    //             this.cdRef.detectChanges();
+    //         }
+    //     });
+    // }
+
     loadData() {
+
         if (!this.rangeId) {
             this.showToast('Range ID not found. Please login again.');
             return;
         }
 
         const paymentType = this.selectedBillType === 'vendor' ? 1 : 2;
+
         this.isPageLoading = true;
-        this.api.paymentlistdata(this.selectedYear, this.rangeId, paymentType).subscribe({
-            next: (res: any) => {
-                console.log('Payment data loaded', res);
-                this.allAwedans = res?.data || [];
-                this.applyFilters();
-                this.isPageLoading = false;
-                this.cdRef.detectChanges();
-            },
-            error: (err) => {
-                console.error('Error loading payment data', err);
-                this.allAwedans = [];
-                this.filteredAwedans = [];
-                this.isPageLoading = false;
-                this.cdRef.detectChanges();
-            }
-        });
+
+        this.api.paymentlistdata(this.selectedYear, this.rangeId, paymentType)
+            .subscribe({
+                next: (res: any) => {
+
+                    console.log('Payment data loaded', res);
+
+                    this.allAwedans = res?.data ?? [];
+
+                    this.applyFilters();
+
+                },
+                error: (err) => {
+
+                    console.error('Error loading payment data', err);
+
+                    this.allAwedans = [];
+                    this.filteredAwedans = [];
+
+                    this.showToast('Failed to load payment list');
+
+                },
+                complete: () => {
+
+                    this.isPageLoading = false;
+
+                    this.cdRef.detectChanges();
+
+                }
+            });
     }
+
+
+
 
     applyFilters() {
         let result = [...this.allAwedans];
@@ -189,7 +237,7 @@ export class CreateBillComponent implements OnInit {
     }
 
     getAmount(item: any): number {
-        return item.total_amount || 0;
+        return Number(item.total_amount || 0);
     }
 
 
@@ -198,7 +246,11 @@ export class CreateBillComponent implements OnInit {
         return this.selectedAwedans.reduce((sum, item) => sum + this.getAmount(item), 0);
     }
 
+
+
+
     async createBatchBill() {
+
         if (this.selectedAwedans.length === 0) {
             await Swal.fire({
                 icon: 'warning',
@@ -214,15 +266,15 @@ export class CreateBillComponent implements OnInit {
         const confirmResult = await Swal.fire({
             title: 'Batch Bill Construction',
             html: `
-        <div style="text-align: left;">
-          <p><strong>Ref No:</strong> ${this.batchRefNo}</p>
-          <p><strong>Description:</strong> ${this.description || 'N/A'}</p>
-          <p><strong>Total Items:</strong> ${this.selectedAwedans.length}</p>
-          <p><strong>Total Amount:</strong> ₹${totalAmount.toLocaleString('en-IN')}</p>
-          <hr>
-          <p>Do you want to proceed with creating and downloading this batch bill?</p>
-        </div>
-      `,
+            <div style="text-align: left;">
+            <p><strong>Ref No:</strong> ${this.batchRefNo}</p>
+            <p><strong>Description:</strong> ${this.description || 'N/A'}</p>
+            <p><strong>Total Items:</strong> ${this.selectedAwedans.length}</p>
+            <p><strong>Total Amount:</strong> ₹${totalAmount.toLocaleString('en-IN')}</p>
+            <hr>
+            <p>Do you want to proceed with creating and downloading this batch bill?</p>
+            </div>
+        `,
             icon: 'question',
             showCancelButton: true,
             confirmButtonText: 'Yes, Download Batch',
@@ -231,10 +283,31 @@ export class CreateBillComponent implements OnInit {
         });
 
         if (confirmResult.isConfirmed) {
+
             this.isLoading = true;
 
             try {
-                // Prepare data for Excel
+
+                // 🔹 CALL API ONCE WITH ALL SELECTED RECORDS
+                const payload = this.selectedAwedans.map(item => ({
+                    paymentType: this.selectedBillType === 'vendor' ? 1 : 2,
+                    account_no: String(item.account_no || ''),
+                    address: String(item.address || ''),
+                    application_number: String(item.application_number || ''),
+                    bank_name: String(item.bank_name || ''),
+                    billNumber: String(item.BillNumber || ''),
+                    father_name: String(item.father_name || ''),
+                    hitgrahi_name: String(item.hitgrahi_name || ''),
+                    ifsc_code: String(item.ifsc_code || ''),
+                    mobile_no: String(item.mobile_no || ''),
+                    total_amount: this.getAmount(item),
+                    fin_year: String(this.selectedYear || ''),
+                    createby: String(this.rangeId || '')
+                }));
+
+                await firstValueFrom(this.api.SavePaymentDetails(payload));
+
+                // 🔹 Prepare Excel
                 const exportData = this.selectedAwedans.map(item => ({
                     'Application Number': item.application_number,
                     'Bill Number': item.BillNumber,
@@ -249,31 +322,37 @@ export class CreateBillComponent implements OnInit {
                 const workbook = XLSX.utils.book_new();
                 XLSX.utils.book_append_sheet(workbook, worksheet, 'Batch Bill');
 
-                // Generate Excel file
                 const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
-                const data: Blob = new Blob([excelBuffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
 
-                // Save the file
+                const data: Blob = new Blob([excelBuffer], {
+                    type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+                });
+
                 saveAs(data, `Batch_Bill_${this.batchRefNo}.xlsx`);
 
                 this.isLoading = false;
+
                 await Swal.fire({
                     icon: 'success',
                     title: 'Batch Created',
                     text: `Batch Bill ${this.batchRefNo} has been created and downloaded successfully.`
                 });
 
-                // Optional: Clear selection and description
                 this.selectedAwedans = [];
                 this.description = '';
+                this.loadData();
                 this.cdRef.detectChanges();
+
             } catch (error) {
+
                 console.error('Error creating batch bill:', error);
+
                 this.isLoading = false;
+
                 await Swal.fire({
                     icon: 'error',
                     title: 'Error',
-                    text: 'An error occurred while creating the batch file.'
+                    text: 'An error occurred while saving payment data.'
                 });
             }
         }

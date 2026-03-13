@@ -39,6 +39,7 @@ export class VendorPaymentComponent implements OnInit {
 
     paymentDetails: any[] = [];
     totalYearAmount: number = 0;
+    payment_type: any = null;
 
     application_number: string | null = null;
     singleData: any;
@@ -193,13 +194,8 @@ export class VendorPaymentComponent implements OnInit {
                     rowGrantMap: { 1: {}, 2: {}, 3: {} }
                 }));
 
-                // ✅ INIT CHECKBOX STATE (IMPORTANT FIX) - make sure to handle filtered rows?
-                // Actually, since we filtered this.year1Rows, looping over them works fine.
-                this.categoriesToShow.forEach(cat => {
-                    this.year1Rows.forEach(r => cat.rowGrantMap[1][r.itemKramank] = true);
-                    this.year2Rows.forEach(r => cat.rowGrantMap[2][r.itemKramank] = true);
-                    this.year3Rows.forEach(r => cat.rowGrantMap[3][r.itemKramank] = true);
-                });
+                // ✅ INIT CHECKBOX STATE (IMPORTANT FIX)
+                this.updateInitialCheckboxes();
 
                 this.isPageLoading = false;
                 this.cdRef.detectChanges();
@@ -237,6 +233,45 @@ export class VendorPaymentComponent implements OnInit {
     }
 
     // ================= CALCULATION =================
+    calculateRowAmount(cat: DisplayCategory, row: any, year: number): number {
+        const rate = Number(row?.[cat.rateField]) || 0;
+        const halfRate = rate / 2;
+
+        let lessCount = 0;
+        let moreCount = 0;
+
+        // Item 3 is assumed to be Pits (Gadda)
+        if (row.itemKramank === 3) {
+            lessCount = this.less5PitCount(cat);
+            moreCount = this.more5PitCount(cat);
+        } else {
+            lessCount = this.less5AreaCount(cat);
+            moreCount = this.more5AreaCount(cat);
+        }
+
+        const rowTotal = (lessCount * rate) + (moreCount * halfRate);
+        const alreadyPaid = this.getAlreadyPaidAmount(cat, row.itemKramank, year);
+        return rowTotal - alreadyPaid;
+    }
+
+    updateInitialCheckboxes() {
+        if (!this.categoriesToShow || this.categoriesToShow.length === 0 || !this.paymentDetails) {
+            return;
+        }
+
+        this.categoriesToShow.forEach(cat => {
+            [1, 2, 3].forEach(year => {
+                const rows = year === 1 ? this.year1Rows : year === 2 ? this.year2Rows : this.year3Rows;
+                rows.forEach(row => {
+                    const rowAmount = this.calculateRowAmount(cat, row, year);
+                    // Set to false if amount is zero or less, true otherwise
+                    cat.rowGrantMap[year][row.itemKramank] = rowAmount > 0;
+                });
+            });
+        });
+        this.cdRef.detectChanges();
+    }
+
     getYearTotal(cat: DisplayCategory, yearRows: any[], year: number): number {
         return yearRows.reduce((sum, row) => {
 
@@ -247,26 +282,9 @@ export class VendorPaymentComponent implements OnInit {
                 return sum;
             }
 
-            const less5Rate = Number(row?.[cat.rateField]) || 0;
-            const more5Rate = Number(row?.[cat.rateField]) || 0;
-
-            let lessCount = 0;
-            let moreCount = 0;
-
-            // Item 3 is assumed to be Pits (Gadda)
-            if (row.itemKramank === 3) {
-                lessCount = this.less5PitCount(cat);
-                moreCount = this.more5PitCount(cat);
-            } else {
-                lessCount = this.less5AreaCount(cat);
-                moreCount = this.more5AreaCount(cat);
-            }
-
-            const rowTotal =
-                (lessCount * less5Rate) +
-                (moreCount * (more5Rate / 2));
-            this.finalRowTotal = rowTotal - this.getAlreadyPaidAmount(cat, row.itemKramank, year);
-            return sum + this.finalRowTotal;
+            const amount = this.calculateRowAmount(cat, row, year);
+            this.finalRowTotal = amount;
+            return sum + amount;
 
         }, 0);
     }
@@ -510,11 +528,15 @@ export class VendorPaymentComponent implements OnInit {
                         },
                         0
                     );
-                    console.log('Total last payment amount:', this.totalYearAmount);
+                    this.payment_type = res?.data?.payment_type || null;
+                    console.log('Total last payment amount:', this.payment_type);
                 },
                 error: (err) => {
                     console.error(err);
                     this.paymentDetails = [];
+                },
+                complete: () => {
+                    this.updateInitialCheckboxes();
                 }
             });
     }
@@ -530,7 +552,6 @@ export class VendorPaymentComponent implements OnInit {
             .filter((p: any) =>
                 Number(p.PlantId) === Number(cat.plant_id) &&
                 String(p.payment_year) === selectedYearStr &&
-                p.payment_Status === 'C' &&
                 p.is_delete === false
             )
             .reduce((sum: number, pay: any) => {
