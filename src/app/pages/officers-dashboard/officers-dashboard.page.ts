@@ -315,17 +315,17 @@ export class OfficersDashboardPage implements OnInit {
           is_submenu: true,
           icon: 'cash-outline',
           children: [
-            {
-              icon: 'business-outline',
-              title: 'वेंडर भुगतान बनाए ',
-              url: 'vendor-payment-list',
-              state: {
-                range_id: rangid,
-                year: 1,
-                fin_year: this.curent_session
-              },
-              is_submenu: false
-            },
+            // {
+            //   icon: 'business-outline',
+            //   title: 'वेंडर भुगतान बनाए ',
+            //   url: 'vendor-payment-list',
+            //   state: {
+            //     range_id: rangid,
+            //     year: 1,
+            //     fin_year: this.curent_session
+            //   },
+            //   is_submenu: false
+            // },
             // {
             //   title: 'हितग्राही भुगतान बनाएं',
             //   icon: 'person-outline',
@@ -337,17 +337,17 @@ export class OfficersDashboardPage implements OnInit {
             //   },
             //   is_submenu: false
             // },
-            {
-              title: 'भुगतान करे ',
-              icon: 'receipt-outline',
-              url: 'create-bill',
-              state: {
-                range_id: rangid,
-                year: 1,
-                fin_year: this.curent_session
-              },
-              is_submenu: false
-            },
+            // {
+            //   title: 'भुगतान करे ',
+            //   icon: 'receipt-outline',
+            //   url: 'create-bill',
+            //   state: {
+            //     range_id: rangid,
+            //     year: 1,
+            //     fin_year: this.curent_session
+            //   },
+            //   is_submenu: false
+            // },
             {
               title: 'भुगतान रिपोर्ट',
               icon: 'clipboard-outline',
