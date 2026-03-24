@@ -289,7 +289,8 @@ export class OfficersDashboardSDOPage implements OnInit {
         officersLoginModel.circle_id,
         officersLoginModel.devision_id,
         officersLoginModel.rang_id,
-        officersLoginModel.officerId?.toString() || ''
+        officersLoginModel.officerId?.toString() || '',
+        this.curent_session
       ).subscribe(
         async (countsResponse) => {
           if (countsResponse.response.code === 200) {

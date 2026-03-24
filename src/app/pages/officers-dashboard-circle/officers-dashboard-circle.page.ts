@@ -23,6 +23,7 @@ import { GetAwedanResponseModel } from '../registeration-status/AwedanResponseLi
 import { ModalController } from '@ionic/angular';
 import { MessageDialogComponent } from 'src/app/message-dialog/message-dialog.component';
 import { AuthServiceService } from 'src/app/services/auth-service.service';
+import { StorageService } from 'src/app/services/storage.service';
 
 
 import * as XLSX from 'xlsx';
@@ -38,6 +39,7 @@ import * as FileSaver from 'file-saver';
 export class OfficersDashboardCirclePage implements OnInit {
   isUserMenuOpen = false;
   popoverEvent: any;
+  curent_session: any;
 
   openUserMenu($event: any) {
     this.popoverEvent = $event;
@@ -69,7 +71,10 @@ export class OfficersDashboardCirclePage implements OnInit {
   isNoRecordFound: boolean = true;
 
   constructor(private modalCtrl: ModalController, private alertController: AlertController, private router: Router, private menuCtrl: MenuController, private networkCheckService: NetworkCheckService, private platform: Platform, private navController: NavController, private langService: LanguageService, private cdRef: ChangeDetectorRef,
-    private apiService: ApiService, private sharedPreference: SharedserviceService, private authService: AuthServiceService) {
+    private apiService: ApiService, 
+    private sharedPreference: SharedserviceService, 
+    private authService: AuthServiceService,
+    private storageService: StorageService) {
     this.addAllIcon();
   }
 
@@ -125,6 +130,7 @@ export class OfficersDashboardCirclePage implements OnInit {
 
   async ngOnInit() {
     this.updateTranslation();
+    this.curent_session = await this.storageService.get('current_session');
     this.getDashboardDataFromServer();
 
     this.langService.language$.subscribe(() => {
@@ -190,7 +196,8 @@ export class OfficersDashboardCirclePage implements OnInit {
         officersLoginModel.circle_id,
         officersLoginModel.devision_id,
         officersLoginModel.rang_id,
-        officersLoginModel.officerId?.toString() || ''
+        officersLoginModel.officerId?.toString() || '',
+        this.curent_session
       ).subscribe(
         async (countsResponse) => {
           if (countsResponse.response.code === 200) {
@@ -338,7 +345,8 @@ export class OfficersDashboardCirclePage implements OnInit {
       officersLoginModel.rang_id,
       officersLoginModel.officerId?.toString() || '',
       this.currentPage,
-      this.pageSize
+      this.pageSize,
+      this.curent_session
     ).subscribe(
       (response) => {
         if (response.response.code === 200) {

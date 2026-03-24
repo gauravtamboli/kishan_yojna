@@ -264,3 +264,97 @@ ion-button { transition: transform 0.2s; &:hover { transform: scale(1.05); } }
 .icon-btn-menu, .icon-btn-options ion-icon, .theme-toggle-btn ion-icon {
   color: white !important;
 }
+
+// Unified Search Box Styles
+.unified-search-box {
+  display: flex;
+  align-items: center;
+  background-color: var(--ion-color-light, #f4f5f8);
+  border-radius: 25px;
+  border: 1px solid var(--ion-color-step-150, #d1d5db);
+  padding: 4px 6px 4px 16px;
+  transition: all 0.3s ease;
+  width: 100%;
+
+  &:focus-within {
+    border-color: var(--ion-color-primary, #3880ff);
+    box-shadow: 0 0 0 3px rgba(var(--ion-color-primary-rgb, 56, 128, 255), 0.2);
+    background-color: #ffffff;
+  }
+
+  .unified-search-input {
+    flex: 1;
+    border: none;
+    background: transparent;
+    outline: none;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--ion-color-dark, #222428);
+    padding: 8px 0;
+    width: 100%;
+    
+    &::placeholder {
+      color: var(--ion-color-medium, #92949c);
+      font-weight: 400;
+      opacity: 0.8;
+    }
+  }
+
+  button {
+    background: transparent;
+    border: none;
+    outline: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    
+    ion-icon {
+      font-size: 20px;
+    }
+  }
+
+  .unified-search-btn {
+    background-color: var(--ion-color-primary, #198edb);
+    color: white;
+    
+    &:hover {
+      background-color: var(--ion-color-primary-shade, #157abb);
+      transform: scale(1.05);
+    }
+  }
+
+  .unified-clear-btn {
+    background-color: transparent;
+    color: var(--ion-color-medium, #92949c);
+    
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.05);
+      color: var(--ion-color-danger, #eb445a);
+    }
+  }
+}
+
+:host-context(.ion-palette-dark) {
+  .unified-search-box {
+    background-color: #1e293b;
+    border-color: #334155;
+    
+    &:focus-within {
+      background-color: #0f172a;
+    }
+    
+    .unified-search-input {
+      color: #f1f5f9;
+      &::placeholder { color: #94a3b8; }
+    }
+    
+    .unified-clear-btn:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+    }
+  }
+}

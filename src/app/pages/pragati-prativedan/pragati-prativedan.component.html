@@ -22,7 +22,7 @@
   <div class="report-container">
     <h2 class="report-title">
       अनुसंधान विस्तार प्रभाग<br />
-      वित्तीय वर्ष 2025–26 में किसान वृक्ष मित्र योजना के क्रियान्वयन / वृक्षारोपण की प्रगति
+      <strong>किसान वृक्ष मित्र योजना अन्तर्गत वर्ष {{fiencial_year}} में रोपण विवरण / प्रगति</strong>
     </h2>
     <p class="report-date">दिनांक: {{todayDate}}</p>
 
@@ -107,16 +107,66 @@
         <tbody>
           <tr *ngFor="let item of reportData; let i = index">
             <td>{{ i + 1 }}</td>
-            <td>{{ item.circleName }}</td>
-            <td>{{ item.districtName }}</td>
-            <td>{{ item.divisionName }}</td>
+            <td>{{ item.circle_name }}</td>
+            <td>{{ item.dist_name }}</td>
+            <td>{{ item.div_name }}</td>
 
-            <!-- Example cells (add rest as needed) -->
-            <td>{{ item.tc_sagwan_farmers }}</td>
-            <td>{{ item.tc_sagwan_area }}</td>
-            <td>{{ item.tc_sagwan_plants }}</td>
-            <td>{{ item.tc_sagwan_planted }}</td>
-            <!-- ... continue all other fields ... -->
+            <!-- Tissue Culture Sagwan -->
+            <td>{{ item.sagwan_tc_farmers }}</td>
+            <td>{{ item.sagwan_tc_area }}</td>
+            <td>{{ item.sagwan_tc_target }}</td>
+            <td>{{ item.sagwan_tc_planted }}</td>
+
+            <!-- Normal Sagwan -->
+            <td>{{ item.sagwan_normal_farmers }}</td>
+            <td>{{ item.sagwan_normal_area }}</td>
+            <td>{{ item.sagwan_normal_target }}</td>
+            <td>{{ item.sagwan_normal_planted }}</td>
+
+            <!-- Tissue Culture Bamboo -->
+            <td>{{ item.bamboo_tc_farmers }}</td>
+            <td>{{ item.bamboo_tc_area }}</td>
+            <td>{{ item.bamboo_tc_target }}</td>
+            <td>{{ item.bamboo_tc_planted }}</td>
+
+            <!-- Normal Bamboo -->
+            <td>{{ item.bamboo_normal_farmers }}</td>
+            <td>{{ item.bamboo_normal_area }}</td>
+            <td>{{ item.bamboo_normal_target }}</td>
+            <td>{{ item.bamboo_normal_planted }}</td>
+
+            <!-- Clonal Eucalyptus -->
+            <td>{{ item.eucalyptus_farmers }}</td>
+            <td>{{ item.eucalyptus_area }}</td>
+            <td>{{ item.eucalyptus_target }}</td>
+            <td>{{ item.eucalyptus_planted }}</td>
+
+            <!-- Chandan -->
+            <td>{{ item.chandan_farmers }}</td>
+            <td>{{ item.chandan_area }}</td>
+            <td>{{ item.chandan_target }}</td>
+            <td>{{ item.chandan_planted }}</td>
+
+            <!-- Milia Dubia -->
+            <td>{{ item.milia_farmers }}</td>
+            <td>{{ item.milia_area }}</td>
+            <td>{{ item.milia_target }}</td>
+            <td>{{ item.milia_planted }}</td>
+
+            <!-- Other -->
+            <td>{{ item.other_farmers }}</td>
+            <td>{{ item.other_area }}</td>
+            <td>{{ item.other_target }}</td>
+            <td>{{ item.other_planted }}</td>
+
+            <!-- Total -->
+            <td>{{ item.total_farmers }}</td>
+            <td>{{ item.total_area }}</td>
+            <td>{{ item.total_target }}</td>
+            <td>{{ item.total_planted }}</td>
+
+            <!-- Percentage -->
+            <td>{{ item.percentage }}%</td>
           </tr>
         </tbody>
       </table>

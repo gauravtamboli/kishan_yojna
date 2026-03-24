@@ -74,8 +74,18 @@
           clearInput="true">
         </ion-input>
       </div>
+
+      <div class="filter-dropdown">
+        <ion-icon name="filter-outline"></ion-icon>
+        <ion-select [(ngModel)]="selectedBeneficiaryType" (ionChange)="onBeneficiaryTypeChange()" interface="popover">
+          <ion-select-option value="ALL">सभी (All)</ion-select-option>
+          <ion-select-option value="2">हितग्राही (Hitgrahi)</ion-select-option>
+          <ion-select-option value="1">वेंडर (Vendor)</ion-select-option>
+        </ion-select>
+      </div>
+
       <div class="info-badge" [attr.color]="getStatusColor(selectedTab)">
-        {{ paymentList.length }} रिकॉर्ड्स
+        {{ totalRecords }} रिकॉर्ड्स
       </div>
     </div>
 

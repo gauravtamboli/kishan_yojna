@@ -625,7 +625,8 @@ export class OfficersDashboardROPage implements OnInit {
       officersLoginModel.officerId?.toString() || '',
       this.currentPage,
       this.pageSize,
-      this.curent_session
+      this.curent_session,
+      this.searchMobile || ''
     ).subscribe(
       (response) => {
         if (response.response.code === 200) {
@@ -1017,18 +1018,6 @@ export class OfficersDashboardROPage implements OnInit {
 
   filteredAwedans: GetAwedanResponseModel[] = [];
 
-  onSearch(event: any) {
-    const value = event.target.value.toLowerCase();
-    // Reset to page 1 when searching
-    this.currentPage = 1;
-    this.filteredAwedans = this.listOfAwedan.filter(item =>
-      item.hitgrahi_name.toLowerCase().includes(value) ||
-      item.father_name.toLowerCase().includes(value) ||
-      item.mobile_no.includes(value) ||
-      item.application_number.toLowerCase().includes(value)
-    );
-  }
-
   editAwedan(item: GetAwedanResponseModel) {
     // console.log('🔵 Edit button clicked, item:', item);
     // console.log('Application number:', item.application_number);
@@ -1104,15 +1093,31 @@ export class OfficersDashboardROPage implements OnInit {
     this.longToast('अंतिम जमा सुविधा जल्द ही उपलब्ध होगी');
   }
 
-  onEnter() {
-    // Reset to page 1 when searching
+  isSearched: boolean = false;
+
+  clearSearch() {
+    this.searchMobile = '';
+    this.isSearched = false;
     this.currentPage = 1;
-    this.filteredAwedans = this.listOfAwedan.filter(item =>
-      item.hitgrahi_name.toLowerCase().includes(this.searchMobile.toLowerCase()) ||
-      item.father_name.toLowerCase().includes(this.searchMobile.toLowerCase()) ||
-      item.mobile_no.includes(this.searchMobile) ||
-      item.application_number.toLowerCase().includes(this.searchMobile.toLowerCase())
-    );
+    this.getListOfAwedanAfterClickOnBoxes(this.whichBoxClicked, 1);
+  }
+
+  onEnter() {
+    if (this.searchMobile && this.searchMobile.trim() !== '') {
+      this.isSearched = true;
+    } else {
+      this.isSearched = false;
+    }
+    this.currentPage = 1;
+    this.getListOfAwedanAfterClickOnBoxes(this.whichBoxClicked, 1);
+  }
+
+  onSearchInputChange() {
+    if (!this.searchMobile || this.searchMobile.trim() === '') {
+      this.isSearched = false;
+      this.currentPage = 1;
+      this.getListOfAwedanAfterClickOnBoxes(this.whichBoxClicked, 1);
+    }
   }
 
   onYearSelect(year: number) {

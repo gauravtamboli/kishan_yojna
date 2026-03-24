@@ -28,6 +28,7 @@ import {
   IonIcon,
 } from '@ionic/angular/standalone';
 import { NavController } from '@ionic/angular';
+import { StorageService } from '../../services/storage.service';
 import { LanguageService } from '../../services/language.service';
 import { Keyboard } from '@capacitor/keyboard';
 import { AlertController } from '@ionic/angular';
@@ -81,16 +82,35 @@ throw new Error('Method not implemented.');
 }
 
 reportData: any;
- todayDate: string = '';
+  todayDate: string = '';
+  fiencial_year: string = '';
 
 
   goBack() {
-    if (window.history.length > 1) {
-      if (this.authService.getToken() != null) {
-        this.router.navigateByUrl('/officers-dashboard', { replaceUrl: true });
-      } else {
-        this.router.navigateByUrl('/landingpage', { replaceUrl: true });
+    const user = this.authService.getOfficerData();
+    if (user && user.designation) {
+      const designation = Number(user.designation);
+      let route = '/landingpage';
+      
+      switch (designation) {
+        case 1:
+          route = '/officers-dashboard-circle'; // Circle/CFO
+          break;
+        case 2:
+          route = '/officers-dashboard'; // DFO
+          break;
+        case 3:
+          route = '/officers-dashboard-sdo'; // SDO
+          break;
+        case 4:
+          route = '/officers-dashboard-ro'; // RO
+          break;
+        case 6:
+        case 7:
+          route = '/officers-dashboard-supreme'; // SUPER ADMIN
+          break;
       }
+      this.router.navigateByUrl(route, { replaceUrl: true });
     } else {
       this.location.back();
     }
@@ -114,7 +134,8 @@ reportData: any;
     private cdRef: ChangeDetectorRef,
     private route: ActivatedRoute,
     private httpClient: HttpClient,
-    private authService: AuthServiceService
+    private authService: AuthServiceService,
+    private storageService: StorageService
   ) {
     addIcons({
       buildSharp,
@@ -132,21 +153,68 @@ reportData: any;
   }
   
   
-  ngOnInit() { 
-
- const today = new Date();
+  async ngOnInit() { 
+    const today = new Date();
     this.todayDate = today.toLocaleDateString('en-IN', {
       day: '2-digit',
       month: '2-digit',
       year: 'numeric'
     });
 
-
     const totalColumns = 41; 
     this.columnNumbers = Array.from({ length: totalColumns }, (_, i) => i + 1);
 
-
+    this.fiencial_year = await this.storageService.get('current_session') || '';
+    
+    this.loadReportData();
   } 
+
+  async loadReportData() {
+    const user = this.authService.getOfficerData();
+    if (user && user.rang_id) {
+      const rangeId = Number(user.rang_id);
+      const curentSession = this.fiencial_year;
+      
+      const loading = await this.loadingController.create({
+        message: 'Loading report data...',
+        spinner: 'circles'
+      });
+      await loading.present();
+
+      this.apiService.getPragatiPrativedanReport(rangeId, curentSession).subscribe({
+        next: async (res: any) => {
+          await loading.dismiss();
+          if (res && res.success) {
+            this.reportData = res.data;
+            this.cdRef.detectChanges();
+          } else {
+            const toast = await this.toastController.create({
+              message: res?.message || 'Failed to load report data',
+              duration: 2000,
+              position: 'bottom'
+            });
+            await toast.present();
+          }
+        },
+        error: async (err: any) => {
+          await loading.dismiss();
+          const toast = await this.toastController.create({
+            message: 'Error fetching report data',
+            duration: 2000,
+            position: 'bottom'
+          });
+          await toast.present();
+        }
+      });
+    } else {
+      const toast = await this.toastController.create({
+        message: 'Range ID not found for the logged-in user',
+        duration: 2000,
+        position: 'bottom'
+      });
+      await toast.present();
+    }
+  }
   
 
 

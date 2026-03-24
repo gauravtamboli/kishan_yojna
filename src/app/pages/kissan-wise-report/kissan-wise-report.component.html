@@ -31,12 +31,19 @@
     <!-- Data Table -->
     <ion-card *ngIf="!isLoading && !errorMessage && farmers.length > 0">
       <ion-card-content>
-        <div class="table-header">
-          <p class="table-info">
-            Total Record: <strong>{{ totalCount }}</strong>
+        <div class="table-header" style="flex-wrap: wrap; gap: 10px; display: flex; align-items: center; justify-content: space-between; margin-bottom: 15px;">
+          <p class="table-info" style="margin: 0;">
+            Total Record: <strong>{{ filteredFarmers.length }}</strong> (out of {{ totalCount }})
           </p>
 
-          <ion-button *ngIf="!isLoading && !errorMessage && farmers.length" (click)="exportToExcel()" color="success">
+          <ion-searchbar 
+            [(ngModel)]="searchTerm" 
+            (ionInput)="onSearchChange()" 
+            placeholder="Search all records..." 
+            style="flex: 1; min-width: 250px; max-width: 400px; padding: 0 !important; margin: 0;">
+          </ion-searchbar>
+
+          <ion-button *ngIf="!isLoading && !errorMessage && farmers.length" (click)="exportToExcel()" color="success" style="margin: 0;">
             <ion-icon slot="start" name="download-outline"></ion-icon>
             Export To Excel
           </ion-button>
@@ -79,7 +86,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let farmer of farmers">
+              <tr *ngFor="let farmer of paginatedFarmers">
                 <td>{{ farmer.hitgrahi_name || 'N/A' }}</td>
                 <td>{{ farmer.father_name || 'N/A' }}</td>
                 <td>{{ farmer.cast_category || 'N/A' }}</td>
@@ -118,6 +125,23 @@
               </tr>
             </tbody>
           </table>
+        </div>
+
+        <!-- Pagination Controls -->
+        <div class="pagination-controls" style="display: flex; justify-content: space-between; align-items: center; margin-top: 15px; padding: 10px; background: var(--ion-color-light, #f4f5f8); border-radius: 8px;">
+          <ion-button fill="solid" color="primary" (click)="prevPage()" [disabled]="currentPage === 1">
+            <ion-icon slot="start" name="chevron-back-outline"></ion-icon>
+            Previous
+          </ion-button>
+          
+          <ion-label style="font-weight: bold; font-size: 14px; color: var(--ion-color-dark, #222);">
+            Page {{ currentPage }} of {{ totalPages }}
+          </ion-label>
+          
+          <ion-button fill="solid" color="primary" (click)="nextPage()" [disabled]="currentPage === totalPages">
+            Next
+            <ion-icon slot="end" name="chevron-forward-outline"></ion-icon>
+          </ion-button>
         </div>
       </ion-card-content>
     </ion-card>

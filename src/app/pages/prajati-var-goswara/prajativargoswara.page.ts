@@ -45,6 +45,8 @@ export class PrajativargoswaraPage implements OnInit {
 
   // Store mahaYog from API response
   mahaYog: any = null;
+fiencial_year : any = '';
+
 
   // Store totalFarmers from backend for combined plants (981 -> 98, 991 -> 99)
   // Structure: { [divisionRangeKey]: { [combinedPlantId]: totalFarmers } }
@@ -90,6 +92,9 @@ export class PrajativargoswaraPage implements OnInit {
 
   private getDashboardUrlByDesignation(): string {
     const officerData = this.authService.getOfficerData();
+    this.fiencial_year = officerData?.fin_year; // Get financial year from AuthService
+
+console.log('Officer Data in getDashboardUrlByDesignation', officerData);
     if (officerData) {
       const designation = Number(officerData.designation);
       

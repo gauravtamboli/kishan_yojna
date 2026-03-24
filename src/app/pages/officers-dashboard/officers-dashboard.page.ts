@@ -254,8 +254,8 @@ export class OfficersDashboardPage implements OnInit {
     // Restore saved theme preference
     this.restoreSavedTheme();
     this.updateTranslation();
-    this.getDashboardDataFromServer();
     this.curent_session = await this.storageService.get('current_session');
+    this.getDashboardDataFromServer();
 
 
     this.langService.language$.subscribe(() => {
@@ -387,7 +387,8 @@ export class OfficersDashboardPage implements OnInit {
         officersLoginModel.circle_id,
         officersLoginModel.devision_id,
         officersLoginModel.rang_id,
-        officersLoginModel.officerId?.toString() || ''
+        officersLoginModel.officerId?.toString() || '',
+        this.curent_session
       ).subscribe(
         async (countsResponse) => {
           if (countsResponse.response.code === 200) {

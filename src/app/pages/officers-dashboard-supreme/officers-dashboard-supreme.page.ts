@@ -24,6 +24,7 @@ import { ModalController } from '@ionic/angular';
 import { MessageDialogComponent } from 'src/app/message-dialog/message-dialog.component';
 import { GetMastersResponse } from '../../services/response_classes/GetMastsersResponseModel';
 import { AuthServiceService } from 'src/app/services/auth-service.service';
+import { StorageService } from 'src/app/services/storage.service';
 
 
 import * as XLSX from 'xlsx';
@@ -39,6 +40,7 @@ import * as FileSaver from 'file-saver';
 export class OfficersDashboardSupremePage implements OnInit {
   isUserMenuOpen = false;
   popoverEvent: any;
+  curent_session: any;
 
   openUserMenu($event: any) {
     this.popoverEvent = $event;
@@ -70,7 +72,10 @@ export class OfficersDashboardSupremePage implements OnInit {
   isNoRecordFound: boolean = true;
 
   constructor(private modalCtrl: ModalController, private alertController: AlertController, private router: Router, private menuCtrl: MenuController, private networkCheckService: NetworkCheckService, private platform: Platform, private navController: NavController, private langService: LanguageService, private cdRef: ChangeDetectorRef,
-    private apiService: ApiService, private sharedPreference: SharedserviceService, private authService: AuthServiceService) {
+    private apiService: ApiService, 
+    private sharedPreference: SharedserviceService, 
+    private authService: AuthServiceService,
+    private storageService: StorageService) {
     this.addAllIcon();
   }
 
@@ -132,6 +137,7 @@ export class OfficersDashboardSupremePage implements OnInit {
 
   async ngOnInit() {
     this.updateTranslation();
+    this.curent_session = await this.storageService.get('current_session');
     await this.loadCircles();
 
     this.langService.language$.subscribe(() => {
@@ -270,7 +276,8 @@ export class OfficersDashboardSupremePage implements OnInit {
         circleIdForApi, // 99 for "All", or specific circle ID
         "", // No division filter for supreme hierarchy
         "", // No range filter
-        officersLoginModel.officerId?.toString() || ''
+        officersLoginModel.officerId?.toString() || '',
+        this.curent_session
       ).subscribe(
         async (countsResponse) => {
           if (countsResponse.response.code === 200) {
@@ -439,7 +446,8 @@ export class OfficersDashboardSupremePage implements OnInit {
       "", // No range filter
       officersLoginModel.officerId?.toString() || '',
       this.currentPage,
-      this.pageSize
+      this.pageSize,
+      this.curent_session
     ).subscribe(
       (response) => {
         if (response.response.code === 200) {

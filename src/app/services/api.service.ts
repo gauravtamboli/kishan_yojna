@@ -90,6 +90,7 @@ export class ApiService {
 
 
   private apiUrlGetDataForReport: string = `/api/KissanMitraYojnaRegisteration/getAwedanListForReport`;
+  private apiUrlGetPragatiPrativedanReport: string = `/api/KissanMitraYojnaRegisteration/GetPragatiPrativedanReport`;
 
   private apiUrlGetAppDetails: string = `/api/KissanMitraYojnaRegisteration/getAppDetail`; // Ensure no 
 
@@ -162,6 +163,28 @@ export class ApiService {
 
   // start
   // Add these new API methods to your ApiService class
+
+  getPragatiPrativedanReport(rangeId: number, curentSession?: string): Observable<any> {
+    const headers = {
+      'Content-Type': 'application/json',
+      'ngrok-skip-browser-warning': 'true'
+    };
+
+    let url = `${this.apiUrlGetPragatiPrativedanReport}?rangeId=${rangeId}`;
+    if (curentSession) {
+      url += `&curent_session=${curentSession}`;
+    }
+
+    return from(this.buildApiUrl(url)).pipe(
+      switchMap((fullUrl) => {
+        if (!fullUrl) return throwError(() => new Error('No API URL configured'));
+        return this.http.get<any>(fullUrl, { headers });
+      }),
+      catchError((error) => {
+        return throwError(() => new Error('Error fetching Pragati Prativedan report'));
+      })
+    );
+  }
 
   // Get all districts (for initial load)
   getAllDistricts(): Observable<any> {
@@ -715,7 +738,8 @@ export class ApiService {
     officers_id: string,
     page: number = 1,
     pageSize: number = 10,
-    curent_session: string = ''
+    curent_session: string = '',
+    searchTerm: string = ''
   ): Observable<GetAwedanResponse> {
 
     const headers = { 'Content-Type': 'application/json' };
@@ -729,7 +753,8 @@ export class ApiService {
       officers_id: officers_id.toString(),
       page: page,
       pageSize: pageSize,
-      curent_session: curent_session
+      curent_session: curent_session,
+      search_term: searchTerm
     };
     // console.log(body);
     ////debugger;
@@ -759,11 +784,11 @@ export class ApiService {
     const headers = { 'Content-Type': 'application/json' };
 
     const body = {
-      designation_id: designation_id ? designation_id.toString() : '',
-      circle_id: circle_id ? circle_id.toString() : '',
-      division_id: devision_id ? devision_id.toString() : '',
-      rang_id: rang_id ? rang_id.toString() : '',
-      officers_id: officers_id ? officers_id.toString() : '',
+      designation_id: designation_id ? parseInt(designation_id) : 0,
+      circle_id: circle_id ? parseInt(circle_id) : 0,
+      division_id: devision_id ? parseInt(devision_id) : null,
+      rang_id: rang_id ? parseInt(rang_id) : null,
+      officers_id: officers_id ? parseInt(officers_id) : null,
       curent_session: curent_session || ''
     };
     // console.log('Request body for getAwedanStatusCounts:', body); // Debug log

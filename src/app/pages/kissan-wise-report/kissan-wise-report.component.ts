@@ -1,6 +1,7 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { IonHeader, IonToolbar, IonButtons, IonBackButton, IonTitle, IonContent, IonCard, IonCardContent, IonSpinner, IonButton, IonIcon } from '@ionic/angular/standalone';
+import { FormsModule } from '@angular/forms';
+import { IonHeader, IonToolbar, IonButtons, IonBackButton, IonTitle, IonContent, IonCard, IonCardContent, IonSpinner, IonButton, IonIcon, IonSearchbar, IonRow, IonCol, IonLabel } from '@ionic/angular/standalone';
 import { ApiService } from '../../services/api.service';
 import { Toast } from '@capacitor/toast';
 import { Location } from '@angular/common';
@@ -11,7 +12,7 @@ import { OfficersLoginResponseModel } from '../officer-login/OfficersLoginRespon
 import * as XLSX from 'xlsx';
 import * as FileSaver from 'file-saver';
 import { addIcons } from 'ionicons';
-import { downloadOutline } from 'ionicons/icons';
+import { downloadOutline, searchOutline, chevronBackOutline, chevronForwardOutline } from 'ionicons/icons';
 
 @Component({
   selector: 'app-kissan-wise-report',
@@ -19,7 +20,8 @@ import { downloadOutline } from 'ionicons/icons';
   styleUrls: ['./kissan-wise-report.component.scss'],
   standalone: true,
   imports: [
-    CommonModule, 
+    CommonModule,
+    FormsModule, 
     IonHeader,
     IonToolbar,
     IonButtons,
@@ -31,6 +33,10 @@ import { downloadOutline } from 'ionicons/icons';
     IonSpinner,
     IonButton,
     IonIcon,
+    IonSearchbar,
+    IonRow,
+    IonCol,
+    IonLabel
   ],
 })
 export class KissanWiseReportComponent implements OnInit {
@@ -39,6 +45,48 @@ export class KissanWiseReportComponent implements OnInit {
   errorMessage: string = '';
   totalCount: number = 0;
 
+  searchTerm: string = '';
+  currentPage: number = 1;
+  pageSize: number = 25;
+
+  get filteredFarmers() {
+    let result = this.farmers;
+    if (this.searchTerm && this.searchTerm.trim() !== '') {
+      const term = this.searchTerm.toLowerCase();
+      result = result.filter(farmer => 
+        Object.values(farmer).some(val => 
+          val && val.toString().toLowerCase().includes(term)
+        )
+      );
+    }
+    return result;
+  }
+
+  get paginatedFarmers() {
+    const startIndex = (this.currentPage - 1) * this.pageSize;
+    return this.filteredFarmers.slice(startIndex, startIndex + this.pageSize);
+  }
+
+  get totalPages() {
+    return Math.max(1, Math.ceil(this.filteredFarmers.length / this.pageSize));
+  }
+
+  nextPage() {
+    if (this.currentPage < this.totalPages) {
+      this.currentPage++;
+    }
+  }
+
+  prevPage() {
+    if (this.currentPage > 1) {
+      this.currentPage--;
+    }
+  }
+
+  onSearchChange() {
+    this.currentPage = 1; // reset to first page when search changes
+  }
+
   constructor(
     private apiService: ApiService,
     private location: Location,
@@ -46,7 +94,7 @@ export class KissanWiseReportComponent implements OnInit {
     private cdRef: ChangeDetectorRef,
     private authService: AuthServiceService
   ) {
-    addIcons({ downloadOutline });
+    addIcons({ downloadOutline, searchOutline, chevronBackOutline, chevronForwardOutline });
   }
 
   ngOnInit() {

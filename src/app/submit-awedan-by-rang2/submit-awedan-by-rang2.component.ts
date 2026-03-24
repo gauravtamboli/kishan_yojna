@@ -1988,20 +1988,21 @@ export class SubmitAwedanByRang2Component implements OnInit {
         return;
       }
     } else {
-      // Edit mode - if user is updating mandatory files, backend still expects the full mandatory set
-      const isUploadingMandatoryDocs = this.adharPdfFile || this.bankPassbookPdfFile || this.b1P1PdfFile || this.kmlFile;
-      const missingAnyMandatoryDoc =
-        !this.adharPdfFile || !this.bankPassbookPdfFile || !this.b1P1PdfFile || !this.kmlFile;
-      const hasExistingMandatoryDocs =
-        !!this.adharFilename && !!this.bankPassbookFilename && !!this.b1P1Filename && !!this.kmlFilename;
-
-      if (isUploadingMandatoryDocs && missingAnyMandatoryDoc) {
-        this.longToast('कृपया सभी आवश्यक दस्तावेज (आधार, बैंक पासबुक, B1/P1, KML) एक साथ अपलोड करें');
+      // Edit mode - documents are not mandatory if they are already uploaded
+      if (!this.adharFilename && !this.adharPdfFile) {
+        this.longToast('कृपया आधार कार्ड PDF अपलोड करें');
         return;
       }
-
-      if (!hasExistingMandatoryDocs && missingAnyMandatoryDoc) {
-        this.longToast('कृपया सभी आवश्यक दस्तावेज (आधार, बैंक पासबुक, B1/P1, KML) अपलोड करें');
+      if (!this.bankPassbookFilename && !this.bankPassbookPdfFile) {
+        this.longToast('कृपया बैंक पासबुक PDF अपलोड करें');
+        return;
+      }
+      if (!this.b1P1Filename && !this.b1P1PdfFile) {
+        this.longToast('कृपया B1 और P1 PDF अपलोड करें');
+        return;
+      }
+      if (!this.kmlFilename && !this.kmlFile) {
+        this.longToast('कृपया KML फाइल अपलोड करें');
         return;
       }
     }
@@ -2136,17 +2137,20 @@ export class SubmitAwedanByRang2Component implements OnInit {
   //File upload 
   uploadFiles() {
     //debugger;
-    if (!this.adharPdfFile || !this.bankPassbookPdfFile || !this.b1P1PdfFile || !this.kmlFile) {
+    if ((!this.adharPdfFile && !this.adharFilename) || 
+        (!this.bankPassbookPdfFile && !this.bankPassbookFilename) || 
+        (!this.b1P1PdfFile && !this.b1P1Filename) || 
+        (!this.kmlFile && !this.kmlFilename)) {
       this.longToast('कृपया सभी आवश्यक दस्तावेज (आधार, बैंक पासबुक, B1/P1, KML) अपलोड करें');
       return;
     }
     // //debugger;
 
     const formData = new FormData();
-    formData.append('FileAdhar', this.adharPdfFile);
-    formData.append('FileBankPassbook', this.bankPassbookPdfFile);
-    formData.append('FileB1P1', this.b1P1PdfFile);
-    formData.append('KmlFile', this.kmlFile);
+    formData.append('FileAdhar', this.adharPdfFile || '');
+    formData.append('FileBankPassbook', this.bankPassbookPdfFile || '');
+    formData.append('FileB1P1', this.b1P1PdfFile || '');
+    formData.append('KmlFile', this.kmlFile || '');
     formData.append('ApplicationNumber', this.applicationNumber);
     formData.append('UserId', this.getOfficerIdFromSession().toString());
 

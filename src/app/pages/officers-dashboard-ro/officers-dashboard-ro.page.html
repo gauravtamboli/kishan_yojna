@@ -273,17 +273,24 @@
       </ion-grid>
 
       <div class="ion-padding">
-        <ion-row class="mb-3 align-items-center">
-          <ion-col size="12" size-lg="5" style="margin-left: 20px;">
-            <ion-input class="custom-input shadow-sm" [(ngModel)]="searchMobile" fill="clear"
-              placeholder="मोबाइल नंबर / हितग्राही नाम / पिता का नाम" (ionInput)="onSearch($event)"
-              (keyup.enter)="onEnter()">
-            </ion-input>
+        <ion-row class="mb-3 align-items-center" style="justify-content: space-between; margin: 0 10px;">
+          <ion-col size="12" size-md="7" size-lg="6" style="padding: 0;">
+            <div class="unified-search-box shadow-sm">
+              <input class="unified-search-input" [(ngModel)]="searchMobile" (ngModelChange)="onSearchInputChange()" placeholder="खोजें (नाम, मोबाइल नंबर, आवेदन नंबर)" (keyup.enter)="onEnter()">
+              
+              <button *ngIf="!isSearched" class="unified-search-btn" (click)="onEnter()">
+                <ion-icon name="search-outline"></ion-icon>
+              </button>
+              
+              <button *ngIf="isSearched" class="unified-clear-btn" (click)="clearSearch()">
+                <ion-icon name="close-circle-outline"></ion-icon>
+              </button>
+            </div>
           </ion-col>
 
-          <ion-col size="6" size-lg="6" class="text-end">
-            <ion-button class="my-btn" (click)="export()">
-              <ion-icon name="download-outline" slot="start"></ion-icon> &nbsp;
+          <ion-col size="12" size-md="auto" class="ion-text-end" style="padding: 0; margin-left: auto;">
+            <ion-button class="my-btn" (click)="export()" color="success">
+              <ion-icon name="download-outline" slot="start"></ion-icon>
               Export To Excel
             </ion-button>
           </ion-col>

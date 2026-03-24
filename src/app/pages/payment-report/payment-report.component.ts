@@ -29,6 +29,7 @@ export class PaymentReportComponent implements OnInit {
   selectedTab: string = 'PENDING';
   
   // Data
+  selectedBeneficiaryType: string = 'ALL';
   paymentList: any[] = [];
   filteredPaymentList: any[] = [];
   searchText: string = '';
@@ -145,6 +146,11 @@ export class PaymentReportComponent implements OnInit {
     const text = this.searchText.toLowerCase().trim();
     let data = [...this.paymentList];
 
+    if (this.selectedBeneficiaryType !== 'ALL') {
+      const typeStr = String(this.selectedBeneficiaryType);
+      data = data.filter(item => String(item.payment_type) === typeStr);
+    }
+
     if (text) {
       data = data.filter(item => 
         item.application_number?.toLowerCase().includes(text) ||
@@ -165,6 +171,11 @@ export class PaymentReportComponent implements OnInit {
   }
 
   onSearchInput() {
+    this.currentPage = 1;
+    this.applySearch();
+  }
+
+  onBeneficiaryTypeChange() {
     this.currentPage = 1;
     this.applySearch();
   }

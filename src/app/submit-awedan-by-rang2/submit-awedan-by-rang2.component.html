@@ -366,7 +366,7 @@
               📁 आधार कार्ड के दोनों पृष्ठों का संयुक्त पीडीएफ
             </label>
             <input id="fileInput1" type="file" (change)="onAdharPdfFileSelect($event)" accept="application/pdf"
-              required />
+              [required]="!adharFilename" />
             <div *ngIf="adharFilename" style="margin-top: 5px;">
               <ion-text style="color: var(--theme-info); cursor: pointer; text-decoration: underline;"
                 (click)="downloadAdharPdf()">
@@ -381,7 +381,7 @@
               📁 बैंक पासबुक के पहले पृष्ठ की फोटो की पीडीएफ
             </label>
             <input id="fileInput2" type="file" (change)="onBankPassbookPdfFileSelect($event)" accept="application/pdf"
-              required />
+              [required]="!bankPassbookFilename" />
             <div *ngIf="bankPassbookFilename" style="margin-top: 5px;">
               <ion-text style="color: var(--theme-info); cursor: pointer; text-decoration: underline;"
                 (click)="downloadBankPassbookPdf()">
@@ -396,7 +396,7 @@
               📁 जमीन संबंधी B1 और P1 की संयुक्त पीडीएफ
             </label>
             <input id="fileInput3" type="file" (change)="onB1P1PdfFileSelect($event)" accept="application/pdf"
-              required />
+              [required]="!b1P1Filename" />
             <div *ngIf="b1P1Filename" style="margin-top: 5px;">
               <ion-text style="color: var(--theme-info); cursor: pointer; text-decoration: underline;"
                 (click)="downloadB1P1Pdf()">
@@ -411,7 +411,7 @@
               📁 अपलोड KML FILE
             </label>
             <input id="fileInput4" type="file" (change)="onKmlFileSelect($event)"
-              accept=".kml,.kmz,application/vnd.google-earth.kml+xml" required />
+              accept=".kml,.kmz,application/vnd.google-earth.kml+xml" [required]="!kmlFilename" />
             <div *ngIf="kmlFilename" style="margin-top: 5px;">
               <ion-text style="color: var(--theme-info); cursor: pointer; text-decoration: underline;"
                 (click)="downloadKmlFile()">
