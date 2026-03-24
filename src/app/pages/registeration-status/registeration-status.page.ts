@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, NgZone, ChangeDetectorRef } from '@angular/core';
 import { CommonModule, Location } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';  // Import IonicModule
@@ -9,20 +9,24 @@ import { AlertController } from '@ionic/angular';
 import { Toast } from '@capacitor/toast';
 import { LoadingController } from '@ionic/angular';
 import { GetAwedanResponseModel } from './AwedanResponseList.model';
-import { Platform } from '@ionic/angular';
-import { NgZone } from '@angular/core';
-import { ChangeDetectorRef } from '@angular/core';
-import { ModalController } from '@ionic/angular';
+import { ModalController, Platform } from '@ionic/angular';
 import { Browser } from '@capacitor/browser';
-
 import { HttpClient } from '@angular/common/http';
 import { OTPDialogComponent } from 'src/app/otpdialog/otpdialog.component';
-
-import { TableModule } from 'primeng/table'; // Import TableModule
+import { TableModule } from 'primeng/table'; 
 import { MessageDialogComponent } from 'src/app/message-dialog/message-dialog.component';
 import { Router } from '@angular/router';
-// import firebase from 'firebase/app';
-// import { getAuth, signInWithPhoneNumber, RecaptchaVerifier } from 'firebase/auth';
+
+import { addIcons } from 'ionicons';
+import { 
+  phonePortraitOutline, 
+  callOutline, 
+  arrowForward, 
+  eyeOutline, 
+  documentTextOutline,
+  chevronForwardOutline,
+  refreshOutline
+} from 'ionicons/icons';
 
 @Component({
   selector: 'app-registeration-status',
@@ -49,8 +53,27 @@ export class RegisterationStatusPage implements OnInit {
   constructor(
     private location: Location,
     private router: Router,
-    private navController: NavController, private zone: NgZone, private platform: Platform, private langService: LanguageService, private apiService: ApiService, private alertController: AlertController, private loadingController: LoadingController, private cdRef: ChangeDetectorRef,
-    private modalController: ModalController, private httpClient: HttpClient) { }
+    private navController: NavController, 
+    private zone: NgZone, 
+    private platform: Platform, 
+    private langService: LanguageService, 
+    private apiService: ApiService, 
+    private alertController: AlertController, 
+    private loadingController: LoadingController, 
+    private cdRef: ChangeDetectorRef,
+    private modalController: ModalController, 
+    private httpClient: HttpClient
+  ) { 
+    addIcons({ 
+      phonePortraitOutline, 
+      callOutline, 
+      arrowForward, 
+      eyeOutline, 
+      documentTextOutline,
+      chevronForwardOutline,
+      refreshOutline
+    });
+  }
 
   //recaptchaVerifier: RecaptchaVerifier | null = null;
 

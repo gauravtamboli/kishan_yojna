@@ -7,6 +7,7 @@ import { FormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ApiService } from '../../services/api.service';
+import { AuthServiceService } from '../../services/auth-service.service';
 import { tableData } from '../generate-estimate/estimate-table';
 import { NgZone } from '@angular/core';
 import { checkmarkCircleOutline, alertCircleOutline, helpCircleOutline, cloudUploadOutline } from 'ionicons/icons';
@@ -178,6 +179,7 @@ export class GenerateEstimateDynamicComponent implements OnInit {
     private loadingController: LoadingController,
     private toastController: ToastController,
     private router: Router,
+    private authService: AuthServiceService,
     private zone: NgZone
   ) {
     addIcons({
@@ -250,19 +252,18 @@ export class GenerateEstimateDynamicComponent implements OnInit {
     }
 
 
-    // // Step 5.4: Get logged-in officer info from session storage
-    this.storedData = sessionStorage.getItem('logined_officer_data');
+    // // Step 5.4: Get logged-in officer info from service
+    const officerData = this.authService.getOfficerData();
     let subdivName = '';
     let rangName = '';
-    // console.log('Stored Data:', this.storedData);
-    if (this.storedData) {
+    // console.log('Stored Data:', officerData);
+    if (officerData) {
       try {
-        const parsed = JSON.parse(this.storedData);
-        subdivName = parsed?.devision_id || ''; // Sub-division name
-        rangName = parsed?.rang_name || '';       // Range name 
+        subdivName = officerData?.devision_id || ''; // Sub-division name
+        rangName = officerData?.rang_name || '';       // Range name 
 
-        this.officer_name = parsed?.officer_name || '';
-        const dId = Number(parsed?.designation_id || parsed?.designation || parsed?.DesignationId);
+        this.officer_name = officerData?.officer_name || '';
+        const dId = Number(officerData?.designation);
         this.designationId = isNaN(dId) ? null : dId;
 
         // Step 5.5: Set officer type flags (2=DFO, 3=SDO, 4=RO)
@@ -787,10 +788,9 @@ export class GenerateEstimateDynamicComponent implements OnInit {
    */
   private getLoggedInOfficerId(): number | null {
     try {
-      const storedData = sessionStorage.getItem('logined_officer_data');
-      if (!storedData) return null;
-      const parsed = JSON.parse(storedData);
-      const id = Number(parsed?.officerId || parsed?.id);
+      const officerData = this.authService.getOfficerData();
+      if (!officerData) return null;
+      const id = Number(officerData?.officerId);
       return isNaN(id) ? null : id;
     } catch {
       return null;

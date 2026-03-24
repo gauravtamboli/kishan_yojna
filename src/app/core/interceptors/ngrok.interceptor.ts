@@ -11,7 +11,11 @@
 //   return next(clonedRequest);
 // };
 
-import { HttpInterceptorFn } from '@angular/common/http';
+import { HttpInterceptorFn, HttpErrorResponse } from '@angular/common/http';
+import { inject } from '@angular/core';
+import { catchError } from 'rxjs/operators';
+import { throwError } from 'rxjs';
+import { AuthServiceService } from '../../services/auth-service.service';
 
 export const ngrokInterceptor: HttpInterceptorFn = (req, next) => {
 
@@ -29,13 +33,10 @@ export const ngrokInterceptor: HttpInterceptorFn = (req, next) => {
 
   console.log('NgrokInterceptor: Processing request', req.url);
 
+  const authService = inject(AuthServiceService);
+
   // Retrieve JWT from session storage
-  const officerData = sessionStorage.getItem('logined_officer_data');
-  let token = '';
-  if (officerData) {
-    const parsedData = JSON.parse(officerData);
-    token = parsedData.token;
-  }
+  const token = sessionStorage.getItem('token');
 
   const headers: any = {
     'ngrok-skip-browser-warning': 'true',
@@ -43,6 +44,11 @@ export const ngrokInterceptor: HttpInterceptorFn = (req, next) => {
   };
 
   if (token) {
+    // If the token is already expired locally, auto logout immediately
+    if (authService.isTokenExpired()) {
+      authService.logout();
+      return throwError(() => new Error('Token Expired'));
+    }
     headers['Authorization'] = `Bearer ${token}`;
   }
 
@@ -51,5 +57,13 @@ export const ngrokInterceptor: HttpInterceptorFn = (req, next) => {
   });
 
 
-  return next(clonedRequest);
+  return next(clonedRequest).pipe(
+    catchError((error: HttpErrorResponse) => {
+      // Auto logout if 401 Unauthorized response returned from API
+      if (error.status === 401) {
+        authService.logout();
+      }
+      return throwError(() => error);
+    })
+  );
 };

@@ -58,6 +58,7 @@ import {
 import { AddPlantDialogComponent } from '../../add-plant-dialog/add-plant-dialog.component';
 import { PlantationDetailNew, SingleAwedanDataResponse } from '../../pages/view-awedan/SingleAwedanDataResponse.model';
 import { SharedserviceService } from '../../services/sharedservice.service';
+import { AuthServiceService } from '../../services/auth-service.service';
 import { OfficersLoginResponseModel } from '../../pages/officer-login/OfficersLoginResponse.model';
 import { IonInputCustomEvent, InputInputEventDetail } from '@ionic/core';
 import { BankModal, Bankresponse } from '../../pages/ra-dwara-vivran/Getbankdetail.modal';
@@ -83,9 +84,9 @@ reportData: any;
  todayDate: string = '';
 
 
- goBack() {
+  goBack() {
     if (window.history.length > 1) {
-      if (sessionStorage.getItem('logined_officer_data') != null) {
+      if (this.authService.getToken() != null) {
         this.router.navigateByUrl('/officers-dashboard', { replaceUrl: true });
       } else {
         this.router.navigateByUrl('/landingpage', { replaceUrl: true });
@@ -112,7 +113,8 @@ reportData: any;
     private toastController: ToastController,
     private cdRef: ChangeDetectorRef,
     private route: ActivatedRoute,
-    private httpClient: HttpClient
+    private httpClient: HttpClient,
+    private authService: AuthServiceService
   ) {
     addIcons({
       buildSharp,

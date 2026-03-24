@@ -3,6 +3,7 @@ import { CommonModule, Location } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonicModule, ToastController, LoadingController, Platform, ModalController, NavController, AlertController } from '@ionic/angular';
 import { ApiService } from '../../services/api.service';
+import { AuthServiceService } from '../../services/auth-service.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { SharedserviceService } from '../../services/sharedservice.service';
@@ -144,6 +145,7 @@ export class GenerateEstimateComponent implements OnInit {
     private loadingController: LoadingController,
     private toastController: ToastController,
     private cdRef: ChangeDetectorRef,
+    private authService: AuthServiceService,
     private route: ActivatedRoute,
     public tableDataService: tableData // Inject tableData service
   ) {
@@ -185,10 +187,8 @@ export class GenerateEstimateComponent implements OnInit {
     this.tableData1 = this.tableDataService.tableData['द्वितीय_वर्ष'];
     this.tableData2 = this.tableDataService.tableData['तृतीय_वर्ष'];
 
-    const storedData = sessionStorage.getItem('logined_officer_data');
-
-    console.log('storedData :', storedData);
-    this.officer_name = storedData ? JSON.parse(storedData).officer_name : '';
+    const officerData = this.authService.getOfficerData();
+    this.officer_name = officerData ? officerData.officer_name : '';
 
   }
 
@@ -635,7 +635,7 @@ export class GenerateEstimateComponent implements OnInit {
 
   goBack() {
     if (window.history.length > 1) {
-      if (sessionStorage.getItem('logined_officer_data') != null) {
+      if (this.authService.getOfficerData() != null) {
         const dashboardUrl = this.getDashboardUrlByDesignation();
         this.router.navigateByUrl(dashboardUrl, { replaceUrl: true });
       } else {
@@ -647,9 +647,8 @@ export class GenerateEstimateComponent implements OnInit {
   }
 
   private getDashboardUrlByDesignation(): string {
-    const storedData = sessionStorage.getItem('logined_officer_data');
-    if (storedData) {
-      const officerData = JSON.parse(storedData);
+    const officerData = this.authService.getOfficerData();
+    if (officerData) {
       const designation = Number(officerData.designation);
 
       switch (designation) {

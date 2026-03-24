@@ -173,12 +173,12 @@ export class ApiService {
     return from(this.buildApiUrl(this.apiUrlGetAllDistricts)).pipe(
       switchMap((url) => {
         if (!url) return throwError(() => new Error('No API URL configured'));
-        console.log('Calling getAllDistricts API:', url); // Debug log
+        // console.log('Calling getAllDistricts API:', url); // Debug log
         return this.http.get<any>(url, { headers });
       }),
       catchError((error) => {
-        console.error('Error in getAllDistricts:', error); // Debug log
-        console.error('Error details:', error.error); // Log the actual error response
+        // console.error('Error in getAllDistricts:', error); // Debug log
+        // console.error('Error details:', error.error); // Log the actual error response
         return throwError(() => new Error('Error fetching districts'));
       })
     );
@@ -486,7 +486,7 @@ export class ApiService {
         return this.http.post<any>(url, formData);
       }),
       catchError((error) => {
-        console.error('Error submitting complete registration:', error);
+        // console.error('Error submitting complete registration:', error);
         return throwError(() => new Error('Error submitting complete registration'));
       })
     );
@@ -731,7 +731,7 @@ export class ApiService {
       pageSize: pageSize,
       curent_session: curent_session
     };
-    console.log(body);
+    // console.log(body);
     ////debugger;
     return from(this.buildApiUrl(this.apiUrlGetAwedanListAccordingToAwedanStatus)).pipe(
       switchMap((url) => {
@@ -759,14 +759,14 @@ export class ApiService {
     const headers = { 'Content-Type': 'application/json' };
 
     const body = {
-      designation_id: designation_id.toString(),
-      circle_id: circle_id.toString(),
-      division_id: devision_id ? devision_id.toString() : null,
-      rang_id: rang_id ? rang_id.toString() : null,
-      officers_id: officers_id.toString(),
-      curent_session: curent_session
+      designation_id: designation_id ? designation_id.toString() : '',
+      circle_id: circle_id ? circle_id.toString() : '',
+      division_id: devision_id ? devision_id.toString() : '',
+      rang_id: rang_id ? rang_id.toString() : '',
+      officers_id: officers_id ? officers_id.toString() : '',
+      curent_session: curent_session || ''
     };
-    console.log('Request body for getAwedanStatusCounts:', body); // Debug log
+    // console.log('Request body for getAwedanStatusCounts:', body); // Debug log
     return from(this.buildApiUrl(this.apiUrlGetAwedanStatusCounts)).pipe(
       switchMap((url) => {
         if (!url) return throwError(() => new Error('No API URL configured'));
@@ -1120,7 +1120,7 @@ export class ApiService {
         return this.http.get<SingleAwedanDataResponse>(url);
       }),
       catchError((error) => {
-        console.error('Error fetching application data:', error);
+        // console.error('Error fetching application data:', error);
         return throwError(() => new Error('Error loading application data'));
       })
     );
@@ -1279,7 +1279,7 @@ export class ApiService {
         return this.http.get<any>(url, { headers });
       }),
       catchError((error) => {
-        console.error('❌ Error fetching species division report by division:', error);
+        // console.error('❌ Error fetching species division report by division:', error);
         return throwError(() => new Error('Error fetching species division report by division'));
       })
     );
@@ -1298,7 +1298,7 @@ export class ApiService {
         return this.http.get<any>(url, { headers });
       }),
       catchError((error) => {
-        console.error('❌ Error fetching species division report by range:', error);
+        // console.error('❌ Error fetching species division report by range:', error);
         return throwError(() => new Error('Error fetching species division report by range'));
       })
     );
@@ -1331,7 +1331,7 @@ export class ApiService {
         return this.http.get<any>(url);
       }),
       catchError((error) => {
-        console.error('❌ Error fetching Mahayog summary by division:', error);
+        // console.error('❌ Error fetching Mahayog summary by division:', error);
         return throwError(() => new Error('Error fetching Mahayog summary by division'));
       })
     );
@@ -1356,7 +1356,7 @@ export class ApiService {
         });
       }),
       catchError((error) => {
-        console.error('Error fetching secure PDF:', error);
+        // console.error('Error fetching secure PDF:', error);
         return throwError(() => new Error('Error downloading PDF'));
       })
     );
@@ -1374,7 +1374,7 @@ export class ApiService {
         return this.http.get<any>(url, { headers });
       }),
       catchError((error) => {
-        console.error('Error fetching species:', error);
+        // console.error('Error fetching species:', error);
         return throwError(() => new Error('Error fetching species'));
       })
     );
@@ -1388,7 +1388,7 @@ export class ApiService {
         return this.http.post<any>(url, data, { headers });
       }),
       catchError((error) => {
-        console.error('Error adding species:', error);
+        // console.error('Error adding species:', error);
         return throwError(() => new Error('Error adding species'));
       })
     );
@@ -1402,7 +1402,7 @@ export class ApiService {
         return this.http.get<any>(url, { headers });
       }),
       catchError((error) => {
-        console.error('Error fetching anya plants:', error);
+        // console.error('Error fetching anya plants:', error);
         return throwError(() => new Error('Error fetching anya plants'));
       })
     );
@@ -1416,7 +1416,7 @@ export class ApiService {
         return this.http.post<any>(url, data, { headers });
       }),
       catchError((error) => {
-        console.error('Error submitting anya plants:', error);
+        // console.error('Error submitting anya plants:', error);
         return throwError(() => new Error('Error submitting anya plants'));
       })
     );
@@ -1431,7 +1431,7 @@ export class ApiService {
         return this.http.get<any>(url, { headers });
       }),
       catchError((error) => {
-        console.error('Error fetching plant master:', error);
+        // console.error('Error fetching plant master:', error);
         return throwError(() => new Error('Error fetching plant master'));
       })
     );
@@ -1446,7 +1446,7 @@ export class ApiService {
         return this.http.post<any>(url, data, { headers });
       }),
       catchError((error) => {
-        console.error('Error submitting plant requests:', error);
+        // console.error('Error submitting plant requests:', error);
         return throwError(() => new Error('Error submitting plant requests'));
       })
     );
@@ -1461,7 +1461,7 @@ export class ApiService {
         return this.http.delete<any>(url, { headers });
       }),
       catchError((error) => {
-        console.error('Error clearing plant requests:', error);
+        // console.error('Error clearing plant requests:', error);
         return throwError(() => new Error('Error clearing plant requests'));
       })
     );
@@ -1476,7 +1476,7 @@ export class ApiService {
         return this.http.get<any>(url, { headers });
       }),
       catchError((error) => {
-        console.error('Error fetching plant requests:', error);
+        // console.error('Error fetching plant requests:', error);
         return throwError(() => new Error('Error fetching plant requests'));
       })
     );
@@ -1495,7 +1495,7 @@ export class ApiService {
         return this.http.get<any>(url, { headers });
       }),
       catchError((error) => {
-        console.error('Error generating estimate:', error);
+        // console.error('Error generating estimate:', error);
         return throwError(() => new Error('Error generating estimate'));
       })
     );
@@ -1514,7 +1514,7 @@ export class ApiService {
         return this.http.get<any>(url, { headers });
       }),
       catchError((error) => {
-        console.error('Error fetching estimate bundle:', error);
+        // console.error('Error fetching estimate bundle:', error);
         return throwError(() => new Error('Error fetching estimate bundle'));
       })
     );
@@ -1542,7 +1542,7 @@ export class ApiService {
         return this.http.get<any>(url, { headers });
       }),
       catchError((error) => {
-        console.error('Error fetching goswara report:', error);
+        // console.error('Error fetching goswara report:', error);
         return throwError(() => new Error('Error fetching goswara report'));
       })
     );
@@ -1566,7 +1566,7 @@ export class ApiService {
         return this.http.get<any>(url, { headers });
       }),
       catchError((error) => {
-        console.error('Error fetching goswara report circle:', error);
+        // console.error('Error fetching goswara report circle:', error);
         return throwError(() => new Error('Error fetching goswara report circle'));
       })
     );
@@ -1587,7 +1587,7 @@ export class ApiService {
         return this.http.get<any>(url, { headers });
       }),
       catchError((error) => {
-        console.error('Error fetching goswara report all circles:', error);
+        // console.error('Error fetching goswara report all circles:', error);
         return throwError(() => new Error('Error fetching goswara report all circles'));
       })
     );
@@ -1615,7 +1615,7 @@ export class ApiService {
         return this.http.get<any>(url, { headers });
       }),
       catchError((error) => {
-        console.error('Error fetching prajati goswara report:', error);
+        // console.error('Error fetching prajati goswara report:', error);
         return throwError(() => new Error('Error fetching prajati goswara report'));
       })
     );
@@ -1639,7 +1639,7 @@ export class ApiService {
         return this.http.get<any>(url, { headers });
       }),
       catchError((error) => {
-        console.error('Error fetching prajati goswara report circle:', error);
+        // console.error('Error fetching prajati goswara report circle:', error);
         return throwError(() => new Error('Error fetching prajati goswara report circle'));
       })
     );
@@ -1660,7 +1660,7 @@ export class ApiService {
         return this.http.get<any>(url, { headers });
       }),
       catchError((error) => {
-        console.error('Error fetching prajati goswara report all circles:', error);
+        // console.error('Error fetching prajati goswara report all circles:', error);
         return throwError(() => new Error('Error fetching prajati goswara report all circles'));
       })
     );
@@ -1823,7 +1823,7 @@ export class ApiService {
         return this.http.get<any>(url, { headers });
       }),
       catchError((error) => {
-        console.error('Error fetching kisan wise report:', error);
+        // console.error('Error fetching kisan wise report:', error);
         return throwError(() => new Error('Error fetching kisan wise report'));
       })
     );
@@ -1958,7 +1958,7 @@ export class ApiService {
         return this.http.get<any>(url, { headers });
       }),
       catchError((error) => {
-        console.error('Error fetching division report with village:', error);
+        // console.error('Error fetching division report with village:', error);
         return throwError(() => new Error('Error fetching division report with village'));
       })
     );
@@ -1979,7 +1979,7 @@ export class ApiService {
         return this.http.get<any>(url, { headers });
       }),
       catchError((error) => {
-        console.error('Error fetching range report with village:', error);
+        // console.error('Error fetching range report with village:', error);
         return throwError(() => new Error('Error fetching range report with village'));
       })
     );
@@ -2000,7 +2000,7 @@ export class ApiService {
         return this.http.get<any>(url, { headers });
       }),
       catchError((error) => {
-        console.error('Error fetching sub-division report with village:', error);
+        // console.error('Error fetching sub-division report with village:', error);
         return throwError(() => new Error('Error fetching sub-division report with village'));
       })
     );
@@ -2119,7 +2119,7 @@ export class ApiService {
         return this.http.post<any>(url, payload, { headers });
       }),
       catchError((error) => {
-        return throwError(() => new Error('Error submitting vendor payment'));
+        return throwError(() => error);
       })
     );
   }
@@ -2164,7 +2164,25 @@ export class ApiService {
     );
   }
 
+  getPaymentBatchDetails(finYear?: string, paymentType?: string): Observable<any> {
+    const params = new URLSearchParams();
+    if (finYear) params.append('fin_year', finYear);
+    if (paymentType) params.append('payment_type', paymentType);
+    
+    return from(this.buildApiUrl('/api/KissanMitraYojnaRegisteration/GetPaymentBatchDetails')).pipe(
+      switchMap((baseUrl) => {
+        if (!baseUrl) return throwError(() => new Error('Base URL is null'));
+        let url = baseUrl;
+        if (params.toString()) {
+          url += '?' + params.toString();
+        }
+        return this.http.get<any>(url);
+      })
+    );
+  }
+
 }
+
 
 
 

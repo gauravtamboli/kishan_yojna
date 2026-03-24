@@ -9,6 +9,7 @@ import { calendarOutline, list, searchOutline, downloadOutline, alertCircleOutli
 import { MastersModelClass } from 'src/app/services/response_classes/GetMastsersResponseModel';
 import { ChangeDetectorRef } from '@angular/core';
 import { ApiService } from 'src/app/services/api.service';
+import { AuthServiceService } from 'src/app/services/auth-service.service';
 import { Toast } from '@capacitor/toast';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { ModalController } from '@ionic/angular';
@@ -77,7 +78,7 @@ export class ReportPage implements OnInit {
       "status_id": "3", "status_text": "रद्द आवेदन"
     },]
 
-  constructor(private router: Router, private location: Location, private sharedService: SharedserviceService, private modalCtrl: ModalController, private apiService: ApiService, private langService: LanguageService, private cdRef: ChangeDetectorRef) {
+  constructor(private router: Router, private location: Location, private sharedService: SharedserviceService, private modalCtrl: ModalController, private apiService: ApiService, private langService: LanguageService, private cdRef: ChangeDetectorRef, private authService: AuthServiceService) {
     addIcons({ calendarOutline, searchOutline, downloadOutline, alertCircleOutline });
   }
 
@@ -342,11 +343,7 @@ export class ReportPage implements OnInit {
   }
 
   getOfficersSessionData() {
-    const storedData = sessionStorage.getItem('logined_officer_data');
-    if (storedData) {
-      return JSON.parse(storedData);
-    }
-    return null;
+    return this.authService.getOfficerData();
   }
 
   isNoRecordFound: boolean = true;
@@ -502,9 +499,8 @@ export class ReportPage implements OnInit {
   }
 
   private getDashboardUrlByDesignation(): string {
-    const storedData = sessionStorage.getItem('logined_officer_data');
-    if (storedData) {
-      const officerData = JSON.parse(storedData);
+    const officerData = this.authService.getOfficerData();
+    if (officerData) {
       const designation = Number(officerData.designation);
       
       switch (designation) {

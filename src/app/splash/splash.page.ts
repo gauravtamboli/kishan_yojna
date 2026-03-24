@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { LanguageService } from '../services/language.service';
+import { AuthServiceService } from '../services/auth-service.service';
 import { IonicModule } from '@ionic/angular';  // Import IonicModule
 import { NetworkCheckService } from '../services/network-check.service';
 import { Toast } from '@capacitor/toast';
@@ -37,7 +38,7 @@ export class SplashPage implements OnInit {
   languageData: any = {};
   isConnected: boolean = false;
 
-  constructor(private modalCtrl: ModalController, private plateForm: Platform, private alertController: AlertController, private apiService: ApiService, private router: Router, private languageService: LanguageService, private networkCheckService: NetworkCheckService
+  constructor(private modalCtrl: ModalController, private plateForm: Platform, private alertController: AlertController, private apiService: ApiService, private router: Router, private languageService: LanguageService, private networkCheckService: NetworkCheckService, private authService: AuthServiceService
   ) { }
 
   cordova: any;
@@ -58,10 +59,10 @@ export class SplashPage implements OnInit {
 
 
     setTimeout(() => {
-      if (sessionStorage.getItem('logined_officer_data') != null) {
-        const officerData = JSON.parse(sessionStorage.getItem('logined_officer_data')!);
+      const officerData = this.authService.getOfficerData();
+      if (officerData) {
         let route = '/officers-dashboard';
-        if (officerData && officerData.designation) {
+        if (officerData.designation) {
           switch (officerData.designation) {
             case '1':
             case 'Circle':

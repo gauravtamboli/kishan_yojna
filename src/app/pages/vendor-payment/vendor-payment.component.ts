@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ApiService } from '../../services/api.service';
+import { AuthServiceService } from '../../services/auth-service.service';
 import { tableData } from '../generate-estimate-dynamic/estimate-table';
 import Swal from 'sweetalert2';
 import { addIcons } from 'ionicons';
@@ -45,7 +46,7 @@ export class VendorPaymentComponent implements OnInit {
     singleData: any;
     estimateRows: any[] = [];
     officer_name: string = '';
-    officer_id: number = 0;
+    officer_id: string = '';
 
     year1Rows: any[] = tableData['प्रथम_वर्ष'] || [];
     year2Rows: any[] = tableData['द्वितीय_वर्ष'] || [];
@@ -92,20 +93,18 @@ export class VendorPaymentComponent implements OnInit {
         private cdRef: ChangeDetectorRef,
         private loadingController: LoadingController,
         private toastController: ToastController,
-        private router: Router
+        private router: Router,
+        private authService: AuthServiceService
     ) {
         addIcons({ cloudUploadOutline, cardOutline, closeOutline, checkmarkCircleOutline, alertCircleOutline });
     }
 
     ngOnInit(): void {
 
-        const storedData = sessionStorage.getItem('logined_officer_data');
-        if (storedData) {
-            try {
-                // console.log('Retrieved officer data from sessionStorage:', storedData);
-                this.officer_name = JSON.parse(storedData)?.officer_name || '';
-                this.officer_id = JSON.parse(storedData)?.rang_id || '';
-            } catch { }
+        const officerData = this.authService.getOfficerData();
+        if (officerData) {
+            this.officer_name = officerData.officer_name || '';
+            this.officer_id = officerData.rang_id || '';
         }
 
 
@@ -408,7 +407,7 @@ export class VendorPaymentComponent implements OnInit {
         const paymentData = {
             application_number: this.application_number,
             year: this.selectedYear!,
-            officer_name: this.officer_id,
+            officer_name: String(this.officer_id),
             fin_year: this.fin_year,
             categories: this.categoriesToShow.map(cat => {
                 const less5Count = this.less5AreaCount(cat);
@@ -475,12 +474,36 @@ export class VendorPaymentComponent implements OnInit {
                     this.isStatusModalOpen = true;
                 }
             },
-            error: async (error) => {
+            error: async (err) => {
                 await loading.dismiss();
                 this.isSubmitting = false;
-                console.error('Payment submission error:', error);
+                console.error('Payment submission error full object:', err);
+                
+                if (err?.error?.errors) {
+                    console.error('🔥🔥🔥 TELL THE AI THESE EXACT VALIDATION ERRORS: 🔥🔥🔥');
+                    console.error(JSON.stringify(err.error.errors, null, 2));
+                }
+                
+                // Extract backend validation error if it exists
+                let detailedMessage = 'भुगतान सबमिट करने में त्रुटि हुई। कृपया पुनः प्रयास करें।';
+                if (err.error) {
+                  if (typeof err.error === 'string') {
+                    detailedMessage = err.error;
+                  } else if (err.error.errors) {
+                    detailedMessage = JSON.stringify(err.error.errors, null, 2);
+                  } else if (err.error.message) {
+                    detailedMessage = err.error.message;
+                  } else if (err.error.title) {
+                    detailedMessage = err.error.title;
+                  } else {
+                    detailedMessage = JSON.stringify(err.error, null, 2);
+                  }
+                }
+
+                alert("Backend Validation Error: \n" + detailedMessage);
+
                 this.statusType = 'error';
-                this.statusMessage = 'भुगतान सबमिट करने में त्रुटि हुई। कृपया पुनः प्रयास करें।';
+                this.statusMessage = detailedMessage;
                 this.isStatusModalOpen = true;
             }
         });

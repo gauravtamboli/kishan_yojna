@@ -20,6 +20,29 @@ import { Router } from '@angular/router';
 export class UplabdhiyaPage implements OnInit {
 
   languageData: any = {};
+isDarkMode: boolean = false;
+
+   toggleTheme() {
+        this.isDarkMode = !this.isDarkMode;
+        this.applyTheme();
+        localStorage.setItem('theme-mode', this.isDarkMode ? 'dark' : 'light');
+    }
+
+    private applyTheme() {
+        const isDarkClass = 'ion-palette-dark';
+        if (this.isDarkMode) {
+            document.documentElement.classList.add(isDarkClass);
+            document.body.classList.add(isDarkClass);
+        } else {
+            document.documentElement.classList.remove(isDarkClass);
+            document.body.classList.remove(isDarkClass);
+        }
+    }
+     private restoreSavedTheme() {
+        const savedTheme = localStorage.getItem('theme-mode');
+        this.isDarkMode = savedTheme === 'dark';
+        this.applyTheme();
+    }
 
   goBack() {
     if (window.history.length > 1) {
@@ -33,6 +56,7 @@ export class UplabdhiyaPage implements OnInit {
 
   async ngOnInit() {
     this.updateTranslation()
+        this.restoreSavedTheme();
   }
 
   updateTranslation() {

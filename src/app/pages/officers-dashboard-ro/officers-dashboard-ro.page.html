@@ -10,10 +10,10 @@
           <ion-avatar slot="start">
             <img src="assets/img/app_logo.png" />
           </ion-avatar>
-          <ion-label class="ion-label" style="text-wrap: nowrap; color: white;">
+          <ion-label class="ion-label" style="text-wrap: nowrap;">
             {{ getTranslation('app_name')}}
-            <p class="p" style="color: white; margin-top: 2px;">
-              <ion-text style="font-size: small; color: white;"> ({{ getTranslation('state_name')}}) </ion-text>
+            <p class="p" style="margin-top: 2px;">
+              <ion-text style="font-size: small;"> ({{ getTranslation('state_name')}}) </ion-text>
             </p>
           </ion-label>
         </ion-item>
@@ -92,8 +92,8 @@
         <!-- END : DROPDOWN -->
 
         <ion-buttons slot="end">
-          <ion-button (click)="toggleTheme()" class="theme-toggle-btn" fill="clear">
-            <ion-icon slot="icon-only" [name]="isDarkMode ? 'moon' : 'sunny'"></ion-icon>
+          <ion-button (click)="toggleTheme()">
+            <ion-icon [name]="isDarkMode ? 'sunny' : 'moon'"></ion-icon>
           </ion-button>
           <ion-button fill="clear" class="icon-btn-options" (click)="openUserMenu($event)">
             <ion-icon name="options-outline"></ion-icon>
@@ -128,154 +128,144 @@
       <ion-grid>
         <ion-row>
           <ion-col size="12" size-lg="12">
-            <ion-grid>
-              <ion-row style="
-                  display: flex;
-                  flex-direction: row;
-                  justify-content: center;
-                ">
+            <!-- STATS CARDS GRID -->
+            <div class="stats-grid">
+              <!-- कुल आवेदन -->
+              <div class="stat-card total" [class.active]="whichBoxClicked === 1"
+                (click)="getListOfAwedanAfterClickOnBoxes(1)">
+                <div class="card-inner">
+                  <div class="icon-avatar">
+                    <ion-icon name="list-outline"></ion-icon>
+                  </div>
+                  <div class="card-info">
+                    <span class="label">Total</span>
+                    <div class="card-value-row">
+                      <span class="hindi-label">कुल आवेदन</span>
+                      <span class="count">{{ totalAwedan }}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
 
+              <!-- संपादन लंबित -->
+              <div class="stat-card edit-pending" [class.active]="whichBoxClicked === 2"
+                (click)="getListOfAwedanAfterClickOnBoxes(2)">
+                <div class="card-inner">
+                  <div class="icon-avatar">
+                    <ion-icon name="create-outline"></ion-icon>
+                  </div>
+                  <div class="card-info">
+                    <span class="label">Edit Pending</span>
+                    <div class="card-value-row">
+                      <span class="hindi-label">संपादन लंबित</span>
+                      <span class="count">{{ totalEditPending }}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
 
-                <!-- कुल आवेदन -->
-                <ion-col size="6" size-lg="3">
-                  <ion-card class="custom-card" (click)="getListOfAwedanAfterClickOnBoxes(1)">
-                    <ion-grid class="ion-my-grid"
-                      style="background: linear-gradient(135deg, #198edb 0%, #1565c0 100%);">
-                      <ion-row>
-                        <ion-col size="12" class="ion-text-center">
-                          <ion-label class="responsive-label-count label-divider">
-                            <span class="label-text">कुल आवेदन</span>
-                            <span class="label-count">{{ totalAwedan }}</span>
-                          </ion-label>
-                        </ion-col>
-                      </ion-row>
-                    </ion-grid>
-                  </ion-card>
-                </ion-col>
+              <!-- स्वीकृत -->
+              <div class="stat-card approved" [class.active]="whichBoxClicked === 6"
+                (click)="getListOfAwedanAfterClickOnBoxes(6)">
+                <div class="card-inner">
+                  <div class="icon-avatar">
+                    <ion-icon name="checkmark-circle-outline"></ion-icon>
+                  </div>
+                  <div class="card-info">
+                    <span class="label">Approved</span>
+                    <div class="card-value-row">
+                      <span class="hindi-label">स्वीकृत</span>
+                      <span class="count">{{ totalApproved }}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
 
-                <!-- संपादन लंबित -->
-                <ion-col size="6" size-lg="3">
-                  <ion-card class="custom-card" (click)="getListOfAwedanAfterClickOnBoxes(2)">
-                    <ion-grid class="ion-my-grid"
-                      style="background: linear-gradient(135deg, #ff9800 0%, #f57c00 100%);">
-                      <ion-row>
-                        <ion-col size="12" class="ion-text-center">
-                          <ion-label class="responsive-label-count label-divider">
-                            <span class="label-text">संपादन लंबित</span>
-                            <span class="label-count">{{ totalEditPending }}</span>
-                          </ion-label>
-                        </ion-col>
-                      </ion-row>
-                    </ion-grid>
-                  </ion-card>
-                </ion-col>
+              <!-- अस्वीकृत -->
+              <div class="stat-card rejected" [class.active]="whichBoxClicked === 7"
+                (click)="getListOfAwedanAfterClickOnBoxes(7)">
+                <div class="card-inner">
+                  <div class="icon-avatar">
+                    <ion-icon name="close-circle-outline"></ion-icon>
+                  </div>
+                  <div class="card-info">
+                    <span class="label">Rejected</span>
+                    <div class="card-value-row">
+                      <span class="hindi-label">अस्वीकृत</span>
+                      <span class="count">{{ totalRejected }}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
 
-                <!-- स्वीकृत -->
-                <ion-col size="6" size-lg="2">
-                  <ion-card class="custom-card" (click)="getListOfAwedanAfterClickOnBoxes(6)">
-                    <ion-grid class="ion-my-grid"
-                      style="background: linear-gradient(135deg, #4caf50 0%, #388e3c 100%);">
-                      <ion-row>
-                        <ion-col size="12" class="ion-text-center">
-                          <ion-label class="responsive-label-count label-divider">
-                            <span class="label-text">स्वीकृत</span>
-                            <span class="label-count">{{ totalApproved }}</span>
-                          </ion-label>
-                        </ion-col>
-                      </ion-row>
-                    </ion-grid>
-                  </ion-card>
-                </ion-col>
+              <!-- ड्राफ्ट -->
+              <div class="stat-card draft" [class.active]="whichBoxClicked === 8"
+                (click)="getListOfAwedanAfterClickOnBoxes(8)">
+                <div class="card-inner">
+                  <div class="icon-avatar">
+                    <ion-icon name="document-text-outline"></ion-icon>
+                  </div>
+                  <div class="card-info">
+                    <span class="label">Batch</span>
+                    <div class="card-value-row">
+                      <span class="hindi-label">ड्राफ्ट</span>
+                      <span class="count">{{ totalBatch }}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
 
-                <!-- अस्वीकृत -->
-                <ion-col size="6" size-lg="2">
-                  <ion-card class="custom-card" (click)="getListOfAwedanAfterClickOnBoxes(7)">
-                    <ion-grid class="ion-my-grid"
-                      style="background: linear-gradient(135deg, #f44336 0%, #b71c1c 100%);">
-                      <ion-row>
-                        <ion-col size="12" class="ion-text-center">
-                          <ion-label class="responsive-label-count label-divider">
-                            <span class="label-text">अस्वीकृत</span>
-                            <span class="label-count">{{ totalRejected }}</span>
-                          </ion-label>
-                        </ion-col>
-                      </ion-row>
-                    </ion-grid>
-                  </ion-card>
-                </ion-col>
-                <!-- ड्राफ्ट -->
-                <ion-col size="6" size-lg="2">
-                  <ion-card class="custom-card" (click)="getListOfAwedanAfterClickOnBoxes(8)">
-                    <ion-grid class="ion-my-grid"
-                      style="background: linear-gradient(135deg, #9e9e9e 0%, #616161 100%);">
-                      <ion-row>
-                        <ion-col size="12" class="ion-text-center">
-                          <ion-label class="responsive-label-count label-divider">
-                            <span class="label-text">ड्राफ्ट</span>
-                            <span class="label-count">{{ totalBatch }}</span>
-                          </ion-label>
-                        </ion-col>
-                      </ion-row>
-                    </ion-grid>
-                  </ion-card>
-                </ion-col>
+              <!-- RO Pending -->
+              <div class="stat-card ro-pending" [class.active]="whichBoxClicked === 3"
+                (click)="getListOfAwedanAfterClickOnBoxes(3)">
+                <div class="card-inner">
+                  <div class="icon-avatar">
+                    <ion-icon name="person-outline"></ion-icon>
+                  </div>
+                  <div class="card-info">
+                    <span class="label">RO Pending</span>
+                    <div class="card-value-row">
+                      <span class="hindi-label">RO स्तर</span>
+                      <span class="count">{{ totalROPending }}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
 
+              <!-- SDO Pending -->
+              <div class="stat-card sdo-pending" [class.active]="whichBoxClicked === 4"
+                (click)="getListOfAwedanAfterClickOnBoxes(4)">
+                <div class="card-inner">
+                  <div class="icon-avatar">
+                    <ion-icon name="people-outline"></ion-icon>
+                  </div>
+                  <div class="card-info">
+                    <span class="label">SDO Pending</span>
+                    <div class="card-value-row">
+                      <span class="hindi-label">SDO स्तर</span>
+                      <span class="count">{{ totalSDOPending }}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
 
-
-                <!-- परिक्षेत्र अधिकारी स्तर पर लंबित -->
-                <ion-col size="12" size-lg="4">
-                  <ion-card class="custom-card" (click)="getListOfAwedanAfterClickOnBoxes(3)">
-                    <ion-grid class="ion-my-grid"
-                      style="background: linear-gradient(135deg, #2196f3 0%, #1976d2 100%);">
-                      <ion-row>
-                        <ion-col size="12" class="ion-text-center">
-                          <ion-label class="responsive-label-count label-divider">
-                            <span class="label-text">परिक्षेत्र अधिकारी स्तर पर लंबित</span>
-                            <span class="label-count">{{ totalROPending }}</span>
-                          </ion-label>
-                        </ion-col>
-                      </ion-row>
-                    </ion-grid>
-                  </ion-card>
-                </ion-col>
-
-                <!-- उपवनमंडलाधिकारी स्तर पर लंबित -->
-                <ion-col size="12" size-lg="4">
-                  <ion-card class="custom-card" (click)="getListOfAwedanAfterClickOnBoxes(4)">
-                    <ion-grid class="ion-my-grid"
-                      style="background: linear-gradient(135deg, #9c27b0 0%, #7b1fa2 100%);">
-                      <ion-row>
-                        <ion-col size="12" class="ion-text-center">
-                          <ion-label class="responsive-label-count label-divider">
-                            <span class="label-text">उपवनमंडलाधिकारी स्तर पर लंबित</span>
-                            <span class="label-count">{{ totalSDOPending }}</span>
-                          </ion-label>
-                        </ion-col>
-                      </ion-row>
-                    </ion-grid>
-                  </ion-card>
-                </ion-col>
-
-                <!-- वनमंडलाधिकारी स्तर पर लंबित -->
-                <ion-col size="12" size-lg="4">
-                  <ion-card class="custom-card" (click)="getListOfAwedanAfterClickOnBoxes(5)">
-                    <ion-grid class="ion-my-grid"
-                      style="background: linear-gradient(135deg, #673ab7 0%, #512da8 100%);">
-                      <ion-row>
-                        <ion-col size="12" class="ion-text-center">
-                          <ion-label class="responsive-label-count label-divider">
-                            <span class="label-text">वनमंडलाधिकारी स्तर पर लंबित</span>
-                            <span class="label-count">{{ totalDFOPending }}</span>
-                          </ion-label>
-                        </ion-col>
-                      </ion-row>
-                    </ion-grid>
-                  </ion-card>
-                </ion-col>
-
-
-              </ion-row>
-            </ion-grid>
+              <!-- DFO Pending -->
+              <div class="stat-card dfo-pending" [class.active]="whichBoxClicked === 5"
+                (click)="getListOfAwedanAfterClickOnBoxes(5)">
+                <div class="card-inner">
+                  <div class="icon-avatar">
+                    <ion-icon name="business-outline"></ion-icon>
+                  </div>
+                  <div class="card-info">
+                    <span class="label">DFO Pending</span>
+                    <div class="card-value-row">
+                      <span class="hindi-label">DFO स्तर</span>
+                      <span class="count">{{ totalDFOPending }}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
 
             <hr style="background-color: black; height: 1px" />
           </ion-col>

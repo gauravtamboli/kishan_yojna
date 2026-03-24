@@ -12,6 +12,7 @@ import { Router } from '@angular/router';
 import { ModalController } from '@ionic/angular';
 import { MessageDialogComponent } from 'src/app/message-dialog/message-dialog.component';
 import { StorageService } from '../../services/storage.service';
+import { AuthServiceService } from 'src/app/services/auth-service.service';
 
 
 @Component({
@@ -24,7 +25,7 @@ import { StorageService } from '../../services/storage.service';
 export class OfficerLoginPage implements OnInit {
 
   constructor(private modalCtrl: ModalController, private router: Router, private navController: NavController, private langService: LanguageService, private cdRef: ChangeDetectorRef,
-    private apiService: ApiService, private storageService: StorageService) { }
+    private apiService: ApiService, private storageService: StorageService, private authService: AuthServiceService) { }
   languageData: any = {};
 
   mobile: string = '';
@@ -88,50 +89,46 @@ export class OfficerLoginPage implements OnInit {
 
   }
 
-  goToLoginIntoServer() {
+ goToLoginIntoServer() {
 
-    this.isNotValidLogin = false;
-    this.error_msg_from_server_if_not_login = "";
+  this.isNotValidLogin = false;
+  this.error_msg_from_server_if_not_login = "";
 
-    this.showDialog("कृपया प्रतीक्षा करें.....");
+  this.showDialog("कृपया प्रतीक्षा करें.....");
 
-    this.apiService.officerLogin(this.mobile, this.password).subscribe(
-      async (response) => {
+  this.apiService.officerLogin(this.mobile, this.password).subscribe(
+    async (response) => {
 
-        await this.dismissDialog();
-        this.cdRef.detectChanges;
+      await this.dismissDialog();
+      this.cdRef.detectChanges(); // ✅ FIXED
 
-        if (response.response.code === 200) {
+      if (response.response.code === 200) {
 
-          sessionStorage.setItem('logined_officer_data', JSON.stringify(response.data[0]));
-          const officer = response.data[0];
-          await this.storageService.set('user_data', officer);
-          await this.storageService.set('selected_year', null);
-          await this.storageService.set('selected_stage', null);
-          this.router.navigateByUrl('/year-select', { replaceUrl: true });
+        const officer = response.data[0];
 
+        // ✅ Use AuthService to manage both token and officer payload
+        this.authService.setOfficerData(officer);
 
-        } else {
-          //this.longToast(response.response.msg)
+        // ✅ Ionic storage (optional, depends if user wants local redundancy)
+        // await this.storageService.set('user_data', officer);
+        await this.storageService.set('selected_year', null);
+        await this.storageService.set('selected_stage', null);
 
-          this.isNotValidLogin = true;
-          //this.error_msg_from_server_if_not_login = response.response.msg;
+        this.router.navigateByUrl('/year-select', { replaceUrl: true });
 
-          this.showError(response.response.msg)
+      } else {
 
-        }
+        this.isNotValidLogin = true;
+        this.showError(response.response.msg);
 
-
-      },
-      async (error) => {
-        //await this.dismissLoading();
-        this.shortToast(error);
-        //this.apiService.showServerMessages(error)
       }
-    );
 
-  }
-
+    },
+    async (error) => {
+      this.shortToast(error);
+    }
+  );
+}
   async showError(errorMsg: string) {
 
     try {

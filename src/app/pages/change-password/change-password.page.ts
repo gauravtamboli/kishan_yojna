@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { IonContent, IonHeader, IonTitle, IonToolbar, IonButtons, IonBackButton, IonList, IonItem, IonLabel, IonInput, IonButton, IonIcon, IonLoading, IonText } from '@ionic/angular/standalone';
 import { NavController, LoadingController, AlertController } from '@ionic/angular';
 import { ApiService } from '../../services/api.service';
+import { AuthServiceService } from '../../services/auth-service.service';
 import { LanguageService } from '../../services/language.service';
 import { addIcons } from 'ionicons';
 import { lockClosedOutline, eyeOutline, eyeOffOutline } from 'ionicons/icons';
@@ -31,7 +32,8 @@ export class ChangePasswordPage implements OnInit {
         private apiService: ApiService,
         private langService: LanguageService,
         private navController: NavController,
-        private alertCtrl: AlertController
+        private alertCtrl: AlertController,
+        private authService: AuthServiceService
     ) {
         addIcons({ lockClosedOutline, eyeOutline, eyeOffOutline });
     }
@@ -61,13 +63,11 @@ export class ChangePasswordPage implements OnInit {
             return;
         }
 
-        const officerDataRaw = sessionStorage.getItem('logined_officer_data');
-        if (!officerDataRaw) {
-            this.navController.navigateRoot('/login');
+        const officerData = this.authService.getOfficerData();
+        if (!officerData) {
+            this.navController.navigateRoot('/officer-login');
             return;
         }
-
-        const officerData = JSON.parse(officerDataRaw);
 
         this.isLoading = true;
         this.apiService.changePassword(officerData.officerId, this.oldPassword, this.newPassword).subscribe(

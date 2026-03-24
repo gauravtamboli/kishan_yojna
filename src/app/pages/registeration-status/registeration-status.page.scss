@@ -1,656 +1,276 @@
-.custom-back-button {
-  color: green;
+:host {
+  --primary-gradient: linear-gradient(135deg, #2e7d32 0%, #1b5e20 100%);
+  --secondary-gradient: linear-gradient(135deg, #43a047 0%, #2e7d32 100%);
+  --surface-gradient: linear-gradient(180deg, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.7) 100%);
+  --glass-bg: rgba(255, 255, 255, 0.85);
+  --glass-border: rgba(255, 255, 255, 0.5);
+  --shadow-soft: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
+  --shadow-strong: 0 8px 32px 0 rgba(31, 38, 135, 0.2);
 }
 
-.custom-ion-label {
-  font-size: 12px;
-  font-weight: 700;
-  color: black;
-  font-style: bold;
-}
-
-.custom-ion-label-points {
-  padding: 5px;
-  background-color: green;
-  font-size: 15px;
-  font-weight: 700;
-  color: white;
-  font-style: bold;
-  border-bottom-right-radius: 10px;
-}
-
-.item-style-label {
-  margin-top: 10px;
-  font-size: 12px;
-  color: green;
-}
-
-ion-title {
-  margin-left: -25px;
-  font-size: 12px;
-}
-
-ion-select {
-  font-size: 12px;
-}
-
-
-ion-text-area {
-  font-size: 14px;
-  outline-color: green;
-  margin-left: -3px;
-  size: 12px;
-}
-
-.radio-group-horizontal {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
+.dark-mode {
+  --primary-gradient: linear-gradient(135deg, #1b5e20 0%, #0d3611 100%);
+  --surface-gradient: linear-gradient(180deg, rgba(30, 30, 30, 0.9) 0%, rgba(20, 20, 20, 0.7) 100%);
+  --glass-bg: rgba(30, 30, 30, 0.85);
+  --glass-border: rgba(255, 255, 255, 0.1);
 }
 
 ion-content {
-  --padding-bottom: 60px;
-  /* Adjust this value based on your needs */
-}
-
-
-
-.ion-grid-custom {
-  border: 1px solid #000;
-  /* Border around the grid */
-}
-
-.ion-row-custom {
-  display: flex;
-  border: 1px solid #000;
-  /* Border around the row */
-}
-
-.ion-col-custom {
-  border: 1px solid #000;
-  /* Border around each column */
-  padding: 10px;
-  /* Padding inside the column */
-  margin: 5px;
-  /* Optional: Margin between columns */
-}
-
-
-ion-select {
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  padding: 8px;
-  font-size: 16px;
-  --min-height: 45px;
-  background-color: #f9f9f9;
-}
-
-.title-ion-lable {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  font-weight: 500;
-  width: 100%;
-  font-size: 15px;
-}
-
-.content-ion-lable {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  font-size: 14px;
-}
-
-
-.status-approved {
-  color: green;
-  font-weight: bold;
-}
-
-.status-pending {
-  color: orange;
-  font-weight: bold;
-}
-
-.status-rejected {
-  color: red;
-  font-weight: bold;
-}
-
-.otp-container {
-  display: flex;
-  justify-content: center;
-  margin-top: 20px;
-}
-
-.otp-box {
-  text-align: center;
-  font-size: 24px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  height: 50px;
-  width: 50px;
-  --padding-start: 0;
-  --padding-end: 0;
-}
-
-
-.big-text-style {
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  font-size: 25px;
-}
-
-
-.responsive-label {
-  font-size: 12px;
-}
-
-/* Medium screens (tablets) */
-@media (min-width: 600px) {
-  .responsive-label {
-    font-size: 16px;
+  --background: #f4f7f6;
+  &.dark-mode {
+    --background: #121212;
   }
 }
 
-/* Large screens (desktops) */
-@media (min-width: 1024px) {
-  .responsive-label {
-    font-size: 26px;
-  }
-}
-
-
-
-.custom-back-button {
-  color: green;
-}
-
-ion-menu-button {
-  color: green;
-}
-
-.custom-ion-label {
-  font-size: 12px;
-  font-weight: 700;
-  color: black;
-  font-style: bold;
-}
-
-.custom-ion-label-points {
-  padding: 5px;
-  background-color: green;
-  font-size: 15px;
-  font-weight: 700;
-  color: white;
-  font-style: bold;
-  border-bottom-right-radius: 10px;
-}
-
-.item-style-label {
-  margin-top: 10px;
-  font-size: 12px;
-  color: green;
-}
-
-ion-title {
-  margin-left: -25px;
-  font-size: 12px;
-}
-
-ion-select {
-  font-size: 12px;
-}
-
-
-ion-text-area {
-  font-size: 14px;
-  outline-color: green;
-  margin-left: -3px;
-  size: 12px;
-}
-
-.radio-group-horizontal {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-}
-
-ion-content {
-  --padding-bottom: 60px;
-  /* Adjust this value based on your needs */
-}
-
-
-
-.ion-grid-custom {
-  border: 1px solid #000;
-  /* Border around the grid */
-}
-
-.ion-row-custom {
-  display: flex;
-  border: 1px solid #000;
-  /* Border around the row */
-}
-
-.ion-col-custom {
-  border: 1px solid #000;
-  /* Border around each column */
-  padding: 10px;
-  /* Padding inside the column */
-  margin: 5px;
-  /* Optional: Margin between columns */
-}
-
-
-ion-select {
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  padding: 8px;
-  font-size: 16px;
-  --min-height: 45px;
-  background-color: #f9f9f9;
-}
-
-.title-ion-lable {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  font-weight: 500;
-  width: 100%;
-  font-size: 15px;
-}
-
-.content-ion-lable {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  font-size: 14px;
-}
-
-
-.status-approved {
-  color: green;
-  font-weight: bold;
-}
-
-.status-pending {
-  color: orange;
-  font-weight: bold;
-}
-
-.status-rejected {
-  color: red;
-  font-weight: bold;
-}
-
-.otp-container {
-  display: flex;
-  justify-content: center;
-  margin-top: 20px;
-}
-
-.otp-box {
-  text-align: center;
-  font-size: 24px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  height: 50px;
-  width: 50px;
-  --padding-start: 0;
-  --padding-end: 0;
-}
-
-
-.big-text-style {
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  font-size: 25px;
-}
-
-
-.responsive-label-title {
-  font-size: 12px;
-  text-align: center;
-
-  /* Medium screens (tablets) */
-  @media (min-width: 600px) {
-    font-size: 16px;
-  }
-
-  /* Large screens (desktops) */
-  @media (min-width: 1024px) {
-    font-size: 26px;
-  }
-}
-
-.responsive-label {
-  font-size: 12px;
-
-  /* Medium screens (tablets) */
-  @media (min-width: 600px) {
-    font-size: 16px;
-  }
-
-  /* Large screens (desktops) */
-  @media (min-width: 1024px) {
-    font-size: 26px;
-  }
-}
-
-.responsive-label-count {
-  font-size: 40px;
-
-  /* Medium screens (tablets) */
-  @media (min-width: 600px) {
-    font-size: 48px;
-  }
-
-  /* Large screens (desktops) */
-  @media (min-width: 1024px) {
-    font-size: 70px;
-  }
-}
-
-
-
-
-
-
-.center-content {
-  display: flex;
-  justify-content: center;
-  /* Horizontal center */
-  align-items: center;
-  /* Vertical center */
-  height: 100%;
-  /* Fill full screen height */
-}
-
-.login-grid {
-  width: 90%;
-  max-width: 400px; // Keep form narrow on large screens
-}
-
-
-
-.responsive-input {
-  font-size: 12px;
-
-  /* Medium screens (tablets) */
-  @media (min-width: 600px) {
-    .responsive-input {
-      font-size: 14px;
-    }
-  }
-
-  /* Large screens (desktops) */
-  @media (min-width: 1024px) {
-    .responsive-input {
-      font-size: 20px;
-    }
-  }
-
-
-}
-
-
-
-.responsive-img {
-  width: 100%;
-  height: 100%;
-  max-width: 100px;
-
-  @media (min-width: 768px) {
-    max-width: 400px;
-  }
-
-  @media (min-width: 1024px) {
-    max-width: 800px;
-  }
-}
-
-.responsive-label-count-for_item {
-  font-size: 15px;
-
-  /* Medium screens (tablets) */
-  @media (min-width: 600px) {
-    font-size: 20px;
-  }
-
-  /* Large screens (desktops) */
-  @media (min-width: 1024px) {
-    font-size: 30px;
-  }
-}
-
-
-
-.ion-header-class-for-menu {
-  height: 10rem;
-  // --border-width: 0
-
-  div.bg {
-    height: 110%;
-    width: 130%;
-    background: linear-gradient(90deg, var(--ion-color-primary) 0%, var(--ion-color-primary) 50%);
-    transform: rotate(-15deg);
-    border-radius: 10px 10px 10px 50px;
-    margin-top: -4rem;
-    margin-left: -1rem;
-    box-shadow: 0 1px 10px rgb(98, 255, 169, 0.5);
-  }
-
-  ion-item {
-    //         --inner-border-width: 0px !important;
-    //   --border-width: 0px !important;
+/* Header Styling */
+.gradient-header {
+  --background: transparent;
+  background: var(--primary-gradient);
+  
+  ion-toolbar {
     --background: transparent;
-    position: absolute;
-    top: 1rem;
-    left: 0;
-
-
-    ion-avatar {
-      height: 5rem;
-      width: 5rem;
-      border-radius: 50%;
-      border: 3px solid #90EE90;
-      padding: 1px;
-    }
-
-    ion-label {
-      color: white;
-      font-size: 1.2rem;
-      font-weight: bold;
-      width: auto;
-      letter-spacing: .5px;
-
-      p {
-        color: white;
-        margin-top: 2px;
-        font-weight: normal;
-        font-size: 0.9rem;
-      }
-    }
-
-  }
-
-}
-
-// ::ng-deep .custom-table-row {
-//   margin-bottom: 100px; /* Adjust as needed */
-//   background: white; /* Optional for spacing visibility */
-//   border-radius: 4px; /* Optional for nice styling */
-//   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Optional for separation effect */
-// }
-
-::ng-deep .p-datatable-tbody>tr>td {
-  padding-top: 5px;
-  padding-bottom: 5px;
-}
-
-// ::ng-deep .custom-margin-table .p-datatable {
-//     margin-left: 10px ;
-//     margin-right: 10px ;
-//     margin-top: 10px;
-//     border-collapse: separate !important;
-//     border-spacing: 10px; /* 10px vertical margin between rows */
-//   }
-
-@media screen and (max-width: 768px) {
-  .p-column-title {
-    display: block;
-    font-weight: bold;
-    margin-bottom: 5px;
-    color: #666;
+    --color: white;
+    --border-width: 0;
   }
 }
-
-/* Hide label on large screens */
-@media screen and (min-width: 769px) {
-  .p-column-title {
-    display: none;
-  }
-}
-
 
 .responsive-toolbar-title {
-  font-size: 12px;
   font-weight: 700;
+  letter-spacing: 0.5px;
+  font-size: 1.1rem;
 }
 
-/* Medium screens (tablets) */
-@media (min-width: 600px) {
-  .responsive-toolbar-title {
-    font-size: 16px;
+/* Main Container */
+.main-container {
+  padding: 1.5rem;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+/* Glass Card */
+.glass-card {
+  background: var(--glass-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--glass-border);
+  border-radius: 20px;
+  box-shadow: var(--shadow-soft);
+  padding: 2rem;
+  margin-bottom: 2rem;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-strong);
   }
 }
 
-/* Large screens (desktops) */
-@media (min-width: 1024px) {
-  .responsive-toolbar-title {
-    font-size: 20px;
+/* Input Section */
+.input-section {
+  text-align: center;
+
+  .section-icon {
+    font-size: 4rem;
+    color: #2e7d32;
+    margin-bottom: 1rem;
+    background: rgba(46, 125, 50, 0.1);
+    padding: 1.5rem;
+    border-radius: 50%;
+  }
+
+  h2 {
+    font-weight: 700;
+    color: var(--ion-color-dark);
+    margin-bottom: 0.5rem;
+  }
+
+  p {
+    color: var(--ion-color-step-600);
+    margin-bottom: 2rem;
   }
 }
 
-ion-input {
-  --padding-start: 12px;
-  --padding-end: 12px;
-  --padding-bottom: 12px;
-  --background: #f8f9fa;
-  --border-radius: 8px;
-  --border-color: #e0e0e0;
-  --border-style: solid;
-  --border-width: 1px;
-  margin-bottom: 16px;
+.custom-input {
+  --background: rgba(255, 255, 255, 0.5);
+  --border-radius: 12px;
+  --padding-start: 16px;
+  --padding-end: 16px;
+  --highlight-height: 0;
+  margin-bottom: 1.5rem;
+  border: 1px solid var(--glass-border);
+  box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
 
-  &:focus-within {
-    --border-color: var(--ion-color-primary);
-    --background: #ffffff;
+  &.ion-focused {
+    border-color: #2e7d32;
   }
 }
 
+.action-btn {
+  --border-radius: 12px;
+  --box-shadow: 0 4px 15px rgba(46, 125, 50, 0.3);
+  height: 54px;
+  font-weight: 600;
+  font-size: 1rem;
+  margin: 0;
+  
+  &::part(native) {
+    background: var(--secondary-gradient);
+  }
+}
 
+/* Status List Section */
+.status-section {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeInUp 0.5s forwards ease-out;
+}
 
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 
+.section-title {
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  padding-left: 0.5rem;
+  border-left: 4px solid #2e7d32;
+}
 
+/* Table Design */
+.premium-table {
+  ::ng-deep .p-datatable {
+    background: transparent;
 
-::ng-deep .custom-margin-table {
-  .p-datatable {
-    margin: 20px;
-    border-radius: 12px;
-    overflow: hidden;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-
-    .p-datatable-header {
-      background: #2E7D32;
-      color: white;
-      text-align: center;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 1rem;
+    .p-datatable-thead > tr > th {
+      background: rgba(46, 125, 50, 0.05);
+      color: #2e7d32;
+      font-weight: 700;
+      border: none;
+      padding: 1.25rem 1rem;
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
     }
 
-    .p-datatable-thead>tr>th {
-      background: #2E7D32;
-      color: white;
-      padding: 1rem;
-      font-weight: 600;
-      transition: background-color 0.3s ease;
+    .p-datatable-tbody > tr {
+      background: transparent;
+      border-bottom: 1px solid rgba(0,0,0,0.05);
+      transition: background 0.2s ease;
 
       &:hover {
-        background: #1B5E20;
-      }
-    }
-
-    .p-datatable-tbody>tr {
-      transition: all 0.3s ease;
-      border-bottom: 1px solid #e0e0e0;
-
-      &:hover {
-        background: #f5f5f5;
-        transform: translateY(-2px);
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        background: rgba(46, 125, 50, 0.02);
       }
 
-      >td {
-        padding: 1rem;
+      td {
         border: none;
+        padding: 1.25rem 1rem;
+        vertical-align: middle;
       }
     }
   }
 }
 
-@media screen and (max-width: 768px) {
-  .p-column-title {
-    display: block;
-    font-weight: 600;
-    color: #2E7D32;
-    margin-bottom: 8px;
-  }
+/* Application Card (Mobile) */
+.mobile-card {
+  background: white;
+  border-radius: 16px;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  border-left: 4px solid #ccc;
 
-  ::ng-deep .custom-margin-table {
-    .p-datatable {
-      margin: 10px;
+  &.status-pending { border-left-color: #ffc107; }
+  &.status-approved { border-left-color: #2e7d32; }
+  &.status-rejected { border-left-color: #d32f2f; }
+
+  .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+
+    .beneficiary {
+      h3 {
+        margin: 0;
+        font-weight: 700;
+        font-size: 1.1rem;
+        color: var(--ion-color-dark);
+      }
+      p {
+        margin: 4px 0 0;
+        font-size: 0.85rem;
+        color: var(--ion-color-step-600);
+      }
     }
   }
 
-  .responsive-label {
-    font-size: 12px;
+  .info-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 1.25rem;
+
+    .info-item {
+      label {
+        display: block;
+        font-size: 0.75rem;
+        color: var(--ion-color-step-500);
+        margin-bottom: 2px;
+        text-transform: uppercase;
+      }
+      span {
+        font-weight: 600;
+        font-size: 0.9rem;
+        color: var(--ion-color-dark);
+      }
+    }
   }
 
-  .page-title {
-    font-size: 20px;
-    margin: 1rem 0;
+  .status-badge {
+    display: inline-flex;
+    padding: 6px 12px;
+    border-radius: 30px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    
+    &.pending { background: rgba(255, 193, 7, 0.1); color: #ffc107; }
+    &.approved { background: rgba(46, 125, 50, 0.1); color: #2e7d32; }
+    &.rejected { background: rgba(211, 47, 47, 0.1); color: #d32f2f; }
+  }
+
+  .view-btn {
+    --border-radius: 8px;
+    margin: 0;
+    height: 40px;
   }
 }
 
-.custom-dialog-modal {
-  --width: 90vw;
-  --max-width: 400px;
-  --height: auto;
-  --border-radius: 16px;
-  --box-shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
-  --background: #fff;
-  --overflow: visible;
+/* Utilities */
+.status-pill {
+  padding: 6px 12px;
+  border-radius: 30px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  display: inline-block;
+  
+  &.pending { background: rgba(255, 193, 7, 0.12); color: #d39e00; }
+  &.approved { background: rgba(46, 125, 50, 0.12); color: #2e7d32; }
+  &.rejected { background: rgba(211, 47, 47, 0.12); color: #d32f2f; }
+}
 
-  ion-modal {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+.view-link {
+  color: #2e7d32;
+  font-weight: 600;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+  
+  &:hover {
+    text-decoration: underline;
   }
 }

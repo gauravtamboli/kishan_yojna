@@ -48,10 +48,7 @@ export class OfficerProfilePage implements OnInit {
     }
 
     loadOfficerData() {
-        const storedData = sessionStorage.getItem('logined_officer_data');
-        if (storedData) {
-            this.officerData = JSON.parse(storedData);
-        }
+        this.officerData = this.authService.getOfficerData();
     }
 
     goBack() {

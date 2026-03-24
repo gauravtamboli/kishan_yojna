@@ -17,6 +17,7 @@ import { StorageService } from 'src/app/services/storage.service';
 import { TableModule } from 'primeng/table';
 import { SharedserviceService } from 'src/app/services/sharedservice.service';
 import { ModalController } from '@ionic/angular';
+import { AuthServiceService } from 'src/app/services/auth-service.service';
 import { MessageDialogComponent } from 'src/app/message-dialog/message-dialog.component';
 import { PaginatorModule } from 'primeng/paginator';
 import * as XLSX from 'xlsx';
@@ -94,7 +95,8 @@ export class YearTwoDashboardPage implements OnInit {
     private langService: LanguageService,
     private cdRef: ChangeDetectorRef,
     private apiService: ApiService,
-    private sharedPreference: SharedserviceService
+    private sharedPreference: SharedserviceService,
+    private authService: AuthServiceService
   ) {
     this.addAllIcon();
   }
@@ -139,8 +141,7 @@ export class YearTwoDashboardPage implements OnInit {
   }
 
   private populateMenu() {
-    const storedData = sessionStorage.getItem('logined_officer_data');
-    const officerData = storedData ? JSON.parse(storedData) : null;
+    const officerData = this.authService.getOfficerData();
     const rangid = officerData ? officerData.rang_id : null;
     const designation = officerData ? officerData.designation : null;
 
@@ -315,11 +316,7 @@ export class YearTwoDashboardPage implements OnInit {
   }
 
   getOfficersSessionData() {
-    const storedData = sessionStorage.getItem('logined_officer_data');
-    if (storedData) {
-      return JSON.parse(storedData);
-    }
-    return null;
+    return this.authService.getOfficerData();
   }
 
   getYearTwoAwedanCounts() {
@@ -363,7 +360,7 @@ export class YearTwoDashboardPage implements OnInit {
         officersLoginModel.circle_id,
         officersLoginModel.devision_id,
         officersLoginModel.rang_id,
-        officersLoginModel.officerId.toString(),
+        officersLoginModel.officerId?.toString() || '',
         this.currentPage,
         this.pageSize,
         filterYear2 // Pass filter parameter
@@ -565,10 +562,14 @@ export class YearTwoDashboardPage implements OnInit {
 
   getLoginedOfficerName(): string {
     const officersLoginModel = this.getOfficersSessionData() as OfficersLoginResponseModel;
-    return officersLoginModel.officer_name + " (" + officersLoginModel.designation_name + ")";
+    if (officersLoginModel) {
+      return officersLoginModel.officer_name + " (" + officersLoginModel.designation_name + ")";
+    }
+    return '';
   }
 
   async logoutFunction() {
+    this.menuCtrl.close();
     const modal = await this.modalCtrl.create({
       component: MessageDialogComponent,
       cssClass: 'custom-dialog-modal',
@@ -581,8 +582,7 @@ export class YearTwoDashboardPage implements OnInit {
 
     modal.onDidDismiss().then((result) => {
       if (result.data?.confirmed) {
-        sessionStorage.clear();
-        this.router.navigateByUrl('/splash', { replaceUrl: true });
+        this.authService.logout();
       }
     });
 

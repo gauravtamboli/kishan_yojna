@@ -22,6 +22,9 @@ export interface OfficersLoginResponseModel {
     mobile_no: string,
     email: string,
     token?: string,
-    curent_session?: string
+    curent_session?: string,
+    fin_year?: string
 
+    is_active?: string,
+    sub_div_id?: string
 }

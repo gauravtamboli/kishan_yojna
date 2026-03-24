@@ -271,6 +271,10 @@ export const routes: Routes = [
     path: 'create-bill',
     loadComponent: () => import('./pages/create-bill/create-bill.component').then(m => m.CreateBillComponent),
     canActivate: [authGuard]
+  },
+  {
+    path: 'payment-report',
+    loadComponent: () => import('./pages/payment-report/payment-report.component').then(m => m.PaymentReportComponent),
+    canActivate: [authGuard]
   }
-
 ];

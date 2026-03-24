@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { ApiService } from '../../services/api.service';
+import { AuthServiceService } from '../../services/auth-service.service';
 import { TableModule } from 'primeng/table';
 import { addIcons } from 'ionicons';
 import { chevronBackOutline, chevronForwardOutline, searchOutline, personOutline, locationOutline, leafOutline, documentTextOutline, checkmarkCircleOutline, refreshOutline, businessOutline, mapOutline } from 'ionicons/icons';
@@ -35,7 +36,8 @@ export class RangePlantReportPage implements OnInit {
     constructor(
         private apiService: ApiService,
         private router: Router,
-        private cdRef: ChangeDetectorRef
+        private cdRef: ChangeDetectorRef,
+        private authService: AuthServiceService
     ) {
         addIcons({
             chevronBackOutline,
@@ -60,8 +62,8 @@ export class RangePlantReportPage implements OnInit {
         this.isLoading = true;
         this.currentPage = page;
 
-        const officerData = JSON.parse(sessionStorage.getItem('logined_officer_data') || '{}');
-        const rangeId = officerData.rang_id || 0;
+        const officerData = this.authService.getOfficerData();
+        const rangeId = officerData ? Number(officerData.rang_id) : 0;
 
         if (!rangeId) {
             await Toast.show({ text: 'रेंज आईडी नहीं मिली', duration: 'long' });

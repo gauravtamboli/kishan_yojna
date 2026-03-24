@@ -51,8 +51,32 @@ export class VendorPaymentListComponent implements OnInit {
         // private route: ActivatedRoute
     ) { }
 
+     isDarkMode = false;
+  toggleTheme() {
+    this.isDarkMode = !this.isDarkMode;
+    this.applyTheme();
+    localStorage.setItem('theme-mode', this.isDarkMode ? 'dark' : 'light');
+  }
+
+    private applyTheme() {
+    const isDarkClass = 'ion-palette-dark';
+    if (this.isDarkMode) {
+      document.documentElement.classList.add(isDarkClass);
+      document.body.classList.add(isDarkClass);
+    } else {
+      document.documentElement.classList.remove(isDarkClass);
+      document.body.classList.remove(isDarkClass);
+    }
+  }
+ private restoreSavedTheme() {
+    const savedTheme = localStorage.getItem('theme-mode');
+    this.isDarkMode = savedTheme === 'dark';
+    this.applyTheme();
+  }
     ngOnInit(): void {
         this.setSelectInterface();
+    this.restoreSavedTheme();
+
     }
 
     ionViewWillEnter(): void {

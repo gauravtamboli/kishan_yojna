@@ -640,4 +640,13 @@ export class KisanAwedanPage implements OnInit {
     this.isLoading = false;
     this.cdRef.detectChanges();
   }
+
+  validateArea() {
+    const totalArea = parseFloat(this.formData.area);
+    const availableArea = parseFloat(this.formData.available_area);
+    if (!isNaN(totalArea) && !isNaN(availableArea) && availableArea > totalArea) {
+      this.showError('उपलब्ध रोपण योग्य भूमि का रकबा कुल रकबे से अधिक नहीं हो सकता');
+      this.formData.available_area = '';
+    }
+  }
 }

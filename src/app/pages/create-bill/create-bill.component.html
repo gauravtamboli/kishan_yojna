@@ -6,9 +6,9 @@
 
     <ion-title>Create Batch Bill</ion-title>
 
-    <ion-buttons slot="end">
+    <!-- <ion-buttons slot="end">
       <ion-badge color="light">{{ selectedAwedans.length }} Selected</ion-badge>
-    </ion-buttons>
+    </ion-buttons> -->
   </ion-toolbar>
 </ion-header>
 
@@ -61,9 +61,10 @@
           </ion-col>
 
           <ion-col size="12" size-md="4" class="cutome_padding">
-            <ion-button expand="block" (click)="loadData()" class="search-btn">
-              <ion-icon name="search-outline" slot="start"></ion-icon>
-              Search
+            <ion-button expand="block" (click)="loadData()" class="search-btn" [disabled]="isPageLoading">
+              <ion-icon *ngIf="!isPageLoading" name="search-outline" slot="start"></ion-icon>
+              <ion-spinner *ngIf="isPageLoading" name="crescent" slot="start"></ion-spinner>
+              {{ isPageLoading ? 'Searching...' : 'Search' }}
             </ion-button>
           </ion-col>
         </ion-row>
@@ -87,8 +88,8 @@
 
 
       <div class="table-container">
-        <p-table [value]="filteredAwedans" dataKey="application_number" responsiveLayout="stack" breakpoint="768px"
-          [paginator]="true" [rows]="10" class="batch-table">
+        <p-table [value]="filteredAwedans" dataKey="billNumber" responsiveLayout="stack" breakpoint="768px"
+          [paginator]="true" [rows]="25" [loading]="isPageLoading" class="batch-table">
 
           <ng-template pTemplate="header">
             <tr>

@@ -11,6 +11,7 @@ import { ApiService } from '../../services/api.service';
 import { Toast } from '@capacitor/toast';
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
+import { AuthServiceService } from '../../services/auth-service.service';
 import { GoswaraReportModel, PlantType, PlantData } from './GoswaraResponseForReport.modal';
 import * as XLSX from 'xlsx';
 import * as FileSaver from 'file-saver';
@@ -51,7 +52,8 @@ export class GoswaraReportPage implements OnInit {
     private apiService: ApiService,
     private cdRef: ChangeDetectorRef,
     private router: Router,
-    private location: Location
+    private location: Location,
+    private authService: AuthServiceService
   ) {
     addIcons({ downloadOutline });
   }
@@ -85,9 +87,8 @@ export class GoswaraReportPage implements OnInit {
   }
 
   private getDashboardUrlByDesignation(): string {
-    const storedData = sessionStorage.getItem('logined_officer_data');
-    if (storedData) {
-      const officerData = JSON.parse(storedData);
+    const officerData = this.authService.getOfficerData();
+    if (officerData) {
       const designation = Number(officerData.designation);
       
       switch (designation) {
@@ -286,19 +287,18 @@ export class GoswaraReportPage implements OnInit {
 
   loadReport() {
     this.showLoading('डेटा लोड हो रहा है...');
-    const storedData = sessionStorage.getItem('logined_officer_data');
+    const officerData = this.authService.getOfficerData();
     let designation = "";
     let devisionIdStr = "";
     let rangIdStr = "";
     let subDivIdStr = "";
     let circleIdStr = "";
-
-    if (storedData) {
-      const officerData = JSON.parse(storedData);
+ 
+    if (officerData) {
       designation = officerData.designation_name || officerData.designation;
       rangIdStr = officerData.rang_id;
-      devisionIdStr = officerData.devision_id || officerData.division_id;
-      subDivIdStr = officerData.sub_div_id;
+      devisionIdStr = officerData.devision_id;
+      subDivIdStr = (officerData as any).sub_div_id || "";
       circleIdStr = officerData.circle_id;
     }
 

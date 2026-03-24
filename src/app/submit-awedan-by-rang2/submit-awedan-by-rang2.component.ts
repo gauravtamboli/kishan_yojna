@@ -54,7 +54,7 @@ import {
 import { AddPlantDialogComponent } from '../add-plant-dialog/add-plant-dialog.component';
 import { PlantationDetailNew } from '../pages/view-awedan/SingleAwedanDataResponse.model';
 import { SharedserviceService } from '../services/sharedservice.service';
-import { OfficersLoginResponseModel } from '../pages/officer-login/OfficersLoginResponse.model';
+import { AuthServiceService } from '../services/auth-service.service';
 import { IonInputCustomEvent, InputInputEventDetail } from '@ionic/core';
 // import { SpeciesMaster, AnyaPlantRequest } from '../models/AnyaPlant.model';  // ADD THIS LINE
 import { SpeciesMaster, AnyaPlantRequest, AddSpeciesMasterRequest } from '../models/AnyaPlant.model';  // ADD THIS
@@ -423,7 +423,8 @@ export class SubmitAwedanByRang2Component implements OnInit {
     private toastController: ToastController,
     private cdRef: ChangeDetectorRef,
     private route: ActivatedRoute,
-    private httpClient: HttpClient
+    private httpClient: HttpClient,
+    private authService: AuthServiceService
   ) {
     addIcons({addOutline,buildSharp,homeOutline,informationOutline,informationCircle,buildOutline,addCircleOutline,callOutline,addCircle,refreshCircleOutline,refreshOutline,boat,trashOutline,});
   }
@@ -455,10 +456,9 @@ export class SubmitAwedanByRang2Component implements OnInit {
 
 
 
-    // Get officer session data - with error handling to prevent crashes
-    let officersLoginModel: OfficersLoginResponseModel | null = null;
+    let officersLoginModel: any = null;
     try {
-      officersLoginModel = this.getOfficersSessionData() as OfficersLoginResponseModel;
+      officersLoginModel = this.authService.getOfficerData();
 
       if (!officersLoginModel) {
         console.warn('⚠️ No officer session data found - component may still work for edit mode');
@@ -1103,7 +1103,7 @@ export class SubmitAwedanByRang2Component implements OnInit {
 
   goBack() {
     if (window.history.length > 1) {
-      if (sessionStorage.getItem('logined_officer_data') != null) {
+      if (this.authService.getOfficerData() != null) {
         const dashboardUrl = this.getDashboardUrlByDesignation();
         this.router.navigateByUrl(dashboardUrl, { replaceUrl: true });
       } else {
@@ -1115,9 +1115,8 @@ export class SubmitAwedanByRang2Component implements OnInit {
   }
 
   private getDashboardUrlByDesignation(): string {
-    const storedData = sessionStorage.getItem('logined_officer_data');
-    if (storedData) {
-      const officerData = JSON.parse(storedData);
+    const officerData = this.authService.getOfficerData();
+    if (officerData) {
       const designation = Number(officerData.designation);
 
       switch (designation) {
@@ -1338,25 +1337,12 @@ export class SubmitAwedanByRang2Component implements OnInit {
   }
 
   getOfficersSessionData() {
-    const storedData = sessionStorage.getItem('logined_officer_data');
-    if (storedData) {
-      return JSON.parse(storedData);
-    }
-    return null;
+    return this.authService.getOfficerData();
   }
 
   getOfficerIdFromSession(): number {
-    try {
-      const storedData = sessionStorage.getItem('logined_officer_data');
-      if (storedData) {
-        const parsedData = JSON.parse(storedData);
-        return parsedData?.officerId ?? 0;
-      }
-      return 0;
-    } catch (error) {
-      console.error('Error reading officer data from session:', error);
-      return 0;
-    }
+    const officerData = this.authService.getOfficerData();
+    return officerData?.officerId ?? 0;
   }
 
   // async getDistList() {

@@ -11,7 +11,7 @@ import { MenuController } from '@ionic/angular';
 import { ApiService } from 'src/app/services/api.service';
 import { OfficersLoginResponseModel } from '../officer-login/OfficersLoginResponse.model';
 import { addIcons } from 'ionicons';
-import { appsOutline, homeOutline, informationOutline, informationCircle, buildOutline, logOutOutline, chevronBackOutline, chevronForwardOutline, downloadOutline, chevronDownOutline, optionsOutline, reorderThreeOutline, documentTextOutline, statsChartOutline, mapOutline, peopleOutline, personOutline, addCircleOutline, trendingUpOutline, leafOutline, hammerOutline, clipboardOutline, businessOutline, receiptOutline, cashOutline, listOutline, walletOutline, moon, sunny } from 'ionicons/icons';
+import { appsOutline, homeOutline, informationOutline, informationCircle, buildOutline, logOutOutline, chevronBackOutline, chevronForwardOutline, downloadOutline, chevronDownOutline, optionsOutline, reorderThreeOutline, documentTextOutline, statsChartOutline, mapOutline, peopleOutline, personOutline, addCircleOutline, trendingUpOutline, leafOutline, hammerOutline, clipboardOutline, businessOutline, receiptOutline, cashOutline, listOutline, walletOutline, moon, sunny, createOutline, checkmarkCircleOutline, closeCircleOutline } from 'ionicons/icons';
 import { Browser } from '@capacitor/browser';
 import { Platform, AlertController } from '@ionic/angular';
 import { NetworkCheckService } from 'src/app/services/network-check.service';
@@ -50,7 +50,7 @@ interface MenuPage {
   styleUrls: ['./officers-dashboard-ro.page.scss'],
   standalone: true,
   imports: [IonSplitPane, PaginatorModule, IonPopover,
-    IonMenu, IonList, IonAvatar, IonCard, IonLoading, IonText, IonButton,
+    IonMenu, IonList, IonAvatar, IonLoading, IonText, IonButton,
     IonInput, IonLabel, IonItem, IonGrid, IonRow, IonCol, IonButtons, IonContent, IonHeader,
     IonToolbar, CommonModule, FormsModule, IonIcon, TableModule, IonMenuButton]
 })
@@ -205,9 +205,8 @@ export class OfficersDashboardROPage implements OnInit {
     // console.log('Current Year in RO Dashboard:', current_year);
     // console.log('Current Session in RO Dashboard:', this.curent_session);
 
-    const storedData = sessionStorage.getItem('logined_officer_data');
-    // console.log('logined_officer_data', storedData);
-    const rangid = storedData ? JSON.parse(storedData).rang_id : null;
+    const officerData = this.authService.getOfficerData();
+    const rangid = officerData ? officerData.rang_id : null;
 
 
     this.updateTranslation();
@@ -309,7 +308,11 @@ export class OfficersDashboardROPage implements OnInit {
             {
               title: 'भुगतान रिपोर्ट',
               icon: 'wallet-outline',
-              url: 'ropit-paudho-ki-sankhya/report',
+              url: 'payment-report',
+               state: {
+                range_id: rangid,
+                year: 1
+              },
               is_submenu: false
 
             }
@@ -370,11 +373,7 @@ export class OfficersDashboardROPage implements OnInit {
   }
 
   getOfficersSessionData() {
-    const storedData = sessionStorage.getItem('logined_officer_data');
-    if (storedData) {
-      return JSON.parse(storedData);
-    }
-    return null;
+    return this.authService.getOfficerData();
   }
 
   searchMobile = "";
@@ -394,7 +393,7 @@ export class OfficersDashboardROPage implements OnInit {
         officersLoginModel.circle_id,
         officersLoginModel.devision_id,
         officersLoginModel.rang_id,
-        officersLoginModel.officerId.toString(),
+        officersLoginModel.officerId?.toString() || '',
         this.curent_session
 
       ).subscribe(
@@ -500,6 +499,9 @@ export class OfficersDashboardROPage implements OnInit {
       'receipt-outline': receiptOutline,
       'cash-outline': cashOutline,
       'list-outline': listOutline,
+      'create-outline': createOutline,
+      'checkmark-circle-outline': checkmarkCircleOutline,
+      'close-circle-outline': closeCircleOutline,
       moon, sunny
     });
   }
@@ -620,7 +622,7 @@ export class OfficersDashboardROPage implements OnInit {
       officersLoginModel.circle_id,
       officersLoginModel.devision_id,
       officersLoginModel.rang_id,
-      officersLoginModel.officerId.toString(),
+      officersLoginModel.officerId?.toString() || '',
       this.currentPage,
       this.pageSize,
       this.curent_session
@@ -745,7 +747,10 @@ export class OfficersDashboardROPage implements OnInit {
 
   getLoginedOfficerName(): string {
     const officersLoginModel = this.getOfficersSessionData() as OfficersLoginResponseModel;
-    return officersLoginModel.officer_name + " (" + officersLoginModel.designation_name + ")";
+    if (officersLoginModel) {
+      return officersLoginModel.officer_name + " (" + officersLoginModel.designation_name + ")";
+    }
+    return '';
   }
 
   // async onMenuItemClick(page: string) {
@@ -873,7 +878,7 @@ export class OfficersDashboardROPage implements OnInit {
   }
 
   async acceptOrRejectAwedan(model: GetAwedanResponseModel) {
-    console.log('model', model.regTableId)
+    // console.log('model', model.regTableId)
     const alert = await this.alertController.create({
       message: "आवेदन को स्वीकृत या अस्वीकृत करें |",
       buttons: [
@@ -989,6 +994,7 @@ export class OfficersDashboardROPage implements OnInit {
   }
 
   async logoutFunction() {
+    this.menuCtrl.close(); // Prevent aria-hidden focus warnings by closing menu before logging out
     const modal = await this.modalCtrl.create({
       component: MessageDialogComponent,
       cssClass: 'custom-dialog-modal',
@@ -1024,13 +1030,13 @@ export class OfficersDashboardROPage implements OnInit {
   }
 
   editAwedan(item: GetAwedanResponseModel) {
-    console.log('🔵 Edit button clicked, item:', item);
-    console.log('Application number:', item.application_number);
-    console.log('Item ID:', item.id);
+    // console.log('🔵 Edit button clicked, item:', item);
+    // console.log('Application number:', item.application_number);
+    // console.log('Item ID:', item.id);
 
     // Validate required data
     if (!item || !item.application_number) {
-      console.error('❌ Invalid item or missing application number:', item);
+      // console.error('❌ Invalid item or missing application number:', item);
       this.longToast('आवेदन संख्या उपलब्ध नहीं है');
       return;
     }
@@ -1043,28 +1049,28 @@ export class OfficersDashboardROPage implements OnInit {
         editMode: true
       };
 
-      console.log('🚀 Navigating to submit-awedan-by-ro2 with state:', navigationState);
+      // console.log('🚀 Navigating to submit-awedan-by-ro2 with state:', navigationState);
 
       this.router.navigate(['submit-awedan-by-ro2'], {
         state: navigationState,
         replaceUrl: false
       }).then(
         (success) => {
-          console.log('✅ Navigation promise resolved:', success);
+          // console.log('✅ Navigation promise resolved:', success);
           if (success) {
-            console.log('✅ Successfully navigated to edit page');
+            // console.log('✅ Successfully navigated to edit page');
           } else {
-            console.warn('⚠️ Navigation returned false - route might not exist');
+            // console.warn('⚠️ Navigation returned false - route might not exist');
             this.longToast('संपादन पृष्ठ नहीं मिला');
           }
         },
         (error) => {
-          console.error('❌ Navigation promise rejected:', error);
+          // console.error('❌ Navigation promise rejected:', error);
           this.longToast('संपादन पृष्ठ खोलने में त्रुटि: ' + (error?.message || 'अज्ञात त्रुटि'));
         }
       );
     } catch (error) {
-      console.error('❌ Error in editAwedan:', error);
+      // console.error('❌ Error in editAwedan:', error);
       this.longToast('संपादन पृष्ठ खोलने में त्रुटि: ' + (error as Error).message);
     }
   }

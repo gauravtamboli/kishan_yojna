@@ -10,7 +10,7 @@ import { ChangeDetectorRef } from '@angular/core';
 import { ApiService } from 'src/app/services/api.service';
 import { OfficersLoginResponseModel } from '../officer-login/OfficersLoginResponse.model';
 import { addIcons } from 'ionicons';
-import { appsOutline, homeOutline, informationOutline, informationCircle, buildOutline, logOutOutline, chevronBackOutline, chevronForwardOutline, optionsOutline, reorderThreeOutline, downloadOutline, chevronDownOutline, moon, sunny } from 'ionicons/icons';
+import { appsOutline, homeOutline, informationOutline, informationCircle, buildOutline, logOutOutline, chevronBackOutline, chevronForwardOutline, optionsOutline, reorderThreeOutline, downloadOutline, chevronDownOutline, moon, sunny, listOutline, createOutline, checkmarkCircleOutline, closeCircleOutline, personOutline, peopleOutline, businessOutline, documentTextOutline } from 'ionicons/icons';
 import { Browser } from '@capacitor/browser';
 import { Platform, AlertController } from '@ionic/angular';
 import { NetworkCheckService } from 'src/app/services/network-check.service';
@@ -145,6 +145,8 @@ export class OfficersDashboardSDOPage implements OnInit {
   totalDFOPendingTextColor = "#673ab7";     // Deep Purple for DFO Pending
   totalApprovedTextColor = "#4caf50";        // Green for Approved
   totalRejectedTextColor = "#f44336";        // Red for Rejected
+  totalBatchTextColor = "#718096";        // Slate for Batch
+  totalBatch: number = 0;                  // प्रकटन बैच (7)
 
   // Pagination
   currentPage: number = 1;
@@ -267,11 +269,7 @@ export class OfficersDashboardSDOPage implements OnInit {
   }
 
   getOfficersSessionData() {
-    const storedData = sessionStorage.getItem('logined_officer_data');
-    if (storedData) {
-      return JSON.parse(storedData);
-    }
-    return null;
+    return this.authService.getOfficerData();
   }
 
   searchMobile = "";
@@ -291,7 +289,7 @@ export class OfficersDashboardSDOPage implements OnInit {
         officersLoginModel.circle_id,
         officersLoginModel.devision_id,
         officersLoginModel.rang_id,
-        officersLoginModel.officerId.toString()
+        officersLoginModel.officerId?.toString() || ''
       ).subscribe(
         async (countsResponse) => {
           if (countsResponse.response.code === 200) {
@@ -317,6 +315,9 @@ export class OfficersDashboardSDOPage implements OnInit {
             this.totalApproved = findCount(6);
             // अस्वीकृत (3, 5) - Treated as rejected/return for correction
             this.totalRejected = findCount(3) + findCount(5);
+
+            // प्रकटन बैच (7)
+            this.totalBatch = findCount(7);
 
             await this.dismissDialog();
             this.cdRef.detectChanges();
@@ -377,7 +378,8 @@ export class OfficersDashboardSDOPage implements OnInit {
   addAllIcon() {
     addIcons({
       appsOutline, homeOutline, informationOutline, informationCircle, buildOutline, logOutOutline, reorderThreeOutline,
-      chevronBackOutline, chevronForwardOutline, chevronDownOutline, optionsOutline, downloadOutline, moon, sunny
+      chevronBackOutline, chevronForwardOutline, chevronDownOutline, optionsOutline, downloadOutline, moon, sunny,
+      listOutline, createOutline, checkmarkCircleOutline, closeCircleOutline, personOutline, peopleOutline, businessOutline, documentTextOutline
     });
   }
 
@@ -392,6 +394,10 @@ export class OfficersDashboardSDOPage implements OnInit {
       return this.totalSDOPendingTextColor;
     } else if (this.whichBoxClicked == 5) {
       return this.totalDFOPendingTextColor;
+    } else if (this.whichBoxClicked == 7) {
+      return this.totalRejectedTextColor;
+    } else if (this.whichBoxClicked == 8) {
+      return this.totalBatchTextColor;
     } else {
       return this.totalApprovedTextColor;
     }
@@ -425,6 +431,12 @@ export class OfficersDashboardSDOPage implements OnInit {
       case 6:
         this.total_or_pending_or_accept_or_reject_label = "स्वीकृत";
         break;
+      case 7:
+        this.total_or_pending_or_accept_or_reject_label = "अस्वीकृत";
+        break;
+      case 8:
+        this.total_or_pending_or_accept_or_reject_label = "प्रकटन बैच";
+        break;
     }
 
     this.showDialog("कृपया प्रतीक्षा करें.....");
@@ -446,6 +458,10 @@ export class OfficersDashboardSDOPage implements OnInit {
       whichData = 6; // Status 4 (वनमंडलाधिकारी स्तर पर लंबित)
     } else if (this.whichBoxClicked === 6) {
       whichData = 8; // Status 6 (स्वीकृत)
+    } else if (this.whichBoxClicked === 7) {
+      whichData = 9; // Status 3, 5 (अस्वीकृत / त्रुटि सुधार)
+    } else if (this.whichBoxClicked === 8) {
+      whichData = 10; // Status 7 (प्रकटन बैच)
     }
 
     // Calculate totalRecords based on which box is clicked
@@ -461,6 +477,10 @@ export class OfficersDashboardSDOPage implements OnInit {
       this.totalRecords = this.totalDFOPending;
     } else if (this.whichBoxClicked === 6) {
       this.totalRecords = this.totalApproved;
+    } else if (this.whichBoxClicked === 7) {
+      this.totalRecords = this.totalRejected;
+    } else if (this.whichBoxClicked === 8) {
+      this.totalRecords = this.totalBatch;
     }
 
     this.totalPages = Math.ceil(this.totalRecords / this.pageSize);
@@ -471,7 +491,7 @@ export class OfficersDashboardSDOPage implements OnInit {
       officersLoginModel.circle_id,
       officersLoginModel.devision_id,
       officersLoginModel.rang_id,
-      officersLoginModel.officerId.toString(),
+      officersLoginModel.officerId?.toString() || '',
       this.currentPage,
       this.pageSize,
       this.curent_session
@@ -599,7 +619,10 @@ export class OfficersDashboardSDOPage implements OnInit {
 
   getLoginedOfficerName(): string {
     const officersLoginModel = this.getOfficersSessionData() as OfficersLoginResponseModel;
-    return officersLoginModel.officer_name + " (" + officersLoginModel.designation_name + ")";
+    if (officersLoginModel) {
+      return officersLoginModel.officer_name + " (" + officersLoginModel.designation_name + ")";
+    }
+    return '';
   }
 
   async onMenuItemClick(page: string) {
@@ -842,6 +865,7 @@ export class OfficersDashboardSDOPage implements OnInit {
   }
 
   async logoutFunction() {
+    this.menuCtrl.close();
     const modal = await this.modalCtrl.create({
       component: MessageDialogComponent,
       cssClass: 'custom-dialog-modal',

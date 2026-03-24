@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { IonicModule, ModalController } from '@ionic/angular';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ApiService } from 'src/app/services/api.service';
+import { AuthServiceService } from 'src/app/services/auth-service.service';
 import { SingleAwedanDataResponseModel } from '../view-awedan/SingleAwedanDataResponse.model';
 import { Toast } from '@capacitor/toast';
 import { MessageDialogComponent } from 'src/app/message-dialog/message-dialog.component';
@@ -69,7 +70,8 @@ export class ViewAwedanBykisanROPage implements OnInit {
     private route: ActivatedRoute,
     private modalCtrl: ModalController,
     private apiService: ApiService,
-    private cdRef: ChangeDetectorRef
+    private cdRef: ChangeDetectorRef,
+    private authService: AuthServiceService
   ) {
     addIcons({
       documentTextOutline, downloadOutline, personCircleOutline, locationOutline,
@@ -577,11 +579,7 @@ export class ViewAwedanBykisanROPage implements OnInit {
   }
 
   getOfficersSessionData() {
-    const storedData = sessionStorage.getItem('logined_officer_data');
-    if (storedData) {
-      return JSON.parse(storedData);
-    }
-    return null;
+    return this.authService.getOfficerData();
   }
 
 

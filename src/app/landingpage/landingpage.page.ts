@@ -14,6 +14,7 @@ import { ModalController } from '@ionic/angular';
 import { SelectOnlineOrOfflineAwedanComponent } from '../select-online-or-offline-awedan/select-online-or-offline-awedan.component';
 
 import { SharedserviceService } from '../services/sharedservice.service';
+import { AuthServiceService } from '../services/auth-service.service';
 import AppSignatureHelper from '../plugin/app-signature-helper';
 //import { AppVersion } from '@ionic-native/app-version/ngx';
 
@@ -34,8 +35,8 @@ export class LandingpagePage implements OnInit {
 
 
   ionViewWillEnter() {
-    if (sessionStorage.getItem('logined_officer_data') != null) {
-      const officerData = JSON.parse(sessionStorage.getItem('logined_officer_data')!);
+    const officerData = this.authService.getOfficerData();
+    if (officerData != null) {
       let route = '/officers-dashboard';
       if (officerData && officerData.designation) {
         switch (officerData.designation) {
@@ -68,7 +69,7 @@ export class LandingpagePage implements OnInit {
   languageData: any = {};
   isConnected: boolean = false;
 
-  constructor(private sharedService: SharedserviceService, private platform: Platform, private alertController: AlertController, private router: Router, private menuCtrl: MenuController, private langService: LanguageService, private networkCheckService: NetworkCheckService, private modalCtrl: ModalController) { }
+  constructor(private sharedService: SharedserviceService, private platform: Platform, private alertController: AlertController, private router: Router, private menuCtrl: MenuController, private langService: LanguageService, private networkCheckService: NetworkCheckService, private modalCtrl: ModalController, private authService: AuthServiceService) { }
 
   versionNumber: string = "";
 

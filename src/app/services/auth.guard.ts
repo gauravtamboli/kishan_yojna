@@ -8,25 +8,54 @@ export const authGuard: CanActivateFn = async (route, state) => {
   const router = inject(Router);
 
   const isLoggedIn = authService.getOfficersSessionData();
+  const isExpired = authService.isTokenExpired();
 
-  if (!await isLoggedIn) {
+  if (!await isLoggedIn || isExpired) {
+    if (isExpired) {
+      await authService.logout();
+    }
     router.navigate(['/splash']);
     return false;
   }
 
-  // Get officer data to check designation
-  const storedData = sessionStorage.getItem('logined_officer_data');
-  if (storedData) {
-    const officerData = JSON.parse(storedData);
+  // Extract user designation (converted to number for matching)
+  const officerData = authService.getOfficerData();
+  const designation = officerData ? Number(officerData.designation) : null;
+
+  if (designation !== null) {
+
+    // Define Role Access Control Map
+    // 1: Circle/CFO, 2: DFO, 3: SDO, 4: RO, 6/7: Supreme/SuperAdmin
+    const roleRestrictions: { [pattern: string]: number[] } = {
+      '/officers-dashboard-circle': [1],
+      '/officers-dashboard-sdo': [3],
+      '/officers-dashboard-ro': [4],
+      '/officers-dashboard-supreme': [6, 7],
+      '/vendor-payment-list': [2, 4],      // Testing: DFO (2) & RO (4)
+      '/payment': [2, 4],                  // Only DFO & RO
+      '/create-bill': [2, 4],              // Only DFO & RO
+      '/payment-report': [2, 4]            // Only DFO & RO
+    };
+
+    // Strict check for DFO base dashboard
+    const url = state.url.split('?')[0]; // discard query params
+    const isBaseDfoDashboard = url.endsWith('/officers-dashboard') || url.endsWith('/officers-dashboard/');
     
-    // If RO tries to access regular officers-dashboard, redirect to RO dashboard
-    if (state.url.includes('/officers-dashboard') && 
-        !state.url.includes('/officers-dashboard-ro') && 
-        !state.url.includes('/officers-dashboard-sdo') &&
-        officerData.designation === "4") {
-      router.navigate(['/officers-dashboard-ro'], { replaceUrl: true });
-      return false; // Block access to regular dashboard
+    if (isBaseDfoDashboard && designation !== 2) {
+      router.navigate(['/year-select'], { replaceUrl: true });
+      return false;
     }
+
+    // Dynamic pattern matching
+    for (const [pattern, allowedRoles] of Object.entries(roleRestrictions)) {
+      if (url.includes(pattern)) {
+        if (!allowedRoles.includes(designation)) {
+          router.navigate(['/year-select'], { replaceUrl: true });
+          return false;
+        }
+      }
+    }
+
   }
 
   return true;

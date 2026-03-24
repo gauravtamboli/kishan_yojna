@@ -16,14 +16,14 @@
 </ion-header>
 
 
-<ion-content>
+<ion-content  >
   <!-- Page Loading Indicator -->
   <ion-loading *ngIf="isPageLoading" [isOpen]="isPageLoading" message="डेटा लोड हो रहा है..." spinner="circular"
     backdropDismiss="false">
   </ion-loading>
 
   <!-- Main Content - Hide until loading complete -->
-  <div *ngIf="!isPageLoading">
+  <div *ngIf="!isPageLoading" style="padding: 20px;">
     <!-- Applicant Card (same fields as normal page) -->
     <div class="estimate-container" *ngIf="singleData">
       <ion-card class="applicant-card">

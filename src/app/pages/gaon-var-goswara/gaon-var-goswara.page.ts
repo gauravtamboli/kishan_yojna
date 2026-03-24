@@ -12,6 +12,7 @@ import { ApiService } from '../../services/api.service';
 import { Toast } from '@capacitor/toast';
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
+import { AuthServiceService } from '../../services/auth-service.service';
 import { DivisionReportWithVillageModel, DivisionReportWithVillageResponse, PlantMasterModel } from './DivisionReportWithVillage.model';
 import * as XLSX from 'xlsx';
 import * as FileSaver from 'file-saver';
@@ -48,7 +49,8 @@ export class GaonVarGoswaraPage implements OnInit {
     private apiService: ApiService,
     private cdRef: ChangeDetectorRef,
     private router: Router,
-    private location: Location
+    private location: Location,
+    private authService: AuthServiceService
   ) {
     addIcons({ 
       searchOutline, 
@@ -66,13 +68,13 @@ export class GaonVarGoswaraPage implements OnInit {
   }
 
   getOfficerData() {
-    const storedData = sessionStorage.getItem('logined_officer_data');
-    if (storedData) {
-      const officerData = JSON.parse(storedData);
+    const officerData = this.authService.getOfficerData();
+    if (officerData) {
       this.designation = Number(officerData.designation);
-      this.divisionId = Number(officerData.devision_id || officerData.division_id);
-      this.rangeId = Number(officerData.rang_id || officerData.range_id);
-      this.subDivisionId = Number(officerData.sub_div_id || officerData.sdo_id);
+      this.divisionId = Number(officerData.devision_id);
+      this.rangeId = Number(officerData.rang_id);
+      // sub_div_id might not be in the base model, but let's check
+      this.subDivisionId = (officerData as any).sub_div_id || (officerData as any).sdo_id;
     }
   }
 
@@ -255,9 +257,8 @@ export class GaonVarGoswaraPage implements OnInit {
   }
 
   goBack() {
-    const storedData = sessionStorage.getItem('logined_officer_data');
-    if (storedData) {
-      const officerData = JSON.parse(storedData);
+    const officerData = this.authService.getOfficerData();
+    if (officerData) {
       const designation = Number(officerData.designation);
       if (designation === 2) {
         // DFO

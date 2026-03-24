@@ -9,6 +9,7 @@ import {
 import { ActivatedRoute, Router } from '@angular/router';
 import { ApiService } from 'src/app/services/api.service';
 import { OfficersLoginResponseModel } from '../officer-login/OfficersLoginResponse.model';
+import { AuthServiceService } from 'src/app/services/auth-service.service';
 import { Toast } from '@capacitor/toast';
 import { 
   YearTwoPlantResponse, 
@@ -46,7 +47,8 @@ export class YearTwoPlantEntryPage implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private apiService: ApiService,
-    private cdRef: ChangeDetectorRef
+    private cdRef: ChangeDetectorRef,
+    private authService: AuthServiceService
   ) {}
 
   ngOnInit() {
@@ -222,11 +224,7 @@ export class YearTwoPlantEntryPage implements OnInit {
   }
 
   getOfficersSessionData(): OfficersLoginResponseModel | null {
-    const storedData = sessionStorage.getItem('logined_officer_data');
-    if (storedData) {
-      return JSON.parse(storedData);
-    }
-    return null;
+    return this.authService.getOfficerData();
   }
 
   isRODesignation(): boolean {

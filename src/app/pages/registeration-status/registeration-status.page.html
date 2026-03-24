@@ -1,90 +1,142 @@
-<ion-header>
-  <ion-toolbar color="primary">
+<ion-header class="ion-no-border">
+  <ion-toolbar class="gradient-header">
     <ion-buttons slot="start">
-      <ion-back-button (click)="goBack()" class="custom-back-button" defaultHref="/landingpage"></ion-back-button>
+      <ion-back-button (click)="goBack()" defaultHref="/landingpage"></ion-back-button>
     </ion-buttons>
     <ion-title class="responsive-toolbar-title">{{ getTranslation('kisan_registeratino_status') }}</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content [class.dark-mode]="false">
+  <ion-loading [isOpen]="isLoading" [message]="loadingMessage"></ion-loading>
 
-  <ion-loading cssClass="custom-loading" [isOpen]="isLoading" [message]="loadingMessage"></ion-loading>
+  <div class="main-container">
 
-  <ion-grid style="margin-left: 5px; margin-right: 5px;">
+    <!-- INPUT & VERIFICATION SECTION -->
+    <div class="glass-card input-section" *ngIf="!isOTPVerified">
+      <div class="section-icon">
+        <ion-icon name="phone-portrait-outline"></ion-icon>
+      </div>
+      <h2>आवेदन की स्थिति</h2>
+      <p>अपनी आवेदन की जानकारी देखने के लिए कृपया अपना पंजीकृत मोबाइल नंबर सत्यापित करें।</p>
+      
+      <ion-grid>
+        <ion-row class="ion-justify-content-center">
+          <ion-col size="12" size-md="8">
+            <ion-item lines="none" class="custom-input">
+              <ion-icon name="call-outline" slot="start" color="primary"></ion-icon>
+              <ion-input [(ngModel)]="inputMobileNumber" type="tel" 
+                placeholder="10 अंकों का मोबाइल नंबर दर्ज करें" 
+                maxlength="10" 
+                [disabled]="isOTPVerified" />
+            </ion-item>
+            
+            <ion-button expand="block" (click)="getOTP()" class="action-btn">
+              ओटीपी प्राप्त करें
+              <ion-icon name="arrow-forward" slot="end"></ion-icon>
+            </ion-button>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </div>
 
-    <ion-grid>
-      <ion-row class="ion-justify-content-center ion-align-items-center"
-        style="width: 100%; display: flex; justify-content: center;">
-        <ion-col size="12" size-lg="9">
-          <ion-input [disabled]="isOTPVerified" [(ngModel)]="inputMobileNumber" type="number"
-            label="OTP के लिए मोबाइल नंबर दर्ज करें" label-placement="floating" fill="outline" maxlength="10" />
-          <ion-button *ngIf="!isOTPVerified else showListOfAwedan"
-            style="width: 100%; display: flex; flex-direction: column; align-items: center;" (click)="getOTP()">ओटीपी
-            प्राप्त करें</ion-button>
-        </ion-col>
+    <!-- LIST OF APPLICATIONS SECTION -->
+    <div class="status-section" *ngIf="isOTPVerified && listOfAwedan.length > 0">
+      <h3 class="section-title">आवेदन ({{ listOfAwedan.length }})</h3>
 
-      </ion-row>
-
-    </ion-grid>
-
-    <ion-row>
-      <ng-template #showListOfAwedan>
-
-        <p-table [value]="listOfAwedan" responsiveLayout="stack" class="custom-margin-table striped-table">
-
-          <!-- Table Header -->
+      <!-- DESKTOP TABLE VIEW -->
+      <div class="glass-card premium-table ion-hide-sm-down">
+        <p-table [value]="listOfAwedan" responsiveLayout="scroll">
           <ng-template pTemplate="header">
             <tr>
-              <th style="align-items: center; text-align: center;">हितग्राही का नाम</th>
-              <th style="align-items: center; text-align: center;">पिता का नाम</th>
-              <th style="align-items: center; text-align: center;">वृत्त (वन मंडल)</th>
-              <th style="align-items: center; text-align: center;">आवेदन की स्थिति</th>
+              <th>हितग्राही</th>
+              <th>वृत्त एवं मण्डल</th>
+              <th>आवेदन की स्थिति</th>
+              <th class="ion-text-end">कार्य</th>
             </tr>
           </ng-template>
-
-          <!-- Table Body -->
           <ng-template pTemplate="body" let-item>
             <tr>
-              <td style="align-items: center; text-align: center;">
-                <span class="p-column-title">हितग्राही का नाम</span>
-                <div class="cell-value">{{ item.hitgrahi_name }}</div>
+              <td>
+                <div style="font-weight: 700; color: var(--ion-color-dark)">{{ item.hitgrahi_name }}</div>
+                <div style="font-size: 0.85rem; color: var(--ion-color-step-600)">{{ item.father_name }}</div>
               </td>
-              <td style="align-items: center; text-align: center;">
-                <span class="p-column-title">पिता का नाम</span>
-                <div class="cell-value">{{ item.father_name }}</div>
+              <td>
+                <div>{{ item.circle_name }}</div>
+                <div style="font-size: 0.85rem; color: var(--ion-color-step-600)">{{ item.division_name }}</div>
               </td>
-              <td style="align-items: center; text-align: center;">
-                <span class="p-column-title">वृत्त (वन मंडल)</span>
-                <div class="cell-value">{{ item.circle_name }} ({{ item.division_name }})</div>
-              </td>
-              <td style="align-items: center; text-align: center;">
-                <span class="p-column-title">आवेदन की स्थिति</span>
-                <div class="cell-value" [style.color]="getTextColorOfStatus(item.awedan_status)">
+              <td>
+                <span class="status-pill" [ngClass]="{
+                  'pending': item.awedan_status === '0',
+                  'approved': item.awedan_status === '1',
+                  'rejected': item.awedan_status !== '0' && item.awedan_status !== '1'
+                }">
                   {{ item.awedan_status_text }}
-                </div>
+                </span>
               </td>
-
-
-              <td style="align-items: center; text-align: center;">
-                <ion-label class="action-link" (click)="viewApplication(item)">
-                  विवरण देखें
-                </ion-label>
+              <td class="ion-text-end">
+                <a class="view-link" (click)="viewApplication(item)">
+                  <span>विवरण देखें</span>
+                  <ion-icon name="chevron-forward-outline"></ion-icon>
+                </a>
               </td>
-
-              <td *ngIf="!isWebPlatform()">
-                <div style="height: 1px; background-color: black; width: 100%;"></div>
-              </td>
-
             </tr>
           </ng-template>
-
         </p-table>
+      </div>
 
-      </ng-template>
+      <!-- MOBILE CARD VIEW -->
+      <div class="ion-hide-md-up">
+        <div class="mobile-card" *ngFor="let item of listOfAwedan" [ngClass]="{
+          'status-pending': item.awedan_status === '0',
+          'status-approved': item.awedan_status === '1',
+          'status-rejected': item.awedan_status !== '0' && item.awedan_status !== '1'
+        }">
+          <div class="card-header">
+            <div class="beneficiary">
+              <h3>{{ item.hitgrahi_name }}</h3>
+              <p>पुत्र/पुत्री: {{ item.father_name }}</p>
+            </div>
+            <div class="status-badge" [ngClass]="{
+              'pending': item.awedan_status === '0',
+              'approved': item.awedan_status === '1',
+              'rejected': item.awedan_status !== '0' && item.awedan_status !== '1'
+            }">
+              {{ item.awedan_status_text }}
+            </div>
+          </div>
+          
+          <div class="info-grid">
+            <div class="info-item">
+              <label>वृत्त</label>
+              <span>{{ item.circle_name }}</span>
+            </div>
+            <div class="info-item">
+              <label>मण्डल</label>
+              <span>{{ item.division_name }}</span>
+            </div>
+          </div>
 
-    </ion-row>
+          <ion-button expand="block" fill="outline" color="primary" class="view-btn" (click)="viewApplication(item)">
+            विवरण देखें
+            <ion-icon name="chevron-forward-outline" slot="end"></ion-icon>
+          </ion-button>
+        </div>
+      </div>
+    </div>
 
-  </ion-grid>
+    <!-- EMPTY STATE -->
+    <div class="glass-card ion-text-center status-section" *ngIf="isOTPVerified && listOfAwedan.length === 0">
+      <div class="section-icon" style="color: var(--ion-color-step-400); background: rgba(0,0,0,0.05)">
+        <ion-icon name="document-text-outline"></ion-icon>
+      </div>
+      <h2>कोई आवेदन नहीं मिला</h2>
+      <p>इस मोबाइल नंबर पर कोई सक्रिय आवेदन पंजीकृत नहीं है।</p>
+      <ion-button fill="clear" (click)="isOTPVerified = false">
+        <ion-icon name="refresh-outline" slot="start"></ion-icon>
+        नंबर बदलें
+      </ion-button>
+    </div>
 
+  </div>
 </ion-content>

@@ -10,7 +10,7 @@ import { ChangeDetectorRef } from '@angular/core';
 import { ApiService } from 'src/app/services/api.service';
 import { OfficersLoginResponseModel } from '../officer-login/OfficersLoginResponse.model';
 import { addIcons } from 'ionicons';
-import { appsOutline, homeOutline, informationOutline, informationCircle, buildOutline, logOutOutline, chevronBackOutline, chevronForwardOutline, downloadOutline, chevronDownOutline, optionsOutline, reorderThreeOutline, documentTextOutline, statsChartOutline, mapOutline, peopleOutline, personOutline, addCircleOutline, trendingUpOutline, leafOutline, hammerOutline, clipboardOutline, businessOutline, receiptOutline, cashOutline, listOutline, walletOutline, moon, sunny } from 'ionicons/icons';
+import { appsOutline, homeOutline, informationOutline, informationCircle, buildOutline, logOutOutline, chevronBackOutline, chevronForwardOutline, downloadOutline, chevronDownOutline, optionsOutline, reorderThreeOutline, documentTextOutline, statsChartOutline, mapOutline, peopleOutline, personOutline, addCircleOutline, trendingUpOutline, leafOutline, hammerOutline, clipboardOutline, businessOutline, receiptOutline, cashOutline, listOutline, walletOutline, moon, sunny, createOutline, checkmarkCircleOutline, closeCircleOutline } from 'ionicons/icons';
 import { Browser } from '@capacitor/browser';
 import { Platform, AlertController } from '@ionic/angular';
 import { NetworkCheckService } from 'src/app/services/network-check.service';
@@ -28,6 +28,17 @@ import { AuthServiceService } from 'src/app/services/auth-service.service';
 import * as XLSX from 'xlsx';
 import * as FileSaver from 'file-saver';
 import { StorageService } from 'src/app/services/storage.service';
+
+export interface MenuPage {
+  title: string;
+  is_submenu: boolean;
+  url?: string;
+  route?: string;
+  state?: any;
+  children?: MenuPage[];
+  open?: boolean;
+  icon?: string;
+}
 
 
 @Component({
@@ -114,7 +125,10 @@ export class OfficersDashboardPage implements OnInit {
       'business-outline': businessOutline,
       'receipt-outline': receiptOutline,
       'cash-outline': cashOutline,
-      'list-outline': listOutline
+      'list-outline': listOutline,
+      'create-outline': createOutline,
+      'checkmark-circle-outline': checkmarkCircleOutline,
+      'close-circle-outline': closeCircleOutline
     });
   }
 
@@ -151,7 +165,7 @@ export class OfficersDashboardPage implements OnInit {
   }
 
 
-  pages: { title: string, url: string, is_submenu: boolean }[] = [];
+  pages: MenuPage[] = [];
 
   isConnected: boolean = false;
 
@@ -187,6 +201,7 @@ export class OfficersDashboardPage implements OnInit {
   totalDFOPending: number = 0;            // वनमंडलाधिकारी स्तर पर लंबित (4)
   totalApproved: number = 0;               // स्वीकृत (6)
   totalRejected: number = 0;               // अस्वीकृत (3, 5)
+  totalBatch: number = 0;                  // प्रकटन बैच (7)
   total_or_pending_or_accept_or_reject_label: string = "कुल आवेदन";
   whichBoxClicked: number = 1;
 
@@ -196,6 +211,8 @@ export class OfficersDashboardPage implements OnInit {
   totalSDOPendingTextColor = "#9c27b0";     // Purple for SDO Pending
   totalDFOPendingTextColor = "#673ab7";     // Deep Purple for DFO Pending
   totalApprovedTextColor = "#4caf50";        // Green for Approved
+  totalRejectedTextColor = "#f44336";        // Red for Rejected
+  totalBatchTextColor = "#7581da";          // Color for Batch
 
   // Pagination
   currentPage: number = 1;
@@ -212,9 +229,8 @@ export class OfficersDashboardPage implements OnInit {
   ionViewWillEnter() {
     if (this.sharedPreference.getRefresh()) {
 
-      const storedData = sessionStorage.getItem('logined_officer_data');
-      if (storedData) {
-        const officerData = JSON.parse(storedData);
+      const officerData = this.authService.getOfficerData();
+      if (officerData) {
         if (officerData.designation === "4") { // RO designation
           this.router.navigateByUrl('/officers-dashboard-ro', { replaceUrl: true });
         } else if (officerData.designation === "1") { // Circle designation
@@ -243,6 +259,9 @@ export class OfficersDashboardPage implements OnInit {
 
 
     this.langService.language$.subscribe(() => {
+      const officerData = this.authService.getOfficerData();
+      const rangid = officerData ? officerData.rang_id : null;
+
       this.pages = [
         // {
         //   title: this.getTranslation('offline_to_online_awedan'),
@@ -257,28 +276,91 @@ export class OfficersDashboardPage implements OnInit {
         {
           title: 'गोस्वारा रिपोर्ट ',
           url: 'goswara-report',
-          is_submenu: false
+          is_submenu: false,
+          icon: 'document-text-outline'
         },
         {
           title: 'प्रजातिवार गोस्वारा रिपोर्ट ',
           url: 'prajati-goswara-report',
-          is_submenu: false
+          is_submenu: false,
+          icon: 'stats-chart-outline'
         },
-        // {
-        //   title: this.getTranslation('new_awedan'),
-        //   url: 'add-awedan-by-officer',
-        //   is_submenu: false
-        // },
-        // {
-        //   title: this.getTranslation('circle_wise_hitgrahi_report'),
-        //   url: 'make-offline-awedan-to-online',
-        //   is_submenu: true
-        // },
-        // {
-        //   title: 'LOGOUT',
-        //   url: 'logout',
-        //   is_submenu: false
-        // }
+        {
+          title: 'गाँव वार गोस्वारा',
+          url: 'gaon-var-goswara',
+          is_submenu: false,
+          icon: 'map-outline'
+        },
+        {
+          title: 'दर्ज करें',
+          is_submenu: true,
+          icon: 'add-circle-outline',
+          children: [
+            {
+              title: 'गड्ढों की संख्या दर्ज करें',
+              url: 'number-of-pit',
+              is_submenu: false,
+              icon: 'hammer-outline'
+            },
+            {
+              title: 'पौधों की संख्या दर्ज करें',
+              url: 'ropit-paudho-ki-sankhya',
+              is_submenu: false,
+              icon: 'leaf-outline'
+            },
+          ]
+        },
+        {
+          title: 'भुगतान',
+          is_submenu: true,
+          icon: 'cash-outline',
+          children: [
+            {
+              icon: 'business-outline',
+              title: 'वेंडर भुगतान बनाए ',
+              url: 'vendor-payment-list',
+              state: {
+                range_id: rangid,
+                year: 1,
+                fin_year: this.curent_session
+              },
+              is_submenu: false
+            },
+            {
+              title: 'हितग्राही भुगतान बनाएं',
+              icon: 'person-outline',
+              url: 'payment',
+              state: {
+                range_id: rangid,
+                year: 1,
+                fin_year: this.curent_session
+              },
+              is_submenu: false
+            },
+            {
+              title: 'भुगतान करे ',
+              icon: 'receipt-outline',
+              url: 'create-bill',
+              state: {
+                range_id: rangid,
+                year: 1,
+                fin_year: this.curent_session
+              },
+              is_submenu: false
+            },
+            {
+              title: 'भुगतान रिपोर्ट',
+              icon: 'clipboard-outline',
+              url: 'payment-report',
+              state: {
+                range_id: rangid,
+                year: 1,
+                fin_year: this.curent_session
+              },
+              is_submenu: false
+            }
+          ]
+        }
       ];
     });
 
@@ -286,11 +368,7 @@ export class OfficersDashboardPage implements OnInit {
   }
 
   getOfficersSessionData() {
-    const storedData = sessionStorage.getItem('logined_officer_data');
-    if (storedData) {
-      return JSON.parse(storedData);
-    }
-    return null;
+    return this.authService.getOfficerData();
   }
 
   searchMobile = "";
@@ -309,7 +387,7 @@ export class OfficersDashboardPage implements OnInit {
         officersLoginModel.circle_id,
         officersLoginModel.devision_id,
         officersLoginModel.rang_id,
-        officersLoginModel.officerId.toString()
+        officersLoginModel.officerId?.toString() || ''
       ).subscribe(
         async (countsResponse) => {
           if (countsResponse.response.code === 200) {
@@ -335,6 +413,8 @@ export class OfficersDashboardPage implements OnInit {
             this.totalApproved = findCount(6);
             // अस्वीकृत (3, 5)
             this.totalRejected = findCount(3) + findCount(5);
+            // प्रकटन बैच (7)
+            this.totalBatch = findCount(7);
 
             await this.dismissDialog();
             this.cdRef.detectChanges();
@@ -404,6 +484,10 @@ export class OfficersDashboardPage implements OnInit {
       return this.totalSDOPendingTextColor;
     } else if (this.whichBoxClicked == 5) {
       return this.totalDFOPendingTextColor;
+    } else if (this.whichBoxClicked == 7) {
+      return this.totalRejectedTextColor;
+    } else if (this.whichBoxClicked == 8) {
+      return this.totalBatchTextColor;
     } else {
       return this.totalApprovedTextColor;
     }
@@ -433,6 +517,12 @@ export class OfficersDashboardPage implements OnInit {
       case 6:
         this.total_or_pending_or_accept_or_reject_label = "स्वीकृत";
         break;
+      case 7:
+        this.total_or_pending_or_accept_or_reject_label = "अस्वीकृत";
+        break;
+      case 8:
+        this.total_or_pending_or_accept_or_reject_label = "ड्राफ्ट";
+        break;
     }
 
     this.showDialog("कृपया प्रतीक्षा करें.....");
@@ -454,6 +544,10 @@ export class OfficersDashboardPage implements OnInit {
       whichData = 6; // Status 4 (वनमंडलाधिकारी स्तर पर लंबित)
     } else if (this.whichBoxClicked === 6) {
       whichData = 8; // Status 6 (स्वीकृत)
+    } else if (this.whichBoxClicked === 7) {
+      whichData = 9; // Status 3, 5 (अस्वीकृत)
+    } else if (this.whichBoxClicked === 8) {
+      whichData = 10; // Status 7 (ड्राफ्ट/बैच)
     }
 
     // Calculate totalRecords based on which box is clicked
@@ -469,6 +563,10 @@ export class OfficersDashboardPage implements OnInit {
       this.totalRecords = this.totalDFOPending;
     } else if (this.whichBoxClicked === 6) {
       this.totalRecords = this.totalApproved;
+    } else if (this.whichBoxClicked === 7) {
+      this.totalRecords = this.totalRejected;
+    } else if (this.whichBoxClicked === 8) {
+      this.totalRecords = this.totalBatch;
     }
 
     this.totalPages = Math.ceil(this.totalRecords / this.pageSize);
@@ -479,9 +577,10 @@ export class OfficersDashboardPage implements OnInit {
       officersLoginModel.circle_id,
       officersLoginModel.devision_id,
       officersLoginModel.rang_id,
-      officersLoginModel.officerId.toString(),
+      officersLoginModel.officerId?.toString() || '',
       this.currentPage,
-      this.pageSize
+      this.pageSize,
+      this.curent_session
     ).subscribe(
       (response) => {
         if (response.response.code === 200) {
@@ -597,72 +696,83 @@ export class OfficersDashboardPage implements OnInit {
 
   getLoginedOfficerName(): string {
     const officersLoginModel = this.getOfficersSessionData() as OfficersLoginResponseModel;
-    return officersLoginModel.officer_name + " (" + officersLoginModel.designation_name + ")";
+    if (officersLoginModel) {
+      return officersLoginModel.officer_name + " (" + officersLoginModel.designation_name + ")";
+    }
+    return '';
   }
 
-  async onMenuItemClick(page: string) {
+  toggleSubMenu(index: number, page: MenuPage) {
+    if (page.is_submenu) {
+      page.open = !page.open;
+    } else {
+      this.onMenuItemClick(page);
+    }
+  }
+
+  async onMenuItemClick(page: MenuPage) {
 
     this.isConnected = await this.networkCheckService.getCurrentStatus();
 
-    if (this.isConnected) {
-
-      // if (page === "logout") {
-      //   const modal = await this.modalCtrl.create({
-      //     component: MessageDialogComponent,
-      //     cssClass: 'custom-dialog-modal',
-      //     componentProps: {
-      //       server_message: 'क्या आप लॉगआउट करना चाहते हैं ?',
-      //       isYesNo: true
-      //     },
-      //     backdropDismiss: false
-      //   });
-
-      //   modal.onDidDismiss().then((result) => {
-      //     if (result.data?.confirmed) {
-      //       sessionStorage.clear();
-      //       this.router.navigateByUrl('/splash', { replaceUrl: true });
-      //     }
-      //   });
-
-      //   await modal.present();
-      // }
-
-      if (page === "add-awedan-by-officer") {
-
-        const officersLoginModel = this.getOfficersSessionData() as OfficersLoginResponseModel;
-
-        if (officersLoginModel.designation === "4" || officersLoginModel.designation === "2") {
-
-          this.router.navigate(['submit-awedan-by-ro-dfo'], {
-            queryParams: {
-              isOnline: true
-            }
-          })
-
-        } else {
-          this.router.navigate(['registeration'], {
-            queryParams: {
-              isOnline: true
-            }
-          })
-        }
-
-      } else if (page === 'prajati-goswara-report') {
-        const officerData = this.getOfficersSessionData() as OfficersLoginResponseModel | null;
-        if (officerData?.designation === "1") {
-          this.router.navigate(['prajati-goswara-report-circle']);
-          return;
-        }
-        this.router.navigate([page]);
-      } else {
-        this.router.navigate([page]);
-      }
-
-    } else {
+    if (!this.isConnected) {
       this.longToast(this.getTranslation("no_internet"));
       return;
     }
 
+    if (page.title === "LOGOUT") {
+      //this.openDialog();
+      return;
+    }
+
+    if (page.url === "add-awedan-by-officer") {
+
+      const officersLoginModel = this.getOfficersSessionData() as OfficersLoginResponseModel;
+
+      if (officersLoginModel.designation === "4" || officersLoginModel.designation === "2") {
+
+        this.router.navigate(['submit-awedan-by-ro-dfo'], {
+          queryParams: {
+            isOnline: true
+          }
+        })
+
+      } else {
+
+        this.router.navigate(['registeration'], {
+          queryParams: {
+            isOnline: true
+          }
+        })
+      }
+
+      return;
+    }
+
+    if (page.title === 'प्रजातिवार गोस्वारा रिपोर्ट ') {
+      const officerData = this.getOfficersSessionData() as OfficersLoginResponseModel | null;
+      if (officerData?.designation === "1") {
+        this.router.navigate(['prajati-goswara-report-circle']);
+        return;
+      }
+    }
+
+    if (page.route) {
+      this.router.navigateByUrl(page.route, {
+        state: page.state
+      });
+      return;
+    }
+
+    if (page.url) {
+      if (page.state) {
+        this.router.navigate([page.url], {
+          state: page.state
+        });
+      } else {
+        this.router.navigate([page.url]);
+      }
+      return;
+    }
   }
 
   isApproveApplication(item: GetAwedanResponseModel): boolean {
@@ -818,6 +928,7 @@ export class OfficersDashboardPage implements OnInit {
   }
 
   async logoutFunction() {
+    this.menuCtrl.close();
     const modal = await this.modalCtrl.create({
       component: MessageDialogComponent,
       cssClass: 'custom-dialog-modal',

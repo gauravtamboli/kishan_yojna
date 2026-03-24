@@ -1,38 +1,47 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, Location } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonLoading, IonButton, IonLabel, IonGrid, IonRow, IonCol, IonButtons, IonBackButton, IonHeader, IonTitle, IonToolbar, IonContent, } from '@ionic/angular/standalone';
-import { ModalController } from '@ionic/angular';
+import { IonLoading, IonButton, IonLabel, IonGrid, IonRow, IonCol, IonButtons, IonBackButton, IonHeader, IonTitle, IonToolbar, IonContent, IonIcon } from '@ionic/angular/standalone';
+import { ModalController, NavController, MenuController, Platform, LoadingController } from '@ionic/angular';
 import { LanguageService } from '../../services/language.service';
-import { NavController, MenuController } from '@ionic/angular';
 import { Toast } from '@capacitor/toast';
 import { ChangeDetectorRef } from '@angular/core';
-import { Platform } from '@ionic/angular';
 import { Router, ActivatedRoute } from '@angular/router';
 
 import { ApiService } from 'src/app/services/api.service';
+import { AuthServiceService } from 'src/app/services/auth-service.service';
 import { SharedserviceService } from 'src/app/services/sharedservice.service';
 import { PlantationDetail, PlantationDetailNew, SingleAwedanDataResponseModel } from './SingleAwedanDataResponse.model';
 import { TableModule } from 'primeng/table'; // Import TableModule
 import { NgZone } from '@angular/core';
 import { GetAwedanResponseModel } from '../registeration-status/AwedanResponseList.model';
-// import { InAppBrowser } from '@awesome-cordova-plugins/in-app-browser/ngx';
 import { OfficersLoginResponseModel } from '../officer-login/OfficersLoginResponse.model';
 import { MessageDialogComponent } from 'src/app/message-dialog/message-dialog.component';
-//import { IonicModule } from '@ionic/angular';
 import { NgIf } from '@angular/common';
-//import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { HttpClient } from '@angular/common/http';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Filesystem, Directory } from '@capacitor/filesystem';
 
+import { 
+  personCircleOutline, 
+  documentsOutline, 
+  idCardOutline, 
+  bookOutline, 
+  newspaperOutline, 
+  walletOutline, 
+  mapOutline, 
+  leafOutline, 
+  checkmarkCircleOutline, 
+  closeCircleOutline 
+} from 'ionicons/icons';
+import { addIcons } from 'ionicons';
 
 @Component({
   selector: 'app-view-awedan',
   templateUrl: './view-awedan.page.html',
   styleUrls: ['./view-awedan.page.scss'],
   standalone: true,
-  imports: [NgIf, IonLoading, IonButton, IonLabel, IonGrid, IonRow, IonCol, IonButtons, IonBackButton, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, TableModule]
+  imports: [NgIf, IonLoading, IonButton, IonButtons, IonBackButton, IonContent, IonHeader, IonTitle, IonToolbar, IonIcon, CommonModule, FormsModule, TableModule]
 })
 
 export class ViewAwedanPage implements OnInit {
@@ -42,8 +51,19 @@ export class ViewAwedanPage implements OnInit {
     return this.isLargeScreen;
   }
 
-  constructor(private sanitizer: DomSanitizer, private http: HttpClient, private modalCtrl: ModalController, private route: ActivatedRoute, private router: Router, private menuCtrl: MenuController, private platform: Platform, private navController: NavController, private langService: LanguageService, private cdRef: ChangeDetectorRef, private apiService: ApiService, private sharedServices: SharedserviceService, private zone: NgZone) {
-
+  constructor(private sanitizer: DomSanitizer, private http: HttpClient, private modalCtrl: ModalController, private route: ActivatedRoute, private router: Router, private menuCtrl: MenuController, private platform: Platform, private navController: NavController, private langService: LanguageService, private cdRef: ChangeDetectorRef, private apiService: ApiService, private sharedServices: SharedserviceService, private zone: NgZone, private authService: AuthServiceService) {
+    addIcons({ 
+      personCircleOutline, 
+      documentsOutline, 
+      idCardOutline, 
+      bookOutline, 
+      newspaperOutline, 
+      walletOutline, 
+      mapOutline, 
+      leafOutline, 
+      checkmarkCircleOutline, 
+      closeCircleOutline 
+    });
   }
 
   languageData: any = {};
@@ -68,16 +88,12 @@ export class ViewAwedanPage implements OnInit {
       this.passedAwedanObject = stateData;
       this.mobile_no = passedMobile;
 
-      if (sessionStorage.getItem('logined_officer_data') != null) {
+      if (this.authService.getOfficerData() != null) {
         this.isPendingApplication = this.passedAwedanObject.awedan_status === "0";
       }
 
-
-
       this.getAwedanData();
     } else {
-      // Optional: Handle cases where state is not passed (e.g., direct page load)
-      // You can redirect or show an error if needed
     }
   }
 
@@ -86,11 +102,8 @@ export class ViewAwedanPage implements OnInit {
   }
 
   singleAwedanResponseData?: SingleAwedanDataResponseModel
-
   listOfPlantationDetails: PlantationDetail[] = [];
-
   listOfPlantationDetailsTotal: PlantationDetail[] = [];
-
   listOfPlantationDetailsNew: PlantationDetailNew[] = [];
   listOfPlantationDetailsNewTotal: PlantationDetailNew[] = [];
 
@@ -100,101 +113,88 @@ export class ViewAwedanPage implements OnInit {
 
 
     this.apiService.getSingleAwedanData(this.passedAwedanObject.regTableId).subscribe(
-      async (response) => {
+      async (response: any) => {
 
         this.dismissLoading();
 
         if (response.response.code === 200) {
 
-          //this.singleAwedanResponseData = response.data
-
-          //this.cdRef.markForCheck(); // Triggers view update
-
           this.zone.run(() => {
-            this.singleAwedanResponseData = response.data;
+            const data = response.data;
+            this.singleAwedanResponseData = data;
 
-            // Make list for planation detail //
-            const plantKlonalLess5: PlantationDetail = {
-              prajatiName: "क्लोनल नीलगिरी (5 एकड़ से कम के लिए)",
-              plant_count: this.singleAwedanResponseData.klonal_neelgiri_no_of_plant_less_5_acre,
-              area_size: this.singleAwedanResponseData.klonal_neelgiri_plan_area_less_5_acre
-            };
-            const plantKlonalMore5: PlantationDetail = {
-              prajatiName: "क्लोनल नीलगिरी (5 एकड़ से अधिक के लिए)",
-              plant_count: this.singleAwedanResponseData.klonal_neelgiri_no_of_plant_more_5_acre,
-              area_size: this.singleAwedanResponseData.klonal_neelgiri_plan_area_more_5_acre
-            };
+            if (!data) return;
 
             const plantTypeClonalNilgiri: PlantationDetailNew = {
               prajatiName: "क्लोनल नीलगिरी",
-              plant_count_less_5: this.singleAwedanResponseData.klonal_neelgiri_no_of_plant_less_5_acre,
-              area_size_less_5: this.singleAwedanResponseData.klonal_neelgiri_plan_area_less_5_acre,
-              plant_count_more_5: this.singleAwedanResponseData.klonal_neelgiri_no_of_plant_more_5_acre,
-              area_size_more_5: this.singleAwedanResponseData.klonal_neelgiri_plan_area_more_5_acre
+              plant_count_less_5: data.klonal_neelgiri_no_of_plant_less_5_acre,
+              area_size_less_5: data.klonal_neelgiri_plan_area_less_5_acre,
+              plant_count_more_5: data.klonal_neelgiri_no_of_plant_more_5_acre,
+              area_size_more_5: data.klonal_neelgiri_plan_area_more_5_acre
             }
 
             const plantTypeTissuCultureSagon: PlantationDetailNew = {
               prajatiName: "टिश्यू कल्चर सागौन",
-              plant_count_less_5: this.singleAwedanResponseData.tishu_culture_sagon_no_of_plant_less_5_acre,
-              area_size_less_5: this.singleAwedanResponseData.tishu_culture_sagon_plant_area_less_5_acre,
-              plant_count_more_5: this.singleAwedanResponseData.tishu_culture_sagon_no_of_plant_more_5_acre,
-              area_size_more_5: this.singleAwedanResponseData.tishu_culture_sagon_plant_area_more_5_acre
+              plant_count_less_5: data.tishu_culture_sagon_no_of_plant_less_5_acre,
+              area_size_less_5: data.tishu_culture_sagon_plant_area_less_5_acre,
+              plant_count_more_5: data.tishu_culture_sagon_no_of_plant_more_5_acre,
+              area_size_more_5: data.tishu_culture_sagon_plant_area_more_5_acre
             }
 
             const plantTypeTissuCultureBans: PlantationDetailNew = {
               prajatiName: "टिश्यू कल्चर बांस",
-              plant_count_less_5: this.singleAwedanResponseData.tishu_culture_bansh_no_of_plant_less_5_acre,
-              area_size_less_5: this.singleAwedanResponseData.tishu_culture_bansh_plant_area_less_5_acre,
-              plant_count_more_5: this.singleAwedanResponseData.tishu_culture_bansh_no_of_plant_more_5_acre,
-              area_size_more_5: this.singleAwedanResponseData.tishu_culture_bansh_plant_area_more_5_acre
+              plant_count_less_5: data.tishu_culture_bansh_no_of_plant_less_5_acre,
+              area_size_less_5: data.tishu_culture_bansh_plant_area_less_5_acre,
+              plant_count_more_5: data.tishu_culture_bansh_no_of_plant_more_5_acre,
+              area_size_more_5: data.tishu_culture_bansh_plant_area_more_5_acre
             }
 
             const plantTypeSadharanSagon: PlantationDetailNew = {
               prajatiName: "साधारण सागौन",
-              plant_count_less_5: this.singleAwedanResponseData.normal_sagon_no_of_plant_less_5_acre,
-              area_size_less_5: this.singleAwedanResponseData.normal_sagon_plant_area_less_5_acre,
-              plant_count_more_5: this.singleAwedanResponseData.normal_sagon_no_of_plant_more_5_acre,
-              area_size_more_5: this.singleAwedanResponseData.normal_sagon_plant_area_more_5_acre
+              plant_count_less_5: data.normal_sagon_no_of_plant_less_5_acre,
+              area_size_less_5: data.normal_sagon_plant_area_less_5_acre,
+              plant_count_more_5: data.normal_sagon_no_of_plant_more_5_acre,
+              area_size_more_5: data.normal_sagon_plant_area_more_5_acre
             }
 
             const plantTypeSadharanBans: PlantationDetailNew = {
               prajatiName: "साधारण बांस",
-              plant_count_less_5: this.singleAwedanResponseData.normal_bansh_no_of_plant_less_5_acre,
-              area_size_less_5: this.singleAwedanResponseData.normal_bansh_plant_area_less_5_acre,
-              plant_count_more_5: this.singleAwedanResponseData.normal_bansh_no_of_plant_more_5_acre,
-              area_size_more_5: this.singleAwedanResponseData.normal_bansh_plant_area_more_5_acre
+              plant_count_less_5: data.normal_bansh_no_of_plant_less_5_acre,
+              area_size_less_5: data.normal_bansh_plant_area_less_5_acre,
+              plant_count_more_5: data.normal_bansh_no_of_plant_more_5_acre,
+              area_size_more_5: data.normal_bansh_plant_area_more_5_acre
             }
 
             const plantTypeMiliyaDubiya: PlantationDetailNew = {
               prajatiName: "मिलिया डुबिया",
-              plant_count_less_5: this.singleAwedanResponseData.miliya_dubiya_no_of_plant_less_5_acre,
-              area_size_less_5: this.singleAwedanResponseData.miliya_dubiya_plant_area_less_5_acre,
-              plant_count_more_5: this.singleAwedanResponseData.miliya_dubiya_no_of_plant_more_5_acre,
-              area_size_more_5: this.singleAwedanResponseData.miliya_dubiya_plant_area_more_5_acre
+              plant_count_less_5: data.miliya_dubiya_no_of_plant_less_5_acre,
+              area_size_less_5: data.miliya_dubiya_plant_area_less_5_acre,
+              plant_count_more_5: data.miliya_dubiya_no_of_plant_more_5_acre,
+              area_size_more_5: data.miliya_dubiya_plant_area_more_5_acre
             }
 
             const plantTypeChandan: PlantationDetailNew = {
               prajatiName: "चंदन पौधा",
-              plant_count_less_5: this.singleAwedanResponseData.chandan_no_of_plant_less_5_acre,
-              area_size_less_5: this.singleAwedanResponseData.chandan_plant_area_less_5_acre,
-              plant_count_more_5: this.singleAwedanResponseData.chandan_no_of_plant_more_5_acre,
-              area_size_more_5: this.singleAwedanResponseData.chandan_plant_area_more_5_acre
+              plant_count_less_5: data.chandan_no_of_plant_less_5_acre,
+              area_size_less_5: data.chandan_plant_area_less_5_acre,
+              plant_count_more_5: data.chandan_no_of_plant_more_5_acre,
+              area_size_more_5: data.chandan_plant_area_more_5_acre
             }
 
             const plantTypeOtherPlant: PlantationDetailNew = {
               prajatiName: "अन्य अतिरिक्त लाभकारी पौधा",
-              plant_count_less_5: this.singleAwedanResponseData.other_labhkari_no_of_plant_less_5_acre,
-              area_size_less_5: this.singleAwedanResponseData.other_labhkari_plan_area_less_5_acre,
-              plant_count_more_5: this.singleAwedanResponseData.other_labhkari_no_of_plant_more_5_acre,
-              area_size_more_5: this.singleAwedanResponseData.other_labhkari_plan_area_more_5_acre
+              plant_count_less_5: data.other_labhkari_no_of_plant_less_5_acre,
+              area_size_less_5: data.other_labhkari_plan_area_less_5_acre,
+              plant_count_more_5: data.other_labhkari_no_of_plant_more_5_acre,
+              area_size_more_5: data.other_labhkari_plan_area_more_5_acre
             }
 
             const plantTypeTotalPlant: PlantationDetailNew = {
               prajatiName: "कुल",
-              plant_count_less_5: this.singleAwedanResponseData.total_number_of_plant_less_5_acre,
-              area_size_less_5: this.singleAwedanResponseData.total_area_less_5_acre,
-              plant_count_more_5: this.singleAwedanResponseData.total_number_of_plant_more_5_acre,
-              area_size_more_5: this.singleAwedanResponseData.total_area_more_5_acre
+              plant_count_less_5: data.total_number_of_plant_less_5_acre,
+              area_size_less_5: data.total_area_less_5_acre,
+              plant_count_more_5: data.total_number_of_plant_more_5_acre,
+              area_size_more_5: data.total_area_more_5_acre
             }
 
             if ((plantTypeClonalNilgiri.plant_count_less_5 != "0" && plantTypeClonalNilgiri.area_size_less_5 != "0") || (plantTypeClonalNilgiri.plant_count_more_5 != "0" && plantTypeClonalNilgiri.area_size_more_5 != "0")) {
@@ -233,131 +233,6 @@ export class ViewAwedanPage implements OnInit {
               this.listOfPlantationDetailsNewTotal.push(plantTypeTotalPlant);
             }
 
-
-            const tishuSagonLess5: PlantationDetail = {
-              prajatiName: "टिश्यू कल्चर सागौन (5 एकड़ से कम के लिए)",
-              plant_count: this.singleAwedanResponseData.tishu_culture_sagon_no_of_plant_less_5_acre,
-              area_size: this.singleAwedanResponseData.tishu_culture_sagon_plant_area_less_5_acre
-            };
-            const tishuSagonMore5: PlantationDetail = {
-              prajatiName: "टिश्यू कल्चर सागौन (5 एकड़ से अधिक के लिए)",
-              plant_count: this.singleAwedanResponseData.tishu_culture_sagon_no_of_plant_more_5_acre,
-              area_size: this.singleAwedanResponseData.tishu_culture_sagon_plant_area_more_5_acre
-            };
-
-
-            const tishuBansLess5: PlantationDetail = {
-              prajatiName: "टिश्यू कल्चर बांस (5 एकड़ से कम के लिए)",
-              plant_count: this.singleAwedanResponseData.tishu_culture_bansh_no_of_plant_less_5_acre,
-              area_size: this.singleAwedanResponseData.tishu_culture_bansh_plant_area_less_5_acre
-            };
-            const tishuBansMore5: PlantationDetail = {
-              prajatiName: "टिश्यू कल्चर बांस (5 एकड़ से अधिक के लिए)",
-              plant_count: this.singleAwedanResponseData.tishu_culture_bansh_no_of_plant_more_5_acre,
-              area_size: this.singleAwedanResponseData.tishu_culture_bansh_plant_area_more_5_acre
-            };
-
-
-
-            const normalSagonLess5: PlantationDetail = {
-              prajatiName: "साधारण सागौन (5 एकड़ से कम के लिए)",
-              plant_count: this.singleAwedanResponseData.normal_sagon_no_of_plant_less_5_acre,
-              area_size: this.singleAwedanResponseData.normal_sagon_plant_area_less_5_acre
-            };
-            const normalSagonMore5: PlantationDetail = {
-              prajatiName: "साधारण सागौन (5 एकड़ से अधिक के लिए)",
-              plant_count: this.singleAwedanResponseData.normal_sagon_no_of_plant_more_5_acre,
-              area_size: this.singleAwedanResponseData.normal_sagon_plant_area_more_5_acre
-            };
-
-
-            const normalBanshLess5: PlantationDetail = {
-              prajatiName: "साधारण बांस (5 एकड़ से कम के लिए)",
-              plant_count: this.singleAwedanResponseData.normal_bansh_no_of_plant_less_5_acre,
-              area_size: this.singleAwedanResponseData.normal_bansh_plant_area_less_5_acre
-            };
-            const normalBanshMore5: PlantationDetail = {
-              prajatiName: "साधारण बांस (5 एकड़ से अधिक के लिए)",
-              plant_count: this.singleAwedanResponseData.normal_bansh_no_of_plant_more_5_acre,
-              area_size: this.singleAwedanResponseData.normal_bansh_plant_area_more_5_acre
-            };
-
-
-            const miliaDubiyaLess5: PlantationDetail = {
-              prajatiName: "मिलिया डुबिया (5 एकड़ से कम के लिए)",
-              plant_count: this.singleAwedanResponseData.miliya_dubiya_no_of_plant_less_5_acre,
-              area_size: this.singleAwedanResponseData.miliya_dubiya_plant_area_less_5_acre
-            };
-            const miliaDubiyaMore5: PlantationDetail = {
-              prajatiName: "मिलिया डुबिया (5 एकड़ से अधिक के लिए)",
-              plant_count: this.singleAwedanResponseData.miliya_dubiya_no_of_plant_more_5_acre,
-              area_size: this.singleAwedanResponseData.miliya_dubiya_plant_area_more_5_acre
-            };
-
-            const chandanLess5: PlantationDetail = {
-              prajatiName: "चंदन पौधा (5 एकड़ से कम के लिए)",
-              plant_count: this.singleAwedanResponseData.chandan_no_of_plant_less_5_acre,
-              area_size: this.singleAwedanResponseData.chandan_plant_area_less_5_acre
-            };
-            const chandanMore5: PlantationDetail = {
-              prajatiName: "चंदन पौधा (5 एकड़ से अधिक के लिए)",
-              plant_count: this.singleAwedanResponseData.chandan_no_of_plant_more_5_acre,
-              area_size: this.singleAwedanResponseData.chandan_plant_area_more_5_acre
-            };
-
-
-            const noramlPlantsLess5: PlantationDetail = {
-              prajatiName: "अन्य अतिरिक्त लाभकारी पौधा (5 एकड़ से कम के लिए)",
-              plant_count: this.singleAwedanResponseData.other_labhkari_no_of_plant_less_5_acre,
-              area_size: this.singleAwedanResponseData.other_labhkari_plan_area_less_5_acre
-            };
-            const noramlPlantsMore5: PlantationDetail = {
-              prajatiName: "अन्य अतिरिक्त लाभकारी पौधा (5 एकड़ से अधिक के लिए)",
-              plant_count: this.singleAwedanResponseData.other_labhkari_no_of_plant_more_5_acre,
-              area_size: this.singleAwedanResponseData.other_labhkari_plan_area_more_5_acre
-            };
-
-            const totalPlantsLess5: PlantationDetail = {
-              prajatiName: "कुल (5 एकड़ से कम के लिए)",
-              plant_count: this.singleAwedanResponseData.total_number_of_plant_less_5_acre,
-              area_size: this.singleAwedanResponseData.total_area_less_5_acre
-            };
-            const totalPlantsMore5: PlantationDetail = {
-              prajatiName: "कुल (5 एकड़ से अधिक के लिए)",
-              plant_count: this.singleAwedanResponseData.total_number_of_plant_more_5_acre,
-              area_size: this.singleAwedanResponseData.total_area_more_5_acre
-            };
-
-
-
-            this.listOfPlantationDetails.push(plantKlonalLess5);
-            this.listOfPlantationDetails.push(plantKlonalMore5);
-
-            this.listOfPlantationDetails.push(tishuSagonLess5);
-            this.listOfPlantationDetails.push(tishuSagonMore5);
-
-            this.listOfPlantationDetails.push(tishuBansLess5);
-            this.listOfPlantationDetails.push(tishuBansMore5);
-
-            this.listOfPlantationDetails.push(normalSagonLess5);
-            this.listOfPlantationDetails.push(normalSagonMore5);
-
-            this.listOfPlantationDetails.push(normalBanshLess5);
-            this.listOfPlantationDetails.push(normalBanshMore5);
-
-            this.listOfPlantationDetails.push(miliaDubiyaLess5);
-            this.listOfPlantationDetails.push(miliaDubiyaMore5);
-
-            this.listOfPlantationDetails.push(chandanLess5);
-            this.listOfPlantationDetails.push(chandanMore5);
-
-            this.listOfPlantationDetails.push(noramlPlantsLess5);
-            this.listOfPlantationDetails.push(noramlPlantsMore5);
-
-            this.listOfPlantationDetailsTotal.push(totalPlantsLess5);
-            this.listOfPlantationDetailsTotal.push(totalPlantsMore5);
-
-            //this.cdRef.detectChanges();
           });
 
         } else {
@@ -365,11 +240,9 @@ export class ViewAwedanPage implements OnInit {
         }
 
       },
-      async (error) => {
+      async (error: any) => {
         this.dismissLoading();
-        //this.cdRef.detectChanges();
         this.shortToast(error);
-        //this.apiService.showServerMessages(error)
       }
     );
 
@@ -393,21 +266,21 @@ export class ViewAwedanPage implements OnInit {
   async shortToast(msg: string) {
     await Toast.show({
       text: msg,
-      duration: 'short', // 'short' (2s) or 'long' (3.5s)
-      position: 'bottom', // 'top', 'center', or 'bottom'
+      duration: 'short',
+      position: 'bottom',
     });
   }
 
   async longToast(msg: string) {
     await Toast.show({
       text: msg,
-      duration: 'long', // 'short' (2s) or 'long' (3.5s)
-      position: 'bottom', // 'top', 'center', or 'bottom'
+      duration: 'long',
+      position: 'bottom',
     });
   }
 
   updateTranslation() {
-    this.langService.language$.subscribe((data) => {
+    this.langService.language$.subscribe((data: any) => {
       this.languageData = data;
     });
   }
@@ -421,18 +294,13 @@ export class ViewAwedanPage implements OnInit {
   }
 
   getOfficersSessionData() {
-    const storedData = sessionStorage.getItem('logined_officer_data');
-    if (storedData) {
-      return JSON.parse(storedData);
-    }
-    return null;
+    return this.authService.getOfficerData();
   }
 
   shouldShowApproveRejectButton(): boolean {
-    if (sessionStorage.getItem('logined_officer_data') != null) {
+    if (this.authService.getOfficerData() != null) {
 
       const officersLoginModel = this.getOfficersSessionData() as OfficersLoginResponseModel;
-      ////debugger;
       if (officersLoginModel.designation === "2") {
         return true;
       }
@@ -450,40 +318,6 @@ export class ViewAwedanPage implements OnInit {
       pdf_file_name: model.adhar_pdfFilePath
     };
     this.router.navigate(['/view-pdf'], { state: { userData: data } });
-  }
-
-  openBlob(blob: Blob) {
-    ////debugger;
-    const reader = new FileReader();
-    reader.onloadend = async () => {
-     // //debugger;
-      const base64 = (reader.result as string).split(',')[1];
-
-      const result = await Filesystem.writeFile({
-        path: 'yourfile.pdf',
-        data: base64,
-        directory: Directory.Documents
-      });
-
-      const path = result.uri;
-
-      var cordova: any;
-
-      cordova.plugins.fileOpener2.open(
-        path, // make sure the file exists
-        'application/pdf',
-        {
-          error: function (e: any) {
-          },
-          success: function () {
-          }
-        }
-      );
-
-    };
-
-    reader.readAsDataURL(blob);
-
   }
 
   async openUploadedDocumentPassbook(model: GetAwedanResponseModel) {
@@ -514,7 +348,7 @@ export class ViewAwedanPage implements OnInit {
       this.singleAwedanResponseData!.application_table_id,
       approveOrReject.toString(),
       officersLoginModel.officerId).subscribe(
-        async (response) => {
+        async (response: any) => {
 
           await this.dismissDialog();
           this.cdRef.detectChanges;
@@ -528,7 +362,7 @@ export class ViewAwedanPage implements OnInit {
           }
 
         },
-        async (error) => {
+        async (error: any) => {
           await this.dismissDialog();
           this.shortToast(error);
           this.apiService.showServerMessages(error)
@@ -548,7 +382,7 @@ export class ViewAwedanPage implements OnInit {
       backdropDismiss: false
     });
 
-    modal.onDidDismiss().then((result) => {
+    modal.onDidDismiss().then((result: any) => {
       if (result.data?.confirmed) {
         this.callServerToApproveReject(approveOrReject)
       }
@@ -577,8 +411,7 @@ export class ViewAwedanPage implements OnInit {
     const lat = this.singleAwedanResponseData?.vrikharopan_akshansh;
     const lng = this.singleAwedanResponseData?.vrikharopan_dikshansh;
     const url = `https://www.google.com/maps?q=${lat},${lng}`;
-    window.open(url, '_system'); // '_system' works in Cordova/Capacitor apps
-
+    window.open(url, '_system'); 
   }
 
 }

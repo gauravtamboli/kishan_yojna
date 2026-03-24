@@ -9,6 +9,7 @@ import { Toast } from '@capacitor/toast';
 import { ChangeDetectorRef } from '@angular/core';
 
 import { ApiService } from 'src/app/services/api.service';
+import { AuthServiceService } from 'src/app/services/auth-service.service';
 
 import { SharedserviceService } from 'src/app/services/sharedservice.service';
 
@@ -180,7 +181,7 @@ export class RegPageToMakeOfflineToOnlinePage implements OnInit {
   }
 
   constructor(private modalCtrl: ModalController, private location: Location, private alertController: AlertController, private route: ActivatedRoute, private router: Router, private menuCtrl: MenuController, private networkCheckService: NetworkCheckService, private platform: Platform, private navController: NavController, private langService: LanguageService, private cdRef: ChangeDetectorRef,
-    private apiService: ApiService, private sharedServices: SharedserviceService) {
+    private apiService: ApiService, private sharedServices: SharedserviceService, private authService: AuthServiceService) {
 
     this.route.queryParams.subscribe(params => {
       this.sendedAwedanObject = JSON.parse(params['offlineAwedanJson']);
@@ -793,11 +794,7 @@ export class RegPageToMakeOfflineToOnlinePage implements OnInit {
 
 
   getOfficersSessionData() {
-    const storedData = sessionStorage.getItem('logined_officer_data');
-    if (storedData) {
-      return JSON.parse(storedData);
-    }
-    return null;
+    return this.authService.getOfficerData();
   }
 
   async showErrorDialogIfNoAnyPlanEntry(msg: string) {

@@ -25,6 +25,7 @@ import {
 } from '@ionic/angular/standalone';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ApiService } from '../../services/api.service';
+import { AuthServiceService } from '../../services/auth-service.service';
 import { 
   VivranRegistrationDetailsResponseModel, 
   VivranRegistrationDetails, 
@@ -72,7 +73,8 @@ export class ViewVivranAfterSampaditPage implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private apiService: ApiService,
-    private cdRef: ChangeDetectorRef
+    private cdRef: ChangeDetectorRef,
+    private authService: AuthServiceService
   ) {}
 
   ngOnInit() {
@@ -135,9 +137,8 @@ export class ViewVivranAfterSampaditPage implements OnInit {
   }
 
   private getDashboardUrlByDesignation(): string {
-    const storedData = sessionStorage.getItem('logined_officer_data');
-    if (storedData) {
-      const officerData = JSON.parse(storedData);
+    const officerData = this.authService.getOfficerData();
+    if (officerData) {
       const designation = Number(officerData.designation);
       
       switch (designation) {

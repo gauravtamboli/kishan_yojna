@@ -4,6 +4,7 @@ import { IonHeader, IonToolbar, IonButtons, IonBackButton, IonTitle, IonContent,
 import { ApiService } from '../../services/api.service';
 import { Toast } from '@capacitor/toast';
 import { Location } from '@angular/common';
+import { AuthServiceService } from '../../services/auth-service.service';
 import { Router } from '@angular/router';
 import { KisanWiseReportResponseModel, KisanWiseReportResponse } from './KisanWiseReportResponse.model';
 import { OfficersLoginResponseModel } from '../officer-login/OfficersLoginResponse.model';
@@ -42,7 +43,8 @@ export class KissanWiseReportComponent implements OnInit {
     private apiService: ApiService,
     private location: Location,
     private router: Router,
-    private cdRef: ChangeDetectorRef
+    private cdRef: ChangeDetectorRef,
+    private authService: AuthServiceService
   ) {
     addIcons({ downloadOutline });
   }
@@ -52,16 +54,7 @@ export class KissanWiseReportComponent implements OnInit {
   }
 
   getOfficersSessionData(): OfficersLoginResponseModel | null {
-    const storedData = sessionStorage.getItem('logined_officer_data');
-    if (storedData) {
-      try {
-        return JSON.parse(storedData) as OfficersLoginResponseModel;
-      } catch (error) {
-        console.error('Error parsing officer session data:', error);
-        return null;
-      }
-    }
-    return null;
+    return this.authService.getOfficerData();
   }
 
   loadFarmersData(circleId?: number, divisionId?: number, distId?: number, rangId?: number) {
@@ -154,9 +147,8 @@ export class KissanWiseReportComponent implements OnInit {
   }
 
   private getDashboardUrlByDesignation(): string {
-    const storedData = sessionStorage.getItem('logined_officer_data');
-    if (storedData) {
-      const officerData = JSON.parse(storedData);
+    const officerData = this.authService.getOfficerData();
+    if (officerData) {
       const designation = Number(officerData.designation);
       
       switch (designation) {

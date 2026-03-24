@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ApiService } from '../../services/api.service';
+import { AuthServiceService } from '../../services/auth-service.service';
 import { TableModule } from 'primeng/table';
 import Swal from 'sweetalert2';
 import { addIcons } from 'ionicons';
@@ -18,6 +19,7 @@ import {
 import * as XLSX from 'xlsx';
 import { saveAs } from 'file-saver';
 import { firstValueFrom } from 'rxjs';
+import { StorageService } from 'src/app/services/storage.service';
 
 @Component({
     standalone: true,
@@ -57,6 +59,7 @@ export class CreateBillComponent implements OnInit {
     // Batch info
     batchRefNo: string = '';
     description: string = '';
+    current_session: string = '';
 
     // UI State
     isLoading = false;
@@ -69,7 +72,9 @@ export class CreateBillComponent implements OnInit {
         private cdRef: ChangeDetectorRef,
         private toastController: ToastController,
         private router: Router,
-        private platform: Platform
+        private platform: Platform,
+        private authService: AuthServiceService,
+        private storageService: StorageService,
     ) {
         addIcons({
             searchOutline, receiptOutline, peopleOutline,
@@ -105,16 +110,20 @@ export class CreateBillComponent implements OnInit {
     }
 
     ngOnInit(): void {
+
         this.restoreSavedTheme();
-        const storedData = sessionStorage.getItem('logined_officer_data');
-        if (storedData) {
-            try {
-                const officer = JSON.parse(storedData);
-                this.officer_name = officer?.officer_name || '';
-                this.rangeId = officer?.rang_id || 0;
-            } catch (e) {
-                console.error('Error parsing officer data', e);
+
+        this.storageService.get('current_session').then(year => {
+            if (year) {
+                this.current_session = year;
             }
+        });
+
+        const officerData = this.authService.getOfficerData();
+        console.log('Retrieved officer data on init:', officerData);
+        if (officerData) {
+            this.officer_name = officerData.officer_name || '';
+            this.rangeId = Number(officerData.rang_id) || 0;
         }
 
         // this.loadData();
@@ -155,6 +164,7 @@ export class CreateBillComponent implements OnInit {
             this.showToast('Range ID not found. Please login again.');
             return;
         }
+        // console.log('Payment selectedYear', this.selectedYear);
 
         const paymentType = this.selectedBillType === 'vendor' ? 1 : 2;
 
@@ -166,7 +176,10 @@ export class CreateBillComponent implements OnInit {
 
                     console.log('Payment data loaded', res);
 
-                    this.allAwedans = res?.data ?? [];
+                    this.allAwedans = (res?.data ?? []).map((item: any) => ({
+                        ...item,
+                        billNumber: item.billNumber || item.BillNumber
+                    }));
 
                     this.applyFilters();
 
@@ -204,7 +217,7 @@ export class CreateBillComponent implements OnInit {
                 item.application_number?.toLowerCase().includes(search) ||
                 item.hitgrahi_name?.toLowerCase().includes(search) ||
                 item.father_name?.toLowerCase().includes(search) ||
-                item.BillNumber?.toLowerCase().includes(search)
+                item.billNumber?.toLowerCase().includes(search)
             );
         }
 
@@ -223,7 +236,7 @@ export class CreateBillComponent implements OnInit {
     }
 
     isSelected(item: any): boolean {
-        return this.selectedAwedans.some(s => s.application_number === item.application_number);
+        return this.selectedAwedans.some(s => s.billNumber === item.billNumber);
     }
 
     toggleSelection(item: any, event: any) {
@@ -232,7 +245,7 @@ export class CreateBillComponent implements OnInit {
                 this.selectedAwedans = [...this.selectedAwedans, item];
             }
         } else {
-            this.selectedAwedans = this.selectedAwedans.filter(s => s.application_number !== item.application_number);
+            this.selectedAwedans = this.selectedAwedans.filter(s => s.billNumber !== item.billNumber);
         }
     }
 
@@ -295,22 +308,23 @@ export class CreateBillComponent implements OnInit {
                     address: String(item.address || ''),
                     application_number: String(item.application_number || ''),
                     bank_name: String(item.bank_name || ''),
-                    billNumber: String(item.BillNumber || ''),
+                    billNumber: String(item.billNumber || item.BillNumber || ''),
                     father_name: String(item.father_name || ''),
                     hitgrahi_name: String(item.hitgrahi_name || ''),
                     ifsc_code: String(item.ifsc_code || ''),
                     mobile_no: String(item.mobile_no || ''),
                     total_amount: this.getAmount(item),
-                    fin_year: String(this.selectedYear || ''),
+                    payment_year: String(this.selectedYear || ''),
+                    fin_year: String(this.current_session || ''),
                     createby: String(this.rangeId || '')
                 }));
-
+                // console.log('Payload for batch bill creation:', payload);
                 await firstValueFrom(this.api.SavePaymentDetails(payload));
 
                 // 🔹 Prepare Excel
                 const exportData = this.selectedAwedans.map(item => ({
                     'Application Number': item.application_number,
-                    'Bill Number': item.BillNumber,
+                    'Bill Number': item.billNumber,
                     'Hitgrahi Name': item.hitgrahi_name,
                     'Father Name': item.father_name,
                     'Amount': this.getAmount(item),

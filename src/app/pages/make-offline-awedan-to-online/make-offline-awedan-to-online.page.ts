@@ -19,6 +19,7 @@ import { TableModule } from 'primeng/table'; // Import TableModule
 import { GetAwedanResponseModel } from '../registeration-status/AwedanResponseList.model';
 
 import { SharedserviceService } from 'src/app/services/sharedservice.service';
+import { AuthServiceService } from 'src/app/services/auth-service.service';
 
 @Component({
   selector: 'offline-awedan-awedan-list',
@@ -43,7 +44,7 @@ export class MakeOfflineAwedanToOnlinePage implements OnInit {
   }
 
   constructor(private router: Router, private menuCtrl: MenuController, private networkCheckService: NetworkCheckService, private platform: Platform, private navController: NavController, private langService: LanguageService, private cdRef: ChangeDetectorRef,
-    private apiService: ApiService, private sharedService: SharedserviceService) { }
+    private apiService: ApiService, private sharedService: SharedserviceService, private authService: AuthServiceService) { }
 
   // Refresh list if data submited to online //
   ionViewWillEnter() {
@@ -58,11 +59,7 @@ export class MakeOfflineAwedanToOnlinePage implements OnInit {
   }
 
   getOfficersSessionData() {
-    const storedData = sessionStorage.getItem('logined_officer_data');
-    if (storedData) {
-      return JSON.parse(storedData);
-    }
-    return null;
+    return this.authService.getOfficerData();
   }
 
   getListOfOfflineAwedanList() {

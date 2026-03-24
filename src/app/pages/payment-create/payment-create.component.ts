@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ApiService } from '../../services/api.service';
+import { AuthServiceService } from '../../services/auth-service.service';
 import { tableData } from '../generate-estimate-dynamic/estimate-table';
 import Swal from 'sweetalert2';
 import { addIcons } from 'ionicons';
@@ -94,7 +95,8 @@ export class PaymentCreateComponent implements OnInit {
     private cdRef: ChangeDetectorRef,
     private loadingController: LoadingController,
     private toastController: ToastController,
-    private router: Router
+    private router: Router,
+    private authService: AuthServiceService
   ) {
     addIcons({ cloudUploadOutline, moon, sunny, cardOutline, closeOutline, checkmarkCircleOutline, alertCircleOutline });
   }
@@ -126,12 +128,10 @@ export class PaymentCreateComponent implements OnInit {
   ngOnInit(): void {
     this.restoreSavedTheme();
 
-    const storedData = sessionStorage.getItem('logined_officer_data');
-    if (storedData) {
-      try {
-        this.officer_name = JSON.parse(storedData)?.officer_name || '';
-        this.officer_id = JSON.parse(storedData)?.rang_id || '';
-      } catch { }
+    const officerData = this.authService.getOfficerData();
+    if (officerData) {
+      this.officer_name = officerData.officer_name || '';
+      this.officer_id = officerData.rang_id || '';
     }
 
 

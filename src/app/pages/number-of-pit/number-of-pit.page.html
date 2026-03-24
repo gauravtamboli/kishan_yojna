@@ -13,7 +13,7 @@
 <ion-content class="content-wrapper">
     <ion-loading [isOpen]="isLoading" [message]="loadingMessage" [backdropDismiss]="false"></ion-loading>
 
-    <div class="page-container">
+    <div class="page-container" style="padding: 20px;">
         <!-- Search Section -->
         <ion-card class="search-card">
             <ion-card-content>
@@ -28,6 +28,7 @@
                 </ion-row>
             </ion-card-content>
         </ion-card>
+    <hr style="margin: 10px 0; border-color: #e0e0e0;" />
 
         <!-- Table Section -->
         <div *ngIf="filteredData.length > 0" class="table-container">

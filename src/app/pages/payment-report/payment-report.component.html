@@ -1,0 +1,163 @@
+<ion-header [translucent]="true">
+  <ion-toolbar color="primary" class="premium-header">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/officers-dashboard-ro" (click)="goBack()"></ion-back-button>
+    </ion-buttons>
+    <ion-title>भुगतान रिपोर्ट (Payment Report)</ion-title>
+    
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="report-content">
+  <div class="report-container">
+    
+    <!-- STATS CARDS GRID -->
+    <div class="stats-grid">
+      <div class="stat-card pending" [class.active]="selectedTab === 'PENDING'" (click)="selectTab('PENDING')">
+        <div class="card-inner">
+          <div class="icon-avatar">
+            <ion-icon name="time-outline"></ion-icon>
+          </div>
+          <div class="card-info">
+            <span class="label">PENDING</span>
+            <span class="hindi-label">लंबित</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="stat-card completed" [class.active]="selectedTab === 'COMPLETED'" (click)="selectTab('COMPLETED')">
+        <div class="card-inner">
+          <div class="icon-avatar">
+            <ion-icon name="checkmark-circle-outline"></ion-icon>
+          </div>
+          <div class="card-info">
+            <span class="label">COMPLETED</span>
+            <span class="hindi-label">पूर्ण</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="stat-card rejected" [class.active]="selectedTab === 'REJECTED'" (click)="selectTab('REJECTED')">
+        <div class="card-inner">
+          <div class="icon-avatar">
+            <ion-icon name="close-circle-outline"></ion-icon>
+          </div>
+          <div class="card-info">
+            <span class="label">REJECTED</span>
+            <span class="hindi-label">अस्वीकृत</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="stat-card ack-failed" [class.active]="selectedTab === 'ACK_FAILED'" (click)="selectTab('ACK_FAILED')">
+        <div class="card-inner">
+          <div class="icon-avatar">
+            <ion-icon name="alert-circle-outline"></ion-icon>
+          </div>
+          <div class="card-info">
+            <span class="label">ACK FAILD</span>
+            <span class="hindi-label">ACK विफल</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FILTER BAR -->
+    <div class="filter-card">
+      <div class="search-wrapper">
+        <ion-icon name="search-outline"></ion-icon>
+        <ion-input
+          placeholder="खोजें (आवेदन नंबर / नाम / बैंक / IFSC)"
+          [(ngModel)]="searchText"
+          (ionInput)="onSearchInput()"
+          debounce="300"
+          clearInput="true">
+        </ion-input>
+      </div>
+      <div class="info-badge" [attr.color]="getStatusColor(selectedTab)">
+        {{ paymentList.length }} रिकॉर्ड्स
+      </div>
+    </div>
+
+    <!-- RESULTS TABLE -->
+    <div class="table-wrapper premium-card animate__animated animate__fadeIn">
+      <div *ngIf="isLoading" class="loading-overlay">
+        <ion-spinner name="crescent"></ion-spinner>
+        <p>डेटा लोड हो रहा है...</p>
+      </div>
+
+      <div *ngIf="!isLoading && filteredPaymentList.length === 0" class="no-data">
+        <ion-icon name="file-tray-outline"></ion-icon>
+        <p>कोई रिकॉर्ड नहीं मिला</p>
+      </div>
+
+      <div class="responsive-table" *ngIf="!isLoading && filteredPaymentList.length > 0">
+        <table class="premium-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>आवेदन नंबर</th>
+              <th>हितग्राही का नाम</th>
+              <th>बैंक का नाम</th>
+              <th>IFSC कोड</th>
+              <th>खाता संख्या</th>
+              <th>राशि (₹)</th>
+              <th>स्थिति</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of filteredPaymentList; let i = index">
+              <td>{{ (currentPage - 1) * pageSize + i + 1 }}</td>
+              <td>
+                <span class="app-number">{{ item.application_number }}</span>
+              </td>
+              <td>
+                <div class="user-cell">
+                  <strong>{{ item.hitgrahi_name }}</strong>
+                  <span class="sub-text">पिता: {{ item.father_name }}</span>
+                </div>
+              </td>
+              <td>{{ item.bank_name }}</td>
+              <td><code class="ifsc">{{ item.ifsc_code }}</code></td>
+              <td>{{ item.account_no }}</td>
+              <td class="amount">₹{{ item.total_amount | number:'1.2-2' }}</td>
+              <td>
+                <span class="status-pill" [class]="selectedTab.toLowerCase()">
+                  {{ selectedTab }}
+                </span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- PREMIUM PAGINATION -->
+    <div class="pagination-wrapper" *ngIf="totalPages > 1">
+      <div class="pagination-info">
+        पृष्ठ {{ currentPage }} का {{ totalPages }}
+      </div>
+      <div class="pagination-controls">
+        <ion-button fill="clear" size="small" [disabled]="currentPage === 1" (click)="goToPreviousPage()">
+          <ion-icon name="chevron-back-outline"></ion-icon>
+        </ion-button>
+        
+        <div class="page-numbers">
+          <ion-button 
+            *ngFor="let p of getPageNumbers()" 
+            fill="clear" 
+            size="small" 
+            [class.active-page]="p === currentPage"
+            (click)="goToPage(p)">
+            {{ p }}
+          </ion-button>
+        </div>
+
+        <ion-button fill="clear" size="small" [disabled]="currentPage === totalPages" (click)="goToNextPage()">
+          <ion-icon name="chevron-forward-outline"></ion-icon>
+        </ion-button>
+      </div>
+    </div>
+
+  </div>
+</ion-content>

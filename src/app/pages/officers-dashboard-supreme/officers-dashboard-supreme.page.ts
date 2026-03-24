@@ -245,11 +245,7 @@ export class OfficersDashboardSupremePage implements OnInit {
   }
 
   getOfficersSessionData() {
-    const storedData = sessionStorage.getItem('logined_officer_data');
-    if (storedData) {
-      return JSON.parse(storedData);
-    }
-    return null;
+    return this.authService.getOfficerData();
   }
 
   searchMobile = "";
@@ -274,7 +270,7 @@ export class OfficersDashboardSupremePage implements OnInit {
         circleIdForApi, // 99 for "All", or specific circle ID
         "", // No division filter for supreme hierarchy
         "", // No range filter
-        officersLoginModel.officerId.toString()
+        officersLoginModel.officerId?.toString() || ''
       ).subscribe(
         async (countsResponse) => {
           if (countsResponse.response.code === 200) {
@@ -441,7 +437,7 @@ export class OfficersDashboardSupremePage implements OnInit {
       circleIdForApi, // 99 for "All", or specific circle ID
       "", // No division filter - show all divisions in selected circle(s)
       "", // No range filter
-      officersLoginModel.officerId.toString(),
+      officersLoginModel.officerId?.toString() || '',
       this.currentPage,
       this.pageSize
     ).subscribe(
@@ -545,7 +541,10 @@ export class OfficersDashboardSupremePage implements OnInit {
 
   getLoginedOfficerName(): string {
     const officersLoginModel = this.getOfficersSessionData() as OfficersLoginResponseModel;
-    return officersLoginModel.officer_name + " (" + officersLoginModel.designation_name + ")";
+    if (officersLoginModel) {
+      return officersLoginModel.officer_name + " (" + officersLoginModel.designation_name + ")";
+    }
+    return '';
   }
 
   async onMenuItemClick(page: string) {
@@ -595,6 +594,7 @@ export class OfficersDashboardSupremePage implements OnInit {
   }
 
   async logoutFunction() {
+    this.menuCtrl.close();
     const modal = await this.modalCtrl.create({
       component: MessageDialogComponent,
       cssClass: 'custom-dialog-modal',

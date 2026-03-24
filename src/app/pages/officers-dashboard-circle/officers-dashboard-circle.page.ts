@@ -174,11 +174,7 @@ export class OfficersDashboardCirclePage implements OnInit {
   }
 
   getOfficersSessionData() {
-    const storedData = sessionStorage.getItem('logined_officer_data');
-    if (storedData) {
-      return JSON.parse(storedData);
-    }
-    return null;
+    return this.authService.getOfficerData();
   }
 
   searchMobile = "";
@@ -194,7 +190,7 @@ export class OfficersDashboardCirclePage implements OnInit {
         officersLoginModel.circle_id,
         officersLoginModel.devision_id,
         officersLoginModel.rang_id,
-        officersLoginModel.officerId.toString()
+        officersLoginModel.officerId?.toString() || ''
       ).subscribe(
         async (countsResponse) => {
           if (countsResponse.response.code === 200) {
@@ -340,7 +336,7 @@ export class OfficersDashboardCirclePage implements OnInit {
       officersLoginModel.circle_id,
       officersLoginModel.devision_id,
       officersLoginModel.rang_id,
-      officersLoginModel.officerId.toString(),
+      officersLoginModel.officerId?.toString() || '',
       this.currentPage,
       this.pageSize
     ).subscribe(
@@ -444,7 +440,10 @@ export class OfficersDashboardCirclePage implements OnInit {
 
   getLoginedOfficerName(): string {
     const officersLoginModel = this.getOfficersSessionData() as OfficersLoginResponseModel;
-    return officersLoginModel.officer_name + " (" + officersLoginModel.designation_name + ")";
+    if (officersLoginModel) {
+      return officersLoginModel.officer_name + " (" + officersLoginModel.designation_name + ")";
+    }
+    return '';
   }
 
   async onMenuItemClick(page: string) {
@@ -491,6 +490,7 @@ export class OfficersDashboardCirclePage implements OnInit {
   }
 
   async logoutFunction() {
+    this.menuCtrl.close();
     const modal = await this.modalCtrl.create({
       component: MessageDialogComponent,
       cssClass: 'custom-dialog-modal',

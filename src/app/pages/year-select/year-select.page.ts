@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { StorageService } from '../../services/storage.service';
+import { AuthServiceService } from '../../services/auth-service.service';
+import { OfficersLoginResponseModel } from '../officer-login/OfficersLoginResponse.model';
 
 @Component({
   selector: 'app-year-select',
@@ -24,35 +26,22 @@ export class YearSelectPage implements OnInit {
   userDesignation: any;
   constructor(
     private storageService: StorageService,
+    private authService: AuthServiceService,
     private router: Router
   ) { }
 
   async ngOnInit() {
-    const rawUser = await this.storageService.get<any>('user_data');
-    const user = this.parseUser(rawUser);
-    this.userDesignation = user?.designation;
-    console.log('Parsed User:', this.userDesignation);
+    const user = this.authService.getOfficerData();
     if (!user) {
-      this.router.navigateByUrl('/login', { replaceUrl: true });
+      this.router.navigateByUrl('/officer-login', { replaceUrl: true });
       return;
     }
 
-    this.userName = user?.user_name || '';
+    this.userDesignation = user.designation;
+    this.userName = user.officer_name || '';
+    console.log('Parsed User:', this.userDesignation);
   }
 
-  private parseUser(raw: any) {
-    if (!raw) {
-      return null;
-    }
-    if (typeof raw === 'string') {
-      try {
-        return JSON.parse(raw);
-      } catch {
-        return null;
-      }
-    }
-    return raw;
-  }
 
   async selectYear(year: number): Promise<void> {
     try {

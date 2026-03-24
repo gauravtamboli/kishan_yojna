@@ -11,6 +11,7 @@ import { ApiService } from '../../services/api.service';
 import { Toast } from '@capacitor/toast';
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
+import { AuthServiceService } from '../../services/auth-service.service';
 import { PlantType } from '../prajati-var-goswara/PrajativargoswaraResponseForReport.modal';
 import * as XLSX from 'xlsx';
 import * as FileSaver from 'file-saver';
@@ -55,7 +56,8 @@ export class PrajativargoswaraCirclePage implements OnInit {
     private apiService: ApiService,
     private cdRef: ChangeDetectorRef,
     private router: Router,
-    private location: Location
+    private location: Location,
+    private authService: AuthServiceService
   ) {
     addIcons({ downloadOutline });
   }
@@ -89,9 +91,8 @@ export class PrajativargoswaraCirclePage implements OnInit {
   }
 
   private getDashboardUrlByDesignation(): string {
-    const storedData = sessionStorage.getItem('logined_officer_data');
-    if (storedData) {
-      const officerData = JSON.parse(storedData);
+    const officerData = this.authService.getOfficerData();
+    if (officerData) {
       const designation = Number(officerData.designation);
       
       switch (designation) {
@@ -533,11 +534,10 @@ export class PrajativargoswaraCirclePage implements OnInit {
 
   loadReport() {
     this.showLoading('डेटा लोड हो रहा है...');
-    const storedData = sessionStorage.getItem('logined_officer_data');
+    const officerData = this.authService.getOfficerData();
     let circleId: number | undefined;
 
-    if (storedData) {
-      const officerData = JSON.parse(storedData);
+    if (officerData) {
       circleId = officerData.circle_id ? Number(officerData.circle_id) : undefined;
     }
 

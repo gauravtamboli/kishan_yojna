@@ -64,8 +64,8 @@
         <!-- END : DROPDOWN -->
 
         <ion-buttons slot="end">
-          <ion-button (click)="toggleTheme()" class="theme-toggle-btn" fill="clear">
-            <ion-icon slot="icon-only" [name]="isDarkMode ? 'moon' : 'sunny'"></ion-icon>
+           <ion-button (click)="toggleTheme()">
+            <ion-icon [name]="isDarkMode ? 'sunny' : 'moon'"></ion-icon>
           </ion-button>
           <ion-button fill="clear" class="icon-btn-options" (click)="openUserMenu($event)">
             <ion-icon name="options-outline"></ion-icon>
@@ -99,218 +99,231 @@
       <ion-grid>
         <ion-row>
           <ion-col size="12" size-lg="12">
-            <ion-grid>
-              <ion-row>
-                <ion-col size="12" size-lg="12">
-                  <ion-grid>
-                    <ion-row style="
-                  display: flex;
-                  flex-direction: row;
-                  justify-content: center;
-                ">
+            <!-- STATS CARDS GRID -->
+            <div class="stats-grid">
+              <!-- कुल आवेदन -->
+              <div class="stat-card total" [class.active]="whichBoxClicked === 1"
+                (click)="getListOfAwedanAfterClickOnBoxes(1)">
+                <div class="card-inner">
+                  <div class="icon-avatar">
+                    <ion-icon name="list-outline"></ion-icon>
+                  </div>
+                  <div class="card-info">
+                    <span class="label">Total</span>
+                    <div class="card-value-row">
+                      <span class="hindi-label">कुल आवेदन</span>
+                      <span class="count">{{ totalAwedan }}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
 
+              <!-- संपादन लंबित -->
+              <div class="stat-card edit-pending" [class.active]="whichBoxClicked === 2"
+                (click)="getListOfAwedanAfterClickOnBoxes(2)">
+                <div class="card-inner">
+                  <div class="icon-avatar">
+                    <ion-icon name="create-outline"></ion-icon>
+                  </div>
+                  <div class="card-info">
+                    <span class="label">Edit Pending</span>
+                    <div class="card-value-row">
+                      <span class="hindi-label">संपादन लंबित</span>
+                      <span class="count">{{ totalEditPending }}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
 
-                      <!-- कुल आवेदन -->
-                      <ion-col size="12" size-lg="4">
-                        <ion-card class="custom-card" (click)="getListOfAwedanAfterClickOnBoxes(1)">
-                          <ion-grid class="ion-my-grid"
-                            style="background: linear-gradient(135deg, #198edb 0%, #1565c0 100%);">
-                            <ion-row>
-                              <ion-col size="12" class="ion-text-center">
-                                <ion-label class="responsive-label-count label-divider">
-                                  <span class="label-text">कुल आवेदन</span>
-                                  <span class="label-count">{{ totalAwedan }}</span>
-                                </ion-label>
-                              </ion-col>
-                            </ion-row>
-                          </ion-grid>
-                        </ion-card>
-                      </ion-col>
+              <!-- स्वीकृत -->
+              <div class="stat-card approved" [class.active]="whichBoxClicked === 6"
+                (click)="getListOfAwedanAfterClickOnBoxes(6)">
+                <div class="card-inner">
+                  <div class="icon-avatar">
+                    <ion-icon name="checkmark-circle-outline"></ion-icon>
+                  </div>
+                  <div class="card-info">
+                    <span class="label">Approved</span>
+                    <div class="card-value-row">
+                      <span class="hindi-label">स्वीकृत</span>
+                      <span class="count">{{ totalApproved }}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
 
-                      <!-- स्वीकृत -->
-                      <ion-col size="12" size-lg="4">
-                        <ion-card class="custom-card" (click)="getListOfAwedanAfterClickOnBoxes(6)">
-                          <ion-grid class="ion-my-grid"
-                            style="background: linear-gradient(135deg, #4caf50 0%, #388e3c 100%);">
-                            <ion-row>
-                              <ion-col size="12" class="ion-text-center">
-                                <ion-label class="responsive-label-count label-divider">
-                                  <span class="label-text">स्वीकृत</span>
-                                  <span class="label-count">{{ totalApproved }}</span>
-                                </ion-label>
-                              </ion-col>
-                            </ion-row>
-                          </ion-grid>
-                        </ion-card>
-                      </ion-col>
+              <!-- अस्वीकृत -->
+              <div class="stat-card rejected" [class.active]="whichBoxClicked === 7"
+                (click)="getListOfAwedanAfterClickOnBoxes(7)">
+                <div class="card-inner">
+                  <div class="icon-avatar">
+                    <ion-icon name="close-circle-outline"></ion-icon>
+                  </div>
+                  <div class="card-info">
+                    <span class="label">Rejected</span>
+                    <div class="card-value-row">
+                      <span class="hindi-label">अस्वीकृत</span>
+                      <span class="count">{{ totalRejected }}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
 
-                      <!-- अस्वीकृत -->
-                      <ion-col size="12" size-lg="4">
-                        <ion-card class="custom-card" (click)="getListOfAwedanAfterClickOnBoxes(7)">
-                          <ion-grid class="ion-my-grid"
-                            style="background: linear-gradient(135deg, #f44336 0%, #b71c1c 100%);">
-                            <ion-row>
-                              <ion-col size="12" class="ion-text-center">
-                                <ion-label class="responsive-label-count label-divider">
-                                  <span class="label-text">अस्वीकृत</span>
-                                  <span class="label-count">{{ totalRejected }}</span>
-                                </ion-label>
-                              </ion-col>
-                            </ion-row>
-                          </ion-grid>
-                        </ion-card>
-                      </ion-col>
+              <!-- ड्राफ्ट -->
+              <div class="stat-card draft" [class.active]="whichBoxClicked === 8"
+                (click)="getListOfAwedanAfterClickOnBoxes(8)">
+                <div class="card-inner">
+                  <div class="icon-avatar">
+                    <ion-icon name="document-text-outline"></ion-icon>
+                  </div>
+                  <div class="card-info">
+                    <span class="label">Batch</span>
+                    <div class="card-value-row">
+                      <span class="hindi-label">ड्राफ्ट</span>
+                      <span class="count">{{ totalBatch }}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
 
+              <!-- RO Pending -->
+              <div class="stat-card ro-pending" [class.active]="whichBoxClicked === 3"
+                (click)="getListOfAwedanAfterClickOnBoxes(3)">
+                <div class="card-inner">
+                  <div class="icon-avatar">
+                    <ion-icon name="person-outline"></ion-icon>
+                  </div>
+                  <div class="card-info">
+                    <span class="label">RO Pending</span>
+                    <div class="card-value-row">
+                      <span class="hindi-label">RO स्तर</span>
+                      <span class="count">{{ totalROPending }}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
 
+              <!-- SDO Pending -->
+              <div class="stat-card sdo-pending" [class.active]="whichBoxClicked === 4"
+                (click)="getListOfAwedanAfterClickOnBoxes(4)">
+                <div class="card-inner">
+                  <div class="icon-avatar">
+                    <ion-icon name="people-outline"></ion-icon>
+                  </div>
+                  <div class="card-info">
+                    <span class="label">SDO Pending</span>
+                    <div class="card-value-row">
+                      <span class="hindi-label">SDO स्तर</span>
+                      <span class="count">{{ totalSDOPending }}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
 
-                      <!-- परिक्षेत्र अधिकारी स्तर पर लंबित -->
-                      <ion-col size="12" size-lg="4">
-                        <ion-card class="custom-card" (click)="getListOfAwedanAfterClickOnBoxes(3)">
-                          <ion-grid class="ion-my-grid"
-                            style="background: linear-gradient(135deg, #2196f3 0%, #1976d2 100%);">
-                            <ion-row>
-                              <ion-col size="12" class="ion-text-center">
-                                <ion-label class="responsive-label-count label-divider">
-                                  <span class="label-text">परिक्षेत्र अधिकारी स्तर पर लंबित</span>
-                                  <span class="label-count">{{ totalROPending }}</span>
-                                </ion-label>
-                              </ion-col>
-                            </ion-row>
-                          </ion-grid>
-                        </ion-card>
-                      </ion-col>
+              <!-- DFO Pending -->
+              <div class="stat-card dfo-pending" [class.active]="whichBoxClicked === 5"
+                (click)="getListOfAwedanAfterClickOnBoxes(5)">
+                <div class="card-inner">
+                  <div class="icon-avatar">
+                    <ion-icon name="business-outline"></ion-icon>
+                  </div>
+                  <div class="card-info">
+                    <span class="label">DFO Pending</span>
+                    <div class="card-value-row">
+                      <span class="hindi-label">DFO स्तर</span>
+                      <span class="count">{{ totalDFOPending }}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
 
-                      <!-- उपवनमंडलाधिकारी स्तर पर लंबित -->
-                      <ion-col size="12" size-lg="4">
-                        <ion-card class="custom-card" (click)="getListOfAwedanAfterClickOnBoxes(4)">
-                          <ion-grid class="ion-my-grid"
-                            style="background: linear-gradient(135deg, #9c27b0 0%, #7b1fa2 100%);">
-                            <ion-row>
-                              <ion-col size="12" class="ion-text-center">
-                                <ion-label class="responsive-label-count label-divider">
-                                  <span class="label-text">उपवनमंडलाधिकारी स्तर पर लंबित</span>
-                                  <span class="label-count">{{ totalSDOPending }}</span>
-                                </ion-label>
-                              </ion-col>
-                            </ion-row>
-                          </ion-grid>
-                        </ion-card>
-                      </ion-col>
-
-                      <!-- वनमंडलाधिकारी स्तर पर लंबित -->
-                      <ion-col size="12" size-lg="4">
-                        <ion-card class="custom-card" (click)="getListOfAwedanAfterClickOnBoxes(5)">
-                          <ion-grid class="ion-my-grid"
-                            style="background: linear-gradient(135deg, #673ab7 0%, #512da8 100%);">
-                            <ion-row>
-                              <ion-col size="12" class="ion-text-center">
-                                <ion-label class="responsive-label-count label-divider">
-                                  <span class="label-text">वनमंडलाधिकारी स्तर पर लंबित</span>
-                                  <span class="label-count">{{ totalDFOPending }}</span>
-                                </ion-label>
-                              </ion-col>
-                            </ion-row>
-                          </ion-grid>
-                        </ion-card>
-                      </ion-col>
-
-
-                    </ion-row>
-                  </ion-grid>
-
-                  <!-- <hr style="background-color: black; height: 1px" /> -->
-                </ion-col>
-              </ion-row>
-            </ion-grid>
-
-            <!-- <hr style="background-color: black; height: 1px" /> -->
+            <hr style="background-color: black; height: 1px" />
           </ion-col>
         </ion-row>
       </ion-grid>
 
       <div class="ion-padding">
-        <ion-row>
-          <!-- <ion-col size="12" size-lg="9">
-            <ion-label class="responsive-label"
-              [ngStyle]="{'color': getColor(), 'display': 'block', 'text-align': 'center', 'margin': '16px 0'}">
-              {{total_or_pending_or_accept_or_reject_label}}
-            </ion-label>
-          </ion-col> -->
-          <ion-col size="12" size-lg="6">
-            <ion-input class="custom-input" [(ngModel)]="searchMobile" fill="outline"
+        <ion-row class="mb-3 align-items-center">
+          <ion-col size="12" size-lg="5" style="margin-left: 20px;">
+            <ion-input class="custom-input shadow-sm" [(ngModel)]="searchMobile" fill="clear"
               placeholder="मोबाइल नंबर / हितग्राही नाम / पिता का नाम" (ionInput)="onSearch($event)"
               (keyup.enter)="onEnter()">
             </ion-input>
           </ion-col>
-          <ion-col size="6" size-lg="6">
-            <ion-button color="success" style="float: right;" (click)="export()">
-              <ion-icon name="download-outline" slot="start"></ion-icon>
+
+          <ion-col size="6" size-lg="6" class="text-end">
+            <ion-button class="my-btn" (click)="export()">
+              <ion-icon name="download-outline" slot="start"></ion-icon> &nbsp;
               Export To Excel
             </ion-button>
           </ion-col>
         </ion-row>
 
-        <p-table [value]="filteredAwedans" [paginator]="false" responsiveLayout="stack" class="custom-dashboard-table"
-          id="dashboard_table">
-          <ng-template pTemplate="header">
-            <tr>
-              <th>#</th>
-              <th>आवेदन नंबर</th>
-              <th>हितग्राही का नाम</th>
-              <th>पिता का नाम</th>
-              <th>वृत्त (वन मंडल)</th>
-              <th>आवेदन की स्थिति</th>
-              <th class="text-center">क्रियाएँ</th>
-            </tr>
-          </ng-template>
+        <div class="table-responsive shadow-sm rounded-4" style="margin-top: 10px;">
+          <p-table [value]="filteredAwedans" [paginator]="false" responsiveLayout="scroll" class="custom-dashboard-table"
+            id="dashboard_table">
+            <ng-template pTemplate="header">
+              <tr>
+                <th>#</th>
+                <th>आवेदन नंबर</th>
+                <th>हितग्राही का नाम</th>
+                <th>पिता का नाम</th>
+                <th>वृत्त (वन मंडल)</th>
+                <th>आवेदन की स्थिति</th>
+                <th class="text-center">क्रियाएँ</th>
+              </tr>
+            </ng-template>
 
-          <ng-template pTemplate="body" let-item let-i="rowIndex">
-            <tr>
-              <td>{{ (currentPage - 1) * pageSize + i + 1 }}</td>
-              <td>{{ item.application_number }}</td>
-              <td>
-                <div class="beneficiary-cell">
-                  <strong>{{ item.hitgrahi_name }}</strong>
-                  <div class="text-muted small">{{ item.mobile_no }}</div>
-                </div>
-              </td>
-              <td>{{ item.father_name }}</td>
-              <td>{{ item.circle_name }} ({{ item.division_name }})</td>
-              <td>
-                <span class="status-badge" [ngClass]="{
-              'status-approved': item.awedan_status == 6,
-              'status-pending': item.awedan_status == 2,
-              'status-draft': item.awedan_status < 1,
-              'status-rejected': item.awedan_status == 3
-            }">
-                  {{ getStatusText(item) }}
-                </span>
-              </td>
+            <ng-template pTemplate="body" let-item let-i="rowIndex">
+              <tr>
+                <td>{{ (currentPage - 1) * pageSize + i + 1 }}</td>
+                <td>{{ item.application_number }}</td>
+                <td>
+                  <div class="beneficiary-cell">
+                    <strong>{{ item.hitgrahi_name }}</strong>
+                    <div class="text-muted small">{{ item.mobile_no }}</div>
+                  </div>
+                </td>
+                <td>{{ item.father_name }}</td>
+                <td>{{ item.circle_name }} ({{ item.division_name }})</td>
+                <td>
+                  <span class="status-badge" [ngClass]="{
+                    'status-approved': item.awedan_status == 6,
+                    'status-pending': item.awedan_status == 1 || item.awedan_status == 2 || item.awedan_status == 4,
+                    'status-edit-pending': item.awedan_status == 0,
+                    'status-rejected': item.awedan_status == 3 || item.awedan_status == 5
+                  }">
+                    {{ getStatusText(item) }}
+                  </span>
+                </td>
 
-              <td class="text-center">
-                <div class="action-buttons">
-                  <ion-button fill="outline" color="primary" size="small" (click)="viewApplication(item)">
-                    विवरण देखें
-                  </ion-button>
+                <td class="text-center">
+                  <div class="action-buttons">
+                    <ion-button fill="outline" color="primary" size="small" (click)="viewApplication(item)">
+                      विवरण देखें
+                    </ion-button>
 
-                  <ion-button *ngIf="canViewEstimate(item)" fill="solid" color="tertiary" size="small"
-                    (click)="generateEstimateDynamic(item)">
-                    {{ item.awedan_status < 2 ? 'प्राक्कलन बनाएं ' : 'प्राक्कलन देखें' }} </ion-button>
-                </div>
-              </td>
-            </tr>
-          </ng-template>
-        </p-table>
+                    <ion-button *ngIf="canViewEstimate(item)" fill="solid" color="tertiary" size="small"
+                      (click)="generateEstimateDynamic(item)">
+                      {{ item.awedan_status < 2 ? 'प्राक्कलन बनाएं ' : 'प्राक्कलन देखें' }} </ion-button>
+                  </div>
+                </td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </div>
 
         <!-- Custom Pagination -->
         <div *ngIf="totalPages > 1" class="pagination-container mt-3">
           <ion-row class="align-items-center justify-content-center">
             <ion-col size="auto">
-              <ion-button [disabled]="currentPage === 1" (click)="goToPreviousPage()" fill="outline" size="small">
+              <ion-button [disabled]="currentPage === 1" (click)="goToPreviousPage()" fill="clear" size="small">
                 <ion-icon name="chevron-back-outline" slot="start"></ion-icon>
                 पिछला
               </ion-button>
             </ion-col>
+            &nbsp;
 
             <ion-col size="auto">
               <div class="page-numbers">
@@ -321,9 +334,9 @@
                 </ion-button>
               </div>
             </ion-col>
-
+            &nbsp;
             <ion-col size="auto">
-              <ion-button [disabled]="currentPage === totalPages" (click)="goToNextPage()" fill="outline" size="small">
+              <ion-button [disabled]="currentPage === totalPages" (click)="goToNextPage()" fill="clear" size="small">
                 अगला
                 <ion-icon name="chevron-forward-outline" slot="end"></ion-icon>
               </ion-button>
@@ -335,10 +348,10 @@
           </ion-row>
         </div>
 
-        <ion-label *ngIf="isNoRecordFound" class="responsive-label"
+        <div *ngIf="isNoRecordFound" class="no-record-found-box mt-3"
           style="display: block; text-align: center; margin: 32px 0">
-          कोई आवेदन प्राप्त नहीं
-        </ion-label>
+          <ion-label>कोई आवेदन प्राप्त नहीं</ion-label>
+        </div>
       </div>
     </ion-content>
   </div>
