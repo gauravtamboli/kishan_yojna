@@ -46,7 +46,7 @@ export interface MenuPage {
   templateUrl: './officers-dashboard.page.html',
   styleUrls: ['./officers-dashboard.page.scss'],
   standalone: true,
-  imports: [IonSplitPane, IonMenuToggle, IonMenu, IonMenuButton, IonList, IonAvatar, IonCard, IonLoading, IonText, IonButton, IonInput, IonLabel, IonItem, IonGrid, IonRow, IonCol, IonButtons, IonContent, IonHeader, IonToolbar, CommonModule, FormsModule, IonIcon, TableModule, IonPopover]
+  imports: [IonSplitPane, IonMenu, IonMenuButton, IonList, IonAvatar, IonLoading, IonText, IonButton, IonInput, IonLabel, IonItem, IonGrid, IonRow, IonCol, IonButtons, IonContent, IonHeader, IonToolbar, CommonModule, FormsModule, IonIcon, TableModule, IonPopover]
 })
 export class OfficersDashboardPage implements OnInit {
   isUserMenuOpen = false;
@@ -291,25 +291,25 @@ export class OfficersDashboardPage implements OnInit {
           is_submenu: false,
           icon: 'map-outline'
         },
-        {
-          title: 'दर्ज करें',
-          is_submenu: true,
-          icon: 'add-circle-outline',
-          children: [
-            {
-              title: 'गड्ढों की संख्या दर्ज करें',
-              url: 'number-of-pit',
-              is_submenu: false,
-              icon: 'hammer-outline'
-            },
-            {
-              title: 'पौधों की संख्या दर्ज करें',
-              url: 'ropit-paudho-ki-sankhya',
-              is_submenu: false,
-              icon: 'leaf-outline'
-            },
-          ]
-        },
+        // {
+        //   title: 'दर्ज करें',
+        //   is_submenu: true,
+        //   icon: 'add-circle-outline',
+        //   children: [
+        //     {
+        //       title: 'गड्ढों की संख्या दर्ज करें',
+        //       url: 'number-of-pit',
+        //       is_submenu: false,
+        //       icon: 'hammer-outline'
+        //     },
+        //     {
+        //       title: 'पौधों की संख्या दर्ज करें',
+        //       url: 'ropit-paudho-ki-sankhya',
+        //       is_submenu: false,
+        //       icon: 'leaf-outline'
+        //     },
+        //   ]
+        // },
         {
           title: 'भुगतान',
           is_submenu: true,
@@ -326,17 +326,17 @@ export class OfficersDashboardPage implements OnInit {
               },
               is_submenu: false
             },
-            {
-              title: 'हितग्राही भुगतान बनाएं',
-              icon: 'person-outline',
-              url: 'payment',
-              state: {
-                range_id: rangid,
-                year: 1,
-                fin_year: this.curent_session
-              },
-              is_submenu: false
-            },
+            // {
+            //   title: 'हितग्राही भुगतान बनाएं',
+            //   icon: 'person-outline',
+            //   url: 'payment',
+            //   state: {
+            //     range_id: rangid,
+            //     year: 1,
+            //     fin_year: this.curent_session
+            //   },
+            //   is_submenu: false
+            // },
             {
               title: 'भुगतान करे ',
               icon: 'receipt-outline',
