@@ -26,6 +26,45 @@
     </h2>
     <p class="report-date">दिनांक: {{todayDate}}</p>
 
+    <div class="filter-section" *ngIf="!isRO">
+      <div class="filter-grid">
+        <div class="filter-item" *ngIf="isSuperAdmin">
+          <label class="filter-label">
+            <ion-icon name="business-outline"></ion-icon>
+            वृत्त
+          </label>
+          <ng-select [items]="listOfCircle" bindLabel="name" bindValue="id" [(ngModel)]="formData.circle_id"
+            name="circle" [searchable]="true" [clearable]="false" placeholder="वृत्त चुनें"
+            (change)="onCircleChange($event)" required class="custom-select">
+          </ng-select>
+        </div>
+
+        <div class="filter-item" *ngIf="isSuperAdmin || isCircleAdmin">
+          <label class="filter-label">
+            <ion-icon name="map-outline"></ion-icon>
+            वनमण्डल
+          </label>
+          <ng-select [items]="listOfDivision" bindLabel="name" bindValue="id" [(ngModel)]="formData.division_id"
+            name="division" [searchable]="true" [clearable]="false" placeholder="वनमण्डल चुनें"
+            (change)="onDivisionChange($event)" required class="custom-select">
+          </ng-select>
+        </div>
+
+        <div class="filter-item" *ngIf="isSuperAdmin || isCircleAdmin || isDivisionAdmin">
+          <label class="filter-label">
+            <ion-icon name="location-outline"></ion-icon>
+            परिक्षेत्र
+          </label>
+          <ng-select [items]="listOfRang" bindLabel="name" bindValue="id" [(ngModel)]="formData.range_id"
+            name="range" [searchable]="true" [clearable]="false" placeholder="परिक्षेत्र चुनें" required
+            class="custom-select" (change)="onRangeChange($event)">
+          </ng-select>
+        </div>
+      </div>
+    </div>
+
+
+
     <div class="table-wrapper">
       <table class="report-table">
         <thead>

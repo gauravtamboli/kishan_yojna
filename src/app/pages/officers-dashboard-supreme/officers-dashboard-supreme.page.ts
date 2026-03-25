@@ -10,7 +10,7 @@ import { ChangeDetectorRef } from '@angular/core';
 import { ApiService } from 'src/app/services/api.service';
 import { OfficersLoginResponseModel } from '../officer-login/OfficersLoginResponse.model';
 import { addIcons } from 'ionicons';
-import { appsOutline, homeOutline, informationOutline, informationCircle, buildOutline, logOutOutline, downloadOutline, eyeOutline, createOutline, calculatorOutline, chevronBackOutline, chevronForwardOutline, optionsOutline } from 'ionicons/icons';
+import { listOutline, personOutline, peopleOutline, businessOutline, checkmarkCircleOutline, appsOutline, homeOutline, informationOutline, informationCircle, buildOutline, logOutOutline, downloadOutline, eyeOutline, createOutline, calculatorOutline, chevronBackOutline, chevronForwardOutline, optionsOutline, searchOutline, closeCircleOutline, documentTextOutline, closeCircle, barChartOutline, trendingUpOutline } from 'ionicons/icons';
 import { Browser } from '@capacitor/browser';
 import { Platform, AlertController } from '@ionic/angular';
 import { NetworkCheckService } from 'src/app/services/network-check.service';
@@ -65,7 +65,9 @@ export class OfficersDashboardSupremePage implements OnInit {
     }
   }
 
-  pages: { title: string, url: string, is_submenu: boolean }[] = [];
+
+
+  pages: any[] = [];
 
   isConnected: boolean = false;
 
@@ -91,6 +93,8 @@ export class OfficersDashboardSupremePage implements OnInit {
   totalSDOPending: number = 0;
   totalDFOPending: number = 0;
   totalApproved: number = 0;
+  totalRejected: number = 0;
+  totalBatch: number = 0;
   total_or_pending_or_accept_or_reject_label: string = "कुल आवेदन";
   whichBoxClicked: number = 1;
 
@@ -109,6 +113,7 @@ export class OfficersDashboardSupremePage implements OnInit {
 
   listOfAwedan: any[] = [];
   filteredAwedans: GetAwedanResponseModel[] = [];
+  isSearched: boolean = false;
 
   // Circle selection for supreme hierarchy
   listOfCircles: any[] = [];
@@ -145,23 +150,21 @@ export class OfficersDashboardSupremePage implements OnInit {
         {
           title: 'गोस्वारा रिपोर्ट ',
           url: 'goswara-report',
+          icon: 'document-text-outline',
           is_submenu: false
         },
         {
           title: 'प्रजातिवार गोस्वारा रिपोर्ट ',
           url: 'prajati-goswara-report-head',
+          icon: 'bar-chart-outline',
           is_submenu: false
         },
-        // {
-        //   title: 'किसान रिपोर्ट ',
-        //   url: 'kissan-wise-report',
-        //   is_submenu: false
-        // },
-        // {
-        //   title: 'रिपोर्ट ',
-        //   url: 'report',
-        //   is_submenu: false
-        // },
+        {
+          title: 'प्रगति प्रतिवेदन',
+          url: 'pragati-prativedan',
+          is_submenu: false,
+          icon: 'trending-up-outline'
+        },
       ];
     });
   }
@@ -294,6 +297,8 @@ export class OfficersDashboardSupremePage implements OnInit {
             this.totalSDOPending = findCount(2);
             this.totalDFOPending = findCount(4);
             this.totalApproved = findCount(6);
+            this.totalRejected = findCount(3) + findCount(5);;
+            this.totalBatch = findCount(7);
 
             await this.dismissDialog();
             this.cdRef.detectChanges();
@@ -353,8 +358,10 @@ export class OfficersDashboardSupremePage implements OnInit {
 
   addAllIcon() {
     addIcons({
+      listOutline, personOutline, peopleOutline, businessOutline, checkmarkCircleOutline,
       appsOutline, homeOutline, informationOutline, informationCircle, buildOutline, logOutOutline,
-      chevronBackOutline, chevronForwardOutline, downloadOutline
+      chevronBackOutline, chevronForwardOutline, downloadOutline, createOutline, searchOutline, closeCircleOutline,
+      documentTextOutline, closeCircle, optionsOutline, barChartOutline,trendingUpOutline,
     });
   }
 
@@ -388,6 +395,12 @@ export class OfficersDashboardSupremePage implements OnInit {
       case 6:
         this.total_or_pending_or_accept_or_reject_label = "स्वीकृत";
         break;
+      case 7:
+        this.total_or_pending_or_accept_or_reject_label = "अस्वीकृत";
+        break;
+      case 8:
+        this.total_or_pending_or_accept_or_reject_label = "ड्राफ्ट";
+        break;
     }
 
     this.showDialog("कृपया प्रतीक्षा करें.....");
@@ -413,6 +426,10 @@ export class OfficersDashboardSupremePage implements OnInit {
       whichData = 6;
     } else if (this.whichBoxClicked === 6) {
       whichData = 8;
+    } else if (this.whichBoxClicked === 7) {
+      whichData = 9;
+    } else if (this.whichBoxClicked === 8) {
+      whichData = 10;
     }
 
     if (this.whichBoxClicked === 1) {
@@ -427,6 +444,10 @@ export class OfficersDashboardSupremePage implements OnInit {
       this.totalRecords = this.totalDFOPending;
     } else if (this.whichBoxClicked === 6) {
       this.totalRecords = this.totalApproved;
+    } else if (this.whichBoxClicked === 7) {
+      this.totalRecords = this.totalRejected;
+    } else if (this.whichBoxClicked === 8) {
+      this.totalRecords = this.totalBatch;
     }
 
     this.totalPages = Math.ceil(this.totalRecords / this.pageSize);
@@ -555,22 +576,30 @@ export class OfficersDashboardSupremePage implements OnInit {
     return '';
   }
 
-  async onMenuItemClick(page: string) {
+  toggleSubMenu(index: number, page: any) {
+    if (page.is_submenu) {
+      page.open = !page.open;
+    } else {
+      this.onMenuItemClick(page);
+    }
+  }
+
+  async onMenuItemClick(page: any) {
+    this.menuCtrl.close();
+
+    if (page.action === 'logout') {
+      this.logoutFunction();
+      return;
+    }
+
     this.isConnected = await this.networkCheckService.getCurrentStatus();
 
     if (this.isConnected) {
-      if (page === 'prajati-goswara-report-head') {
-        this.router.navigate(['prajati-goswara-report-head']);
-        return;
-      } else if (page === 'prajati-goswara-report') {
-        this.router.navigate(['prajati-goswara-report-circle']);
-        return;
-      } else {
-        this.router.navigate([page]);
+      if (page.url) {
+        this.router.navigate([page.url]);
       }
     } else {
       this.longToast(this.getTranslation("no_internet"));
-      return;
     }
   }
 
@@ -632,6 +661,21 @@ export class OfficersDashboardSupremePage implements OnInit {
       item.mobile_no.includes(value) ||
       item.application_number.toLowerCase().includes(value)
     );
+    this.isSearched = value.length > 0;
+  }
+
+  onSearchInputChange() {
+    this.isSearched = this.searchMobile.length > 0;
+    if (!this.isSearched) {
+      this.filteredAwedans = this.listOfAwedan;
+    }
+  }
+
+  clearSearch() {
+    this.searchMobile = '';
+    this.isSearched = false;
+    this.filteredAwedans = this.listOfAwedan;
+    this.currentPage = 1;
   }
 
   onEnter() {
@@ -642,6 +686,7 @@ export class OfficersDashboardSupremePage implements OnInit {
       item.mobile_no.includes(this.searchMobile) ||
       item.application_number.toLowerCase().includes(this.searchMobile.toLowerCase())
     );
+    this.isSearched = true;
   }
 }
 

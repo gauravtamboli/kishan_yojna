@@ -1,38 +1,44 @@
 <ion-split-pane contentId="main-content" when="md">
   <ion-menu menuId="supreme-menu" class="custom-menu" side="start" content-id="main-content">
-    <ion-header class="ion-header-class-for-menu dashboard-menu-header">
-      <div class="bg"></div>
-
-      <ion-item lines="none">
-        <ion-avatar slot="start">
-          <img src="assets/img/app_logo.png" />
-        </ion-avatar>
-        <ion-label class="ion-label" style=" text-wrap: nowrap;">
-          {{ getTranslation('app_name')}}
-          <p class="p">
-            <ion-text style="font-size: small ;"> ({{ getTranslation('state_name')}}) </ion-text>
-          </p>
-        </ion-label>
-      </ion-item>
+    <ion-header class="dashboard-menu-header">
+      <ion-toolbar>
+        <ion-item lines="none" style="--background: transparent; --color: white;">
+          <ion-avatar slot="start">
+            <img src="assets/img/app_logo.png" />
+          </ion-avatar>
+          <ion-label class="ion-label" style="text-wrap: nowrap;">
+            {{ getTranslation('app_name')}}
+            <p class="p" style="margin-top: 2px;">
+              <ion-text style="font-size: small;"> ({{ getTranslation('state_name')}}) </ion-text>
+            </p>
+          </ion-label>
+        </ion-item>
+      </ion-toolbar>
     </ion-header>
 
     <ion-content>
       <ion-list>
-        <ion-menu-toggle auto-hide="false">
-          <ion-item *ngFor="let page of pages; let i = index" class="no-gap-item" lines="none">
-            <ng-container *ngIf="page.is_submenu; else noSubMenu">
-              <ion-text class="responsive-menu-title" style="width: 100%; margin-left: 10px"
-                (click)="onMenuItemClick(page.url)">{{ page.title }}</ion-text>
-            </ng-container>
-
-            <ng-template #noSubMenu>
-              <ng-container>
-                <ion-text class="responsive-menu-title" style="font-weight: 900; width: 100%; margin-top: 5px"
-                  (click)="onMenuItemClick(page.url)"> * {{ page.title }}</ion-text>
-              </ng-container>
-            </ng-template>
+        <ng-container *ngFor="let page of pages; let i = index">
+          <!-- Parent menu -->
+          <ion-item class="no-gap-item" lines="none" (click)="toggleSubMenu(i, page)">
+            <ion-icon *ngIf="page.icon" [name]="page.icon" slot="start" class="menu-icon"></ion-icon>
+            <ion-text class="responsive-menu-title" style="width: 100%; margin-left: 10px">
+              {{ page.title }}
+            </ion-text>
           </ion-item>
-        </ion-menu-toggle>
+
+          <!-- Submenu -->
+          <ion-list *ngIf="page.is_submenu && page.open">
+            <ion-item *ngFor="let child of page.children" class="no-gap-item" lines="none" style="padding-left: 30px"
+              (click)="onMenuItemClick(child)">
+              <ion-icon *ngIf="child.icon" [name]="child.icon" slot="start" class="menu-icon"
+                style="margin-right: 10px; font-size: 18px;"></ion-icon>
+              <ion-text class="responsive-menu-title">
+                {{ child.title }}
+              </ion-text>
+            </ion-item>
+          </ion-list>
+        </ng-container>
       </ion-list>
     </ion-content>
   </ion-menu>
@@ -40,7 +46,10 @@
   <div class="ion-page" id="main-content">
     <ion-header>
       <ion-toolbar color="primary" class="dashboard-toolbar">
-        <ion-title class="ion-text-center">{{ getLoginedOfficerName() }}</ion-title>
+        <div class="header-label">
+          <ion-title class="officer-name">{{ getLoginedOfficerName() }}</ion-title>
+          <span class="session-text" *ngIf="curent_session">Session : {{ curent_session }}</span>
+        </div>
         <ion-menu-button menu="supreme-menu" style="color: white" slot="start"></ion-menu-button>
         <ion-buttons slot="end">
           <ion-button fill="clear" class="icon-btn-options" (click)="openUserMenu($event)">
@@ -68,193 +77,147 @@
     <ion-content>
       <ion-loading cssClass="custom-loading" [isOpen]="isLoading" [message]="loadingMessage"
         [backdropDismiss]="false"></ion-loading>
-
-      <!-- Circle Selection for Supreme Hierarchy -->
-      <ion-grid style="padding: 16px; background: #f5f5f5;">
-        <ion-row>
-          <ion-col size="12" size-md="6" size-lg="4">
-            <ion-item>
-              <ion-label position="stacked" class="item-style-label">वृत्त चुनें</ion-label>
-              <ion-select [(ngModel)]="selectedCircleId" (ionChange)="onCircleChange($event)" placeholder="वृत्त चुनें"
-                interface="popover">
-                <ion-select-option value="all">सभी वृत्त</ion-select-option>
-                <ion-select-option *ngFor="let circle of listOfCircles" [value]="circle.id.toString()">
-                  {{ circle.name }}
-                </ion-select-option>
-              </ion-select>
-            </ion-item>
-          </ion-col>
-          <ion-col size="12" size-md="6" size-lg="8">
-            <ion-label *ngIf="selectedCircleName" style="padding: 16px; display: block;">
-              <strong>चयनित वृत्त:</strong> {{ selectedCircleName }}
-            </ion-label>
-          </ion-col>
-        </ion-row>
-      </ion-grid>
-
       <ion-grid>
         <ion-row>
           <ion-col size="12" size-lg="12">
-            <ion-grid>
-              <ion-row style="
-                  display: flex;
-                  flex-direction: row;
-                  justify-content: center;
-                ">
-                <!-- कुल आवेदन -->
-                <ion-col size="6" size-lg="2">
-                  <ion-card class="custom-card" (click)="getListOfAwedanAfterClickOnBoxes(1)">
-                    <ion-grid style="
-                        background: linear-gradient(
-                          135deg,
-                          #198edb 0%,
-                          #1565c0 100%
-                        );
-                      ">
-                      <ion-row>
-                        <ion-col size="12" class="ion-text-center">
-                          <ion-label class="responsive-label-count">{{totalAwedan}}</ion-label>
-                          <hr style="
-                              border: none;
-                              border-top: 1px solid rgba(255, 255, 255, 0.3);
-                              margin: 8px 0;
-                            " />
-                          <ion-label class="responsive-label" style="color: white">कुल आवेदन</ion-label>
-                        </ion-col>
-                      </ion-row>
-                    </ion-grid>
-                  </ion-card>
-                </ion-col>
+            <!-- STATS CARDS GRID -->
+            <div class="stats-grid">
+              <!-- कुल आवेदन -->
+              <div class="stat-card total" [class.active]="whichBoxClicked === 1"
+                (click)="getListOfAwedanAfterClickOnBoxes(1)">
+                <div class="card-inner">
+                  <div class="icon-avatar">
+                    <ion-icon name="list-outline"></ion-icon>
+                  </div>
+                  <div class="card-info">
+                    <span class="label">Total</span>
+                    <div class="card-value-row">
+                      <span class="hindi-label">कुल आवेदन</span>
+                      <span class="count">{{ totalAwedan }}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
 
-                <!-- संपादन लंबित -->
-                <ion-col size="6" size-lg="2">
-                  <ion-card class="custom-card" (click)="getListOfAwedanAfterClickOnBoxes(2)">
-                    <ion-grid style="
-                        background: linear-gradient(
-                          135deg,
-                          #ff9800 0%,
-                          #f57c00 100%
-                        );
-                      ">
-                      <ion-row>
-                        <ion-col size="12" class="ion-text-center">
-                          <ion-label class="responsive-label-count">{{totalEditPending}}</ion-label>
-                          <hr style="
-                              border: none;
-                              border-top: 1px solid rgba(255, 255, 255, 0.3);
-                              margin: 8px 0;
-                            " />
-                          <ion-label class="responsive-label" style="color: white">संपादन लंबित</ion-label>
-                        </ion-col>
-                      </ion-row>
-                    </ion-grid>
-                  </ion-card>
-                </ion-col>
+              <!-- संपादन लंबित -->
+              <div class="stat-card edit-pending" [class.active]="whichBoxClicked === 2"
+                (click)="getListOfAwedanAfterClickOnBoxes(2)">
+                <div class="card-inner">
+                  <div class="icon-avatar">
+                    <ion-icon name="create-outline"></ion-icon>
+                  </div>
+                  <div class="card-info">
+                    <span class="label">Edit Pending</span>
+                    <div class="card-value-row">
+                      <span class="hindi-label">संपादन लंबित</span>
+                      <span class="count">{{ totalEditPending }}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
 
-                <!-- परिक्षेत्र अधिकारी स्तर पर लंबित -->
-                <ion-col size="6" size-lg="2">
-                  <ion-card class="custom-card" (click)="getListOfAwedanAfterClickOnBoxes(3)">
-                    <ion-grid style="
-                        background: linear-gradient(
-                          135deg,
-                          #2196f3 0%,
-                          #1976d2 100%
-                        );
-                      ">
-                      <ion-row>
-                        <ion-col size="12" class="ion-text-center">
-                          <ion-label class="responsive-label-count">{{totalROPending}}</ion-label>
-                          <hr style="
-                              border: none;
-                              border-top: 1px solid rgba(255, 255, 255, 0.3);
-                              margin: 8px 0;
-                            " />
-                          <ion-label class="responsive-label" style="color: white">परिक्षेत्र अधिकारी स्तर पर
-                            लंबित</ion-label>
-                        </ion-col>
-                      </ion-row>
-                    </ion-grid>
-                  </ion-card>
-                </ion-col>
+              <!-- परिक्षेत्र अधिकारी स्तर पर लंबित -->
+              <div class="stat-card ro-pending" [class.active]="whichBoxClicked === 3"
+                (click)="getListOfAwedanAfterClickOnBoxes(3)">
+                <div class="card-inner">
+                  <div class="icon-avatar">
+                    <ion-icon name="person-outline"></ion-icon>
+                  </div>
+                  <div class="card-info">
+                    <span class="label">RO Pending</span>
+                    <div class="card-value-row">
+                      <span class="hindi-label">परिक्षेत्र स्तर</span>
+                      <span class="count">{{ totalROPending }}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
 
-                <!-- उपवनमंडलाधिकारी स्तर पर लंबित -->
-                <ion-col size="6" size-lg="2">
-                  <ion-card class="custom-card" (click)="getListOfAwedanAfterClickOnBoxes(4)">
-                    <ion-grid style="
-                        background: linear-gradient(
-                          135deg,
-                          #9c27b0 0%,
-                          #7b1fa2 100%
-                        );
-                      ">
-                      <ion-row>
-                        <ion-col size="12" class="ion-text-center">
-                          <ion-label class="responsive-label-count">{{totalSDOPending}}</ion-label>
-                          <hr style="
-                              border: none;
-                              border-top: 1px solid rgba(255, 255, 255, 0.3);
-                              margin: 8px 0;
-                            " />
-                          <ion-label class="responsive-label" style="color: white">उपवनमंडलाधिकारी स्तर पर
-                            लंबित</ion-label>
-                        </ion-col>
-                      </ion-row>
-                    </ion-grid>
-                  </ion-card>
-                </ion-col>
+              <!-- उपवनमंडलाधिकारी स्तर पर लंबित -->
+              <div class="stat-card sdo-pending" [class.active]="whichBoxClicked === 4"
+                (click)="getListOfAwedanAfterClickOnBoxes(4)">
+                <div class="card-inner">
+                  <div class="icon-avatar">
+                    <ion-icon name="people-outline"></ion-icon>
+                  </div>
+                  <div class="card-info">
+                    <span class="label">SDO Pending</span>
+                    <div class="card-value-row">
+                      <span class="hindi-label">SDO स्तर</span>
+                      <span class="count">{{ totalSDOPending }}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
 
-                <!-- वनमंडलाधिकारी स्तर पर लंबित -->
-                <ion-col size="6" size-lg="2">
-                  <ion-card class="custom-card" (click)="getListOfAwedanAfterClickOnBoxes(5)">
-                    <ion-grid style="
-                        background: linear-gradient(
-                          135deg,
-                          #673ab7 0%,
-                          #512da8 100%
-                        );
-                      ">
-                      <ion-row>
-                        <ion-col size="12" class="ion-text-center">
-                          <ion-label class="responsive-label-count">{{totalDFOPending}}</ion-label>
-                          <hr style="
-                              border: none;
-                              border-top: 1px solid rgba(255, 255, 255, 0.3);
-                              margin: 8px 0;
-                            " />
-                          <ion-label class="responsive-label" style="color: white">वनमंडलाधिकारी स्तर पर
-                            लंबित</ion-label>
-                        </ion-col>
-                      </ion-row>
-                    </ion-grid>
-                  </ion-card>
-                </ion-col>
+              <!-- वनमंडलाधिकारी स्तर पर लंबित -->
+              <div class="stat-card dfo-pending" [class.active]="whichBoxClicked === 5"
+                (click)="getListOfAwedanAfterClickOnBoxes(5)">
+                <div class="card-inner">
+                  <div class="icon-avatar">
+                    <ion-icon name="business-outline"></ion-icon>
+                  </div>
+                  <div class="card-info">
+                    <span class="label">DFO Pending</span>
+                    <div class="card-value-row">
+                      <span class="hindi-label">DFO स्तर</span>
+                      <span class="count">{{ totalDFOPending }}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
 
-                <!-- स्वीकृत -->
-                <ion-col size="6" size-lg="2">
-                  <ion-card class="custom-card" (click)="getListOfAwedanAfterClickOnBoxes(6)">
-                    <ion-grid style="
-                        background: linear-gradient(
-                          135deg,
-                          #4caf50 0%,
-                          #388e3c 100%
-                        );
-                      ">
-                      <ion-row>
-                        <ion-col size="12" class="ion-text-center">
-                          <ion-label class="responsive-label-count">{{totalApproved}}</ion-label>
-                          <hr style="
-                              border: none;
-                              border-top: 1px solid rgba(255, 255, 255, 0.3);
-                              margin: 8px 0;
-                            " />
-                          <ion-label class="responsive-label" style="color: white">स्वीकृत</ion-label>
-                        </ion-col>
-                      </ion-row>
-                    </ion-grid>
-                  </ion-card>
-                </ion-col>
-              </ion-row>
-            </ion-grid>
+              <!-- स्वीकृत -->
+              <div class="stat-card approved" [class.active]="whichBoxClicked === 6"
+                (click)="getListOfAwedanAfterClickOnBoxes(6)">
+                <div class="card-inner">
+                  <div class="icon-avatar">
+                    <ion-icon name="checkmark-circle-outline"></ion-icon>
+                  </div>
+                  <div class="card-info">
+                    <span class="label">Approved</span>
+                    <div class="card-value-row">
+                      <span class="hindi-label">स्वीकृत</span>
+                      <span class="count">{{ totalApproved }}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- अस्वीकृत -->
+              <div class="stat-card rejected" [class.active]="whichBoxClicked === 7"
+                (click)="getListOfAwedanAfterClickOnBoxes(7)">
+                <div class="card-inner">
+                  <div class="icon-avatar">
+                    <ion-icon name="close-circle-outline"></ion-icon>
+                  </div>
+                  <div class="card-info">
+                    <span class="label">Rejected</span>
+                    <div class="card-value-row">
+                      <span class="hindi-label">अस्वीकृत</span>
+                      <span class="count">{{ totalRejected }}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- ड्राफ्ट -->
+              <div class="stat-card draft" [class.active]="whichBoxClicked === 8"
+                (click)="getListOfAwedanAfterClickOnBoxes(8)">
+                <div class="card-inner">
+                  <div class="icon-avatar">
+                    <ion-icon name="document-text-outline"></ion-icon>
+                  </div>
+                  <div class="card-info">
+                    <span class="label">Batch</span>
+                    <div class="card-value-row">
+                      <span class="hindi-label">ड्राफ्ट</span>
+                      <span class="count">{{ totalBatch }}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
 
             <hr style="background-color: black; height: 1px" />
           </ion-col>
@@ -262,15 +225,24 @@
       </ion-grid>
 
       <div class="ion-padding">
-        <ion-row>
-          <ion-col size="12" size-lg="6">
-            <ion-input class="custom-input" [(ngModel)]="searchMobile" fill="outline"
-              placeholder="मोबाइल नंबर / हितग्राही नाम / पिता का नाम" (ionInput)="onSearch($event)"
-              (keyup.enter)="onEnter()">
-            </ion-input>
+        <ion-row class="mb-3 align-items-center" style="justify-content: space-between; margin: 0 10px;">
+          <ion-col size="12" size-md="7" size-lg="6" style="padding: 0;">
+            <div class="unified-search-box shadow-sm">
+              <input class="unified-search-input" [(ngModel)]="searchMobile" (ngModelChange)="onSearchInputChange()"
+                placeholder="खोजें (नाम, मोबाइल नंबर, आवेदन नंबर)" (keyup.enter)="onEnter()">
+
+              <button *ngIf="!isSearched" class="unified-search-btn" (click)="onEnter()">
+                <ion-icon name="search-outline"></ion-icon>
+              </button>
+
+              <button *ngIf="isSearched" class="unified-clear-btn" (click)="clearSearch()">
+                <ion-icon name="close-circle-outline"></ion-icon>
+              </button>
+            </div>
           </ion-col>
-          <ion-col size="6" size-lg="6">
-            <ion-button style="float: right;" (click)="export()">
+
+          <ion-col size="12" size-md="auto" class="ion-text-end" style="padding: 0; margin-left: auto;">
+            <ion-button class="my-btn" (click)="export()" color="success">
               <ion-icon name="download-outline" slot="start"></ion-icon>
               Export To Excel
             </ion-button>

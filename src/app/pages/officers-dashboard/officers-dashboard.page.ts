@@ -360,6 +360,12 @@ export class OfficersDashboardPage implements OnInit {
               is_submenu: false
             }
           ]
+        },
+        {
+          title: 'प्रगति प्रतिवेदन',
+          url: 'pragati-prativedan',
+          is_submenu: false,
+          icon: 'trending-up-outline'
         }
       ];
     });

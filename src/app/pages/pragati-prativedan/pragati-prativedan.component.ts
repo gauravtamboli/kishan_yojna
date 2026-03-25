@@ -1,47 +1,18 @@
-import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule, Location } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonicModule, ToastController } from '@ionic/angular';
 import { ApiService } from '../../services/api.service';
-import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
-import {
-  IonLoading,
-  IonContent,
-  IonRadioGroup,
-  IonRadio,
-  IonTextarea,
-  IonInput,
-  IonSelect,
-  IonSelectOption,
-  IonItem,
-  IonList,
-  IonRow,
-  IonCol,
-  IonLabel,
-  IonGrid,
-  IonButton,
-  IonHeader,
-  IonTitle,
-  IonToolbar,
-  IonBackButton,
-  IonButtons,
-  IonIcon,
-} from '@ionic/angular/standalone';
+import { Router, ActivatedRoute } from '@angular/router';
 import { NavController } from '@ionic/angular';
 import { StorageService } from '../../services/storage.service';
 import { LanguageService } from '../../services/language.service';
-import { Keyboard } from '@capacitor/keyboard';
 import { AlertController } from '@ionic/angular';
-import { MastersModelClass } from '../../services/response_classes/GetMastsersResponseModel';
-import { Toast } from '@capacitor/toast';
 import { LoadingController, Platform } from '@ionic/angular';
 import { ChangeDetectorRef } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { ModalController } from '@ionic/angular';
-import { OTPDialogComponent } from '../../otpdialog/otpdialog.component';
-import { MessageDialogComponent } from '../../message-dialog/message-dialog.component';
-import { Geolocation } from '@capacitor/geolocation';
 import { addIcons } from 'ionicons';
 import {
   buildSharp,
@@ -56,13 +27,9 @@ import {
   refreshOutline,
   boat,
 } from 'ionicons/icons';
-import { AddPlantDialogComponent } from '../../add-plant-dialog/add-plant-dialog.component';
-import { PlantationDetailNew, SingleAwedanDataResponse } from '../../pages/view-awedan/SingleAwedanDataResponse.model';
 import { SharedserviceService } from '../../services/sharedservice.service';
 import { AuthServiceService } from '../../services/auth-service.service';
-import { OfficersLoginResponseModel } from '../../pages/officer-login/OfficersLoginResponse.model';
-import { IonInputCustomEvent, InputInputEventDetail } from '@ionic/core';
-import { BankModal, Bankresponse } from '../../pages/ra-dwara-vivran/Getbankdetail.modal';
+import { MastersModelClass } from 'src/app/services/response_classes/GetMastsersResponseModel';
 
 @Component({
   standalone: true,
@@ -74,16 +41,25 @@ import { BankModal, Bankresponse } from '../../pages/ra-dwara-vivran/Getbankdeta
 
 export class PragatiPrativedanComponent implements OnInit {
 columnNumbers: any;
+  formData: any = {};
+  private loading: any;
 
-
-exportToExcel() {
-throw new Error('Method not implemented.');
-
-}
+  async exportToExcel() {
+    await this.showToast('Export to Excel is not implemented yet');
+  }
 
 reportData: any;
   todayDate: string = '';
   fiencial_year: string = '';
+  listOfCircle: MastersModelClass[] = [];
+  listOfDivision: MastersModelClass[] = [];
+  listOfRang: MastersModelClass[] = [];
+
+  userDesignation: number = 0;
+  isSuperAdmin: boolean = false;
+  isCircleAdmin: boolean = false;
+  isDivisionAdmin: boolean = false;
+  isRO: boolean = false;
 
 
   goBack() {
@@ -166,14 +142,40 @@ reportData: any;
 
     this.fiencial_year = await this.storageService.get('current_session') || '';
     
-    this.loadReportData();
+    const user = this.authService.getOfficerData();
+    if (user && user.designation) {
+      this.userDesignation = Number(user.designation);
+      if (this.userDesignation === 6 || this.userDesignation === 7) {
+        this.isSuperAdmin = true;
+      } else if (this.userDesignation === 1) {
+        this.isCircleAdmin = true;
+      } else if (this.userDesignation === 2 || this.userDesignation === 3) {
+        this.isDivisionAdmin = true;
+      } else if (this.userDesignation === 4) {
+        this.isRO = true;
+      }
+
+      if (this.isRO) {
+        this.loadReportData(Number(user.rang_id));
+      } else if (this.isDivisionAdmin) {
+        if (user.devision_id) {
+          this.formData.division_id = Number(user.devision_id);
+          this.loadRangesForDivision(this.formData.division_id);
+        }
+      } else if (this.isCircleAdmin) {
+        if (user.circle_id) {
+          this.formData.circle_id = Number(user.circle_id);
+          this.loadDivisionsForCircle(this.formData.circle_id);
+        }
+      } else if (this.isSuperAdmin) {
+        this.loadMasterData();
+      }
+    }
   } 
 
-  async loadReportData() {
-    const user = this.authService.getOfficerData();
-    if (user && user.rang_id) {
-      const rangeId = Number(user.rang_id);
-      const curentSession = this.fiencial_year;
+  async loadReportData(rangeId: number) {
+    if (!rangeId) return;
+    const curentSession = this.fiencial_year;
       
       const loading = await this.loadingController.create({
         message: 'Loading report data...',
@@ -206,16 +208,130 @@ reportData: any;
           await toast.present();
         }
       });
-    } else {
-      const toast = await this.toastController.create({
-        message: 'Range ID not found for the logged-in user',
-        duration: 2000,
-        position: 'bottom'
-      });
-      await toast.present();
-    }
   }
   
+  loadMasterData() {
+    this.showLoading('डेटा लोड हो रहा है...');
+    
+    this.apiService.getCircles().subscribe(
+      (response) => {
+        this.dismissLoading();
+        
+        // Parse the JSON response if it's a string
+        let parsedResponse = response;
+        if (typeof response === 'string') {
+          parsedResponse = JSON.parse(response);
+        }
+        
+        if (parsedResponse.response && parsedResponse.response.code === 200) {
+          this.listOfCircle = parsedResponse.data || [];
+        } else {
+          this.showToast(parsedResponse.response?.msg || 'डेटा लोड करने में त्रुटि');
+        }
+      },
+      (error) => {
+        this.dismissLoading();
+        this.showToast('डेटा लोड करने में त्रुटि');
+      }
+    );
+  }
+
+  loadDivisionsForCircle(circleId: any) {
+    this.showLoading('डेटा लोड हो रहा है...');
+    this.apiService.getDivision(circleId.toString()).subscribe(
+      (response) => {
+        this.dismissLoading();
+        if (response.response.code === 200) {
+          this.listOfDivision = response.data || [];
+        } else {
+          this.showToast(response.response.msg);
+        }
+      },
+      (error) => {
+        this.dismissLoading();
+        this.showToast('वनमण्डल डेटा लोड करने में त्रुटि');
+      }
+    );
+  }
+
+  loadRangesForDivision(divisionId: any) {
+    this.showLoading('डेटा लोड हो रहा है...');
+    this.apiService.getRangesByDivision(divisionId.toString()).subscribe(
+      (response) => {
+        this.dismissLoading();
+        if (response.response.code === 200) {
+          this.listOfRang = response.data || [];
+        } else {
+          this.showToast(response.response.msg);
+        }
+      },
+      (error) => {
+        this.dismissLoading();
+        this.showToast('परिक्षेत्र डेटा लोड करने में त्रुटि');
+      }
+    );
+  }
+
+  onCircleChange(event: any) {
+    // Clear division and range when circle changes
+    this.listOfDivision = [];
+    this.formData.division_id = '';
+    this.listOfRang = [];
+    this.formData.range_id = '';
+    this.reportData = null;
+    
+    // Get the ID from the selected object
+    const circleId = event?.id || event;
+    if (!circleId) return;    
+    
+    this.loadDivisionsForCircle(circleId);
+  }
+  async showLoading(message: string) {
+    this.loading = await this.loadingController.create({
+      message: message,
+      spinner: 'circles'
+    });
+    await this.loading.present();
+  }
+
+  async dismissLoading() {
+    if (this.loading) {
+      await this.loading.dismiss();
+      this.loading = null;
+    }
+  }
+
+  async showToast(msg: string) {
+    const toast = await this.toastController.create({
+      message: msg,
+      duration: 2000,
+      position: 'bottom'
+    });
+    await toast.present();
+  }
+
+  onDivisionChange(event: any) {
+    // Clear range when division changes
+    this.listOfRang = [];
+    this.formData.range_id = '';
+    this.reportData = null;
+    
+    // Get the ID from the selected object
+    const divisionId = event?.id || event;
+    if (!divisionId) return;
+ 
+    this.loadRangesForDivision(divisionId);
+  }
+
+  onRangeChange(event: any) {
+    const rangeId = event?.id || event;
+    if (!rangeId) {
+      this.reportData = null;
+      return;
+    }
+    this.loadReportData(rangeId);
+  }
+
 
 
 }

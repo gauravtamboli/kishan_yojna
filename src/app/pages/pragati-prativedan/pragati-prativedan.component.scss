@@ -1,33 +1,103 @@
+/* --- Design Tokens --- */
+:host {
+  --filter-bg: rgba(255, 255, 255, 0.8);
+  --filter-shadow: 0 8px 32px rgba(31, 38, 135, 0.07);
+  --filter-border: rgba(255, 255, 255, 0.18);
+  --accent-color: #2ecc71;
+}
+
 /* --- Page Layout --- */
 .report-container {
   text-align: center;
-  padding: 20px;
-  background: var(--theme-bg-light);
+  padding: 24px;
+  background: #f8fafc;
   min-height: 100%;
 }
 
-.report-title {
-  font-weight: 800;
-  font-size: 1.2rem;
-  margin-bottom: 8px;
-  color: var(--theme-primary);
+/* --- Filter Section --- */
+.filter-section {
+  background: var(--filter-bg);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid var(--filter-border);
+  border-radius: 20px;
+  padding: 24px;
+  margin-bottom: 30px;
+  box-shadow: var(--filter-shadow);
+  text-align: left;
+  position: relative;
+  z-index: 100;
+  overflow: visible;
 }
 
-.report-date {
-  font-size: 14px;
-  margin-bottom: 20px;
-  color: var(--theme-text-secondary);
-  font-weight: 500;
+.filter-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  width: 100%;
+
+  @media (max-width: 992px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media (max-width: 600px) {
+    grid-template-columns: 1fr;
+  }
 }
 
-.custom-back-button {
-  --color: var(--theme-primary);
+.filter-item {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.filter-label {
+  font-size: 13px;
   font-weight: 700;
+  color: #475569;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  
+  ion-icon {
+    color: var(--ion-color-primary);
+    font-size: 16px;
+  }
 }
 
-.responsive-toolbar-title {
-  font-size: 16px;
-  font-weight: 700;
+/* --- Custom ng-select styling --- */
+::ng-deep .custom-select {
+  .ng-select-container {
+    background: white !important;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 12px !important;
+    min-height: 48px !important;
+    padding: 0 12px !important;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.02) !important;
+    transition: all 0.2s ease !important;
+
+    &:hover {
+      border-color: var(--ion-color-primary) !important;
+      box-shadow: 0 4px 12px rgba(var(--ion-color-primary-rgb), 0.1) !important;
+    }
+  }
+
+  &.ng-select-opened .ng-select-container {
+    border-color: var(--ion-color-primary) !important;
+    box-shadow: 0 0 0 3px rgba(var(--ion-color-primary-rgb), 0.15) !important;
+  }
+
+  .ng-value-label, .ng-placeholder {
+    font-size: 14px !important;
+    font-weight: 500 !important;
+    color: #1e293b !important;
+  }
+
+  .ng-arrow-wrapper {
+    width: 25px !important;
+  }
 }
 
 /* --- Table Wrapper for Horizontal Scroll --- */
@@ -40,6 +110,8 @@
   background: var(--theme-card-bg);
   box-shadow: var(--theme-shadow-sm);
   margin-top: 20px;
+  position: relative;
+  z-index: 1;
 }
 
 /* --- Table Styling --- */

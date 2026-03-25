@@ -51,7 +51,7 @@ interface MenuPage {
   standalone: true,
   imports: [IonSplitPane, PaginatorModule, IonPopover,
     IonMenu, IonList, IonAvatar, IonLoading, IonText, IonButton,
-    IonInput, IonLabel, IonItem, IonGrid, IonRow, IonCol, IonButtons, IonContent, IonHeader,
+    IonLabel, IonItem, IonGrid, IonRow, IonCol, IonButtons, IonContent, IonHeader,
     IonToolbar, CommonModule, FormsModule, IonIcon, TableModule, IonMenuButton]
 })
 export class OfficersDashboardROPage implements OnInit {
