@@ -1811,7 +1811,10 @@ export class ApiService {
     divisionId?: number,
     distId?: number,
     rangId?: number,
-    officerId?: number
+    officerId?: number,
+    page: number = 1,
+    pageSize: number = 25,
+    searchTerm: string = ''
   ): Observable<any> {
     const headers = {
       'Content-Type': 'application/json',
@@ -1822,20 +1825,17 @@ export class ApiService {
     let queryParams = '';
     const params: string[] = [];
 
-    if (circleId && circleId > 0) {
-      params.push(`circleId=${circleId}`);
-    }
-    if (divisionId && divisionId > 0) {
-      params.push(`divisionId=${divisionId}`);
-    }
-    if (distId && distId > 0) {
-      params.push(`distId=${distId}`);
-    }
-    if (rangId && rangId > 0) {
-      params.push(`rangId=${rangId}`);
-    }
-    if (officerId && officerId > 0) {
-      params.push(`officerId=${officerId}`);
+    if (circleId && circleId > 0) params.push(`circleId=${circleId}`);
+    if (divisionId && divisionId > 0) params.push(`divisionId=${divisionId}`);
+    if (distId && distId > 0) params.push(`distId=${distId}`);
+    if (rangId && rangId > 0) params.push(`rangId=${rangId}`);
+    if (officerId && officerId > 0) params.push(`officerId=${officerId}`);
+    
+    // Add pagination and search parameters
+    params.push(`page=${page}`);
+    params.push(`pageSize=${pageSize}`);
+    if (searchTerm && searchTerm.trim() !== '') {
+      params.push(`searchTerm=${encodeURIComponent(searchTerm)}`);
     }
 
     if (params.length > 0) {

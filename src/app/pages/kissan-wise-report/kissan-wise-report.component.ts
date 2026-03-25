@@ -50,41 +50,37 @@ export class KissanWiseReportComponent implements OnInit {
   pageSize: number = 25;
 
   get filteredFarmers() {
-    let result = this.farmers;
-    if (this.searchTerm && this.searchTerm.trim() !== '') {
-      const term = this.searchTerm.toLowerCase();
-      result = result.filter(farmer => 
-        Object.values(farmer).some(val => 
-          val && val.toString().toLowerCase().includes(term)
-        )
-      );
-    }
-    return result;
+    // With server-side search, filteredFarmers is just used for displaying the search results count.
+    // However, since we now filter on the server, we should use totalCount for total records.
+    return this.farmers; 
   }
 
   get paginatedFarmers() {
-    const startIndex = (this.currentPage - 1) * this.pageSize;
-    return this.filteredFarmers.slice(startIndex, startIndex + this.pageSize);
+    // Since the server already paginates, we just return the farmers array.
+    return this.farmers;
   }
 
   get totalPages() {
-    return Math.max(1, Math.ceil(this.filteredFarmers.length / this.pageSize));
+    return Math.max(1, Math.ceil(this.totalCount / this.pageSize));
   }
 
   nextPage() {
     if (this.currentPage < this.totalPages) {
       this.currentPage++;
+      this.loadFarmersData();
     }
   }
 
   prevPage() {
     if (this.currentPage > 1) {
       this.currentPage--;
+      this.loadFarmersData();
     }
   }
 
   onSearchChange() {
     this.currentPage = 1; // reset to first page when search changes
+    this.loadFarmersData();
   }
 
   constructor(
@@ -146,7 +142,27 @@ export class KissanWiseReportComponent implements OnInit {
       console.warn('No officer session data found');
     }
 
-    this.apiService.getKissanWiseReport(finalCircleId, finalDivisionId, finalDistId, finalRangId, officerId).subscribe({
+    console.log('Fetching Kisan Wise Report with params:', {
+      circleId: finalCircleId,
+      divisionId: finalDivisionId,
+      distId: finalDistId,
+      rangId: finalRangId,
+      officerId,
+      page: this.currentPage,
+      pageSize: this.pageSize,
+      searchTerm: this.searchTerm
+    });
+
+    this.apiService.getKissanWiseReport(
+      finalCircleId, 
+      finalDivisionId, 
+      finalDistId, 
+      finalRangId, 
+      officerId,
+      this.currentPage,
+      this.pageSize,
+      this.searchTerm
+    ).subscribe({
       next: (response: KisanWiseReportResponse) => {
         this.isLoading = false;
         
@@ -219,13 +235,51 @@ export class KissanWiseReportComponent implements OnInit {
   }
 
   exportToExcel(): void {
-    if (this.farmers.length === 0) {
+    if (this.totalCount === 0) {
       this.showToast('निर्यात के लिए कोई डेटा उपलब्ध नहीं है');
       return;
     }
 
+    this.isLoading = true;
+    this.cdRef.detectChanges();
+
+    // Get all records for export (using a large pageSize)
+    const officerData = this.getOfficersSessionData();
+    let circleId = officerData?.circle_id ? Number(officerData.circle_id) : undefined;
+    let divisionId = officerData?.devision_id ? Number(officerData.devision_id) : undefined;
+    let rangId = officerData?.rang_id ? Number(officerData.rang_id) : undefined;
+    let officerId = officerData?.officerId;
+
+    this.apiService.getKissanWiseReport(
+      circleId,
+      divisionId,
+      undefined, // distId
+      rangId,
+      officerId,
+      1, // page 1
+      this.totalCount, // Get all records
+      this.searchTerm
+    ).subscribe({
+      next: (response: KisanWiseReportResponse) => {
+        this.isLoading = false;
+        if (response?.response?.code === 200 && response.data) {
+          this.generateExcel(response.data);
+        } else {
+          this.showToast('डेटा निर्यात करने में त्रुटि हुई');
+        }
+        this.cdRef.detectChanges();
+      },
+      error: (error) => {
+        this.isLoading = false;
+        this.showToast('डेटा निर्यात करने में त्रुटि हुई');
+        this.cdRef.detectChanges();
+      }
+    });
+  }
+
+  private generateExcel(dataToExport: KisanWiseReportResponseModel[]): void {
     // Prepare data for export with Hindi column headers
-    const exportData = this.farmers.map((farmer, index) => ({
+    const exportData = dataToExport.map((farmer, index) => ({
       'क्रमांक': index + 1,
       'हितग्राही का नाम': farmer.hitgrahi_name || 'N/A',
       'पिता का नाम': farmer.father_name || 'N/A',
