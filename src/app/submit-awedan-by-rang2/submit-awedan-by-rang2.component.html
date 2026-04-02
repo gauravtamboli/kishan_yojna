@@ -111,13 +111,18 @@
         <ion-col size="12" size-lg="4" style="padding: 5px;">
           <!-- <ion-label class="item-style-label">बैंक का नाम</ion-label> -->
           <ng-select [items]="listOfBank" bindLabel="name" bindValue="id" [(ngModel)]="selectedBankName"
-            [searchable]="true" [clearable]="false" placeholder="बैंक का नाम चुनें" class="custom-select">
+            (change)="onBankChange()" [searchable]="true" [clearable]="false" placeholder="बैंक का नाम चुनें" class="custom-select">
           </ng-select>
         </ion-col>
 
-        <ion-col size="12" size-lg="4"
-          style="display: flex; flex-direction: column; justify-content: flex-end; padding: 5px;">
-          <ion-input [(ngModel)]="ifsc_code" label="IFSC कोड" label-placement="floating" fill="outline" />
+        <ion-col size="12" size-lg="4" style="padding: 5px;">
+          <!-- <ion-label class="item-style-label">IFSC कोड <span style="color: red">*</span></ion-label> -->
+          <ng-select [items]="listOfIfsc" bindLabel="ifsc" bindValue="ifsc" [(ngModel)]="ifsc_code"
+            name="ifsc" [searchable]="true" [clearable]="false" placeholder="IFSC का चयन करें" class="custom-select">
+            <ng-template ng-option-tmp let-item="item">
+              {{item.ifsc}} - {{item.branchName}}
+            </ng-template>
+          </ng-select>
         </ion-col>
         <ion-col size="12" size-lg="4" style="padding: 5px;">
           <ion-input [(ngModel)]="bank_account_no" type="number" label="बैंक खाता नम्बर" label-placement="floating"

@@ -184,7 +184,7 @@ export class SubmitAwedanByRang2Component implements OnInit {
           id: (item.id || item.plant_id)?.toString(),
           name: item.plantName || item.name 
         }));
-        console.log('Loaded plant types:', this.listOfPlantTypes);
+        // console.log('Loaded plant types:', this.listOfPlantTypes);
         // Map names if plantTypeFinal is already loaded
         this.updatePlantTypeFinalNames();
       } else {
@@ -632,19 +632,21 @@ export class SubmitAwedanByRang2Component implements OnInit {
 
 
 
-          this.khasra_no = data.khasraNo || '';
-          this.halka_no = data.halkaNo || '';
-          this.village_name = data.villageName || '';
-          this.gram_panchayat_name = data.gramPanchayatName || '';
-          // this.sinchitOrA_sinchit = data.sinchit_asinchit || null || '';
-          this.sinchitOrA_sinchit = data.sinchitAsinchit || '';
+          this.khasra_no = data.khasraNo || data.khasra_no || '';
+          this.halka_no = data.halkaNo || data.halka_no || '';
+          this.village_name = data.villageName || data.village_name || '';
+          this.gram_panchayat_name = data.gramPanchayatName || data.gram_panchayat_name || '';
+          this.sinchitOrA_sinchit = data.sinchitAsinchit || data.sinchit_asinchit || '';
 
           this.awedan_number = applicationNumber; // or data.applicationNumber if available
           this.vrikharopan_akshansh = data.vrikharopan_akshansh || '0.0';
           this.vrikharopan_dikshansh = data.vrikharopan_dikshansh || '0.0';
           this.awedan_status = data.awedan_status || '1';
 
-          this.selectfrarevenue = data.land_type?.toString() || '';
+          const landTypeValue = data.landType ?? data.land_type;
+          if (landTypeValue != null) {
+            this.selectfrarevenue = landTypeValue.toString();
+          }
           this.compartment_no = data.compartmentNo || '';
           this.patta_no = data.pattaNo || '';
           this.adharFilename = data.adharPdfFile || null;
@@ -660,7 +662,8 @@ export class SubmitAwedanByRang2Component implements OnInit {
 
 
 
-          this.selectfrarevenue = data.landType === 1 ? '1' : '2';
+          // Removed incorrect hardcoded default to '2'
+          // this.selectfrarevenue = data.landType === 1 ? '1' : '2';
 
           this.selectedCastCatId = data.castCategory.toString();
 
@@ -1046,46 +1049,59 @@ export class SubmitAwedanByRang2Component implements OnInit {
 
 
   async get_bank_details(selectedBankId?: string | number) {
-    // this.showLoading('कृपया प्रतीक्षा करें.....');
-    // console.log('🔹 Selected Bank ID (input):', selectedBankId);
-
-    this.apiService.getBankDetails().subscribe({
-      next: async (data) => {
-        // await this.dismissLoading();
-
-        // ✅ Check if API returns expected structure
-        if (data?.response?.dynamicdata && Array.isArray(data.response.dynamicdata)) {
-          // ✅ Map API data to match dropdown format
-          this.listOfBank = data.response.dynamicdata.map((item: any) => ({
-            id: item.id.toString(), // convert number → string
-            name: item.bank_name_hi || item.bank_name_en || 'Unknown Bank',
+    this.apiService.getBankList().subscribe({
+      next: (data: any) => {
+        if (data && Array.isArray(data)) {
+          this.listOfBank = data.map((item: any) => ({
+            id: item.bankCode.toString(),
+            name: `${item.bank_Name_Hi} (${item.bank_Name_En})`,
           }));
 
-          // console.log('✅ Bank list:', this.listOfBank);
-
-          // ✅ Preselect bank if selectedBankId is available
           if (selectedBankId != null) {
             const selectedId = selectedBankId.toString();
             const bankExists = this.listOfBank.some(b => b.id === selectedId);
 
             if (bankExists) {
-              this.selectedBankName = selectedId; // ✅ Bind to [(ngModel)]
-              // console.log('🏦 Preselected bank ID:', this.selectedBankName);
-            } else {
-              console.warn('⚠️ Selected bank not found in list');
+              this.selectedBankName = selectedId;
+              this.onBankChange();
             }
           }
 
           this.cdRef.detectChanges();
-        } else {
-          console.warn('⚠️ Invalid API response structure:', data);
         }
       },
+      error: (err) => {
+        this.shortToast(err.message || 'बैंक डेटा लोड करने में त्रुटि हुई।');
+      }
+    });
+  }
 
-      error: async (err) => {
-        // await this.dismissLoading();
-        // console.error('❌ Error fetching banks:', err);
-        this.shortToast(err.message || 'डेटा लोड करने में त्रुटि हुई।');
+  listOfIfsc: any[] = [];
+
+  onBankChange() {
+    if (!this.selectedBankName) {
+      this.ifsc_code = '';
+      this.listOfIfsc = [];
+      return;
+    }
+
+    this.apiService.getIfscByBank(Number(this.selectedBankName)).subscribe({
+      next: (response: any) => {
+        if (response && Array.isArray(response) && response.length > 0) {
+          this.listOfIfsc = response;
+          const validIfscList = response.map((r: any) => r.ifsc);
+          if (!this.ifsc_code || !validIfscList.includes(this.ifsc_code)) {
+            this.ifsc_code = response[0].ifsc;
+          }
+        } else {
+          this.ifsc_code = '';
+          this.listOfIfsc = [];
+        }
+        this.cdRef.detectChanges();
+      },
+      error: () => {
+        this.ifsc_code = '';
+        this.listOfIfsc = [];
       }
     });
   }
@@ -2422,8 +2438,8 @@ export class SubmitAwedanByRang2Component implements OnInit {
 
     this.apiService.getPlantMaster().subscribe({
       next: (response: any) => {
-        console.log('🌱 Plant master response:', response);
-        console.log('🌱 Plant master full response:', JSON.stringify(response, null, 2));
+        // console.log('🌱 Plant master response:', response);
+        // console.log('🌱 Plant master full response:', JSON.stringify(response, null, 2));
 
         // Check multiple possible response structures
         let plantData = null;
@@ -2431,11 +2447,11 @@ export class SubmitAwedanByRang2Component implements OnInit {
         if (response?.response?.code === 200 && response?.data) {
           // Standard structure: { response: { code: 200 }, data: [...] }
           plantData = response.data;
-          console.log('✅ Found plants in response.data:', plantData);
+          // console.log('✅ Found plants in response.data:', plantData);
         } else if (response?.data && Array.isArray(response.data)) {
           // Alternative: { data: [...] }
           plantData = response.data;
-          console.log('✅ Found plants in response.data (alternative):', plantData);
+          // console.log('✅ Found plants in response.data (alternative):', plantData);
         } else if (Array.isArray(response)) {
           // Direct array response
           plantData = response;
@@ -2443,7 +2459,7 @@ export class SubmitAwedanByRang2Component implements OnInit {
         } else if (response?.response?.code === 200 && Array.isArray(response?.response?.data)) {
           // Nested in response.response.data
           plantData = response.response.data;
-          console.log('✅ Found plants in response.response.data:', plantData);
+          // console.log('✅ Found plants in response.response.data:', plantData);
         } else {
           console.error('❌ Unable to parse plant data. Response structure:', response);
           console.error('Response keys:', Object.keys(response || {}));
@@ -2458,8 +2474,8 @@ export class SubmitAwedanByRang2Component implements OnInit {
             treesPerAcre: item.treesPerAcre || item.trees_per_acre || '0',
             isActive: item.isActive !== undefined ? item.isActive : (item.id_active !== undefined ? item.id_active : 1)
           }));
-          console.log('✅ Loaded plants successfully. Count:', this.listOfPlants.length);
-          console.log('✅ Plants list:', this.listOfPlants);
+          // console.log('✅ Loaded plants successfully. Count:', this.listOfPlants.length);
+          // console.log('✅ Plants list:', this.listOfPlants);
           this.isPlantMasterLoading = false;
           this.cdRef.detectChanges();
         } else {

@@ -287,6 +287,28 @@ export class ApiService {
     );
   }
 
+  getBankList(): Observable<any[]> {
+    const headers = { 'ngrok-skip-browser-warning': 'true' };
+    return from(this.buildApiUrl('/api/KissanMitraYojnaRegisteration/GetBankList')).pipe(
+      switchMap((url) => {
+        if (!url) return throwError(() => new Error('No API URL configured'));
+        return this.http.get<any[]>(url, { headers });
+      }),
+      catchError(() => throwError(() => new Error('Error fetching bank list')))
+    );
+  }
+
+  getIfscByBank(bankCode: number): Observable<any[]> {
+    const headers = { 'ngrok-skip-browser-warning': 'true' };
+    return from(this.buildApiUrl(`/api/KissanMitraYojnaRegisteration/IfscBank/${bankCode}`)).pipe(
+      switchMap((url) => {
+        if (!url) return throwError(() => new Error('No API URL configured'));
+        return this.http.get<any[]>(url, { headers });
+      }),
+      catchError(() => throwError(() => new Error('Error fetching IFSC list')))
+    );
+  }
+
   //end
 
   // Check Mobile Number Already Exist //

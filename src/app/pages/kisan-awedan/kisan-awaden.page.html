@@ -369,20 +369,26 @@
 
       <ion-card style="background-color: #e8f5e8; padding: 15px; border-left: 4px solid #28a745;">
         <ion-text style="font-size: 14px; color: #2d5a2d;">
-          <strong>बैंक विवरण (सब्सिडी हेतु) : </strong>
+          <strong>बैंक विवरण : </strong>
         </ion-text>
       </ion-card>
 
       <ion-row style="padding-left: 15px; padding-right: 15px; margin-top: 10px;">
         <ion-col size="12" size-md="4" class="my-col">
           <ion-label class="item-style-label">बैंक का चयन करें <span style="color: red">*</span></ion-label>
-          <ng-select [items]="listOfBank" bindLabel="bank_name_hi" bindValue="bank_name_hi" [(ngModel)]="selectedBankName"
-            name="bankName" [searchable]="true" [clearable]="false" placeholder="बैंक का चयन करें" required class="custom-select">
+          <ng-select [items]="listOfBank" bindLabel="displayLabel" bindValue="bankCode" [(ngModel)]="selectedBankCode"
+            name="bankName" [searchable]="true" [clearable]="false" placeholder="बैंक का चयन करें" required class="custom-select" (change)="onBankChange($event)">
           </ng-select>
         </ion-col>
 
         <ion-col size="12" size-md="4" class="my-col">
-          <ion-input [(ngModel)]="ifsc_code" name="ifsc" label="IFSC कोड" label-placement="floating" fill="outline" required />
+          <ion-label class="item-style-label">IFSC कोड <span style="color: red">*</span></ion-label>
+          <ng-select [items]="listOfIfsc" bindLabel="ifsc" bindValue="ifsc" [(ngModel)]="ifsc_code"
+            name="ifsc" [searchable]="true" [clearable]="false" placeholder="IFSC का चयन करें" required class="custom-select">
+            <ng-template ng-option-tmp let-item="item">
+              {{item.ifsc}} - {{item.branchName}}
+            </ng-template>
+          </ng-select>
         </ion-col>
 
         <ion-col size="12" size-md="4" class="my-col">

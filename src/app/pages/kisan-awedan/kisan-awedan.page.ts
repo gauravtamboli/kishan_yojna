@@ -90,10 +90,14 @@ interface KisanAwedanFormData {
 
 
 export class KisanAwedanPage implements OnInit {
-selectedBankName: any;
-listOfBank: readonly any[]|null|undefined;
-ifsc_code: any;
-bank_account_no: any;
+
+
+  alrtedy_worked : number = 0; // 0 for not worked, 1 for worked
+  selectedBankCode: any;
+  listOfBank: readonly any[] | null | undefined;
+  ifsc_code: any;
+  bank_account_no: any;
+  listOfIfsc: readonly any[] | null | undefined;
 
   async downloadB1P1Pdf() {
     if (!this.b1P1Filename) {
@@ -494,15 +498,50 @@ bank_account_no: any;
       }
     );
 
-    // Load banks
-    this.apiService.getBankDetails().subscribe(
-      (response) => {
-        if (response.response.code === 200) {
-          this.listOfBank = response.response.dynamicdata || [];
-        }
+    // Load banks using the updated API
+    this.apiService.getBankList().subscribe(
+      (response: any) => {
+        const banks = response || [];
+        this.listOfBank = banks.map((b: any) => ({
+          ...b,
+          // Support cases where properties might be PascalCase or camelCase depending on serialization
+          displayLabel: (b.bank_Name_Hi || b.Bank_Name_Hi || b.bank_name_hi || '') + ' / ' + (b.bank_Name_En || b.Bank_Name_En || b.bank_name_en || ''),
+          bankCode: b.bankCode || b.BankCode
+        }));
       },
       (error) => {
         console.error('Error fetching banks:', error);
+      }
+    );
+  }
+
+
+  onBankChange(event: any) {
+    this.ifsc_code = null;
+    this.listOfIfsc = [];
+
+    // Support typical casing scenarios from .NET backends
+    const bankCode = event?.bankCode || event?.BankCode;
+    this.selectedBankCode = bankCode;
+
+    if (!bankCode) return;
+
+    this.showLoading('IFSC लिस्ट लोड हो रहा है...');
+    this.apiService.getIfscByBank(bankCode).subscribe(
+      (response: any[]) => {
+        this.dismissLoading();
+        const rawList = response || [];
+        this.listOfIfsc = rawList.map(item => ({
+          ...item,
+          // Normalize property cases from C# to TS for binding
+          ifsc: item.iFSC || item.IFSC || item.ifsc,
+          branchName: item.branchName || item.BranchName
+        }));
+      },
+      (error) => {
+        this.dismissLoading();
+        this.showToast('IFSC लोड करने में त्रुटि');
+        console.error('Error fetching IFSC:', error);
       }
     );
   }
@@ -759,7 +798,7 @@ bank_account_no: any;
       compartment_no: this.formData.compartment_no ? this.formData.compartment_no.toString() : "",
       patta_no: this.formData.patta_no ? this.formData.patta_no.toString() : "",
       khasra_no: this.formData.khasra_no ? this.formData.khasra_no.toString() : "",
-      bank_name: this.selectedBankName || "",
+      bank_name: this.selectedBankCode ? this.selectedBankCode.toString() : "",
       ifsc_code: this.ifsc_code || "",
       account_no: this.bank_account_no || ""
     };
@@ -802,7 +841,7 @@ bank_account_no: any;
     formData.append('khasra_no', this.formData.khasra_no || "");
 
     // Bank Details
-    formData.append('bank_name', this.selectedBankName || "");
+    formData.append('bank_name', this.selectedBankCode ? this.selectedBankCode.toString() : "");
     formData.append('ifsc_code', this.ifsc_code || "");
     formData.append('account_no', this.bank_account_no || "");
 
