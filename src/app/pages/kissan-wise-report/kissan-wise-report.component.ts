@@ -21,7 +21,7 @@ import { downloadOutline, searchOutline, chevronBackOutline, chevronForwardOutli
   standalone: true,
   imports: [
     CommonModule,
-    FormsModule, 
+    FormsModule,
     IonHeader,
     IonToolbar,
     IonButtons,
@@ -34,10 +34,8 @@ import { downloadOutline, searchOutline, chevronBackOutline, chevronForwardOutli
     IonButton,
     IonIcon,
     IonSearchbar,
-    IonRow,
-    IonCol,
     IonLabel
-  ],
+],
 })
 export class KissanWiseReportComponent implements OnInit {
   farmers: KisanWiseReportResponseModel[] = [];

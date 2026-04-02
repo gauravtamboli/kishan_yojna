@@ -19,6 +19,8 @@ import AppSignatureHelper from '../plugin/app-signature-helper';
 //import { AppVersion } from '@ionic-native/app-version/ngx';
 
 import { Geolocation } from '@capacitor/geolocation';
+import { addIcons } from 'ionicons';
+import { arrowForwardOutline } from 'ionicons/icons';
 
 declare const cordova: any;
 
@@ -28,7 +30,7 @@ declare const cordova: any;
   styleUrls: ['./landingpage.page.scss'],
   standalone: true,
   imports: [IonSplitPane, IonList, IonMenuButton, IonMenuToggle, IonItem, IonAvatar, IonText, IonMenu, IonRow, IonCol, IonGrid, IonToolbar, IonTitle, IonHeader, IonLabel, IonContent,
-    IonMenuButton, IonButton, CommonModule, FormsModule]
+    IonIcon, IonButton, CommonModule, FormsModule]
 })
 export class LandingpagePage implements OnInit {
 
@@ -69,7 +71,9 @@ export class LandingpagePage implements OnInit {
   languageData: any = {};
   isConnected: boolean = false;
 
-  constructor(private sharedService: SharedserviceService, private platform: Platform, private alertController: AlertController, private router: Router, private menuCtrl: MenuController, private langService: LanguageService, private networkCheckService: NetworkCheckService, private modalCtrl: ModalController, private authService: AuthServiceService) { }
+  constructor(private sharedService: SharedserviceService, private platform: Platform, private alertController: AlertController, private router: Router, private menuCtrl: MenuController, private langService: LanguageService, private networkCheckService: NetworkCheckService, private modalCtrl: ModalController, private authService: AuthServiceService) { 
+    addIcons({ arrowForwardOutline });
+  }
 
   versionNumber: string = "";
 

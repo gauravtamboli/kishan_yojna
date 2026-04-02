@@ -24,7 +24,8 @@ import {
   IonButtons,
   IonIcon,
   IonCard,
-  IonText, IonCardHeader, IonCardTitle, IonCardContent } from '@ionic/angular/standalone';
+  IonText, IonCardHeader, IonCardTitle, IonCardContent
+} from '@ionic/angular/standalone';
 import { NavController } from '@ionic/angular';
 import { LanguageService } from '../services/language.service';
 import { AlertController } from '@ionic/angular';
@@ -50,7 +51,8 @@ import {
   refreshCircleOutline,
   refreshOutline,
   boat,
-  trashOutline, addOutline } from 'ionicons/icons';
+  trashOutline, addOutline
+} from 'ionicons/icons';
 import { AddPlantDialogComponent } from '../add-plant-dialog/add-plant-dialog.component';
 import { PlantationDetailNew } from '../pages/view-awedan/SingleAwedanDataResponse.model';
 import { SharedserviceService } from '../services/sharedservice.service';
@@ -87,9 +89,8 @@ import { SpeciesMaster, AnyaPlantRequest, AddSpeciesMasterRequest } from '../mod
     IonLoading,
     IonTextarea,
     IonRadioGroup,
-    IonRadio,
-    IonCardContent
-],
+    IonRadio
+  ],
 })
 export class SubmitAwedanByRang2Component implements OnInit {
   onAreaChange($event: IonInputCustomEvent<InputInputEventDetail>) {
@@ -170,19 +171,66 @@ export class SubmitAwedanByRang2Component implements OnInit {
       this.cdRef.detectChanges();
     }
   }
+ listOfPlantTypes: MastersModelClass[] = [];
 
-  listOfPlantTypes = [
-    { id: '1', name: 'क्लोनल नीलगिरी' },
-    { id: '2', name: 'टिश्यू कल्चर सागौन' },
-    { id: '3', name: 'टिश्यू कल्चर बांस' },
-    { id: '4', name: 'साधारण बांस' },
-    { id: '5', name: 'साधारण सागौन' },
-    { id: '6', name: 'मिलिया डुबिया' },
-    { id: '7', name: 'चंदन पौधा' },
-    { id: '8', name: 'अन्य लाभकारी' },
-  ];
+  getPlantTypes() {
+    this.apiService.getPlantMaster().subscribe((response) => {
+      let res = typeof response === 'string' ? JSON.parse(response) : response;
+      
+      if (res && (res.response?.code === 200 || res.status === true)) {
+        const dataArray = res.data ? res.data : [];
+        this.listOfPlantTypes = dataArray.map((item: any) => ({
+          ...item,
+          id: (item.id || item.plant_id)?.toString(),
+          name: item.plantName || item.name 
+        }));
+        console.log('Loaded plant types:', this.listOfPlantTypes);
+        // Map names if plantTypeFinal is already loaded
+        this.updatePlantTypeFinalNames();
+      } else {
+        console.error('Backend returned an error or non-200 code:', res?.response);
+      }
+      this.cdRef.detectChanges();
+    }, (error) => {
+      console.error('Failed to load planted types HTTP error:', error);
+    });
+  }
+
+  updatePlantTypeFinalNames() {
+    if (!this.plantTypeFinal || !this.listOfPlantTypes || this.listOfPlantTypes.length === 0) {
+      return;
+    }
+
+    try {
+      // Split by comma and trim each ID
+      const selectedIds = this.plantTypeFinal.toString().split(',').map((id: string) => id.trim()).filter((id: string) => id !== "");
+      
+      const selectedNames = this.listOfPlantTypes
+        .filter(pt => selectedIds.includes(pt.id?.toString()))
+        .map(pt => pt.name);
+
+      this.plantTypeFinalNames = selectedNames.join(', ');
+      console.log('✅ Updated plant names display:', this.plantTypeFinalNames);
+      this.cdRef.detectChanges();
+    } catch (e) {
+      console.error('Error mapping plant names:', e);
+    }
+  }
+  // listOfPlantTypes = [
+  //   { id: '1', name: 'क्लोनल नीलगिरी' },
+  //   { id: '2', name: 'टिश्यू कल्चर सागौन' },
+  //   { id: '3', name: 'टिश्यू कल्चर बांस' },
+  //   { id: '4', name: 'साधारण बांस' },
+  //   { id: '5', name: 'साधारण सागौन' },
+  //   { id: '6', name: 'मिलिया डुबिया' },
+  //   { id: '7', name: 'चंदन पौधा' },
+  //   { id: '8', name: 'अन्य लाभकारी' },
+  // ];
+
+
+
   plantTypeFinal: any;
-  plantTypeFinalNames: string | undefined;
+  plantTypeFinalNames: string = '';
 
   check_value($event: IonInputCustomEvent<InputInputEventDetail>) {
     if (!this.area || this.area.toString().trim() === '') {
@@ -426,7 +474,7 @@ export class SubmitAwedanByRang2Component implements OnInit {
     private httpClient: HttpClient,
     private authService: AuthServiceService
   ) {
-    addIcons({addOutline,buildSharp,homeOutline,informationOutline,informationCircle,buildOutline,addCircleOutline,callOutline,addCircle,refreshCircleOutline,refreshOutline,boat,trashOutline,});
+    addIcons({ addOutline, buildSharp, homeOutline, informationOutline, informationCircle, buildOutline, addCircleOutline, callOutline, addCircle, refreshCircleOutline, refreshOutline, boat, trashOutline, });
   }
 
   ngOnInit() {
@@ -497,7 +545,8 @@ export class SubmitAwedanByRang2Component implements OnInit {
 
       this.getSpeciesMaster();
       this.loadPlantMaster(); // Load plant master for dynamic dropdown
-
+      this.getPlantTypes();   // Load plant types for static final display
+      
       if (this.applicationNumber) {
         this.loadAnyaPlants();
       }
@@ -603,12 +652,6 @@ export class SubmitAwedanByRang2Component implements OnInit {
           this.b1P1Filename = data.b1P1PdfFile || null;
           this.kmlFilename = data.kmlFile || null;
           this.kmlFile = data.kmlFile || null;
-          // console.log('adharFilename :', this.adharFilename);
-          // console.log('bankPassbookFilename :', this.bankPassbookFilename);
-          // console.log('b1P1Filename :', this.b1P1Filename);
-          // console.log('kmlFilename :', this.kmlFilename);
-          // console.log('kmlFile :', this.kmlFile);
-          // this.kmlFilename = data.kmlFilePath || null; // Adjust field name based on your backend
 
 
           this.selectedYesNoForKakshaKramank = data.kakshaKramank !== 0 && data.kakshaKramank != null ? 'yes' : 'no';
@@ -634,21 +677,9 @@ export class SubmitAwedanByRang2Component implements OnInit {
           this.selectedPlantationType = data?.plantationType != null ? data.plantationType.toString() : '';
 
 
-          // this.plantTypeFinal = data.plantTypeFinal.toString();
-          let selectedNamesPlantType: string[] = [];
-          let selectedIdsPlantType: string[] = [];
-
-          if (data.plantTypeFinal != null) {
-            this.plantTypeFinal = data.plantTypeFinal.toString();
-            // console.log('plantTypeFinal :', this.plantTypeFinal);
-
-            selectedIdsPlantType = this.plantTypeFinal.split(', ');
-            debugger
-            selectedNamesPlantType = this.listOfPlantTypes
-              .filter(pt => selectedIdsPlantType.includes(pt.id.toString())) // ensure same type
-              .map(pt => pt.name);
-            // console.log('selectedNamesPlantType :', selectedNamesPlantType);
-            this.plantTypeFinalNames = selectedNamesPlantType.join(',');
+          if (data.plantTypeFinal != null || data.plat_type != null) {
+            this.plantTypeFinal = (data.plantTypeFinal || data.plat_type).toString();
+            this.updatePlantTypeFinalNames();
           }
 
 
@@ -2137,10 +2168,10 @@ export class SubmitAwedanByRang2Component implements OnInit {
   //File upload 
   uploadFiles() {
     //debugger;
-    if ((!this.adharPdfFile && !this.adharFilename) || 
-        (!this.bankPassbookPdfFile && !this.bankPassbookFilename) || 
-        (!this.b1P1PdfFile && !this.b1P1Filename) || 
-        (!this.kmlFile && !this.kmlFilename)) {
+    if ((!this.adharPdfFile && !this.adharFilename) ||
+      (!this.bankPassbookPdfFile && !this.bankPassbookFilename) ||
+      (!this.b1P1PdfFile && !this.b1P1Filename) ||
+      (!this.kmlFile && !this.kmlFilename)) {
       this.longToast('कृपया सभी आवश्यक दस्तावेज (आधार, बैंक पासबुक, B1/P1, KML) अपलोड करें');
       return;
     }

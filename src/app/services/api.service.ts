@@ -273,7 +273,6 @@ export class ApiService {
 
   submitKisanAwedan(formData: any): Observable<any> {
     const headers = {
-      'Content-Type': 'application/json',
       'ngrok-skip-browser-warning': 'true'
     };
 
@@ -283,7 +282,7 @@ export class ApiService {
         return this.http.post<any>(url, formData, { headers });
       }),
       catchError((error) => {
-        return throwError(() => new Error('Error submitting Kisan Awedan'));
+        return throwError(() => error);
       })
     );
   }

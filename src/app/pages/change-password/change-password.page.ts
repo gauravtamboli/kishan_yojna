@@ -14,7 +14,7 @@ import { lockClosedOutline, eyeOutline, eyeOffOutline } from 'ionicons/icons';
     templateUrl: './change-password.page.html',
     styleUrls: ['./change-password.page.scss'],
     standalone: true,
-    imports: [IonContent, IonHeader, IonTitle, IonToolbar, IonButtons, IonBackButton, IonList, IonItem, IonLabel, IonInput, IonButton, IonIcon, IonLoading, IonText, CommonModule, FormsModule]
+    imports: [IonContent, IonHeader, IonTitle, IonToolbar, IonButtons, IonBackButton, IonList, IonItem, IonLabel, IonInput, IonButton, IonIcon, IonLoading, CommonModule, FormsModule]
 })
 export class ChangePasswordPage implements OnInit {
     oldPassword = '';

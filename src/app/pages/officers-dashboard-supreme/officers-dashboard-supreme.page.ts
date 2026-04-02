@@ -35,7 +35,7 @@ import * as FileSaver from 'file-saver';
   templateUrl: './officers-dashboard-supreme.page.html',
   styleUrls: ['./officers-dashboard-supreme.page.scss'],
   standalone: true,
-  imports: [IonSplitPane, IonMenuToggle, IonMenu, IonMenuButton, IonList, IonAvatar, IonCard, IonLoading, IonText, IonButton, IonInput, IonLabel, IonItem, IonGrid, IonRow, IonCol, IonButtons, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, IonIcon, TableModule, IonSelect, IonSelectOption, IonPopover]
+  imports: [IonSplitPane, IonMenu, IonMenuButton, IonList, IonAvatar, IonLoading, IonText, IonButton, IonLabel, IonItem, IonGrid, IonRow, IonCol, IonButtons, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, IonIcon, TableModule, IonPopover]
 })
 export class OfficersDashboardSupremePage implements OnInit {
   isUserMenuOpen = false;

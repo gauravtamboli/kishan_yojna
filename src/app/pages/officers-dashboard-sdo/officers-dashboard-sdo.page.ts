@@ -36,7 +36,7 @@ import * as FileSaver from 'file-saver';
   templateUrl: './officers-dashboard-sdo.page.html',
   styleUrls: ['./officers-dashboard-sdo.page.scss'],
   standalone: true,
-  imports: [IonPopover, IonSplitPane, IonMenuToggle, IonMenu, IonMenuButton, IonList, IonAvatar, IonCard, IonLoading, IonText, IonButton, IonInput, IonLabel, IonItem, IonGrid,
+  imports: [IonPopover, IonSplitPane, IonMenuToggle, IonMenu, IonMenuButton, IonList, IonAvatar, IonLoading, IonText, IonButton, IonInput, IonLabel, IonItem, IonGrid,
     IonRow, IonCol, IonButtons, IonContent, IonHeader, IonToolbar, CommonModule, FormsModule, IonIcon, TableModule]
 })
 export class OfficersDashboardSDOPage implements OnInit {

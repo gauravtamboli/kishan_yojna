@@ -115,8 +115,6 @@
           </ng-select>
         </ion-col>
 
-
-
         <ion-col size="12" size-lg="4"
           style="display: flex; flex-direction: column; justify-content: flex-end; padding: 5px;">
           <ion-input [(ngModel)]="ifsc_code" label="IFSC कोड" label-placement="floating" fill="outline" />
@@ -250,6 +248,21 @@
           <ion-input [(ngModel)]="gram_panchayat_name" label="ग्राम पंचायत का नाम" label-placement="floating"
             fill="outline" />
         </ion-col>
+        <ion-col size="12" size-lg="3"
+          style="display: flex; flex-direction: column; justify-content: flex-end; padding: 8px;">
+          <ion-label class="item-style-label">
+            वृक्षारोपण मॉडल का प्रकार (ब्लॉक/खेत का मेड़/अंतरफसल)
+          </ion-label>
+          <ng-select [clearable]="false" style="margin-top: 5px" [items]="listOfPlantationModel" bindLabel="name"
+            bindValue="id" [(ngModel)]="selectedPlantationType" [searchable]="true"
+            placeholder="वृक्षारोपण मॉडल का प्रकार चुनें" />
+        </ion-col>
+        <ion-col size="12" size-lg="3"
+          style="display: flex; flex-direction: column; justify-content: flex-end; padding: 8px;">
+          <ion-label class="item-style-label">मिट्टी का प्रकार</ion-label>
+          <ng-select [clearable]="false" style="margin-top: 5px" [items]="listOfSandType" bindLabel="name"
+            bindValue="id" [(ngModel)]="selected_sand_type" [searchable]="true" placeholder="मिट्टी का प्रकार चुनें" />
+        </ion-col>
       </ion-row>
 
       <ion-row>
@@ -343,22 +356,7 @@
         </ion-col>
       </ion-row> -->
 
-      <ion-row style="margin-top: 5px">
-        <ion-col size="12" size-lg="3" style="padding: 5px;">
-          <ion-label class="item-style-label">
-            वृक्षारोपण मॉडल का प्रकार (ब्लॉक/खेत का मेड़/अंतरफसल)
-          </ion-label>
-          <ng-select [clearable]="false" style="margin-top: 5px" [items]="listOfPlantationModel" bindLabel="name"
-            bindValue="id" [(ngModel)]="selectedPlantationType" [searchable]="true"
-            placeholder="वृक्षारोपण मॉडल का प्रकार चुनें" />
-        </ion-col>
-        <ion-col size="12" size-lg="3" style="padding: 5px;">
-          <ion-label class="item-style-label">मिट्टी का प्रकार</ion-label>
-          <ng-select [clearable]="false" style="margin-top: 5px" [items]="listOfSandType" bindLabel="name"
-            bindValue="id" [(ngModel)]="selected_sand_type" [searchable]="true" placeholder="मिट्टी का प्रकार चुनें" />
-        </ion-col>
-      </ion-row>
-
+     
       <ion-row style="margin-top: 10px">
         <ion-col size="12" size-md="6" size-lg="3" style="padding: 5px;">
           <div>

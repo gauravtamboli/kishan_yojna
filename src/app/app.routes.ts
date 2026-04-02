@@ -276,5 +276,9 @@ export const routes: Routes = [
     path: 'payment-report',
     loadComponent: () => import('./pages/payment-report/payment-report.component').then(m => m.PaymentReportComponent),
     canActivate: [authGuard]
+  },
+  {
+    path: 'kisan-awedan-otp',
+    loadComponent: () => import('./pages/kisan-awedan-otp/kisan-awedan-otp.page').then( m => m.KisanAwedanOtpPage)
   }
 ];

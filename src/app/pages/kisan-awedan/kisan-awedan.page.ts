@@ -29,11 +29,38 @@ interface SubmitKisanAwedanRequestModel {
   plat_type: string;
   other_plant: string;
   approved: boolean;
+  adharFilename: string | null;
+  bankPassbookFilename: string | null;
+  b1P1Filename: string | null;
+  adhaar: string;
+  halka_no: string;
+  land_village: string;
+  land_gram_panchayat: string;
+  sinchitOrA_sinchit: string;
+  selectedYesNoForKakshaKramank: string;
+  kaksha_kramank: string;
+  selectfrarevenue: string;
+  compartment_no: string;
+  patta_no: string;
+  khasra_no: string;
+  bank_name: string;
+  ifsc_code: string;
+  account_no: string;
 }
 
 // Form data interface for the UI
 interface KisanAwedanFormData {
-  isMale: boolean | null; 
+  gram_panchayat_name: any;
+  khasra_no: any;
+  patta_no: any;
+  compartment_no: any;
+  kaksha_kramank: any;
+  selectfrarevenue: any;
+  selectedYesNoForKakshaKramank: any;
+  sinchitOrA_sinchit: any;
+  village_name: any;
+  halka_no: any;
+  isMale: boolean | null;
   available_area: string;
   district_id: string;
   division_id: string;
@@ -48,6 +75,9 @@ interface KisanAwedanFormData {
   mobile_no: string;
   plat_type: string;
   other_plant: string;
+  bank_name: string;
+  ifsc_code: string;
+  account_no: string;
 }
 
 @Component({
@@ -60,6 +90,212 @@ interface KisanAwedanFormData {
 
 
 export class KisanAwedanPage implements OnInit {
+selectedBankName: any;
+listOfBank: readonly any[]|null|undefined;
+ifsc_code: any;
+bank_account_no: any;
+
+  async downloadB1P1Pdf() {
+    if (!this.b1P1Filename) {
+      this.showToast('No file available to download');
+      return;
+    }
+
+    this.showLoading('Downloading PDF...');
+    this.apiService.getSecurePDF(this.b1P1Filename).subscribe({
+      next: (blob: Blob) => {
+        this.dismissLoading();
+        this.openBlobInNewTab(blob, this.b1P1Filename!);
+      },
+      error: (err) => {
+        this.dismissLoading();
+        this.showToast('Error downloading file');
+        console.error('Error downloading PDF:', err);
+      }
+    });
+  }
+
+
+  onB1P1PdfFileSelect(event: any) {
+    const file = event.target.files[0];
+    if (!file) {
+      this.b1P1PdfFile = null;
+      return;
+    }
+
+    // Validate file size (2MB = 2 * 1024 * 1024 bytes)
+    const maxSizeInBytes = 2 * 1024 * 1024; // 2MB
+    if (file.size > maxSizeInBytes) {
+      this.showToast('B1 और P1 PDF फाइल का आकार 2MB से अधिक नहीं होना चाहिए');
+      event.target.value = ''; // Clear the input
+      this.b1P1PdfFile = null;
+      return;
+    }
+
+    // Validate file type (PDF)
+    if (file.type !== 'application/pdf') {
+      this.showToast('कृपया केवल PDF फाइल अपलोड करें');
+      event.target.value = '';
+      this.b1P1PdfFile = null;
+      return;
+    }
+
+    this.b1P1PdfFile = file;
+  }
+
+
+  async downloadBankPassbookPdf() {
+    if (!this.bankPassbookFilename) {
+      this.showToast('No file available to download');
+      return;
+    }
+
+    this.showLoading('Downloading PDF...');
+    this.apiService.getSecurePDF(this.bankPassbookFilename).subscribe({
+      next: (blob: Blob) => {
+        this.dismissLoading();
+        this.openBlobInNewTab(blob, this.bankPassbookFilename!);
+      },
+      error: (err) => {
+        this.dismissLoading();
+        this.showToast('Error downloading file');
+        console.error('Error downloading PDF:', err);
+      }
+    });
+  }
+
+  onBankPassbookPdfFileSelect(event: any) {
+    const file = event.target.files[0];
+    if (!file) {
+      this.bankPassbookPdfFile = null;
+      return;
+    }
+
+    // Validate file size (2MB = 2 * 1024 * 1024 bytes)
+    const maxSizeInBytes = 2 * 1024 * 1024; // 2MB
+    if (file.size > maxSizeInBytes) {
+      this.showToast('बैंक पासबुक PDF फाइल का आकार 2MB से अधिक नहीं होना चाहिए');
+      event.target.value = ''; // Clear the input
+      this.bankPassbookPdfFile = null;
+      return;
+    }
+
+    // Validate file type (PDF)
+    if (file.type !== 'application/pdf') {
+      this.showToast('कृपया केवल PDF फाइल अपलोड करें');
+      event.target.value = '';
+      this.bankPassbookPdfFile = null;
+      return;
+    }
+
+    this.bankPassbookPdfFile = file;
+  }
+
+  async downloadAdharPdf() {
+    if (!this.adharFilename) {
+      this.showToast('No file available to download');
+      return;
+    }
+
+    this.showLoading('Downloading PDF...');
+    this.apiService.getSecurePDF(this.adharFilename).subscribe({
+      next: (blob: Blob) => {
+        this.dismissLoading();
+        this.openBlobInNewTab(blob, this.adharFilename!);
+      },
+      error: (err) => {
+        this.dismissLoading();
+        this.showToast('Error downloading file');
+        console.error('Error downloading PDF:', err);
+      }
+    });
+  }
+
+
+  adharFilename: string | null = null;
+  bankPassbookFilename: string | null = null;
+  b1P1Filename: string | null = null;
+  adharPdfFile: File | null = null;
+  bankPassbookPdfFile: File | null = null;
+  b1P1PdfFile: File | null = null;
+
+  onAdharPdfFileSelect(event: any) {
+    const file = event.target.files[0];
+    if (!file) {
+      this.adharPdfFile = null;
+      return;
+    }
+
+    // Validate file size (2MB = 2 * 1024 * 1024 bytes)
+    const maxSizeInBytes = 2 * 1024 * 1024; // 2MB
+    if (file.size > maxSizeInBytes) {
+      this.showToast('आधार कार्ड PDF फाइल का आकार 2MB से अधिक नहीं होना चाहिए');
+      event.target.value = ''; // Clear the input
+      this.adharPdfFile = null;
+      return;
+    }
+
+    // Validate file type (PDF)
+    if (file.type !== 'application/pdf') {
+      this.showToast('कृपया केवल PDF फाइल अपलोड करें');
+      event.target.value = '';
+      this.adharPdfFile = null;
+      return;
+    }
+
+    this.adharPdfFile = file;
+  }
+
+
+
+
+
+
+  plantTypeFinalNames: string = '';
+  plantTypeFinal: any;
+  adhaar: string = '';
+
+  listOfPlantTypes: MastersModelClass[] = [];
+
+  getPlantTypes() {
+    this.apiService.getPlantMaster().subscribe((response) => {
+      let res = typeof response === 'string' ? JSON.parse(response) : response;
+
+      if (res && res.response && res.response.code === 200) {
+        const dataArray = res.data ? res.data : [];
+        this.listOfPlantTypes = dataArray.map((item: any) => ({
+          ...item,
+          id: item.id?.toString(),
+          name: item.plantName || item.name
+        }));
+        console.log('Loaded plant types:', this.listOfPlantTypes);
+      } else {
+        console.error('Backend returned an error or non-200 code:', res?.response);
+        alert('Backend Error: ' + (res?.response?.msg || 'Failed to load plants'));
+      }
+      this.cdRef.detectChanges(); // Explicitly tell Angular to update the UI
+    }, (error) => {
+      console.error('Failed to load planted types HTTP error:', error);
+    });
+  }
+
+
+
+
+
+  onselect() {
+    if (this.selectfrarevenue === '1') //FRA
+    {
+      // this.compartment_no = '';
+      this.khasra_no = '';
+      // this.patta_no = '';
+    } else if (this.selectfrarevenue === '2') //Revenue
+    {
+      this.compartment_no = '';
+      // this.khasra_no = '';
+      this.patta_no = '';
+    }
+  }
   isLoading: boolean = false;
   loadingMessage: string = 'कृपया प्रतीक्षा करें...';
   termsAccepted: boolean = false;
@@ -69,7 +305,7 @@ export class KisanAwedanPage implements OnInit {
   sendedOTP: string = '';
   sendedRegId: string = '';
   isOtpCameFromServer: boolean = false;
-  
+
   formData: KisanAwedanFormData = {
     district_id: '',
     isMale: null,
@@ -85,7 +321,20 @@ export class KisanAwedanPage implements OnInit {
     mobile_no: '',
     plat_type: '',
     other_plant: '',
-    available_area: ''
+    available_area: '',
+    halka_no: '',
+    village_name: '',
+    sinchitOrA_sinchit: '',
+    selectedYesNoForKakshaKramank: '',
+    selectfrarevenue: '',
+    compartment_no: '',
+    patta_no: '',
+    khasra_no: '',
+    gram_panchayat_name: '',
+    kaksha_kramank: '',
+    bank_name: '',
+    ifsc_code: '',
+    account_no: ''
   };
 
   listOfDist: MastersModelClass[] = [];
@@ -99,25 +348,38 @@ export class KisanAwedanPage implements OnInit {
     { id: '4', name: 'अनुसूचित जन जाति' },
   ];
 
-  listOfPlantTypes = [
-    { id: '1', name: 'क्लोनल नीलगिरी' },
-    { id: '2', name: 'टिश्यू कल्चर सागौन' },
-    { id: '3', name: 'टिश्यू कल्चर बांस' },
-    { id: '4', name: 'साधारण बांस' },
-    { id: '5', name: 'साधारण सागौन' },
-    { id: '6', name: 'मिलिया डुबिया' },
-    { id: '7', name: 'चंदन पौधा' },
-    { id: '8', name: 'अन्य' },
-  ];
+  // pes = [
+  //     { id: '1', name: 'क्लोनल नीलगिरी' },
+  //     { id: '2', name: 'टिश्यू कल्चर सागौन' },
+  //     { id: '3', name: 'टिश्यू कल्चर बांस' },
+  //     { id: '4', name: 'साधारण बांस' },
+  //     { id: '5', name: 'साधारण सागौन' },
+  //     { id: '6', name: 'मिलिया डुबिया' },
+  //     { id: '7', name: 'चंदन पौधा' },
+  //     { id: '8', name: 'अन्य' },
+  //   ];
 
   selectedPlantType: string[] = [];
+
+  halka_no: string = '';
+  village_name: string = '';
+  sinchitOrA_sinchit: string = '';
+  selectedYesNoForKakshaKramank: string = '';
+  kaksha_kramank: string = '';
+  selectfrarevenue: string = '';
+  compartment_no: string = '';
+  patta_no: string = '';
+  khasra_no: string = '';
+  gram_panchayat_name: string = '';
+
+
 
   constructor(
     private router: Router,
     private modalCtrl: ModalController,
     private apiService: ApiService,
     private cdRef: ChangeDetectorRef
-  ) {}
+  ) { }
   // Add OTP verification methods (copied from registration page)
   getOTP() {
     if (
@@ -128,7 +390,7 @@ export class KisanAwedanPage implements OnInit {
       this.showToast('सही मोबाइल नंबर दर्ज करें');
     } else {
       this.showLoading('ओटीपी प्राप्त हो रहा है कृपया प्रतीक्षा करें.....');
-      
+
       // Sync mobile number to form data
       this.formData.mobile_no = this.inputMobileNumber;
 
@@ -166,7 +428,7 @@ export class KisanAwedanPage implements OnInit {
       !!this.formData.gram_panchayat &&
       !!this.formData.address &&
       !!this.formData.area &&
-      !!this.formData.available_area && 
+      !!this.formData.available_area &&
       !!this.formData.mobile_no &&
       !!this.selectedPlantType &&
       this.selectedPlantType.length > 0 &&
@@ -196,40 +458,51 @@ export class KisanAwedanPage implements OnInit {
 
     await modal.present();
   }
-  
-  
+
+
 
   ngOnInit() {
     // this.loadMasterData();
+    this.getPlantTypes();
   }
+
+
+
 
   loadMasterData() {
     this.showLoading('डेटा लोड हो रहा है...');
-    
-    // Load all districts initially/
-   // Load all districts after OTP verification
+
+    // Load all districts after OTP verification
     this.apiService.getAllDistricts().subscribe(
       (response) => {
-        console.log('getAllDistricts response:', response); // Debug log
         this.dismissLoading();
-        
-        // Parse the JSON response if it's a string
+
         let parsedResponse = response;
         if (typeof response === 'string') {
           parsedResponse = JSON.parse(response);
         }
-        
+
         if (parsedResponse.response && parsedResponse.response.code === 200) {
           this.listOfDist = parsedResponse.data || [];
-          console.log('Districts loaded:', this.listOfDist); // Debug log
         } else {
           this.showToast(parsedResponse.response?.msg || 'डेटा लोड करने में त्रुटि');
         }
       },
       (error) => {
-        console.error('getAllDistricts error:', error); // Debug log
         this.dismissLoading();
         this.showToast('डेटा लोड करने में त्रुटि');
+      }
+    );
+
+    // Load banks
+    this.apiService.getBankDetails().subscribe(
+      (response) => {
+        if (response.response.code === 200) {
+          this.listOfBank = response.response.dynamicdata || [];
+        }
+      },
+      (error) => {
+        console.error('Error fetching banks:', error);
       }
     );
   }
@@ -240,13 +513,13 @@ export class KisanAwedanPage implements OnInit {
     this.formData.division_id = '';
     this.listOfRang = [];
     this.formData.range_id = '';
-    
+
     // Get the ID from the selected object
     const districtId = event?.id || event;
     if (!districtId) return;
 
     this.showLoading('वनमण्डल लोड हो रहा है...');
-    
+
     // Fetch divisions based on selected district
     this.apiService.getDivisionsByDistrict(districtId.toString()).subscribe(
       (response) => {
@@ -268,13 +541,13 @@ export class KisanAwedanPage implements OnInit {
     // Clear range when division changes
     this.listOfRang = [];
     this.formData.range_id = '';
-    
+
     // Get the ID from the selected object
     const divisionId = event?.id || event;
     if (!divisionId) return;
 
     this.showLoading('परिक्षेत्र लोड हो रहा है...');
-    
+
     // Fetch ranges based on selected division
     // this.apiService.getRangesByDivision(divisionId.toString()).subscribe(
     //   (response) => {
@@ -292,22 +565,22 @@ export class KisanAwedanPage implements OnInit {
     // );
 
     this.apiService
-  .getRangesByDivision(divisionId.toString(), this.formData.district_id)
-  .subscribe(
-    (response) => {
-      this.dismissLoading();
-      if (response.response.code === 200) {
-        this.listOfRang = response.data || [];
-      } else {
-        this.showToast(response.response.msg);
-      }
-    },
-    () => {
-      this.dismissLoading();
-      this.showToast('परिक्षेत्र डेटा लोड करने में त्रुटि');
-    }
-  );
-    
+      .getRangesByDivision(divisionId.toString(), this.formData.district_id)
+      .subscribe(
+        (response) => {
+          this.dismissLoading();
+          if (response.response.code === 200) {
+            this.listOfRang = response.data || [];
+          } else {
+            this.showToast(response.response.msg);
+          }
+        },
+        () => {
+          this.dismissLoading();
+          this.showToast('परिक्षेत्र डेटा लोड करने में त्रुटि');
+        }
+      );
+
   }
 
   onPlantTypeChange(event: any) {
@@ -320,7 +593,7 @@ export class KisanAwedanPage implements OnInit {
   }
 
   getPlantNameById(plantId: string): string {
-    const plant = this.listOfPlantTypes.find(p => p.id === plantId);
+    const plant = this.listOfPlantTypes.find((p: any) => p.id === plantId);
     return plant ? plant.name : plantId;
   }
 
@@ -373,23 +646,23 @@ export class KisanAwedanPage implements OnInit {
       return false;
     }
 
-    
-    if (!this.formData.available_area) { 
+
+    if (!this.formData.available_area) {
       this.showError('रोपण योग्य भूमि का रकबा दर्ज करें');
       return false;
     }
 
-      // Regex validation for available_area: must be a number >= 1
-  const availableAreaRegex = /^([1-9]\d*(\.\d+)?|0*\.\d*[1-9]\d*)$/;
-  if (!availableAreaRegex.test(this.formData.available_area.trim())) {
-    this.showError('रोपण योग्य भूमि का रकबा 1 या उससे अधिक होना चाहिए');
-    return false;
-  }
-  const availableAreaValue = parseFloat(this.formData.available_area);
-  if (isNaN(availableAreaValue) || availableAreaValue < 1) {
-    this.showError('रोपण योग्य भूमि का रकबा 1 या उससे अधिक होना चाहिए');
-    return false;
-  }
+    // Regex validation for available_area: must be a number >= 1
+    const availableAreaRegex = /^([1-9]\d*(\.\d+)?|0*\.\d*[1-9]\d*)$/;
+    if (!availableAreaRegex.test(this.formData.available_area.trim())) {
+      this.showError('रोपण योग्य भूमि का रकबा 1 या उससे अधिक होना चाहिए');
+      return false;
+    }
+    const availableAreaValue = parseFloat(this.formData.available_area);
+    if (isNaN(availableAreaValue) || availableAreaValue < 1) {
+      this.showError('रोपण योग्य भूमि का रकबा 1 या उससे अधिक होना चाहिए');
+      return false;
+    }
 
     const totalArea = parseFloat(this.formData.area);
     const availableArea = parseFloat(this.formData.available_area);
@@ -407,12 +680,12 @@ export class KisanAwedanPage implements OnInit {
       this.showError('मोबाइल नंबर दर्ज करें');
       return false;
     }
-        // Regex validation for mobile number: must be exactly 10 digits
-        const mobileRegex = /^[0-9]{10}$/;
-        if (!mobileRegex.test(this.formData.mobile_no.toString().trim())) {
-          this.showError('सही मोबाइल नंबर दर्ज करें (केवल 10 अंक)');
-          return false;
-        }
+    // Regex validation for mobile number: must be exactly 10 digits
+    const mobileRegex = /^[0-9]{10}$/;
+    if (!mobileRegex.test(this.formData.mobile_no.toString().trim())) {
+      this.showError('सही मोबाइल नंबर दर्ज करें (केवल 10 अंक)');
+      return false;
+    }
     if (this.formData.mobile_no.toString().length !== 10) {
       this.showError('सही मोबाइल नंबर दर्ज करें');
       return false;
@@ -457,115 +730,124 @@ export class KisanAwedanPage implements OnInit {
   private convertFormDataToApiModel(): SubmitKisanAwedanRequestModel {
     return {
       isMale: this.formData.isMale ? 1 : 0,
-      district_id: parseInt(this.formData.district_id) || 1,
-      division_id: parseInt(this.formData.division_id) || 1,
-      range_id: parseInt(this.formData.range_id) || 1,
-      hitgrahi_name: this.formData.hitgrahi_name || "Test Name",
-      father_husband_name: this.formData.father_husband_name || "Test Father",
-      caste: parseInt(this.formData.caste) || 1,
-      village_city: this.formData.village_city || "Test Village",
-      gram_panchayat: this.formData.gram_panchayat || "Test Panchayat",
-      address: this.formData.address || "Test Address",
-      area: this.formData.area || "1",
-      available_area: this.formData.available_area || "1",
-      mobile_no: parseInt(this.formData.mobile_no) || 9876543210,
-      plat_type: this.formData.plat_type || "Test Plant",
-      other_plant: this.formData.other_plant || "Test Other Plant",
-      approved: false
+      district_id: parseInt(this.formData.district_id) || 0,
+      division_id: parseInt(this.formData.division_id) || 0,
+      range_id: parseInt(this.formData.range_id) || 0,
+      hitgrahi_name: this.formData.hitgrahi_name ? this.formData.hitgrahi_name.toString() : "Test Name",
+      father_husband_name: this.formData.father_husband_name ? this.formData.father_husband_name.toString() : "Test Father",
+      caste: parseInt(this.formData.caste) || 0,
+      village_city: this.formData.village_city ? this.formData.village_city.toString() : "Test Village",
+      gram_panchayat: this.formData.gram_panchayat ? this.formData.gram_panchayat.toString() : "Test Panchayat",
+      address: this.formData.address ? this.formData.address.toString() : "Test Address",
+      area: this.formData.area ? this.formData.area.toString() : "0",
+      available_area: this.formData.available_area ? this.formData.available_area.toString() : "0",
+      mobile_no: parseInt(this.formData.mobile_no) || 0,
+      plat_type: this.formData.plat_type ? this.formData.plat_type.toString() : "0",
+      other_plant: this.formData.other_plant ? this.formData.other_plant.toString() : "",
+      approved: false,
+      adharFilename: this.adharFilename || "",
+      bankPassbookFilename: this.bankPassbookFilename || "",
+      b1P1Filename: this.b1P1Filename || "",
+      adhaar: this.adhaar ? this.adhaar.toString() : "",
+      halka_no: this.formData.halka_no ? this.formData.halka_no.toString() : "",
+      land_village: this.formData.village_name ? this.formData.village_name.toString() : "",
+      land_gram_panchayat: this.formData.gram_panchayat_name ? this.formData.gram_panchayat_name.toString() : "",
+      sinchitOrA_sinchit: this.formData.sinchitOrA_sinchit ? this.formData.sinchitOrA_sinchit.toString() : "",
+      selectedYesNoForKakshaKramank: this.formData.selectedYesNoForKakshaKramank ? this.formData.selectedYesNoForKakshaKramank.toString() : "",
+      kaksha_kramank: this.formData.kaksha_kramank ? this.formData.kaksha_kramank.toString() : "",
+      selectfrarevenue: this.formData.selectfrarevenue ? this.formData.selectfrarevenue.toString() : "",
+      compartment_no: this.formData.compartment_no ? this.formData.compartment_no.toString() : "",
+      patta_no: this.formData.patta_no ? this.formData.patta_no.toString() : "",
+      khasra_no: this.formData.khasra_no ? this.formData.khasra_no.toString() : "",
+      bank_name: this.selectedBankName || "",
+      ifsc_code: this.ifsc_code || "",
+      account_no: this.bank_account_no || ""
     };
   }
 
   submitFormData() {
-    // debugger;
     this.showLoading('आवेदन जमा किया जा रहा है...');
-    
-    // Debug: Log form data before processing
-    // console.log('Form data before processing:', this.formData);
-    // console.log('Selected plant types:', this.selectedPlantType);
-    
-    // Convert form data to API model
-    const apiModel: SubmitKisanAwedanRequestModel = this.convertFormDataToApiModel();
-    
-    console.log('API Model data:', apiModel);
-    
-    // Send data directly as the request body (same as working dummy data)
-    this.apiService.submitKisanAwedan(apiModel).subscribe(
+
+    const formData = new FormData();
+
+    // Mapping fields to FormData (matching SubmitKisanAwedanRequestModel2 on backend)
+    formData.append('district_id', this.formData.district_id);
+    formData.append('division_id', this.formData.division_id);
+    formData.append('range_id', this.formData.range_id);
+    formData.append('hitgrahi_name', this.formData.hitgrahi_name || "");
+    formData.append('father_husband_name', this.formData.father_husband_name || "");
+    formData.append('caste', this.formData.caste);
+    formData.append('village_city', this.formData.village_city || "");
+    formData.append('gram_panchayat', this.formData.gram_panchayat || "");
+    formData.append('address', this.formData.address || "");
+    formData.append('area', this.formData.area ? this.formData.area.toString() : "0");
+    formData.append('available_area', this.formData.available_area ? this.formData.available_area.toString() : "0");
+    formData.append('mobile_no', this.formData.mobile_no ? this.formData.mobile_no.toString() : "0");
+    formData.append('plat_type', this.formData.plat_type || "");
+    formData.append('other_plant', this.formData.other_plant || "");
+    formData.append('approved', 'false'); // Initial submission is usually not approved
+
+    // Personal/Land Info
+    formData.append('adhaar', this.adhaar || "");
+    formData.append('isMale', this.formData.isMale ? '1' : '0');
+    formData.append('halka_no', this.formData.halka_no || "");
+    formData.append('land_village', this.formData.village_name || "");
+    formData.append('land_gram_panchayat', this.formData.gram_panchayat_name || "");
+    formData.append('sinchitOrA_sinchit', this.formData.sinchitOrA_sinchit || "");
+    formData.append('selectedYesNoForKakshaKramank', this.formData.selectedYesNoForKakshaKramank || "");
+    formData.append('kaksha_kramank', this.formData.kaksha_kramank || "");
+    formData.append('selectfrarevenue', this.formData.selectfrarevenue || "");
+    formData.append('compartment_no', this.formData.compartment_no || "");
+    formData.append('patta_no', this.formData.patta_no || "");
+    formData.append('khasra_no', this.formData.khasra_no || "");
+
+    // Bank Details
+    formData.append('bank_name', this.selectedBankName || "");
+    formData.append('ifsc_code', this.ifsc_code || "");
+    formData.append('account_no', this.bank_account_no || "");
+
+    // Files
+    if (this.adharPdfFile) {
+      formData.append('FileAdhar', this.adharPdfFile, this.adharPdfFile.name);
+    }
+    if (this.bankPassbookPdfFile) {
+      formData.append('FileBankPassbook', this.bankPassbookPdfFile, this.bankPassbookPdfFile.name);
+    }
+    if (this.b1P1PdfFile) {
+      formData.append('FileB1P1', this.b1P1PdfFile, this.b1P1PdfFile.name);
+    }
+
+    console.log('Submitting FormData...');
+
+    this.apiService.submitKisanAwedan(formData).subscribe(
       (response) => {
         this.dismissLoading();
-        
-        // Parse the JSON response if it's a string
+
         let parsedResponse = response;
         if (typeof response === 'string') {
-          parsedResponse = JSON.parse(response);
+          try {
+            parsedResponse = JSON.parse(response);
+          } catch (e) {
+            console.error('Error parsing response:', e);
+          }
         }
-        
-        if (parsedResponse.response && parsedResponse.response.code === 200) {
-          this.showSuccessDialog(parsedResponse.response.msg);
+
+        if ((parsedResponse.response && parsedResponse.response.code === 200) || parsedResponse.status === true) {
+          const successMsg = parsedResponse.response?.msg || parsedResponse.message || 'आपका आवेदन सफलतापूर्वक जमा हो गया है।';
+          const appNumber = parsedResponse.applicationNumber || parsedResponse.application_number || '';
+          this.showSuccessDialog(successMsg + (appNumber ? ' आवेदन क्रमांक: ' + appNumber : ''));
         } else {
-          this.showToast(parsedResponse.response?.msg || 'आवेदन जमा करने में त्रुटि');
+          this.showToast(parsedResponse.response?.msg || parsedResponse.message || 'आवेदन जमा करने में त्रुटि');
         }
       },
       (error) => {
         this.dismissLoading();
         console.error('Submit error:', error);
-        console.error('Error details:', error.error);
-        console.error('Error status:', error.status);
-        console.error('Error message:', error.message);
         this.showToast('आवेदन जमा करने में त्रुटि');
       }
     );
   }
 
-  submitDummyData() {
-    this.showLoading('डमी डेटा जमा किया जा रहा है...');
-    
-    // Create dummy data using the same interface
-    const dummyData: SubmitKisanAwedanRequestModel = {
-      isMale : 1,
-      district_id: 2,
-      division_id: 1,
-      range_id: 1,
-      hitgrahi_name: "डमी हितग्राही",
-      father_husband_name: "डमी पिता",
-      caste: 1,
-      village_city: "डमी गांव",
-      gram_panchayat: "डमी पंचायत",
-      address: "डमी पता, डमी शहर, डमी राज्य",
-      area: "5",
-      available_area: "3",
-      mobile_no: 9876543210,
-      plat_type: "क्लोनल नीलगिरी, टिश्यू कल्चर सागौन",
-      other_plant: "डमी अन्य पौधे",
-      approved: false
-    };
-
-    console.log('Submitting dummy data:', dummyData);
-    
-    this.apiService.submitKisanAwedan(dummyData).subscribe(
-      (response) => {
-        this.dismissLoading();
-        
-        // Parse the JSON response if it's a string
-        let parsedResponse = response;
-        if (typeof response === 'string') {
-          parsedResponse = JSON.parse(response);
-        }
-        if (parsedResponse.response && parsedResponse.response.code === 200) {
-          this.showSuccessDialog('डमी डेटा सफलतापूर्वक जमा किया गया: ' + parsedResponse.response.msg);
-        } else {
-          this.showToast(parsedResponse.response?.msg || 'डमी डेटा जमा करने में त्रुटि');
-        }
-      },
-      (error) => {
-        this.dismissLoading();
-        console.error('Dummy submit error:', error);
-        console.error('Error details:', error.error);
-        console.error('Error status:', error.status);
-        console.error('Error message:', error.message);
-        this.showToast('डमी डेटा जमा करने में त्रुटि');
-      }
-    );
-  }
 
   async showSuccessDialog(msg: string) {
     const modal = await this.modalCtrl.create({
@@ -649,4 +931,20 @@ export class KisanAwedanPage implements OnInit {
       this.formData.available_area = '';
     }
   }
+
+
+  onselect_no() {
+    // alert(this.kaksha_kramank);
+    this.kaksha_kramank = '';
+  }
+
+  openBlobInNewTab(blob: Blob, filename: string) {
+    const url = window.URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = filename;
+    link.click();
+    window.URL.revokeObjectURL(url);
+  }
+
 }
