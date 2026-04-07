@@ -29,8 +29,8 @@ declare const cordova: any;
   templateUrl: './landingpage.page.html',
   styleUrls: ['./landingpage.page.scss'],
   standalone: true,
-  imports: [IonSplitPane, IonList, IonMenuButton, IonMenuToggle, IonButtons, IonItem, IonAvatar, IonText, IonMenu, IonRow, IonCol, IonGrid, IonToolbar, IonTitle, IonHeader, IonLabel, IonContent,
-    IonIcon, IonButton, CommonModule, FormsModule]
+  imports: [IonSplitPane, IonList, IonMenuButton, IonMenuToggle, IonButtons, IonItem, IonAvatar, IonText, IonMenu, IonToolbar, IonTitle, IonHeader, IonLabel, IonContent,
+    CommonModule, FormsModule]
 })
 export class LandingpagePage implements OnInit {
 

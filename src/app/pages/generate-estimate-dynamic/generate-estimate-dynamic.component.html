@@ -16,20 +16,20 @@
 </ion-header>
 
 
-<ion-content scroll-y="true">
+<ion-content  >
   <!-- Page Loading Indicator -->
   <ion-loading *ngIf="isPageLoading" [isOpen]="isPageLoading" message="डेटा लोड हो रहा है..." spinner="circular"
     backdropDismiss="false">
   </ion-loading>
 
   <!-- Main Content - Hide until loading complete -->
-  <div *ngIf="!isPageLoading" class="main-content-wrapper">
+  <div *ngIf="!isPageLoading" style="padding: 20px;">
     <!-- Applicant Card (same fields as normal page) -->
     <div class="estimate-container" *ngIf="singleData">
       <ion-card class="applicant-card">
         <div class="applicant-row">
           <ion-text class="applicant-text">
-            <strong class="application-id-text">
+            <strong style="font-size: 20px; text-align: center;">
               आवेदक क्रमांक : {{ singleData.applicationNumber }}
             </strong>
           </ion-text>

@@ -1,18 +1,9 @@
+/* --------- Theme Integration --------- */
 :host {
-  display: flex !important;
-  flex-direction: column !important;
-  width: 100% !important;
-  height: 100% !important;
-  position: absolute !important;
-  top: 0 !important;
-  bottom: 0 !important;
-  left: 0 !important;
-  right: 0 !important;
-  
   --card-bg: var(--theme-card-bg);
   --card-border: var(--theme-border);
-  --text-muted: var(--text-secondary);
-  --text-strong: var(--text-primary);
+  --text-muted: var(--theme-text-secondary);
+  --text-strong: var(--theme-text-primary);
   --brand: var(--theme-primary);
   --brand-contrast: #ffffff;
   --table-header: var(--theme-bg-secondary);
@@ -22,38 +13,13 @@
 
 ion-content {
   --background: var(--theme-bg-light);
-  height: 100%;
-}
-
-.main-content-wrapper {
-  padding: 12px;
-  min-height: 100%;
-  
-  @media (min-width: 768px) {
-    padding: 20px;
-  }
-}
-
-.application-id-text {
-  font-size: 1.1rem;
-  text-align: center;
-  display: block;
-  width: 100%;
-
-  @media (min-width: 768px) {
-    font-size: 1.35rem;
-  }
 }
 
 /* --------- Page Header --------- */
 .responsive-toolbar-title {
   color: white;
-  font-size: 1.1rem;
+  font-size: 20px;
   font-weight: 800;
-
-  @media (min-width: 768px) {
-    font-size: 1.5rem;
-  }
 }
 
 /* --------- Applicant Section --------- */
@@ -84,11 +50,9 @@ ion-content {
 }
 
 .details-section ion-label {
-  display: block;
+  display: inline-block;
   color: var(--text-muted);
-  font-size: 13px;
-  margin-bottom: 8px;
-  line-height: 1.4;
+  font-size: 14px;
 }
 
 /* --------- Species Header Card --------- */
@@ -131,7 +95,6 @@ ion-content {
 
 .custom-table {
   width: 100%;
-  min-width: 600px;
   border-collapse: collapse;
 }
 
@@ -152,11 +115,10 @@ ion-content {
 
 .custom-table tbody td {
   border: 1px solid var(--table-border) !important;
-  padding: 8px 4px;
-  font-size: 12px;
+  padding: 12px;
+  font-size: 13px;
   color: var(--theme-text-primary);
   text-align: center;
-  white-space: normal;
 }
 
 .custom-table tbody tr {
@@ -197,7 +159,6 @@ ion-content {
 
 .detail-table {
   width: 100%;
-  min-width: 1000px;
   border-collapse: collapse;
   background: transparent;
 }
@@ -215,11 +176,10 @@ ion-content {
 
 .detail-table tbody td {
   border: 1px solid var(--table-border) !important;
-  padding: 8px 6px;
-  font-size: 12px;
+  padding: 12px;
+  font-size: 13px;
   text-align: center;
   color: var(--theme-text-primary);
-  word-wrap: break-word;
 }
 
 .detail-year-cell {
@@ -582,69 +542,11 @@ ion-content {
 }
 
 .custome-declearation {
-  margin: 10px 0;
+  margin-left: 25px;
   background: var(--theme-bg-secondary);
   border: 1px solid var(--theme-border);
   border-radius: var(--theme-radius-lg);
   padding: 16px;
   box-shadow: var(--theme-shadow-sm);
   text-align: center;
-
-  @media (min-width: 768px) {
-    margin-left: 25px;
-  }
-}
-
-/* --------- Mobile Tweaks --------- */
-@media (max-width: 767px) {
-  .details-section {
-    padding: 12px;
-  }
-
-  .species-card {
-    flex-direction: column;
-    text-align: center;
-    gap: 12px;
-  }
-
-  .applicant-row {
-    justify-content: center;
-    text-align: center;
-  }
-
-  .detail-item {
-    margin-bottom: 10px;
-    padding-bottom: 8px;
-    border-bottom: 1px dashed var(--theme-border-light);
-  }
-
-  .custom-table thead th,
-  .detail-table thead th,
-  .goswara-table thead th {
-    padding: 8px 4px;
-    font-size: 10px;
-  }
-
-  .detail-year-cell {
-    font-size: 11px !important;
-  }
-
-  .goswara-card {
-    padding: 12px;
-  }
-
-  .one-big-card {
-    margin: 0 -10px;
-    border-radius: 0;
-  }
-
-  .confirm-actions {
-    flex-direction: column;
-  }
-  
-  .detail-words-text,
-  .goswara-words-text {
-    font-size: 0.9rem !important;
-    padding: 10px !important;
-  }
 }
