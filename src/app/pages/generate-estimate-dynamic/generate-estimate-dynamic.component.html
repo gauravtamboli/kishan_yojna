@@ -24,41 +24,41 @@
 
   <!-- Main Content - Hide until loading complete -->
   <div *ngIf="!isPageLoading" class="main-content-wrapper">
-    <!-- Formal Government Official Applicant Card -->
-    <div class="govt-card-standard fadeIn-animation" *ngIf="singleData">
-      <div class="govt-card-header">
-        <div class="govt-header-text">
-          <span class="id-label">आवेदन क्रमांक : {{ singleData.applicationNumber }}</span>
-        </div>
-
+    <!-- Reverted Applicant Details Section (Image 3 Type) -->
+    <div class="applicant-legacy-card shadow-sm" *ngIf="singleData">
+      <div class="applicant-hero-banner">
+        <span>आवेदक क्रमांक : {{ singleData.applicationNumber }}</span>
       </div>
 
-      <div class="govt-card-body">
-        <div class="govt-main-info">
-          <div class="info-block">
-            <span class="info-label">हितग्राही का नाम</span>
-            <span class="info-value">{{ singleData.hitgrahiName }}</span>
+      <div class="applicant-details-wrapper">
+        <h2 class="legacy-title">आवेदक विवरण :</h2>
+        <div class="details-legacy-grid">
+          <div class="detail-legacy-item">
+            <span class="l-label">कृषक/हितग्राही का नाम :</span>
+            <span class="l-value">{{ singleData.hitgrahiName }}</span>
           </div>
-          <div class="info-block">
-            <span class="info-label">पिता का नाम</span>
-            <span class="info-value">{{ singleData.fatherName }}</span>
+          <div class="detail-legacy-item">
+            <span class="l-label">पिता का नाम :</span>
+            <span class="l-value">{{ singleData.fatherName }}</span>
           </div>
-
-          <div class="info-block">
-            <span class="info-label">मोबाईल नंबर</span>
-            <span class="info-value">{{ singleData.mobileNo }}</span>
+          <div class="detail-legacy-item">
+            <span class="l-label">पता :</span>
+            <span class="l-value">Address {{ singleData.applicationNumber }}, Gram Panchayat {{ singleData.applicationNumber }}</span>
           </div>
-          <div class="info-block">
-            <span class="info-label">कुल रकबा</span>
-            <span class="info-value">{{ singleData.totalAcre }} एकड़</span>
+          <div class="detail-legacy-item">
+            <span class="l-label">मोबाइल नंबर :</span>
+            <span class="l-value">{{ singleData.mobileNo }}</span>
           </div>
-          <div class="info-block">
-            <span class="info-label">पता</span>
-            <span class="info-value address-text">{{ singleData.address }}, {{ singleData.gramPanchayatName }}</span>
+          <div class="detail-legacy-item">
+            <span class="l-label">भूमि का प्रकार :</span>
+            <span class="l-value text-uppercase">REVENUE LAND</span>
+          </div>
+          <div class="detail-legacy-item">
+            <span class="l-label">कुल रकबा (एकड़ मे) :</span>
+            <span class="l-value">{{ singleData.totalAcre }}</span>
           </div>
         </div>
       </div>
-
     </div>
 
     <!-- Actions -->

@@ -55,202 +55,66 @@ ion-toolbar {
   background: white;
 }
 
-/* --------- Standard Government Official Card --------- */
-.govt-card-standard {
+/* --------- Applicant Details Styles (Image 3 Type) --------- */
+.applicant-legacy-card {
   background: #ffffff;
-  border: 1px solid #c8d6e5;
-  border-radius: 12px;
+  border-radius: 8px;
   overflow: hidden;
-  box-shadow: 0 8px 24px rgba(44, 62, 80, 0.08);
   margin-bottom: 24px;
-  position: relative;
+  border: 1px solid #d1d9e4;
 
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 4px;
-    background: linear-gradient(90deg, #2e7d32, #fbc02d);
-  }
-}
-
-.govt-card-header {
-  padding: 24px;
-  display: flex;
-  align-items: center;
-  border-bottom: 1px dashed #c8d6e5;
-  background: #fdfdfd;
-  flex-wrap: wrap;
-  gap: 16px;
-
-  .govt-emblem {
-    width: 50px;
-    height: 50px;
-    background: #e8f5e9;
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 24px;
-    color: #2e7d32;
-    border: 1px solid #a5d6a7;
-  }
-
-  .govt-header-text {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-
-    .dept-name {
-      font-size: 1.25rem;
-      font-weight: 800;
-      color: #2c3e50;
-      letter-spacing: -0.5px;
-    }
-
-    .govt-sub-name {
-      font-size: 0.7rem;
-      font-weight: 700;
-      color: #7f8c8d;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-    }
-  }
-
-  .govt-application-id {
-    text-align: right;
-    display: flex;
-    flex-direction: column;
-    padding-left: 16px;
-    border-left: 1px solid #eee;
-
-    .id-label {
-      font-size: 0.65rem;
-      text-transform: uppercase;
-      font-weight: 700;
-      color: #b2bec3;
-    }
-
-    .id-value {
-      font-family: 'Courier New', monospace;
+  .applicant-hero-banner {
+    background: #ffffff;
+    padding: 12px;
+    text-align: center;
+    border-bottom: 3px solid #cbd5e1;
+    
+    span {
       font-size: 1.1rem;
       font-weight: 800;
-      color: #2c3e50;
+      color: #2d3748;
     }
   }
-}
 
-.govt-card-body {
-  padding: 24px;
-}
+  .applicant-details-wrapper {
+    padding: 20px;
+    border-left: 8px solid #287d7d; /* Teal accent from image */
 
-.govt-main-info {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  margin-bottom: 24px;
-
-  @media (min-width: 600px) {
-    flex-direction: row;
-    justify-content: space-between;
-  }
-
-  .info-block {
-    flex: 1;
-
-    .info-label {
-      display: block;
-      font-size: 0.75rem;
-      font-weight: 700;
-      color: #95a5a6;
-      margin-bottom: 4px;
-      text-transform: uppercase;
-    }
-
-    .info-value {
-      display: block;
+    .legacy-title {
+      color: #38a169; /* Green/Teal accent */
       font-size: 1.2rem;
-      font-weight: 700;
-      color: #2c3e50;
-
-      &.primary-text {
-        font-size: 1.5rem;
-        color: #2e7d32;
-      }
-    }
-  }
-}
-
-.govt-secondary-info {
-  display: grid;
-  grid-template-columns: repeat(1, 1fr);
-  gap: 16px;
-  background: #f8fafc;
-  padding: 20px;
-  border-radius: 8px;
-
-  @media (min-width: 600px) {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  .info-grid-cell {
-    &.full-width {
-      grid-column: 1 / -1;
-    }
-
-    .info-label {
-      display: block;
-      font-size: 0.65rem;
       font-weight: 800;
-      color: #7f8c8d;
-      text-transform: uppercase;
-      margin-bottom: 2px;
+      margin-bottom: 15px;
+      border-bottom: 1px solid #e2e8f0;
+      padding-bottom: 10px;
     }
 
-    .info-value {
-      font-size: 0.95rem;
-      font-weight: 700;
-      color: #34495e;
+    .details-legacy-grid {
+      display: grid;
+      grid-template-columns: repeat(1, 1fr);
+      gap: 15px;
 
-      &.highlight-gold {
-        color: #d6a014;
+      @media (min-width: 768px) {
+        grid-template-columns: repeat(3, 1fr);
       }
 
-      &.highlight-green {
-        color: #2e7d32;
+      .detail-legacy-item {
+        display: flex;
+        flex-direction: column;
+
+        .l-label {
+          font-size: 0.8rem;
+          color: #4a5568;
+          font-weight: 600;
+          margin-bottom: 2px;
+        }
+
+        .l-value {
+          font-size: 0.95rem;
+          color: #1a202c;
+          font-weight: 800;
+        }
       }
-    }
-  }
-}
-
-.govt-card-footer {
-  padding: 12px 24px;
-  background: #f1f2f6;
-  text-align: right;
-
-  .footer-status {
-    font-size: 0.7rem;
-    font-weight: 800;
-    color: #95a5a6;
-    text-transform: uppercase;
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    gap: 6px;
-
-    &::before {
-      content: '✓';
-      display: inline-flex;
-      background: #2e7d32;
-      color: white;
-      width: 14px;
-      height: 14px;
-      border-radius: 50%;
-      align-items: center;
-      justify-content: center;
-      font-size: 10px;
     }
   }
 }
