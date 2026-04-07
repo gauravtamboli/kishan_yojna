@@ -47,7 +47,7 @@ export class PaymentCreateComponent implements OnInit {
   officer_name: string = '';
   officer_id: string = '';
 
-  year1Rows: any[] = tableData['प्रथम_वर्ष'] || [];
+  year1Rows: any[] = (tableData['प्रथम_वर्ष'] || []).filter(item => item.itemKramank !== 6 && item.itemKramank !== 7);
   year2Rows: any[] = tableData['द्वितीय_वर्ष'] || [];
   year3Rows: any[] = tableData['तृतीय_वर्ष'] || [];
 
@@ -461,6 +461,12 @@ export class PaymentCreateComponent implements OnInit {
     }
 
     return total;
+  }
+
+
+  isAnyPlantImplanted(): boolean {
+    if (!this.categoriesToShow || this.categoriesToShow.length === 0) return false;
+    return this.categoriesToShow.some(cat => (cat.total_ropit || 0) > 0);
   }
 
 

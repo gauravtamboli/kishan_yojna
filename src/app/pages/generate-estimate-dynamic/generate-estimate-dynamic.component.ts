@@ -31,6 +31,8 @@ type DisplayCategory = {
   rateField: string;
   plantCount: number;
   area: number;
+  plantId: number;
+  ropitCount: number;
 };
 
 import { EstimateService } from '../../services/estimate.service';
@@ -215,10 +217,17 @@ export class GenerateEstimateDynamicComponent implements OnInit {
     });
 
     (pdfMake as any).fonts = {
-      // ... existing fonts code ...
+      Roboto: {
+        normal: 'Roboto-Regular.ttf',
+        bold: 'Roboto-Medium.ttf',
+        italics: 'Roboto-Italic.ttf',
+        bolditalics: 'Roboto-MediumItalic.ttf'
+      },
       NotoSansDevanagari: {
         normal: "NotoSansDevanagari-Regular.ttf",
         bold: "NotoSansDevanagari-Bold.ttf",
+        italics: "NotoSansDevanagari-Regular.ttf",
+        bolditalics: "NotoSansDevanagari-Bold.ttf"
       },
       Lohit: {
         normal: "Lohit-Devanagari.ttf",
@@ -314,8 +323,8 @@ export class GenerateEstimateDynamicComponent implements OnInit {
         };
 
         // Step 7.4: Group plants by name and sum counts/areas
-        // Use Map: key = plant name, value = {plantCount, area, rateField}
-        const categoryMap = new Map<string, { plantCount: number; area: number; rateField: string }>();
+        // Use Map: key = plant name, value = {plantCount, area, rateField, plantId, ropitCount}
+        const categoryMap = new Map<string, { plantCount: number; area: number; rateField: string; plantId: number; ropitCount: number }>();
 
         rows.forEach(row => {
           // Step 7.4.1: Extract data from each row
@@ -323,23 +332,24 @@ export class GenerateEstimateDynamicComponent implements OnInit {
           const plantName = (row?.plant_name || '').toString().trim();
           const count = parseNum(row?.total_tree || row?.estimated_required_trees);
           const area = parseNum(row?.total_area);
+          const ropit = parseNum(row?.total_ropit);
 
           if (!plantName) return; // Skip if no name
 
           // Step 7.4.2: Determine which rate field to use from tableData
-          // If plant_id >= 8, it's "other" category → use 'anyaPoudha'
-          // Otherwise, lookup in our simple mapping
           let rateField = 'anyaPoudha'; // Default for "other" plants
           if (plantId < 8) {
             rateField = this.plantNameToRateField[plantName] || 'anyaPoudha';
           }
 
           // Step 7.4.3: Group by plant name (same name = same category)
-          const existing = categoryMap.get(plantName) || { plantCount: 0, area: 0, rateField: rateField };
+          const existing = categoryMap.get(plantName) || { plantCount: 0, area: 0, rateField: rateField, plantId: plantId, ropitCount: 0 };
           categoryMap.set(plantName, {
             plantCount: existing.plantCount + count,
             area: existing.area + area,
-            rateField: rateField
+            rateField: rateField,
+            plantId: plantId,
+            ropitCount: existing.ropitCount + ropit
           });
         });
 
@@ -348,7 +358,9 @@ export class GenerateEstimateDynamicComponent implements OnInit {
           label: name,
           plantCount: data.plantCount,
           area: data.area,
-          rateField: data.rateField
+          rateField: data.rateField,
+          plantId: data.plantId,
+          ropitCount: data.ropitCount
         }));
 
         // Step 7.6: Mark bundle as loaded
@@ -661,28 +673,15 @@ export class GenerateEstimateDynamicComponent implements OnInit {
    * Flow: For each plant → Calculate Work1-13 → Calculate KoolYog1-3 → Calculate GrandTotal
    */
   private buildApprovalItems(): any[] {
-    return this.estimateRows.map(row => {
-      // Step 12.1: Extract plant data
-      const plantId = Number(row?.plant_id) || 0;
-      const plantName = (row?.plant_name || '').toString();
-      const totalPlant = Number(row?.total_tree || row?.estimated_required_trees) || 0;
-      const totalArea = Number(row?.total_area) || 0;
-      const perareaplant = totalArea > 0 ? (totalPlant / totalArea) : 0;
+    return this.categoriesToShow.map(cat => {
+      // Step 12.1: Use grouped category data
+      const plantId = cat.plantId;
+      const rateField = cat.rateField;
+      const totalPlant = cat.plantCount;
+      const totalArea = cat.area;
 
-      const more5plant = totalArea > 5 ? perareaplant * (totalArea - 5) : 0;
-
-      const less5plant = totalArea <= 5 ? perareaplant * totalArea : perareaplant * 5;
-
-
-
-
-      const ropit = Number(row?.total_ropit) || 0;
-
-      // Step 12.2: Determine rate field
-      let rateField = 'anyaPoudha';
-      if (plantId < 8) {
-        rateField = this.plantNameToRateField[plantName] || 'anyaPoudha';
-      }
+      const less5plant = this.less5TreeCount(cat);
+      const more5plant = this.more5TreeCount(cat);
 
       // Step 12.3: Calculate Work1-7 (Year 1: 7 items)
       const work1_7: number[] = [];
@@ -692,7 +691,7 @@ export class GenerateEstimateDynamicComponent implements OnInit {
           work1_7.push(rate * less5plant);
         }
       });
-      while (work1_7.length < 7) work1_7.push(0); // Ensure 7 items
+      while (work1_7.length < 7) work1_7.push(0);
 
       // Step 12.4: Calculate Work8-10 (Year 2: 3 items)
       const work8_10: number[] = [];
@@ -702,7 +701,7 @@ export class GenerateEstimateDynamicComponent implements OnInit {
           work8_10.push(rate * less5plant);
         }
       });
-      while (work8_10.length < 3) work8_10.push(0); // Ensure 3 items
+      while (work8_10.length < 3) work8_10.push(0);
 
       // Step 12.5: Calculate Work11-13 (Year 3: 3 items)
       const work11_13: number[] = [];
@@ -712,54 +711,49 @@ export class GenerateEstimateDynamicComponent implements OnInit {
           work11_13.push(rate * less5plant);
         }
       });
-      while (work11_13.length < 3) work11_13.push(0); // Ensure 3 items
+      while (work11_13.length < 3) work11_13.push(0);
 
-      // Step 12.3: Calculate Work1A-7A (Year 1: 7 items) 50% of anudan
-      // debugger;
+      // Year 1 More than 5 acre portion (halfrate)
       const work1A_7A: number[] = [];
       this.year1Rows.forEach((tableRow, idx) => {
         if (idx < 7) {
-          const rate = this.halfrate(Number(tableRow?.[rateField]) || 0, idx + 1);
+          const rate = this.halfrate(Number(tableRow?.[rateField]));
           work1A_7A.push(rate * more5plant);
         }
       });
-      while (work1A_7A.length < 7) work1A_7A.push(0); // Ensure 7 items
+      while (work1A_7A.length < 7) work1A_7A.push(0);
 
+      // Year 2 More than 5 acre portion (halfrate2 based on itemKramank)
       const work8A_10A: number[] = [];
       this.year2Rows.forEach((tableRow, idx) => {
         if (idx < 3) {
-          const rate = this.halfrate2(Number(tableRow?.[rateField]) || 0, idx + 1);
+          const rate = this.halfrate2(Number(tableRow?.[rateField]) || 0, tableRow.itemKramank);
           work8A_10A.push(rate * more5plant);
         }
       });
-      while (work8A_10A.length < 3) work8A_10A.push(0); // Ensure 3 items
+      while (work8A_10A.length < 3) work8A_10A.push(0);
 
-
-
-
+      // Year 3 More than 5 acre portion (halfrate2 based on itemKramank)
       const work11A_13A: number[] = [];
       this.year3Rows.forEach((tableRow, idx) => {
         if (idx < 3) {
-          const rate = this.halfrate2(Number(tableRow?.[rateField]) || 0, idx + 1);
+          const rate = this.halfrate2(Number(tableRow?.[rateField]) || 0, tableRow.itemKramank);
           work11A_13A.push(rate * more5plant);
         }
       });
-      while (work11A_13A.length < 3) work11A_13A.push(0); // Ensure 3 items
+      while (work11A_13A.length < 3) work11A_13A.push(0);
 
+      // Calculate year totals
+      const koolYog1 = Math.round(work1_7.reduce((sum, amt) => sum + amt, 0));
+      const koolYog2 = Math.round(work8_10.reduce((sum, amt) => sum + amt, 0));
+      const koolYog3 = Math.round(work11_13.reduce((sum, amt) => sum + amt, 0));
 
-      // Step 12.6: Calculate year totals (KoolYog)
-      const koolYog1 = work1_7.reduce((sum, amt) => sum + amt, 0);
-      const koolYog2 = work8_10.reduce((sum, amt) => sum + amt, 0);
-      const koolYog3 = work11_13.reduce((sum, amt) => sum + amt, 0);
+      const koolYog1A = Math.round(work1A_7A.reduce((sum, amt) => sum + amt, 0));
+      const koolYog2A = Math.round(work8A_10A.reduce((sum, amt) => sum + amt, 0));
+      const koolYog3A = Math.round(work11A_13A.reduce((sum, amt) => sum + amt, 0));
 
-      const koolYog1A = work1A_7A.reduce((sum, amt) => sum + amt, 0);
-      const koolYog2A = work8A_10A.reduce((sum, amt) => sum + amt, 0);
-      const koolYog3A = work11A_13A.reduce((sum, amt) => sum + amt, 0);
+      const grandTotal = Math.round(koolYog1 + koolYog2 + koolYog3 + koolYog1A + koolYog2A + koolYog3A);
 
-      // Step 12.7: Calculate grand total
-      const grandTotal = koolYog1 + koolYog2 + koolYog3 + koolYog1A + koolYog2A + koolYog3A;
-
-      // Step 12.8: Return formatted item for API
       return {
         ApplicationNumber: this.applicationNumber as string,
         PlantId: plantId,
@@ -776,7 +770,7 @@ export class GenerateEstimateDynamicComponent implements OnInit {
         Work11A: work11A_13A[0] || 0, Work12A: work11A_13A[1] || 0, Work13A: work11A_13A[2] || 0,
         GrandTotal: grandTotal,
         TotalPlant: totalPlant,
-        RopitCount: ropit,
+        RopitCount: cat.ropitCount,
         Less5plant: less5plant,
         More5plant: more5plant
       };
@@ -1335,48 +1329,75 @@ export class GenerateEstimateDynamicComponent implements OnInit {
 
       const body: any[] = [];
 
-      body.push([
-        { text: 'क्र', bold: true, fillColor: '#f5f5f5', alignment: 'center', fontSize: 8 },
-        { text: 'कार्य विवरण', bold: true, fillColor: '#f5f5f5', alignment: 'center', fontSize: 8 },
-        { text: '5 एकड़ से कम', bold: true, fillColor: '#f5f5f5', alignment: 'center', fontSize: 8 },
-        { text: '5 एकड़ से अधिक', bold: true, fillColor: '#f5f5f5', alignment: 'center', fontSize: 8 },
-        { text: '5 एकड़ से कम दर (100%)', bold: true, fillColor: '#f5f5f5', alignment: 'center', fontSize: 8 },
-        { text: '5 एकड़ से कम दर (50%)', bold: true, fillColor: '#f5f5f5', alignment: 'center', fontSize: 8 },
-        { text: 'कुल', bold: true, fillColor: '#f5f5f5', alignment: 'center', fontSize: 8 }
-      ]);
-
-      rows.forEach(item => {
-
+      rows.forEach((item, idx) => {
         const rate = Number(item[cat.rateField]) || 0;
 
-        const effectiveRate =
-          year === 1
-            ? this.halfrate(rate, item.itemKramank)
-            : this.halfrate2(rate, item.itemKramank);
+        let effectiveRate = 0;
+        if (year === 1) {
+          effectiveRate = this.halfrate(rate);
+        } else if (year === 2) {
+          // Following UI HTML for display column 4 if year 2, but total uses halfrate2
+          // Actually, consistent mathematical representation is better.
+          // In their HTML it says halfrate for year 2 display, but we'll use halfrate2 for consistency if kramank > 2
+          effectiveRate = this.halfrate2(rate, item.itemKramank);
+        } else {
+          effectiveRate = this.halfrate2(rate, item.itemKramank);
+        }
 
-        const rowTotal =
-          this.less5TreeCount(cat) * rate +
-          this.more5TreeCount(cat) * effectiveRate;
+        const less5P = this.less5TreeCount(cat);
+        const more5P = this.more5TreeCount(cat);
+        const less5Amt = rate * less5P;
+        const more5Amt = effectiveRate * more5P;
+        const rowTotal = less5Amt + more5Amt;
 
         body.push([
-          { text: item.itemKramank, fontSize: 8 },
-          { text: item.karyaVivran, fontSize: 8 },
-          { text: this.less5TreeCount(cat), alignment: 'center', fontSize: 8 },
-          { text: this.more5TreeCount(cat), alignment: 'center', fontSize: 8 },
-          { text: rate, alignment: 'center', fontSize: 8 },
-          { text: effectiveRate, alignment: 'center', fontSize: 8 },
-          { text: rowTotal.toLocaleString('en-IN'), alignment: 'right', fontSize: 8 }
+          idx === 0 ? { text: yearLabel, rowSpan: rows.length, alignment: 'center', fontSize: 7, margin: [0, 5] } : {},
+          { text: item.itemKramank, fontSize: 8, alignment: 'center' },
+          {
+            text: item.karyaVivran,
+            fontSize: 8,
+            alignment: item.tablealign || 'left',
+            bold: item.fontweight === 'bold'
+          },
+          { text: rate.toLocaleString('en-IN'), alignment: 'center', fontSize: 8 },
+          { text: effectiveRate.toLocaleString('en-IN'), alignment: 'center', fontSize: 8 },
+          { text: (cat.plantCount || 0).toLocaleString('en-IN'), alignment: 'center', fontSize: 8 },
+          { text: Math.round(less5P).toLocaleString('en-IN'), alignment: 'center', fontSize: 8 },
+          { text: Math.round(more5P).toLocaleString('en-IN'), alignment: 'center', fontSize: 8 },
+          { text: Math.round(less5Amt).toLocaleString('en-IN'), alignment: 'right', fontSize: 8 },
+          { text: Math.round(more5Amt).toLocaleString('en-IN'), alignment: 'right', fontSize: 8 },
+          { text: Math.round(rowTotal).toLocaleString('en-IN'), alignment: 'right', fontSize: 8 }
         ]);
       });
 
       body.push([
-        { text: `${yearLabel} योग :-`, colSpan: 5, bold: true }, {}, {}, {}, {},
+        { text: `${yearLabel} योग :-`, colSpan: 8, bold: true, alignment: 'right', fontSize: 7, fillColor: '#f9f9f9' },
+        {}, {}, {}, {}, {}, {}, {},
         {
-          text: this.getYearTotal(cat, rows).toLocaleString('en-IN'),
-          colSpan: 2,
+          text: Math.round(
+            year === 1 ? this.getKoolYog1(cat) : (year === 2 ? this.getKoolYog2(cat) : this.getKoolYog3(cat))
+          ).toLocaleString('en-IN'),
           alignment: 'right',
-          bold: true
-        }, {}
+          bold: true,
+          fontSize: 7,
+          fillColor: '#f9f9f9'
+        },
+        {
+          text: Math.round(
+            year === 1 ? this.getKoolYog1A(cat) : (year === 2 ? this.getKoolYog2A(cat) : this.getKoolYog3A(cat))
+          ).toLocaleString('en-IN'),
+          alignment: 'right',
+          bold: true,
+          fontSize: 7,
+          fillColor: '#f9f9f9'
+        },
+        {
+          text: Math.round(this.getYearTotal(cat, rows)).toLocaleString('en-IN'),
+          alignment: 'right',
+          bold: true,
+          fontSize: 7,
+          fillColor: '#f9f9f9'
+        }
       ]);
 
       return body;
@@ -1388,23 +1409,44 @@ export class GenerateEstimateDynamicComponent implements OnInit {
     const speciesTables: any[] = [];
 
     this.categoriesToShow.forEach(cat => {
-
       const table = {
-        // margin: [0, 0, 0, 0],
         table: {
-          widths: ['4%', '40%', '10%', '10%', '12%', '12%', '12%'],
+          headerRows: 3,
+          widths: ['6%', '4%', '22%', '8%', '8%', '8%', '8%', '8%', '9%', '9%', '10%'],
           body: [
-
             [
               {
-                text: `प्रजाति : ${cat.label} (कुल पौधे: ${(cat.plantCount || 0).toLocaleString('en-IN')})`,
-                colSpan: 7,
+                text: `प्रजाति : ${cat.label} (कुल पौधे: ${(cat.plantCount || 0).toLocaleString('en-IN')}, कुल रकबा: ${cat.area})`,
+                colSpan: 11,
                 bold: true,
                 fillColor: '#eeeeee',
                 alignment: 'center',
-                fontSize: 8
+                fontSize: 10
               },
-              {}, {}, {}, {}, {}, {}
+              {}, {}, {}, {}, {}, {}, {}, {}, {}, {}
+            ],
+            // Header Row 1
+            [
+              { text: 'वर्ष', bold: true, fillColor: '#f5f5f5', alignment: 'center', fontSize: 7, rowSpan: 2 },
+              { text: 'क्रमांक', bold: true, fillColor: '#f5f5f5', alignment: 'center', fontSize: 7, rowSpan: 2 },
+              { text: 'कार्य विवरण', bold: true, fillColor: '#f5f5f5', alignment: 'center', fontSize: 7, rowSpan: 2 },
+              { text: 'अनुदान दर (₹)', bold: true, fillColor: '#f5f5f5', alignment: 'center', fontSize: 7, colSpan: 2 }, {},
+              { text: 'कूल पौधों', bold: true, fillColor: '#f5f5f5', alignment: 'center', fontSize: 7, rowSpan: 2 },
+              { text: 'रोपित पौधों की संख्या', bold: true, fillColor: '#f5f5f5', alignment: 'center', fontSize: 7, colSpan: 2 }, {},
+              { text: 'अनुदान राशि (₹)', bold: true, fillColor: '#f5f5f5', alignment: 'center', fontSize: 7, colSpan: 2 }, {},
+              { text: 'राशि (₹)', bold: true, fillColor: '#f5f5f5', alignment: 'center', fontSize: 7, rowSpan: 2 }
+            ],
+            // Header Row 2
+            [
+              {}, {}, {},
+              { text: '5 एकड़ से कम (100%)', bold: true, fillColor: '#f5f5f5', alignment: 'center', fontSize: 6 },
+              { text: '5 एकड़ से अधिक (50%)', bold: true, fillColor: '#f5f5f5', alignment: 'center', fontSize: 6 },
+              {},
+              { text: '5 एकड़ से कम', bold: true, fillColor: '#f5f5f5', alignment: 'center', fontSize: 6 },
+              { text: '5 एकड़ से अधिक', bold: true, fillColor: '#f5f5f5', alignment: 'center', fontSize: 6 },
+              { text: '5 एकड़ से कम', bold: true, fillColor: '#f5f5f5', alignment: 'center', fontSize: 6 },
+              { text: '5 एकड़ से अधिक', bold: true, fillColor: '#f5f5f5', alignment: 'center', fontSize: 6 },
+              {}
             ],
 
             ...buildYearRows('प्रथम वर्ष', this.year1Rows, cat, 1),
@@ -1413,73 +1455,94 @@ export class GenerateEstimateDynamicComponent implements OnInit {
 
             [
               {
-                text: `राशि शब्दों में : ${this.convertNumberToWords(this.getGrandTotal(cat))}`,
+                text: `राशि शब्दों में : ${this.convertNumberToWords(Math.round(this.getGrandTotal(cat)))}`,
                 bold: true,
-                colSpan: 5
+                colSpan: 9,
+                fontSize: 9
               },
-              {}, {}, {}, {},
+              {}, {}, {}, {}, {}, {}, {}, {},
               {
-                text: `राशि कुल : ${this.getGrandTotal(cat).toLocaleString('en-IN')}`,
+                text: `राशि कुल :`,
                 bold: true,
-                colSpan: 2,
-                alignment: 'right'
+                alignment: 'right',
+                fontSize: 9
               },
-              {}
+              {
+                text: `₹${Math.round(this.getGrandTotal(cat)).toLocaleString('en-IN')}`,
+                bold: true,
+                alignment: 'right',
+                fontSize: 9
+              }
             ]
           ]
-        }
+        },
+        margin: [0, 0, 0, 10]
       };
-
 
       speciesTables.push(table);
     });
 
 
     // -----------------------------------------------------
-    // GOSWARA TABLE (with 1 blank line spacing)
+    // GOSWARA TABLE
     // -----------------------------------------------------
     const goswaraTable = [
-      { text: "", margin: [0, 5] },   // ** One line spacing **
-
+      { text: "गोस्वारा प्राकलन सारणी", bold: true, fontSize: 12, margin: [0, 20, 0, 10], alignment: 'center', underline: true },
       {
         table: {
           headerRows: 1,
-          widths: ['20%', '20%', '20%', '20%', '20%'],
+          widths: ['16%', '11%', '11%', '11%', '11%', '11%', '11%', '18%'],
           body: [
             [
-              { text: 'गोस्वारा प्राकलन सारणी', colSpan: 5, bold: true, fillColor: '#eeeeee', fontSize: 10 },
-              {}, {}, {}, {}
-            ],
-            [
-              { text: 'प्रजाति नाम', bold: true, fillColor: '#f5f5f5' },
-              { text: 'प्रथम वर्ष', bold: true, alignment: 'right', fillColor: '#f5f5f5' },
-              { text: 'द्वितीय वर्ष', bold: true, alignment: 'right', fillColor: '#f5f5f5' },
-              { text: 'तृतीय वर्ष', bold: true, alignment: 'right', fillColor: '#f5f5f5' },
-              { text: 'कुल योग', bold: true, alignment: 'right', fillColor: '#f5f5f5' }
+              { text: 'प्रजाति नाम', bold: true, fillColor: '#f5f5f5', alignment: 'center', fontSize: 8 },
+              { text: 'वर्ष 1 (5 एकड़ से कम )', bold: true, alignment: 'right', fillColor: '#f5f5f5', fontSize: 7 },
+              { text: 'वर्ष 1 (5 एकड़ से अधिक )', bold: true, alignment: 'right', fillColor: '#f5f5f5', fontSize: 7 },
+              { text: 'वर्ष 2 (5 एकड़ से कम )', bold: true, alignment: 'right', fillColor: '#f5f5f5', fontSize: 7 },
+              { text: 'वर्ष 2 (5 एकड़ से अधिक )', bold: true, alignment: 'right', fillColor: '#f5f5f5', fontSize: 7 },
+              { text: 'वर्ष 3 (5 एकड़ से कम )', bold: true, alignment: 'right', fillColor: '#f5f5f5', fontSize: 7 },
+              { text: 'वर्ष 3 (5 एकड़ से अधिक )', bold: true, alignment: 'right', fillColor: '#f5f5f5', fontSize: 7 },
+              { text: 'कुल योग', bold: true, alignment: 'right', fillColor: '#f5f5f5', fontSize: 8 }
             ],
 
             ...this.categoriesToShow.map(c => ([
-              { text: c.label },
-              { text: this.getYearTotal(c, this.year1Rows).toLocaleString('en-IN'), alignment: 'right' },
-              { text: this.getYearTotal(c, this.year2Rows).toLocaleString('en-IN'), alignment: 'right' },
-              { text: this.getYearTotal(c, this.year3Rows).toLocaleString('en-IN'), alignment: 'right' },
-              { text: this.getGrandTotal(c).toLocaleString('en-IN'), alignment: 'right' }
+              { text: c.label, alignment: 'left', fontSize: 8 },
+              { text: Math.round(this.getKoolYog1(c)).toLocaleString('en-IN'), alignment: 'right', fontSize: 7 },
+              { text: Math.round(this.getKoolYog1A(c)).toLocaleString('en-IN'), alignment: 'right', fontSize: 7 },
+              { text: Math.round(this.getKoolYog2(c)).toLocaleString('en-IN'), alignment: 'right', fontSize: 7 },
+              { text: Math.round(this.getKoolYog2A(c)).toLocaleString('en-IN'), alignment: 'right', fontSize: 7 },
+              { text: Math.round(this.getKoolYog3(c)).toLocaleString('en-IN'), alignment: 'right', fontSize: 7 },
+              { text: Math.round(this.getKoolYog3A(c)).toLocaleString('en-IN'), alignment: 'right', fontSize: 7 },
+              { text: Math.round(this.getGrandTotal(c)).toLocaleString('en-IN'), alignment: 'right', fontSize: 8 }
             ])),
 
             [
-              { text: 'महायोग', bold: true },
-              { text: this.getTotalYear1().toLocaleString('en-IN'), alignment: 'right', bold: true },
-              { text: this.getTotalYear2().toLocaleString('en-IN'), alignment: 'right', bold: true },
-              { text: this.getTotalYear3().toLocaleString('en-IN'), alignment: 'right', bold: true },
-              { text: this.getTotalGrandTotal().toLocaleString('en-IN'), alignment: 'right', bold: true }
+              { text: 'महायोग', bold: true, alignment: 'center', fillColor: '#eeeeee', fontSize: 8 },
+              { text: Math.round(this.getTotalKoolYog1()).toLocaleString('en-IN'), alignment: 'right', bold: true, fillColor: '#eeeeee', fontSize: 7 },
+              { text: Math.round(this.getTotalKoolYog1A()).toLocaleString('en-IN'), alignment: 'right', bold: true, fillColor: '#eeeeee', fontSize: 7 },
+              { text: Math.round(this.getTotalKoolYog2()).toLocaleString('en-IN'), alignment: 'right', bold: true, fillColor: '#eeeeee', fontSize: 7 },
+              { text: Math.round(this.getTotalKoolYog2A()).toLocaleString('en-IN'), alignment: 'right', bold: true, fillColor: '#eeeeee', fontSize: 7 },
+              { text: Math.round(this.getTotalKoolYog3()).toLocaleString('en-IN'), alignment: 'right', bold: true, fillColor: '#eeeeee', fontSize: 7 },
+              { text: Math.round(this.getTotalKoolYog3A()).toLocaleString('en-IN'), alignment: 'right', bold: true, fillColor: '#eeeeee', fontSize: 7 },
+              { text: Math.round(this.getTotalGrandTotal()).toLocaleString('en-IN'), alignment: 'right', bold: true, fillColor: '#eeeeee', fontSize: 8 }
             ],
 
             [
-              { text: 'राशि शब्दों में : ' + this.convertNumberToWords(this.getTotalGrandTotal()), colSpan: 4 }, {}, {}, {},
-              { text: this.getTotalGrandTotal().toLocaleString('en-IN'), alignment: 'right' }
+              {
+                text: 'राशि शब्दों में : ' + this.convertNumberToWords(Math.round(this.getTotalGrandTotal())),
+                colSpan: 7,
+                bold: true,
+                fontSize: 8
+              }, {}, {}, {}, {}, {}, {},
+              {
+                text: `₹${Math.round(this.getTotalGrandTotal()).toLocaleString('en-IN')}`,
+                alignment: 'right',
+                bold: true,
+                fontSize: 8
+              }
             ]
           ]
-        }
+        },
+        margin: [0, 0, 0, 20]
       }
     ];
 
@@ -1489,34 +1552,27 @@ export class GenerateEstimateDynamicComponent implements OnInit {
     // -----------------------------------------------------
     const finalContent: any[] = [];
     const lastIndex = speciesTables.length - 1;
-    const isGoswaraLarge = this.categoriesToShow.length > 1;
 
     speciesTables.forEach((tbl, index) => {
-
-      // Add species table
       finalContent.push(tbl);
 
-      // Add signature below species table if NOT last species
-      if (index !== lastIndex) {
+      if (index === lastIndex) {
+        if (this.categoriesToShow.length > 1) {
+          finalContent.push(...signatureBlock(divName, subdivName, rangName));
+          finalContent.push({ text: '', pageBreak: 'after' });
+          finalContent.push(...goswaraTable);
+        } else {
+          finalContent.push(...goswaraTable);
+        }
+        finalContent.push(...signatureBlock(divName, subdivName, rangName));
+      } else {
         finalContent.push(...signatureBlock(divName, subdivName, rangName));
         finalContent.push({ text: '', pageBreak: 'after' });
       }
-
-      // Last species table → add goswara + signature
-      if (index === lastIndex) {
-        // For large goswara table, start on new page
-        if (isGoswaraLarge) {
-          finalContent.push(...signatureBlock(divName, subdivName, rangName));
-          finalContent.push({ text: '', pageBreak: 'after' });
-        }
-
-        // Add goswara table
-        finalContent.push(...goswaraTable);
-
-        // Add signature after goswara table
-        finalContent.push(...signatureBlock(divName, subdivName, rangName));
-      }
     });
+
+
+
 
 
 
@@ -1524,60 +1580,48 @@ export class GenerateEstimateDynamicComponent implements OnInit {
     // HEADER + FOOTER
     // -----------------------------------------------------
     const headerSection = () => ({
-
       margin: [40, 20, 40, 10],
       stack: [
         {
           columns: [
-            { text: '' }, // left spacer
+            { text: '' },
             {
               text: `दिनांक : ${new Date().toLocaleDateString('en-IN')}`,
               alignment: 'right',
               fontSize: 8,
-              margin: [0, 10, 10, 0] // 👈 padding 10px (top & right)
+              margin: [0, 10, 10, 0]
             }
           ]
         },
-
         { text: 'प्राक्कलन ', alignment: 'center', bold: true, fontSize: 14, underline: true, margin: [0, 0, 0, 5] },
         { text: 'किसान वृक्ष मित्र योजना (वृक्षारोपण वर्ष - 2026 )', alignment: 'center', bold: true, fontSize: 10, margin: [0, 0, 0, 5] },
-        { text: 'आवेदन संख्या :- ' + (this.applicationNumber ?? "N/A"), alignment: 'center', bold: true, fontSize: 8, margin: [0, 0, 0, 5] },
-
-
+        { text: 'आवेदन संख्या :- ' + (this.applicationNumber ?? "N/A"), alignment: 'center', bold: true, fontSize: 9, margin: [0, 0, 0, 5] },
         {
-          canvas: [
-            { type: 'line', x1: 0, y1: 0, x2: 515, y2: 0, lineWidth: 1, lineColor: '#000' }
-          ],
-          margin: [0, 0, 0, 10] // space below the line
+          canvas: [{ type: 'line', x1: 0, y1: 0, x2: 515, y2: 0, lineWidth: 1, lineColor: '#000' }],
+          margin: [0, 5, 0, 10]
         },
         {
-          columns: [
-            { text: 'कृषक/हितग्राही का नाम : ' + (this.singleData.hitgrahiName ?? "N/A"), alignment: 'left', fontSize: 8 },
-            { text: 'पिता का नाम : ' + (this.singleData.fatherName ?? "N/A"), alignment: 'left', fontSize: 8 },
-            { text: 'पता : ' + (this.singleData.address ?? "N/A"), alignment: 'left', fontSize: 8 },
-
-          ]
+          table: {
+            widths: ['33%', '33%', '34%'],
+            body: [
+              [
+                { text: 'कृषक/हितग्राही का नाम : ' + (this.singleData?.hitgrahiName || "N/A"), fontSize: 8, border: [false, false, false, false] },
+                { text: 'पिता का नाम : ' + (this.singleData?.fatherName || "N/A"), fontSize: 8, border: [false, false, false, false] },
+                { text: 'पता : ' + (this.singleData?.address || "N/A") + (this.singleData?.gramPanchayatName ? ', ' + this.singleData.gramPanchayatName : ''), fontSize: 8, border: [false, false, false, false] }
+              ],
+              [
+                { text: 'मोबाईल नंबर : ' + (this.singleData?.mobileNo || "N/A"), fontSize: 8, border: [false, false, false, false] },
+                { text: 'भूमि का प्रकार : ' + (this.singleData?.landType == 1 ? 'FRA LAND' : 'REVENUE LAND'), fontSize: 8, border: [false, false, false, false] },
+                { text: 'कुल रकबा (एकड़ मे) : ' + (this.singleData?.totalAcre || "N/A"), fontSize: 8, border: [false, false, false, false] }
+              ]
+            ]
+          },
+          margin: [0, 0, 0, 10]
         },
         {
-          columns: [
-            { text: 'मोबाईल नंबर : ' + (this.singleData.mobileNo ?? "N/A"), alignment: 'left', fontSize: 8 },
-            {
-              text: 'भूमि का प्रकार : ' + (this.singleData?.landType !== undefined && this.singleData?.landType !== null
-                ? (this.singleData.landType === 1 ? 'FRA Land' : 'Revenue Land')
-                : 'N/A'), alignment: 'left', fontSize: 8
-            },
-            { text: 'कुल रकबा (एकड़ मे) : ' + (this.singleData.totalAcre ?? "N/A"), alignment: 'left', fontSize: 8 },
-
-          ]
+          canvas: [{ type: 'line', x1: 0, y1: 0, x2: 515, y2: 0, lineWidth: 1, lineColor: '#000' }],
+          margin: [0, 0, 0, 15]
         },
-
-        // {
-        //   canvas: [
-        //     { type: 'line', x1: 0, y1: 0, x2: 515, y2: 0, lineWidth: 1, lineColor: '#000' }
-        //   ],
-        //   margin: [0, 15, 0, 25] // space below the line
-
-        // },
       ]
     });
 
@@ -1599,7 +1643,22 @@ export class GenerateEstimateDynamicComponent implements OnInit {
       content: finalContent
     };
 
-    pdfMake.createPdf(docDefinition).download("Estimate_Print_" + this.applicationNumber + ".pdf");
+    const fonts: any = {
+      Roboto: {
+        normal: 'Roboto-Regular.ttf',
+        bold: 'Roboto-Medium.ttf',
+        italics: 'Roboto-Italic.ttf',
+        bolditalics: 'Roboto-MediumItalic.ttf'
+      },
+      NotoSansDevanagari: {
+        normal: "NotoSansDevanagari-Regular.ttf",
+        bold: "NotoSansDevanagari-Bold.ttf",
+        italics: "NotoSansDevanagari-Regular.ttf",
+        bolditalics: "NotoSansDevanagari-Bold.ttf"
+      }
+    };
+
+    pdfMake.createPdf(docDefinition, undefined, fonts).download("Estimate_Print_" + this.applicationNumber + ".pdf");
   }
 
 
@@ -1607,10 +1666,8 @@ export class GenerateEstimateDynamicComponent implements OnInit {
 
 
 
-  halfrate(rate: number, itemKramank: number): number {
-    return [3, 4, 5].includes(itemKramank)
-      ? Number(rate) / 2
-      : Number(rate);
+  halfrate(rate: number): number {
+    return Number(rate) / 2;
   }
 
   halfrate2(rate: number, itemKramank: number): number {
@@ -1661,10 +1718,10 @@ export class GenerateEstimateDynamicComponent implements OnInit {
     else {
       more5Amount =
         this.more5TreeCount(cat) *
-        this.halfrate(rate, item.itemKramank);
+        this.halfrate(rate);
     }
 
-    return less5Amount + more5Amount;
+    return Math.round(less5Amount + more5Amount);
   }
 
 
@@ -1690,14 +1747,14 @@ export class GenerateEstimateDynamicComponent implements OnInit {
       else {
         more5Amount =
           this.more5TreeCount(cat) *
-          this.halfrate(rate, item.itemKramank);
+          this.halfrate(rate);
       }
 
       // ✅ ADD PER ROW
       total += less5Amount + more5Amount;
     });
 
-    return total;
+    return Math.round(total);
   }
 
 
@@ -1705,4 +1762,43 @@ export class GenerateEstimateDynamicComponent implements OnInit {
 
 
 
+
+  getKoolYog1(cat: DisplayCategory): number {
+    return Math.round(this.year1Rows.reduce((sum, item) => sum + (Number(item?.[cat.rateField]) || 0) * this.less5TreeCount(cat), 0));
+  }
+  getKoolYog1A(cat: DisplayCategory): number {
+    return Math.round(this.year1Rows.reduce((sum, item) => sum + this.halfrate(Number(item?.[cat.rateField]) || 0) * this.more5TreeCount(cat), 0));
+  }
+  getKoolYog2(cat: DisplayCategory): number {
+    return Math.round(this.year2Rows.reduce((sum, item) => sum + (Number(item?.[cat.rateField]) || 0) * this.less5TreeCount(cat), 0));
+  }
+  getKoolYog2A(cat: DisplayCategory): number {
+    return Math.round(this.year2Rows.reduce((sum, item) => sum + this.halfrate2(Number(item?.[cat.rateField]) || 0, item.itemKramank) * this.more5TreeCount(cat), 0));
+  }
+  getKoolYog3(cat: DisplayCategory): number {
+    return Math.round(this.year3Rows.reduce((sum, item) => sum + (Number(item?.[cat.rateField]) || 0) * this.less5TreeCount(cat), 0));
+  }
+  getKoolYog3A(cat: DisplayCategory): number {
+    return Math.round(this.year3Rows.reduce((sum, item) => sum + this.halfrate2(Number(item?.[cat.rateField]) || 0, item.itemKramank) * this.more5TreeCount(cat), 0));
+  }
+
+  getTotalKoolYog1(): number {
+    return this.categoriesToShow.reduce((sum, cat) => sum + this.getKoolYog1(cat), 0);
+  }
+  getTotalKoolYog1A(): number {
+    return this.categoriesToShow.reduce((sum, cat) => sum + this.getKoolYog1A(cat), 0);
+  }
+  getTotalKoolYog2(): number {
+    return this.categoriesToShow.reduce((sum, cat) => sum + this.getKoolYog2(cat), 0);
+  }
+  getTotalKoolYog2A(): number {
+    return this.categoriesToShow.reduce((sum, cat) => sum + this.getKoolYog2A(cat), 0);
+  }
+  getTotalKoolYog3(): number {
+    return this.categoriesToShow.reduce((sum, cat) => sum + this.getKoolYog3(cat), 0);
+  }
+  getTotalKoolYog3A(): number {
+    return this.categoriesToShow.reduce((sum, cat) => sum + this.getKoolYog3A(cat), 0);
+  }
 }
+

@@ -1,4 +1,4 @@
-<ion-split-pane contentId="main-content" when="(min-width: 768px)">
+<ion-split-pane content-id="main-content" when="(min-width: 768px)">
   <ion-menu class="no-shadow" side="start" content-id="main-content" style="width: 350px;">
     <ion-header class="ion-header-class-for-menu">
       <ion-toolbar>
@@ -42,13 +42,12 @@
 
   <div class="ion-page" id="main-content">
     <ion-header>
-      <div class="div-color" style="padding-top: 20px; color: white">
-        <ion-toolbar>
-              <!-- <ion-label class="slogan" >एक पेड़ माँ के नाम</ion-label> -->
-          <ion-title class="ion-text-center">{{ getTranslation('app_name') }}</ion-title>
-          <ion-menu-button slot="start"></ion-menu-button>
-        </ion-toolbar>
-      </div>
+      <ion-toolbar class="landing-toolbar">
+        <ion-buttons slot="start">
+          <ion-menu-button></ion-menu-button>
+        </ion-buttons>
+        <ion-title class="ion-text-center">{{ getTranslation('app_name') }}</ion-title>
+      </ion-toolbar>
     </ion-header>
     <ion-content>
       <div class="hero-section">

@@ -131,20 +131,23 @@
               <th rowspan="2" class="detail-th-year">वर्ष</th>
               <th rowspan="2" class="detail-th">क्रमांक</th>
               <th rowspan="2" class="detail-th">कार्य विवरण</th>
+              <th colspan="2" class="detail-th">अनुदान दर (₹)</th>
               <th rowspan="2" class="detail-th">कूल पौधों</th>
 
               <th colspan="2" class="detail-th">रोपित पौधों की संख्या</th>
+              <th colspan="2" class="detail-th">अनुदान राशि (₹)</th>
 
-              <th colspan="2" class="detail-th">दर (₹)</th>
               <th rowspan="2" class="detail-th">राशि (₹)</th>
             </tr>
 
             <!-- Row 2: Sub headers -->
             <tr>
-              <th class="detail-th">5 एकड़ से कम</th>
-              <th class="detail-th">5 एकड़ से अधिक</th>
               <th class="detail-th">5 एकड़ से कम (100%)</th>
               <th class="detail-th">5 एकड़ से अधिक (50%)</th>
+              <th class="detail-th">5 एकड़ से कम</th>
+              <th class="detail-th">5 एकड़ से अधिक</th>
+              <th class="detail-th">5 एकड़ से कम</th>
+              <th class="detail-th">5 एकड़ से अधिक</th>
             </tr>
           </thead>
           <tbody>
@@ -156,23 +159,23 @@
               <td class="detail-td detail-kramank">{{ item.itemKramank }}</td>
               <td class="detail-td detail-karya" [style.text-align]="item.tablealign"
                 [style.font-weight]="item.fontweight">{{ item.karyaVivran }}</td>
-              <td class="detail-td detail-count">{{ cat.plantCount }}</td>
-              <td class="detail-td detail-count">{{ less5TreeCount(cat) }}</td>
-              <td class="detail-td detail-count">{{ more5TreeCount(cat) }}</td>
-              <td class="detail-td detail-rate">{{ item[cat.rateField] }}</td>
-              <td class="detail-td detail-rate">
-                {{ halfrate(item[cat.rateField], item.itemKramank) }}
-              </td>
-              <!-- <td class="detail-td detail-amount">{{ item[cat.rateField] * less5TreeCount(cat)}} +
-                {{more5TreeCount(cat) * halfrate(item[cat.rateField], item.itemKramank) }}  = {{ total(cat, item,1) | number:'1.2-2'
-                }}</td> -->
+                <td class="detail-td detail-rate">{{ item[cat.rateField] | number:'1.0-0' }}</td>
+                <td class="detail-td detail-rate">
+                  {{ halfrate(item[cat.rateField]) | number:'1.0-0' }}
+                </td>
+                <td class="detail-td detail-count">{{ cat.plantCount }}</td>
+                <td class="detail-td detail-count">{{ less5TreeCount(cat) }}</td>
+                <td class="detail-td detail-count">{{ more5TreeCount(cat) }}</td>
+            <td>{{ item[cat.rateField] * less5TreeCount(cat) | number:'1.0-0' }}</td>
+            <td>{{ halfrate(item[cat.rateField]) * more5TreeCount(cat) | number:'1.0-0' }}</td>
 
-              <td class="detail-td detail-amount">{{ total(cat, item,1) | number:'1.2-2'
-                }}</td>
+              <td class="detail-td detail-amount">{{ total(cat, item, 1) | number:'1.0-0' }}</td>
             </tr>
             <tr class="detail-year-total-row">
               <td colspan="8" class="detail-year-total-label">प्रथम वर्ष का योग</td>
-              <td class="detail-year-total-amount">{{ getYearTotal(cat, year1Rows) | number:'1.2-2' }}</td>
+              <td>{{ getKoolYog1(cat) | number:'1.0-0' }}</td>
+              <td>{{ getKoolYog1A(cat) | number:'1.0-0' }}</td>
+              <td class="detail-year-total-amount">{{ getYearTotal(cat, year1Rows) | number:'1.0-0' }}</td>
             </tr>
 
             <!-- द्वितीय वर्ष -->
@@ -183,22 +186,20 @@
               <td class="detail-td detail-kramank">{{ item.itemKramank }}</td>
               <td class="detail-td detail-karya" [style.text-align]="item.tablealign"
                 [style.font-weight]="item.fontweight">{{ item.karyaVivran }}</td>
+                <td class="detail-td detail-rate">{{ item[cat.rateField] | number:'1.0-0' }}</td>
+                <td class="detail-td detail-rate">{{ halfrate(item[cat.rateField]) | number:'1.0-0' }}</td>
               <td class="detail-td detail-count">{{ cat.plantCount }}</td>
               <td class="detail-td detail-count">{{ less5TreeCount(cat) }}</td>
               <td class="detail-td detail-count">{{ more5TreeCount(cat) }}</td>
-              <td class="detail-td detail-rate">{{ item[cat.rateField] }}</td>
-              <td class="detail-td detail-rate">
-                {{ halfrate2(item[cat.rateField], item.itemKramank) }}
-              </td>
-              <!-- <td class="detail-td detail-amount">{{ item[cat.rateField] * less5TreeCount(cat)}} +
-                {{more5TreeCount(cat) * halfrate2(item[cat.rateField], item.itemKramank) }} = {{ total(cat, item,2) | number:'1.2-2'
-                }}</td> -->
-              <td class="detail-td detail-amount"> {{ total(cat, item,2) | number:'1.2-2'
-                }}</td>
+              <td class="detail-td detail-count">{{ item[cat.rateField] * less5TreeCount(cat) | number:'1.0-0' }}</td>
+              <td class="detail-td detail-count">{{ halfrate(item[cat.rateField]) * more5TreeCount(cat) | number:'1.0-0' }}</td>
+              <td class="detail-td detail-amount">{{ total(cat, item, 2) | number:'1.0-0' }}</td>
             </tr>
             <tr class="detail-year-total-row">
               <td colspan="8" class="detail-year-total-label">द्वितीय वर्ष का योग</td>
-              <td class="detail-year-total-amount">{{ getYearTotal(cat, year2Rows) | number:'1.2-2' }}</td>
+              <td>{{ getKoolYog2(cat) | number:'1.0-0' }}</td>
+              <td>{{ getKoolYog2A(cat) | number:'1.0-0' }}</td>
+              <td class="detail-year-total-amount">{{ getYearTotal(cat, year2Rows) | number:'1.0-0' }}</td>
             </tr>
 
             <!-- तृतीय वर्ष -->
@@ -210,31 +211,28 @@
               <td class="detail-td detail-karya" [style.text-align]="item.tablealign"
                 [style.font-weight]="item.fontweight">{{ item.karyaVivran }}</td>
               <td class="detail-td detail-count">{{ cat.plantCount }}</td>
+              <td class="detail-td detail-rate">{{ item[cat.rateField] | number:'1.0-0' }}</td>
+              <td class="detail-td detail-rate">{{ halfrate2(item[cat.rateField], item.itemKramank) | number:'1.0-0' }}</td>
               <td class="detail-td detail-count">{{ less5TreeCount(cat) }}</td>
               <td class="detail-td detail-count">{{ more5TreeCount(cat) }}</td>
-              <td class="detail-td detail-rate">{{ item[cat.rateField] }}</td>
-              <td class="detail-td detail-rate">
-                {{ halfrate2(item[cat.rateField], item.itemKramank) }}
-              </td>
-              <!-- <td class="detail-td detail-amount"> {{ item[cat.rateField] * less5TreeCount(cat)}} +
-                {{more5TreeCount(cat) * halfrate2(item[cat.rateField], item.itemKramank) }} = {{ total(cat, item, 3) |
-                number:'1.2-2'
-                }}</td> -->
-              <td class="detail-td detail-amount">{{ total(cat, item, 3) |
-                number:'1.2-2'
-                }}</td>
+              <td class="detail-td detail-count">{{ item[cat.rateField] * less5TreeCount(cat) | number:'1.0-0' }}</td>
+              <td class="detail-td detail-count">{{ halfrate(item[cat.rateField]) * more5TreeCount(cat) | number:'1.0-0' }}</td>
+
+              <td class="detail-td detail-amount">{{ total(cat, item, 3) | number:'1.0-0' }}</td>
             </tr>
             <tr class="detail-year-total-row">
               <td colspan="8" class="detail-year-total-label">तृतीय वर्ष का योग</td>
-              <td class="detail-year-total-amount">{{ getYearTotal(cat, year3Rows) | number:'1.2-2' }}</td>
+              <td>{{ getKoolYog3(cat) | number:'1.0-0' }}</td>
+              <td>{{ getKoolYog3A(cat) | number:'1.0-0' }}</td>
+              <td class="detail-year-total-amount">{{ getYearTotal(cat, year3Rows) | number:'1.0-0' }}</td>
             </tr>
 
             <!-- Grand Total -->
             <tr class="detail-grand-total-row">
               <td colspan="2" class="detail-grand-total-label">महायोग</td>
-              <td colspan="6" class="detail-words-text">राशि शब्दों में : {{ convertNumberToWords(getGrandTotal(cat)) }}
+              <td colspan="8" class="detail-words-text">राशि शब्दों में : {{ convertNumberToWords(getGrandTotal(cat)) }}
               </td>
-              <td class="detail-grand-total-amount">₹{{ getGrandTotal(cat) | number:'1.2-2' }}</td>
+              <td class="detail-grand-total-amount">₹{{ getGrandTotal(cat) | number:'1.0-0' }}</td>
             </tr>
             <tr class="detail-words-row">
 
@@ -255,35 +253,44 @@
           <table class="custom-table goswara-table">
             <thead>
               <tr>
-                <th>प्रजातिवर गोस्वारा एस्टीमेट</th>
-                <th>पहला वर्ष</th>
-                <th>द्वितीय वर्ष</th>
-                <th>तृतीय वर्ष</th>
-                <th>कूल योग</th>
+                <th>प्रजाति नाम</th>
+                <th>वर्ष 1 (5 एकड़ से कम )</th>
+                <th>वर्ष 1 (5 एकड़ से अधिक )</th>
+                <th>वर्ष 2 (5 एकड़ से कम )</th>
+                <th>वर्ष 2 (5 एकड़ से अधिक )</th>
+                <th>वर्ष 3 (5 एकड़ से कम )</th>
+                <th>वर्ष 3 (5 एकड़ से अधिक )</th>
+                <th>कुल योग</th>
               </tr>
             </thead>
             <tbody>
               <!-- One row for each plant category -->
               <tr *ngFor="let cat of categoriesToShow" class="goswara-data-row">
                 <td class="goswara-plant-name">{{ cat.label }}</td>
-                <td class="goswara-amount">{{ getYearTotal(cat, year1Rows) | number:'1.2-2' }}</td>
-                <td class="goswara-amount">{{ getYearTotal(cat, year2Rows) | number:'1.2-2' }}</td>
-                <td class="goswara-amount">{{ getYearTotal(cat, year3Rows) | number:'1.2-2' }}</td>
-                <td class="goswara-amount goswara-grand-total">{{ getGrandTotal(cat) | number:'1.2-2' }}</td>
+                <td class="goswara-amount">{{ getKoolYog1(cat) | number:'1.0-0' }}</td>
+                <td class="goswara-amount">{{ getKoolYog1A(cat) | number:'1.0-0' }}</td>
+                <td class="goswara-amount">{{ getKoolYog2(cat) | number:'1.0-0' }}</td>
+                <td class="goswara-amount">{{ getKoolYog2A(cat) | number:'1.0-0' }}</td>
+                <td class="goswara-amount">{{ getKoolYog3(cat) | number:'1.0-0' }}</td>
+                <td class="goswara-amount">{{ getKoolYog3A(cat) | number:'1.0-0' }}</td>
+                <td class="goswara-amount goswara-grand-total">{{ getGrandTotal(cat) | number:'1.0-0' }}</td>
               </tr>
 
               <!-- Total Row (महायोग) -->
               <tr class="total-row goswara-total-row">
                 <td class="goswara-total-label">महायोग</td>
-                <td class="goswara-total-amount">{{ getTotalYear1() | number:'1.2-2' }}</td>
-                <td class="goswara-total-amount">{{ getTotalYear2() | number:'1.2-2' }}</td>
-                <td class="goswara-total-amount">{{ getTotalYear3() | number:'1.2-2' }}</td>
-                <td class="goswara-total-amount goswara-final-total">₹{{ getTotalGrandTotal() | number:'1.2-2' }}</td>
+                <td class="goswara-total-amount">{{ getTotalKoolYog1() | number:'1.0-0' }}</td>
+                <td class="goswara-total-amount">{{ getTotalKoolYog1A() | number:'1.0-0' }}</td>
+                <td class="goswara-total-amount">{{ getTotalKoolYog2() | number:'1.0-0' }}</td>
+                <td class="goswara-total-amount">{{ getTotalKoolYog2A() | number:'1.0-0' }}</td>
+                <td class="goswara-total-amount">{{ getTotalKoolYog3() | number:'1.0-0' }}</td>
+                <td class="goswara-total-amount">{{ getTotalKoolYog3A() | number:'1.0-0' }}</td>
+                <td class="goswara-total-amount goswara-final-total">₹{{ getTotalGrandTotal() | number:'1.0-0' }}</td>
               </tr>
 
               <!-- Amount in words row -->
               <tr class="goswara-words-row">
-                <td colspan="5" class="goswara-words-text">
+                <td colspan="8" class="goswara-words-text">
                   राशि शब्दों में : {{ convertNumberToWords(getTotalGrandTotal()) }}
                 </td>
               </tr>

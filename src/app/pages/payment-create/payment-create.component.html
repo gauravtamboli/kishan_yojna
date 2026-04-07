@@ -396,15 +396,26 @@
             </table>
           </div>
         </ion-card-content>
-        <div *ngIf="showYear1" class="payment-button-container" style=" margin-bottom: 20px;">
+        <!-- Implantation Warning -->
+        <div *ngIf="!isAnyPlantImplanted()" class="implantation-alert animate-fadeInUp">
+          <div class="alert-content">
+            <ion-icon name="alert-circle-outline"></ion-icon>
+            <div class="alert-text">
+              <h4>रोपण अपूर्ण</h4>
+              <p>कम से कम एक प्रजाति का रोपण होने तक भुगतान नहीं किया जा सकता।</p>
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="showYear1 && isAnyPlantImplanted()" class="payment-button-container" style=" margin-bottom: 20px;">
           <ion-button *ngIf="getAllPrajatiYearTotal(1) > 0" class="my-ion-button" (click)="makePayment()">Create
             Payment</ion-button>
         </div>
-        <div *ngIf="showYear2" class="payment-button-container" style=" margin-bottom: 20px;">
+        <div *ngIf="showYear2 && isAnyPlantImplanted()" class="payment-button-container" style=" margin-bottom: 20px;">
           <ion-button *ngIf="getAllPrajatiYearTotal(2) > 0" class="my-ion-button" (click)="makePayment()">Create
             Payment</ion-button>
         </div>
-        <div *ngIf="showYear3" class="payment-button-container" style=" margin-bottom: 20px;">
+        <div *ngIf="showYear3 && isAnyPlantImplanted()" class="payment-button-container" style=" margin-bottom: 20px;">
           <ion-button *ngIf="getAllPrajatiYearTotal(3) > 0" class="my-ion-button" (click)="makePayment()">Create
             Payment</ion-button>
         </div>

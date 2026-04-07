@@ -377,6 +377,12 @@ export class VendorPaymentComponent implements OnInit {
 
 
 
+    isAnyPlantImplanted(): boolean {
+        if (!this.categoriesToShow || this.categoriesToShow.length === 0) return false;
+        return this.categoriesToShow.some(cat => (cat.total_ropit || 0) > 0);
+    }
+
+
     async makePayment() {
         if (!this.application_number || !this.selectedYear) {
             this.showToast('कृपया आवेदन संख्या और वर्ष का चयन करें।');

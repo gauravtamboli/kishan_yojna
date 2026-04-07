@@ -10,6 +10,13 @@ ion-toolbar {
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
+.landing-toolbar {
+  --background: linear-gradient(135deg, var(--ion-color-primary) 0%, #2ecc71 100%);
+  --color: white;
+  padding-top: 15px; // Approximate the padding-top: 20px from previous div
+  min-height: 64px;
+}
+
 ion-content {
   --background: var(--theme-bg-light, #f8f9fa);
 }

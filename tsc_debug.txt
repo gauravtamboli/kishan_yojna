@@ -1,0 +1,1 @@
+src/app/pages/generate-estimate-dynamic/generate-estimate-dynamic.component.ts(17,8): error TS1192: Module '"g:/KVMY/Angular/node_modules/@types/pdfmake/build/pdfmake"' has no default export.
