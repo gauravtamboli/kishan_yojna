@@ -18,7 +18,12 @@ ion-content {
 /* --------- Page Header --------- */
 .responsive-toolbar-title {
   color: white;
-  font-size: 20px;
+  @media (max-width: 576px) {
+    font-size: 16px;
+  }
+  @media (min-width: 577px) {
+    font-size: 20px;
+  }
   font-weight: 800;
 }
 
@@ -45,8 +50,20 @@ ion-content {
 
 .applicant-text {
   color: var(--text-strong);
-  font-size: 16px;
   font-weight: 700;
+  width: 100%;
+  text-align: center;
+  
+  strong {
+    display: block;
+    word-break: break-all;
+    @media (max-width: 576px) {
+      font-size: 16px !important;
+    }
+    @media (min-width: 577px) {
+      font-size: 20px !important;
+    }
+  }
 }
 
 .details-section ion-label {
@@ -57,22 +74,34 @@ ion-content {
 
 /* --------- Species Header Card --------- */
 .species-card {
-  margin-top: 16px;
-  padding: 16px;
+  margin: 16px 0 8px 0;
+  padding: 12px;
+  @media (min-width: 576px) {
+    padding: 16px;
+  }
   background: var(--theme-bg-secondary);
   border: 1px solid var(--card-border);
   border-radius: var(--theme-radius-lg);
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  flex-direction: column;
+  @media (min-width: 768px) {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
   box-shadow: var(--theme-shadow-sm);
 }
 
 .species-title {
   display: block;
-  font-size: 16px;
+  font-size: 14px;
+  @media (min-width: 576px) {
+    font-size: 16px;
+  }
   font-weight: 700;
   color: var(--theme-primary);
+  line-height: 1.4;
+  word-break: break-word;
 }
 
 .my-ion-button {
@@ -86,11 +115,21 @@ ion-content {
 /* --------- Tables --------- */
 .table-wrapper {
   margin-top: 16px;
-  overflow: auto;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
   border-radius: var(--theme-radius-lg);
   border: 1px solid var(--table-border);
   background: var(--card-bg);
   box-shadow: var(--theme-shadow-md);
+  width: 100%;
+  
+  &::-webkit-scrollbar {
+    height: 6px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: var(--theme-primary-light);
+    border-radius: 10px;
+  }
 }
 
 .custom-table {
@@ -245,7 +284,10 @@ ion-content {
 }
 
 .section-title-text {
-  font-size: 1.25rem;
+  font-size: 1.1rem;
+  @media (min-width: 576px) {
+    font-size: 1.25rem;
+  }
   font-weight: 800;
   color: var(--theme-primary);
   letter-spacing: 0.5px;
@@ -264,7 +306,10 @@ ion-content {
   border: 1px solid var(--card-border);
   border-radius: var(--theme-radius-xl);
   box-shadow: var(--theme-shadow-md);
-  padding: 20px;
+  padding: 12px;
+  @media (min-width: 576px) {
+    padding: 20px;
+  }
   margin-bottom: 24px;
 }
 
@@ -324,6 +369,25 @@ ion-content {
   color: var(--theme-text-primary);
   font-size: 14px;
   margin-top: 2px;
+  display: block;
+  word-break: break-word;
+}
+
+/* --------- Responsive Utilities --------- */
+.main-content-wrapper {
+  padding: 10px;
+  @media (min-width: 576px) {
+    padding: 20px;
+  }
+}
+
+.custom-grid {
+  --ion-grid-padding: 0;
+  padding: 0;
+}
+
+.custom-col {
+  padding: 8px 4px;
 }
 
 /* --------- Form Controls --------- */
@@ -542,11 +606,17 @@ ion-content {
 }
 
 .custome-declearation {
-  margin-left: 25px;
+  margin-top: 12px;
+  @media (min-width: 768px) {
+    margin-left: 25px;
+  }
   background: var(--theme-bg-secondary);
   border: 1px solid var(--theme-border);
   border-radius: var(--theme-radius-lg);
-  padding: 16px;
+  padding: 12px;
+  @media (min-width: 576px) {
+    padding: 16px;
+  }
   box-shadow: var(--theme-shadow-sm);
   text-align: center;
 }

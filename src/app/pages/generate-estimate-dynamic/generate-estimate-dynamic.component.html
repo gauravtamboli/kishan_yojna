@@ -23,13 +23,13 @@
   </ion-loading>
 
   <!-- Main Content - Hide until loading complete -->
-  <div *ngIf="!isPageLoading" style="padding: 20px;">
+  <div *ngIf="!isPageLoading" class="main-content-wrapper">
     <!-- Applicant Card (same fields as normal page) -->
     <div class="estimate-container" *ngIf="singleData">
       <ion-card class="applicant-card">
         <div class="applicant-row">
           <ion-text class="applicant-text">
-            <strong style="font-size: 20px; text-align: center;">
+            <strong>
               आवेदक क्रमांक : {{ singleData.applicationNumber }}
             </strong>
           </ion-text>
@@ -41,10 +41,9 @@
           <strong class="section-title-text">आवेदक विवरण :</strong>
         </div>
         <hr class="section-hr" />
-        <ion-grid>
-
+        <ion-grid class="custom-grid">
           <ion-row>
-            <ion-col size="12" size-md="4">
+            <ion-col size="12" size-md="4" class="custom-col">
               <div class="detail-item">
                 <ion-label class="detail-title">कृषक/हितग्राही का नाम :
                   <span class="detail-value">{{ singleData.hitgrahiName }}</span>
@@ -52,7 +51,7 @@
               </div>
             </ion-col>
 
-            <ion-col size="12" size-md="4">
+            <ion-col size="12" size-md="4" class="custom-col">
               <div class="detail-item">
                 <ion-label class="detail-title">पिता का नाम :
                   <span class="detail-value">{{ singleData.fatherName }}</span>
@@ -60,7 +59,7 @@
               </div>
             </ion-col>
 
-            <ion-col size="12" size-md="4">
+            <ion-col size="12" size-md="4" class="custom-col">
               <div class="detail-item">
                 <ion-label class="detail-title">पता :
                   <span class="detail-value">
@@ -72,7 +71,7 @@
           </ion-row>
 
           <ion-row>
-            <ion-col size="12" size-md="4">
+            <ion-col size="12" size-md="4" class="custom-col">
               <div class="detail-item">
                 <ion-label class="detail-title">मोबाईल नंबर :
                   <span class="detail-value">{{ singleData.mobileNo }}</span>
@@ -80,7 +79,7 @@
               </div>
             </ion-col>
 
-            <ion-col size="12" size-md="4">
+            <ion-col size="12" size-md="4" class="custom-col">
               <div class="detail-item">
                 <ion-label class="detail-title">भूमि का प्रकार :
                   <span class="detail-value">
@@ -90,7 +89,7 @@
               </div>
             </ion-col>
 
-            <ion-col size="12" size-md="4">
+            <ion-col size="12" size-md="4" class="custom-col">
               <div class="detail-item">
                 <ion-label class="detail-title">कुल रकबा (एकड़ मे) :
                   <span class="detail-value">{{ singleData.totalAcre }}</span>
