@@ -1,5 +1,6 @@
-/* --------- Theme Integration --------- */
 :host {
+  display: block;
+  height: 100%;
   --card-bg: var(--theme-card-bg);
   --card-border: var(--theme-border);
   --text-muted: var(--theme-text-secondary);
@@ -13,6 +14,8 @@
 
 ion-content {
   --background: var(--theme-bg-light);
+  --overflow: auto;
+  height: 100%;
 }
 
 /* --------- Page Header --------- */
