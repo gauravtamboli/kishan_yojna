@@ -23,13 +23,13 @@
   </ion-loading>
 
   <!-- Main Content - Hide until loading complete -->
-  <div *ngIf="!isPageLoading" style="padding: 20px;">
+  <div *ngIf="!isPageLoading" class="main-content-wrapper">
     <!-- Applicant Card (same fields as normal page) -->
     <div class="estimate-container" *ngIf="singleData">
       <ion-card class="applicant-card">
         <div class="applicant-row">
           <ion-text class="applicant-text">
-            <strong style="font-size: 20px; text-align: center;">
+            <strong class="application-id-text">
               आवेदक क्रमांक : {{ singleData.applicationNumber }}
             </strong>
           </ion-text>

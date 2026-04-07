@@ -18,11 +18,34 @@ ion-content {
   height: 100%;
 }
 
+.main-content-wrapper {
+  padding: 12px;
+  
+  @media (min-width: 768px) {
+    padding: 20px;
+  }
+}
+
+.application-id-text {
+  font-size: 1.1rem;
+  text-align: center;
+  display: block;
+  width: 100%;
+
+  @media (min-width: 768px) {
+    font-size: 1.35rem;
+  }
+}
+
 /* --------- Page Header --------- */
 .responsive-toolbar-title {
   color: white;
-  font-size: 20px;
+  font-size: 1.1rem;
   font-weight: 800;
+
+  @media (min-width: 768px) {
+    font-size: 1.5rem;
+  }
 }
 
 /* --------- Applicant Section --------- */
@@ -53,9 +76,11 @@ ion-content {
 }
 
 .details-section ion-label {
-  display: inline-block;
+  display: block;
   color: var(--text-muted);
-  font-size: 14px;
+  font-size: 13px;
+  margin-bottom: 8px;
+  line-height: 1.4;
 }
 
 /* --------- Species Header Card --------- */
@@ -118,10 +143,11 @@ ion-content {
 
 .custom-table tbody td {
   border: 1px solid var(--table-border) !important;
-  padding: 12px;
-  font-size: 13px;
+  padding: 8px 4px;
+  font-size: 12px;
   color: var(--theme-text-primary);
   text-align: center;
+  white-space: normal;
 }
 
 .custom-table tbody tr {
@@ -179,10 +205,11 @@ ion-content {
 
 .detail-table tbody td {
   border: 1px solid var(--table-border) !important;
-  padding: 12px;
-  font-size: 13px;
+  padding: 8px 6px;
+  font-size: 12px;
   text-align: center;
   color: var(--theme-text-primary);
+  word-wrap: break-word;
 }
 
 .detail-year-cell {
@@ -545,11 +572,69 @@ ion-content {
 }
 
 .custome-declearation {
-  margin-left: 25px;
+  margin: 10px 0;
   background: var(--theme-bg-secondary);
   border: 1px solid var(--theme-border);
   border-radius: var(--theme-radius-lg);
   padding: 16px;
   box-shadow: var(--theme-shadow-sm);
   text-align: center;
+
+  @media (min-width: 768px) {
+    margin-left: 25px;
+  }
+}
+
+/* --------- Mobile Tweaks --------- */
+@media (max-width: 767px) {
+  .details-section {
+    padding: 12px;
+  }
+
+  .species-card {
+    flex-direction: column;
+    text-align: center;
+    gap: 12px;
+  }
+
+  .applicant-row {
+    justify-content: center;
+    text-align: center;
+  }
+
+  .detail-item {
+    margin-bottom: 10px;
+    padding-bottom: 8px;
+    border-bottom: 1px dashed var(--theme-border-light);
+  }
+
+  .custom-table thead th,
+  .detail-table thead th,
+  .goswara-table thead th {
+    padding: 8px 4px;
+    font-size: 10px;
+  }
+
+  .detail-year-cell {
+    font-size: 11px !important;
+  }
+
+  .goswara-card {
+    padding: 12px;
+  }
+
+  .one-big-card {
+    margin: 0 -10px;
+    border-radius: 0;
+  }
+
+  .confirm-actions {
+    flex-direction: column;
+  }
+  
+  .detail-words-text,
+  .goswara-words-text {
+    font-size: 0.9rem !important;
+    padding: 10px !important;
+  }
 }
