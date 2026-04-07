@@ -20,7 +20,33 @@
 ion-content {
   --background: #f8fafc;
   --padding-top: 16px;
-  --padding-bottom: 32px;
+  --padding-bottom: 56px; /* Offset for footer */
+}
+
+/* --------- Global Footer & Marquee Styles --------- */
+.global-sticky-footer {
+  ion-toolbar {
+    --min-height: 56px; /* Synchronized with common header height */
+    --background: var(--primary-gradient);
+    --border-style: none;
+    box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.1);
+  }
+
+  .footer-marquee-container {
+    padding: 0 10px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+
+    marquee {
+      color: #ffffff;
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      font-family: inherit;
+    }
+  }
 }
 
 /* --------- Dynamic Header Styles --------- */
