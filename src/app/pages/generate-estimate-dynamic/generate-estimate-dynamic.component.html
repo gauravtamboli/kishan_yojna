@@ -16,7 +16,7 @@
 </ion-header>
 
 
-<ion-content  >
+<ion-content>
   <!-- Page Loading Indicator -->
   <ion-loading *ngIf="isPageLoading" [isOpen]="isPageLoading" message="डेटा लोड हो रहा है..." spinner="circular"
     backdropDismiss="false">
@@ -24,82 +24,40 @@
 
   <!-- Main Content - Hide until loading complete -->
   <div *ngIf="!isPageLoading" class="main-content-wrapper">
-    <!-- Applicant Card (same fields as normal page) -->
-    <div class="estimate-container" *ngIf="singleData">
-      <ion-card class="applicant-card">
-        <div class="applicant-row">
-          <ion-text class="applicant-text">
-            <strong>
-              आवेदक क्रमांक : {{ singleData.applicationNumber }}
-            </strong>
-          </ion-text>
+    <!-- Formal Government Official Applicant Card -->
+    <div class="govt-card-standard fadeIn-animation" *ngIf="singleData">
+      <div class="govt-card-header">
+        <div class="govt-header-text">
+          <span class="id-label">आवेदन क्रमांक : {{ singleData.applicationNumber }}</span>
         </div>
-      </ion-card>
 
-      <div class="details-section">
-        <div class="section-header-div">
-          <strong class="section-title-text">आवेदक विवरण :</strong>
-        </div>
-        <hr class="section-hr" />
-        <ion-grid class="custom-grid">
-          <ion-row>
-            <ion-col size="12" size-md="4" class="custom-col">
-              <div class="detail-item">
-                <ion-label class="detail-title">कृषक/हितग्राही का नाम :
-                  <span class="detail-value">{{ singleData.hitgrahiName }}</span>
-                </ion-label>
-              </div>
-            </ion-col>
-
-            <ion-col size="12" size-md="4" class="custom-col">
-              <div class="detail-item">
-                <ion-label class="detail-title">पिता का नाम :
-                  <span class="detail-value">{{ singleData.fatherName }}</span>
-                </ion-label>
-              </div>
-            </ion-col>
-
-            <ion-col size="12" size-md="4" class="custom-col">
-              <div class="detail-item">
-                <ion-label class="detail-title">पता :
-                  <span class="detail-value">
-                    {{ singleData.address }}, {{ singleData.gramPanchayatName }}
-                  </span>
-                </ion-label>
-              </div>
-            </ion-col>
-          </ion-row>
-
-          <ion-row>
-            <ion-col size="12" size-md="4" class="custom-col">
-              <div class="detail-item">
-                <ion-label class="detail-title">मोबाईल नंबर :
-                  <span class="detail-value">{{ singleData.mobileNo }}</span>
-                </ion-label>
-              </div>
-            </ion-col>
-
-            <ion-col size="12" size-md="4" class="custom-col">
-              <div class="detail-item">
-                <ion-label class="detail-title">भूमि का प्रकार :
-                  <span class="detail-value">
-                    {{ singleData.landType == 1 ? 'FRA LAND' : 'REVENUE LAND' }}
-                  </span>
-                </ion-label>
-              </div>
-            </ion-col>
-
-            <ion-col size="12" size-md="4" class="custom-col">
-              <div class="detail-item">
-                <ion-label class="detail-title">कुल रकबा (एकड़ मे) :
-                  <span class="detail-value">{{ singleData.totalAcre }}</span>
-                </ion-label>
-              </div>
-            </ion-col>
-          </ion-row>
-        </ion-grid>
       </div>
 
+      <div class="govt-card-body">
+        <div class="govt-main-info">
+          <div class="info-block">
+            <span class="info-label">हितग्राही का नाम</span>
+            <span class="info-value">{{ singleData.hitgrahiName }}</span>
+          </div>
+          <div class="info-block">
+            <span class="info-label">पिता का नाम</span>
+            <span class="info-value">{{ singleData.fatherName }}</span>
+          </div>
+
+          <div class="info-block">
+            <span class="info-label">मोबाईल नंबर</span>
+            <span class="info-value">{{ singleData.mobileNo }}</span>
+          </div>
+          <div class="info-block">
+            <span class="info-label">कुल रकबा</span>
+            <span class="info-value">{{ singleData.totalAcre }} एकड़</span>
+          </div>
+          <div class="info-block">
+            <span class="info-label">पता</span>
+            <span class="info-value address-text">{{ singleData.address }}, {{ singleData.gramPanchayatName }}</span>
+          </div>
+        </div>
+      </div>
 
     </div>
 
@@ -113,13 +71,12 @@
     <!-- Goswara Summary Table (New Table) -->
 
 
-    <!-- Previous Detailed Tables (One per Plant Category) -->
+    <!-- Reverted Species Detailed Tables -->
     <ng-container *ngFor="let cat of categoriesToShow; let i = index">
-      <ion-card class="species-card">
+      <ion-card class="species-card fadeIn-animation">
         <ion-text class="species-title">
           <strong>प्रजाति का नाम :- {{ cat.label }} (कुल पौधे: {{ cat.plantCount }} ,कुल रकबा {{ cat.area }} )</strong>
         </ion-text>
-        <!-- <ion-button class="my-ion-button" (click)="printSection('print-section-' + i)">Print</ion-button> -->
       </ion-card>
 
       <div class="table-wrapper detail-table-wrapper printable-section" [id]="'print-section-' + i">
@@ -132,13 +89,10 @@
               <th rowspan="2" class="detail-th">कार्य विवरण</th>
               <th colspan="2" class="detail-th">अनुदान दर (₹)</th>
               <th rowspan="2" class="detail-th">कूल पौधों</th>
-
               <th colspan="2" class="detail-th">रोपित पौधों की संख्या</th>
               <th colspan="2" class="detail-th">अनुदान राशि (₹)</th>
-
               <th rowspan="2" class="detail-th">राशि (₹)</th>
             </tr>
-
             <!-- Row 2: Sub headers -->
             <tr>
               <th class="detail-th">5 एकड़ से कम (100%)</th>
@@ -158,16 +112,13 @@
               <td class="detail-td detail-kramank">{{ item.itemKramank }}</td>
               <td class="detail-td detail-karya" [style.text-align]="item.tablealign"
                 [style.font-weight]="item.fontweight">{{ item.karyaVivran }}</td>
-                <td class="detail-td detail-rate">{{ item[cat.rateField] | number:'1.0-0' }}</td>
-                <td class="detail-td detail-rate">
-                  {{ halfrate(item[cat.rateField]) | number:'1.0-0' }}
-                </td>
-                <td class="detail-td detail-count">{{ cat.plantCount }}</td>
-                <td class="detail-td detail-count">{{ less5TreeCount(cat) }}</td>
-                <td class="detail-td detail-count">{{ more5TreeCount(cat) }}</td>
-            <td>{{ item[cat.rateField] * less5TreeCount(cat) | number:'1.0-0' }}</td>
-            <td>{{ halfrate(item[cat.rateField]) * more5TreeCount(cat) | number:'1.0-0' }}</td>
-
+              <td class="detail-td detail-rate">{{ item[cat.rateField] | number:'1.0-0' }}</td>
+              <td class="detail-td detail-rate">{{ halfrate(item[cat.rateField]) | number:'1.0-0' }}</td>
+              <td class="detail-td detail-count">{{ cat.plantCount }}</td>
+              <td class="detail-td detail-count">{{ less5TreeCount(cat) }}</td>
+              <td class="detail-td detail-count">{{ more5TreeCount(cat) }}</td>
+              <td>{{ item[cat.rateField] * less5TreeCount(cat) | number:'1.0-0' }}</td>
+              <td>{{ halfrate(item[cat.rateField]) * more5TreeCount(cat) | number:'1.0-0' }}</td>
               <td class="detail-td detail-amount">{{ total(cat, item, 1) | number:'1.0-0' }}</td>
             </tr>
             <tr class="detail-year-total-row">
@@ -185,13 +136,14 @@
               <td class="detail-td detail-kramank">{{ item.itemKramank }}</td>
               <td class="detail-td detail-karya" [style.text-align]="item.tablealign"
                 [style.font-weight]="item.fontweight">{{ item.karyaVivran }}</td>
-                <td class="detail-td detail-rate">{{ item[cat.rateField] | number:'1.0-0' }}</td>
-                <td class="detail-td detail-rate">{{ halfrate(item[cat.rateField]) | number:'1.0-0' }}</td>
+              <td class="detail-td detail-rate">{{ item[cat.rateField] | number:'1.0-0' }}</td>
+              <td class="detail-td detail-rate">{{ halfrate(item[cat.rateField]) | number:'1.0-0' }}</td>
               <td class="detail-td detail-count">{{ cat.plantCount }}</td>
               <td class="detail-td detail-count">{{ less5TreeCount(cat) }}</td>
               <td class="detail-td detail-count">{{ more5TreeCount(cat) }}</td>
               <td class="detail-td detail-count">{{ item[cat.rateField] * less5TreeCount(cat) | number:'1.0-0' }}</td>
-              <td class="detail-td detail-count">{{ halfrate(item[cat.rateField]) * more5TreeCount(cat) | number:'1.0-0' }}</td>
+              <td class="detail-td detail-count">{{ halfrate(item[cat.rateField]) * more5TreeCount(cat) | number:'1.0-0'
+                }}</td>
               <td class="detail-td detail-amount">{{ total(cat, item, 2) | number:'1.0-0' }}</td>
             </tr>
             <tr class="detail-year-total-row">
@@ -211,12 +163,13 @@
                 [style.font-weight]="item.fontweight">{{ item.karyaVivran }}</td>
               <td class="detail-td detail-count">{{ cat.plantCount }}</td>
               <td class="detail-td detail-rate">{{ item[cat.rateField] | number:'1.0-0' }}</td>
-              <td class="detail-td detail-rate">{{ halfrate2(item[cat.rateField], item.itemKramank) | number:'1.0-0' }}</td>
+              <td class="detail-td detail-rate">{{ halfrate2(item[cat.rateField], item.itemKramank) | number:'1.0-0' }}
+              </td>
               <td class="detail-td detail-count">{{ less5TreeCount(cat) }}</td>
               <td class="detail-td detail-count">{{ more5TreeCount(cat) }}</td>
               <td class="detail-td detail-count">{{ item[cat.rateField] * less5TreeCount(cat) | number:'1.0-0' }}</td>
-              <td class="detail-td detail-count">{{ halfrate(item[cat.rateField]) * more5TreeCount(cat) | number:'1.0-0' }}</td>
-
+              <td class="detail-td detail-count">{{ halfrate(item[cat.rateField]) * more5TreeCount(cat) | number:'1.0-0'
+                }}</td>
               <td class="detail-td detail-amount">{{ total(cat, item, 3) | number:'1.0-0' }}</td>
             </tr>
             <tr class="detail-year-total-row">
@@ -233,19 +186,14 @@
               </td>
               <td class="detail-grand-total-amount">₹{{ getGrandTotal(cat) | number:'1.0-0' }}</td>
             </tr>
-            <tr class="detail-words-row">
-
-            </tr>
           </tbody>
         </table>
       </div>
     </ng-container>
-    <ion-card class="goswara-card" style="margin-top: 20px;">
+    <!-- Reverted Goswara Summary Card -->
+    <ion-card class="goswara-card fadeIn-animation">
       <ion-card-header>
-        <div style="display: flex; justify-content: space-between; align-items: center;">
-          <ion-card-title class="goswara-title">गोस्वारा एस्टीमेट</ion-card-title>
-          <!-- <ion-button class="my-ion-button" (click)="printSection('print-section-goswara')">Print</ion-button> -->
-        </div>
+        <ion-card-title class="goswara-title">गोस्वारा एस्टीमेट</ion-card-title>
       </ion-card-header>
       <ion-card-content>
         <div class="table-wrapper goswara-table-wrapper printable-section" id="print-section-goswara">
@@ -263,7 +211,6 @@
               </tr>
             </thead>
             <tbody>
-              <!-- One row for each plant category -->
               <tr *ngFor="let cat of categoriesToShow" class="goswara-data-row">
                 <td class="goswara-plant-name">{{ cat.label }}</td>
                 <td class="goswara-amount">{{ getKoolYog1(cat) | number:'1.0-0' }}</td>
@@ -274,8 +221,6 @@
                 <td class="goswara-amount">{{ getKoolYog3A(cat) | number:'1.0-0' }}</td>
                 <td class="goswara-amount goswara-grand-total">{{ getGrandTotal(cat) | number:'1.0-0' }}</td>
               </tr>
-
-              <!-- Total Row (महायोग) -->
               <tr class="total-row goswara-total-row">
                 <td class="goswara-total-label">महायोग</td>
                 <td class="goswara-total-amount">{{ getTotalKoolYog1() | number:'1.0-0' }}</td>
@@ -286,8 +231,6 @@
                 <td class="goswara-total-amount">{{ getTotalKoolYog3A() | number:'1.0-0' }}</td>
                 <td class="goswara-total-amount goswara-final-total">₹{{ getTotalGrandTotal() | number:'1.0-0' }}</td>
               </tr>
-
-              <!-- Amount in words row -->
               <tr class="goswara-words-row">
                 <td colspan="8" class="goswara-words-text">
                   राशि शब्दों में : {{ convertNumberToWords(getTotalGrandTotal()) }}
@@ -298,8 +241,8 @@
         </div>
       </ion-card-content>
     </ion-card>
-    <!-- Dropdown Section (mirror normal page) -->
-    <!-- <div class="dropdown-section" *ngIf="singleData "> -->
+
+    <!-- Redesigned (Old Design Reverted) Officer Action Section -->
     <div *ngIf="singleData ">
 
       <ion-grid>
@@ -315,38 +258,31 @@
                   <ion-col size="12" size-md="4" size-lg="4">
 
                     <!-- When DFO Can Take Action -->
-                    <div *ngIf="singleData.awedan_status === '4' && isDFO" class="custome-declearation">
-
-                      <ng-select *ngIf="estimate_data?.dfo_file != null" [(ngModel)]="vanMandalAdhikari" [items]="vanMandalOptions" bindLabel="label"
-                        bindValue="value" placeholder="विकल्प चुनें" class="custom-ngselect"
-                        (change)="changeDFODeclaration($event)">
-                      </ng-select>
-                      <div style="padding: 10px;">
-                        <ion-label class="upload-label">
-                          {{vanMandalAdhikari === '5' ? 'पत्र अपलोड करे' : 'अग्रेषण पत्र अपलोड करे'}}
-                        </ion-label>
+                    <div *ngIf="singleData.awedan_status === '4' && isDFO" class="custome-declearation status-edit-view">
+                      <div class="select-container">
+                        <ng-select *ngIf="estimate_data?.dfo_file != null" [(ngModel)]="vanMandalAdhikari"
+                          [items]="vanMandalOptions" bindLabel="label" bindValue="value" placeholder="विकल्प चुनें"
+                          class="custom-ngselect" (change)="changeDFODeclaration($event)">
+                        </ng-select>
+                      </div>
+                      
+                      <div class="action-label">
+                        {{vanMandalAdhikari === '5' ? 'पत्र अपलोड करे' : 'अग्रेषण पत्र अपलोड करे :-'}}
                       </div>
 
-                      <div class="upload-wrapper">
+                      <div class="upload-wrapper unified-box">
                         <input type="file" class="file-input" #uploadFile (change)="onDfoFileSelected($event)" />
-
-                        <ion-button class="upload-btn" (click)="uploadDfo()">
+                        <ion-button class="upload-btn-teal" (click)="uploadDfo()">
                           <ion-icon name="cloud-upload-outline"></ion-icon>
                         </ion-button>
                       </div>
-                      <ion-item *ngIf="estimate_data?.dfo_file != null">
+
+                      <div class="file-link-section" *ngIf="estimate_data?.dfo_file != null">
                         <a [href]="getFileUrl2(estimate_data?.dfo_file)" target="_blank"
-                          style="color: blue; text-decoration: underline; font-weight: 600;">
+                          class="official-link">
                           {{ estimate_data?.dfo_file }}
                         </a>
-                      </ion-item>
-
-                      <!-- DFO Description -->
-                      <!-- <ion-item lines="none" *ngIf="vanMandalAdhikari && isDFO" style="margin-top: 8px;">
-                        <ion-label position="stacked">विवरण (DFO)</ion-label>
-                        <ion-textarea [(ngModel)]="dfoDescription" placeholder="विवरण दर्ज करें"></ion-textarea>
-                      </ion-item> -->
-
+                      </div>
                     </div>
 
                     <!-- After DFO Submitted -->
@@ -385,42 +321,37 @@
                   <ion-col size="12" size-md="4" size-lg="4">
 
                     <!-- When SDO Can Take Action -->
-                    <div *ngIf="singleData.awedan_status === '2' && isSDO" class="custome-declearation">
-
-                      <ng-select *ngIf="estimate_data?.sdo_file != null" [(ngModel)]="upVanMandalAdhikari" [items]="upVanMandalOptions" bindLabel="label"
-                        bindValue="value" placeholder="विकल्प चुनें" class="custom-ngselect"
-                        (change)="changesdoDeclaration($event)">
-                      </ng-select>
-                      <div style="padding: 10px;">
-                        <ion-label class="upload-label">
-                          {{upVanMandalAdhikari === '3' ? 'पत्र अपलोड करे' : 'अग्रेषण पत्र अपलोड करे'}}
-                        </ion-label>
+                    <div *ngIf="singleData.awedan_status === '2' && isSDO" class="custome-declearation status-edit-view">
+                      <div class="select-container">
+                        <ng-select *ngIf="estimate_data?.sdo_file != null" [(ngModel)]="upVanMandalAdhikari"
+                          [items]="upVanMandalOptions" bindLabel="label" bindValue="value" placeholder="विकल्प चुनें"
+                          class="custom-ngselect" (change)="changesdoDeclaration($event)">
+                        </ng-select>
                       </div>
 
-                      <div class="upload-wrapper">
-                        <input type="file" class="file-input" #uploadFile (change)="onSdoFileSelected($event)" />
+                      <div class="action-label">
+                        {{upVanMandalAdhikari === '3' ? 'पत्र अपलोड करे' : 'अग्रेषण पत्र अपलोड करे :-'}}
+                      </div>
 
-                        <ion-button class="upload-btn" (click)="uploadSdo()">
+                      <div class="upload-wrapper unified-box">
+                        <input type="file" class="file-input" #uploadFile (change)="onSdoFileSelected($event)" />
+                        <ion-button class="upload-btn-teal" (click)="uploadSdo()">
                           <ion-icon name="cloud-upload-outline"></ion-icon>
                         </ion-button>
                       </div>
-                      <ion-item *ngIf="estimate_data?.sdo_file != null">
+                      
+                      <div class="file-link-section" *ngIf="estimate_data?.sdo_file != null">
                         <a [href]="getFileUrl1(estimate_data?.sdo_file)" target="_blank"
-                          style="color: blue; text-decoration: underline; font-weight: 600;">
+                          class="official-link">
                           {{ estimate_data?.sdo_file }}
                         </a>
-                      </ion-item>
-                      <!-- <ion-item lines="none" style="margin-top: 8px;">
-                        <ion-label position="stacked">विवरण (SDO)</ion-label>
-                        <ion-textarea [(ngModel)]="sdoDescription" placeholder="विवरण दर्ज करें"></ion-textarea>
-                      </ion-item> -->
-
+                      </div>
                     </div>
 
                     <!-- After SDO Submitted -->
                     <div *ngIf="singleData.awedan_status >= '3'" class="custome-declearation">
 
-                      <ion-label >
+                      <ion-label>
                         {{
                         singleData.awedan_status == '3'
                         ? 'वन परिक्षेत्राधिकारी , त्रुटि सुधार कर प्राक्कलन पुनः प्रस्तुत करें |'
@@ -456,33 +387,31 @@
                   <ion-col size="12" size-md="4" size-lg="4">
 
                     <!-- When RO Can Take Action -->
-                    <div *ngIf="singleData.awedan_status === '1' && isRO" class="custome-declearation">
+                    <div *ngIf="singleData.awedan_status === '1' && isRO" class="custome-declearation status-edit-view">
+                      <div class="select-container">
+                        <ng-select *ngIf="estimate_data" [(ngModel)]="vanParikshanAdhikari" [items]="vanParikshanOptions"
+                          bindLabel="label" bindValue="value" placeholder="विकल्प चुनें" class="custom-ngselect">
+                        </ng-select>
+                      </div>
 
-                      <ng-select *ngIf="estimate_data"  [(ngModel)]="vanParikshanAdhikari" [items]="vanParikshanOptions" bindLabel="label"
-                        bindValue="value" placeholder="विकल्प चुनें" class="custom-ngselect">
-                      </ng-select>
-                      <div style="padding: 10px;">
-                        <ion-label class="upload-label">
-                          अग्रेषण पत्र अपलोड करे :-
-                        </ion-label>
+                      <div class="action-label">
+                        अग्रेषण पत्र अपलोड करे :-
                       </div>
 
 
-                      <div class="upload-wrapper">
+                      <div class="upload-wrapper unified-box">
                         <input type="file" #uploadFile (change)="onRoFileSelected($event)" class="file-input" />
-
-                        <ion-button (click)="uploadRoFile()" class="upload-btn">
+                        <ion-button (click)="uploadRoFile()" class="upload-btn-teal">
                           <ion-icon name="cloud-upload-outline"></ion-icon>
                         </ion-button>
-
                       </div>
 
-                      <ion-item *ngIf="estimate_data">
+                      <div class="file-link-section" *ngIf="estimate_data">
                         <a [href]="getFileUrl(estimate_data.ro_file)" target="_blank"
-                          style="color: blue; text-decoration: underline; font-weight: 600;">
+                          class="official-link">
                           {{ estimate_data.ro_file }}
                         </a>
-                      </ion-item>
+                      </div>
                     </div>
 
                     <!-- After RO Submitted -->
@@ -590,43 +519,33 @@
     </div>
   </div>
 
-  <!-- Status/Action Modal -->
+
+  <!-- Modern Status/Action Modal -->
   <ion-modal [isOpen]="isStatusModalOpen" (didDismiss)="closeStatusModal()" [backdropDismiss]="false"
-    class="confirmation-modal">
+    class="premium-modal">
     <ng-template>
-      <div class="confirm-content">
-        <div class="confirm-icon-wrapper" [class.success]="statusType === 'success'"
-          [class.error]="statusType === 'error'" [class.question]="statusType === 'question'">
-          <ion-icon [name]="statusType === 'success' ? 'checkmark-circle-outline' : 
-                       (statusType === 'error' ? 'alert-circle-outline' : 'help-circle-outline')"
-            class="confirm-icon"></ion-icon>
+      <div class="modal-glass-content">
+        <div class="status-indicator" [ngClass]="statusType">
+          <ion-icon
+            [name]="statusType === 'success' ? 'checkmark-done-circle' : (statusType === 'error' ? 'close-circle' : 'help-circle')"></ion-icon>
         </div>
 
-        <h3 class="confirm-title" [class.success-text]="statusType === 'success'"
-          [class.error-text]="statusType === 'error'">
-          {{ statusType === 'success' ? 'सफल' : (statusType === 'error' ? 'त्रुटि' : 'पुष्टि करें') }}
-        </h3>
+        <h2 class="modal-title">{{ statusType === 'success' ? 'सफल!' : (statusType === 'error' ? 'त्रुटि' : 'पुष्टि
+          करें') }}</h2>
+        <p class="modal-desc">{{ statusMessage }}</p>
 
-        <p class="confirm-message">
-          {{ statusMessage }}
-        </p>
-
-        <div class="confirm-actions">
-          <!-- Confirm/OK Button -->
-          <ion-button *ngIf="statusType === 'question'" expand="block" color="success" (click)="confirmAction()">
-            हाँ, दर्ज करें
+        <div class="modal-footer">
+          <ion-button *ngIf="statusType === 'question'" class="action-btn success" (click)="confirmAction()">
+            जारी रखें
           </ion-button>
 
-          <!-- Regular OK Button for success/error -->
-          <ion-button *ngIf="statusType !== 'question'" expand="block"
-            [color]="statusType === 'success' ? 'success' : 'danger'" (click)="closeStatusModal()">
+          <ion-button *ngIf="statusType !== 'question'" class="action-btn" [ngClass]="statusType"
+            (click)="closeStatusModal()">
             ठीक है
           </ion-button>
 
-          <!-- Cancel Button for Question -->
-          <ion-button *ngIf="statusType === 'question'" expand="block" fill="clear" color="medium"
-            (click)="closeStatusModal()">
-            नहीं
+          <ion-button *ngIf="statusType === 'question'" fill="clear" color="medium" (click)="closeStatusModal()">
+            रद्द करें
           </ion-button>
         </div>
       </div>
