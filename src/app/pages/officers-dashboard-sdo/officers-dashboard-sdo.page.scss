@@ -1,12 +1,13 @@
-// Shared Variables & Colors
-$primary-blue: #198edb;
-$success-green: #4caf50;
-$warning-orange: #ff9800;
-$danger-red: #f44336;
-$purple-ro: #2196f3;
-$purple-sdo: #9c27b0;
-$purple-dfo: #673ab7;
-$slate: #718096;
+$primary-blue: #007bff;
+$success-green: #28a745;
+$warning-orange: #fd7e14;
+$danger-red: #dc3545;
+$purple-ro: #6610f2;
+$purple-sdo: #6f42c1;
+$purple-dfo: #e83e8c; // Pinkish Purple for DFO
+$slate: #6c757d;
+$edit-pink: #ff3366;  // Solid Pink for Edit Pending
+$draft-cyan: #17a2b8; // Distinct Cyan for Draft
 
 // Global Toolbar & Header
 ion-toolbar {
@@ -113,13 +114,14 @@ ion-content {
   }
 
   @each $name, $color in (
-    "total": $primary-blue, "edit-pending": $warning-orange, "approved": $success-green, 
-    "rejected": $danger-red, "draft": $slate, "ro-pending": $purple-ro, 
+    "total": $primary-blue, "edit-pending": $edit-pink, "approved": $success-green, 
+    "rejected": $danger-red, "draft": $draft-cyan, "ro-pending": $purple-ro, 
     "sdo-pending": $purple-sdo, "dfo-pending": $purple-dfo
   ) {
     &.#{$name} {
       color: $color;
-      .icon-avatar { background: rgba($color, 0.15); color: $color; }
+      .icon-avatar { background: rgba($color, 0.2); color: $color; font-weight: bold; }
+      &.active { background: rgba($color, 0.05); border: 2px solid $color; }
       &.active .icon-avatar { background: $color; color: white; }
     }
   }
@@ -157,14 +159,24 @@ ion-content {
 }
 .page-numbers { display: flex; gap: 0.5rem; flex-wrap: wrap; justify-content: center; }
 
-// Dark Mode Strategy
 :host-context(.ion-palette-dark) {
   .stat-card {
-    background: #1e293b; .hindi-label { color: #f1f5f9; }
-    &.active { background: #334155; }
+    background: #1e293b;
+    border: 1px solid #334155;
+    
+    .label { color: #94a3b8 !important; }
+    .hindi-label { color: #f1f5f9 !important; }
+    .count { color: #ffffff !important; }
+    
+    &.active { 
+      background: #334155;
+      border-color: currentColor;
+    }
+    
+    .icon-avatar {
+      background: rgba(255, 255, 255, 0.05);
+    }
   }
-  .custom-dashboard-table, .pagination-container, .no-record-found-box { background: #1e293b; color: white; }
-  .table-responsive { background: #1e293b; }
 }
 
 // Buttons & Icons
@@ -197,6 +209,7 @@ ion-content {
   font-size: 14px; font-weight: 500; color: var(--theme-text-primary);
   padding: 8px 12px; border-radius: 8px; transition: 0.2s ease;
   &:hover { background: rgba(var(--ion-color-primary-rgb), 0.1); color: var(--ion-color-primary); transform: translateX(5px); }
+  @media (min-width: 1024px) { font-size: 18px; }
 }
 
 .dashboard-menu-header {

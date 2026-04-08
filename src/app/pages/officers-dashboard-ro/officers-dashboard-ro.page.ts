@@ -11,7 +11,7 @@ import { MenuController } from '@ionic/angular';
 import { ApiService } from 'src/app/services/api.service';
 import { OfficersLoginResponseModel } from '../officer-login/OfficersLoginResponse.model';
 import { addIcons } from 'ionicons';
-import { appsOutline, homeOutline, informationOutline, informationCircle, buildOutline, logOutOutline, chevronBackOutline, chevronForwardOutline, downloadOutline, chevronDownOutline, optionsOutline, reorderThreeOutline, documentTextOutline, statsChartOutline, mapOutline, peopleOutline, personOutline, addCircleOutline, trendingUpOutline, leafOutline, hammerOutline, clipboardOutline, businessOutline, receiptOutline, cashOutline, listOutline, walletOutline, moon, sunny, createOutline, checkmarkCircleOutline, closeCircleOutline } from 'ionicons/icons';
+import { appsOutline, homeOutline, informationOutline, informationCircle, buildOutline, logOutOutline, chevronBackOutline, chevronForwardOutline, downloadOutline, chevronDownOutline, optionsOutline, reorderThreeOutline, documentTextOutline, statsChartOutline, mapOutline, peopleOutline, personOutline, addCircleOutline, trendingUpOutline, leafOutline, hammerOutline, clipboardOutline, businessOutline, receiptOutline, cashOutline, listOutline, walletOutline, moon, sunny, createOutline, checkmarkCircleOutline, closeCircleOutline, searchOutline } from 'ionicons/icons';
 import { Browser } from '@capacitor/browser';
 import { Platform, AlertController } from '@ionic/angular';
 import { NetworkCheckService } from 'src/app/services/network-check.service';
@@ -343,33 +343,91 @@ export class OfficersDashboardROPage implements OnInit {
   }
 
   export() {
+    this.showDialog("डेटा निर्यात के लिए तैयार किया जा रहा है, कृपया प्रतीक्षा करें...");
 
-    const filteredData = this.filteredAwedans.filter(item => item.awedan_status_text === 'लंबित');
+    const officersLoginModel = this.getOfficersSessionData() as OfficersLoginResponseModel;
+    if (!officersLoginModel) {
+      this.dismissDialog();
+      return;
+    }
 
+    // Map whichBoxClicked to which_data for API
+    let whichData = 1; // default to total
+    if (this.whichBoxClicked === 1) {
+      whichData = 1; // Total
+    } else if (this.whichBoxClicked === 2) {
+      whichData = 2; // Edit Pending
+    } else if (this.whichBoxClicked === 3) {
+      whichData = 3; // RO Pending
+    } else if (this.whichBoxClicked === 4) {
+      whichData = 4; // SDO Pending
+    } else if (this.whichBoxClicked === 5) {
+      whichData = 6; // DFO Pending
+    } else if (this.whichBoxClicked === 6) {
+      whichData = 8; // Approved
+    } else if (this.whichBoxClicked === 7) {
+      whichData = 9; // Rejected
+    } else if (this.whichBoxClicked === 8) {
+      whichData = 10; // Batch
+    }
 
-    const exportData = filteredData.map((item, index) => ({
+    // Set a high pageSize to fetch everything for this category
+    const fullPageSize = this.totalRecords > 0 ? this.totalRecords : 5000;
 
-      'क्रमांक': index + 1,
-      'आवेदन नंबर': item.application_number || '',
-      'हितग्राही का नाम': item.hitgrahi_name || '',
-      'मोबाइल नंबर': item.mobile_no || '',
-      'पिता का नाम': item.father_name || '',
-      'पूरा पता ': item.father_name || '',
-      // '': item.father_name || '',
-      // 'वृत्त': item.circle_name || '',
-      'वन मंडल': item.division_name || '',
-      'आवेदन की स्थिति': item.awedan_status_text || ''
-    }));
+    this.apiService.getListOfAwedanAccordingToAwedanStatus(
+      whichData,
+      officersLoginModel.designation,
+      officersLoginModel.circle_id,
+      officersLoginModel.devision_id,
+      officersLoginModel.rang_id,
+      officersLoginModel.officerId?.toString() || '',
+      1, // page 1
+      fullPageSize,
+      this.curent_session,
+      this.searchMobile || ''
+    ).subscribe(
+      (response) => {
+        if (response.response.code === 200 && response.data && response.data.length > 0) {
+          const exportData = response.data.map((item: GetAwedanResponseModel, index: number) => ({
+            'क्रमांक': index + 1,
+            'आवेदन नंबर': item.application_number || '',
+            'हितग्राही का नाम': item.hitgrahi_name || '',
+            'मोबाइल नंबर': item.mobile_no || '',
+            'पिता का नाम': item.father_name || '',
+            'जाति': item.cast || '',
+            'जिला': item.dist_name || '',
+            'वृत्त': item.circle_name || '',
+            'वन मंडल': item.division_name || '',
+            'परिक्षेत्र (रेंज)': item.rang_name || '',
+            'आवेदन प्रकार': item.online_or_offline || '',
+            'आवेदन की स्थिति': this.getStatusText(item) || ''
+          }));
 
-    const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(exportData);
-    const workbook: XLSX.WorkBook = {
-      Sheets: { 'Applications': worksheet },
-      SheetNames: ['Applications']
-    };
+          const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(exportData);
+          const workbook: XLSX.WorkBook = {
+            Sheets: { 'Applications': worksheet },
+            SheetNames: ['Applications']
+          };
 
-    const excelBuffer: any = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
-    const blob: Blob = new Blob([excelBuffer], { type: 'application/octet-stream' });
-    FileSaver.saveAs(blob, 'Applications_Report.xlsx');
+          const excelBuffer: any = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+          const blob: Blob = new Blob([excelBuffer], { type: 'application/octet-stream' });
+          
+          const timestamp = new Date().toISOString().slice(0, 10);
+          const fileName = `KVMY_Full_Report_${this.total_or_pending_or_accept_or_reject_label}_${timestamp}.xlsx`;
+          
+          FileSaver.saveAs(blob, fileName);
+          this.dismissDialog();
+          this.shortToast("निर्यात सफल रहा");
+        } else {
+          this.dismissDialog();
+          this.shortToast("निर्यात करने के लिए कोई डेटा नहीं मिला");
+        }
+      },
+      (error) => {
+        this.dismissDialog();
+        this.shortToast("डेटा प्राप्त करने में त्रुटि हुई: " + error);
+      }
+    );
   }
 
   getOfficersSessionData() {
@@ -427,7 +485,7 @@ export class OfficersDashboardROPage implements OnInit {
 
             await this.dismissDialog();
             this.cdRef.detectChanges();
-            this.getListOfAwedanAfterClickOnBoxes(1);
+            // Removed auto-loading list of first box
           } else {
             await this.dismissDialog();
             this.longToast(countsResponse.response.msg);
@@ -502,7 +560,7 @@ export class OfficersDashboardROPage implements OnInit {
       'create-outline': createOutline,
       'checkmark-circle-outline': checkmarkCircleOutline,
       'close-circle-outline': closeCircleOutline,
-      moon, sunny
+      moon, sunny, searchOutline
     });
   }
 
@@ -527,195 +585,96 @@ export class OfficersDashboardROPage implements OnInit {
   }
 
 
-  getListOfAwedanAfterClickOnBoxes(whichBoxClickeddd: number, page: number = 1) {
-    if (this.whichBoxClicked !== whichBoxClickeddd) {
-      this.currentPage = 1; // reset page on new box click
-    } else {
-      this.currentPage = page;
-    }
+  getListOfAwedanAfterClickOnBoxes(whichBoxClickeddd: number) {
     this.whichBoxClicked = whichBoxClickeddd;
 
-    switch (this.whichBoxClicked) {
-      case 1:
-        this.total_or_pending_or_accept_or_reject_label = "कुल आवेदन";
-        break;
-      case 2:
-        this.total_or_pending_or_accept_or_reject_label = "संपादन लंबित";
-        break;
-      case 3:
-        this.total_or_pending_or_accept_or_reject_label = "परिक्षेत्र अधिकारी स्तर पर लंबित";
-        break;
-      case 4:
-        this.total_or_pending_or_accept_or_reject_label = "उपवनमंडलाधिकारी स्तर पर लंबित";
-        break;
-      case 5:
-        this.total_or_pending_or_accept_or_reject_label = "वनमंडलाधिकारी स्तर पर लंबित";
-        break;
-      case 6:
-        this.total_or_pending_or_accept_or_reject_label = "स्वीकृत";
-        break;
-      case 7:
-        this.total_or_pending_or_accept_or_reject_label = "अस्वीकृत";
-        break;
-      case 8:
-        this.total_or_pending_or_accept_or_reject_label = "प्रकटन बैच";
-        break;
-      default:
-        this.total_or_pending_or_accept_or_reject_label = "अज्ञात";
+    // Get totalRecords for the clicked box
+    let recordsCount = 0;
+    if (this.whichBoxClicked === 1) recordsCount = this.totalAwedan;
+    else if (this.whichBoxClicked === 2) recordsCount = this.totalEditPending;
+    else if (this.whichBoxClicked === 3) recordsCount = this.totalROPending;
+    else if (this.whichBoxClicked === 4) recordsCount = this.totalSDOPending;
+    else if (this.whichBoxClicked === 5) recordsCount = this.totalDFOPending;
+    else if (this.whichBoxClicked === 6) recordsCount = this.totalApproved;
+    else if (this.whichBoxClicked === 7) recordsCount = this.totalRejected;
+    else if (this.whichBoxClicked === 8) recordsCount = this.totalBatch;
 
-    }
+    // Navigate to separate page with parameters using state
+    this.router.navigate(['/application-list-ro'], {
+      state: {
+        boxType: whichBoxClickeddd,
+        totalRecords: recordsCount
+      }
+    });
+  }
 
-    this.showDialog("कृपया प्रतीक्षा करें.....");
-
+  getLoginedOfficerName(): string {
     const officersLoginModel = this.getOfficersSessionData() as OfficersLoginResponseModel;
+    if (officersLoginModel) {
+      return officersLoginModel.officer_name + " (" + officersLoginModel.designation_name + ")";
+    }
+    return '';
+  }
 
-    // Map whichBoxClicked to which_data for API
-    let whichData = 1; // default to total
-    if (this.whichBoxClicked === 1) {
-      whichData = 1; // Total - all applications
-    } else if (this.whichBoxClicked === 2) {
-      whichData = 2; // Status 0 (संपादन लंबित)
-      // Note: This only gets status 0.
-    } else if (this.whichBoxClicked === 3) {
-      whichData = 3; // Status 1 (परिक्षेत्र अधिकारी स्तर पर लंबित)
-    } else if (this.whichBoxClicked === 4) {
-      whichData = 4; // Status 2 (उपवनमंडलाधिकारी स्तर पर लंबित)
-    } else if (this.whichBoxClicked === 5) {
-      whichData = 6; // Status 4 (वनमंडलाधिकारी स्तर पर लंबित)
-    } else if (this.whichBoxClicked === 6) {
-      whichData = 8; // Status 6 (स्वीकृत)
-    }
-    else if (this.whichBoxClicked === 7) {
-      whichData = 9; // Status 3,5 (अस्वीकृत)
-    }
-    else if (this.whichBoxClicked === 8) {
-      whichData = 10; // Status 7 (प्रकटन बैच)
+  async onMenuItemClick(page: MenuPage) {
+    this.isConnected = await this.networkCheckService.getCurrentStatus();
+    if (!this.isConnected) {
+      this.longToast(this.getTranslation("no_internet"));
+      return;
     }
 
-    // Calculate totalRecords based on which box is clicked
-    if (this.whichBoxClicked === 1) {
-      this.totalRecords = this.totalAwedan;
-    } else if (this.whichBoxClicked === 2) {
-      this.totalRecords = this.totalEditPending;
-    } else if (this.whichBoxClicked === 3) {
-      this.totalRecords = this.totalROPending;
-    } else if (this.whichBoxClicked === 4) {
-      this.totalRecords = this.totalSDOPending;
-    } else if (this.whichBoxClicked === 5) {
-      this.totalRecords = this.totalDFOPending;
-    } else if (this.whichBoxClicked === 6) {
-      this.totalRecords = this.totalApproved;
-    } else if (this.whichBoxClicked === 7) {
-      this.totalRecords = this.totalRejected;
-    }
-    else if (this.whichBoxClicked === 8) {
-      this.totalRecords = this.totalBatch; // For batch, we will get count from API response
-    } else {
-      this.totalRecords = 0;
+    if (page.url === "add-awedan-by-officer") {
+      const officersLoginModel = this.getOfficersSessionData() as OfficersLoginResponseModel;
+      if (officersLoginModel.designation === "4" || officersLoginModel.designation === "2") {
+        this.router.navigate(['submit-awedan-by-ro-dfo'], {
+          queryParams: { isOnline: true }
+        });
+      } else {
+        this.router.navigate(['registeration'], {
+          queryParams: { isOnline: true }
+        });
+      }
+      return;
     }
 
-    this.totalPages = Math.ceil(this.totalRecords / this.pageSize);
+    if (page.route) {
+      this.router.navigateByUrl(page.route, {
+        state: page.state
+      });
+      return;
+    }
 
-    this.apiService.getListOfAwedanAccordingToAwedanStatus(
-      whichData,
-      officersLoginModel.designation,
-      officersLoginModel.circle_id,
-      officersLoginModel.devision_id,
-      officersLoginModel.rang_id,
-      officersLoginModel.officerId?.toString() || '',
-      this.currentPage,
-      this.pageSize,
-      this.curent_session,
-      this.searchMobile || ''
-    ).subscribe(
-      (response) => {
-        if (response.response.code === 200) {
-          this.listOfAwedan = response.data || [];
-          this.filteredAwedans = this.listOfAwedan;
+    if (page.url) {
+      if (page.state) {
+        this.router.navigate([page.url], {
+          state: page.state
+        });
+      } else {
+        this.router.navigate([page.url]);
+      }
+      return;
+    }
+  }
 
-          if (this.listOfAwedan.length > 0) {
-            this.isNoRecordFound = false;
-          } else {
-            this.isNoRecordFound = true;
-          }
-
-          this.cdRef.detectChanges();
-        } else {
-          this.filteredAwedans = [];
-          this.isNoRecordFound = true;
-          this.listOfAwedan = [];
-          this.longToast(response.response.message)
-        }
-
-        this.dismissDialog();
+  async logoutFunction() {
+    this.menuCtrl.close();
+    const modal = await this.modalCtrl.create({
+      component: MessageDialogComponent,
+      cssClass: 'custom-dialog-modal',
+      componentProps: {
+        server_message: 'क्या आप लॉगआउट करना चाहते हैं ?',
+        isYesNo: true
       },
-      (error) => {
-        this.shortToast(error);
-        this.dismissDialog();
+      backdropDismiss: false
+    });
+
+    modal.onDidDismiss().then((result) => {
+      if (result.data?.confirmed) {
+        this.authService.logout();
       }
-    );
-  }
+    });
 
-  goToPage(page: number) {
-    if (page >= 1 && page <= this.totalPages) {
-      this.getListOfAwedanAfterClickOnBoxes(this.whichBoxClicked, page);
-    }
-  }
-
-  goToPreviousPage() {
-    if (this.currentPage > 1) {
-      this.goToPage(this.currentPage - 1);
-    }
-  }
-
-  goToNextPage() {
-    if (this.currentPage < this.totalPages) {
-      this.goToPage(this.currentPage + 1);
-    }
-  }
-
-  getPageNumbers(): number[] {
-    const pages: number[] = [];
-    const maxPagesToShow = 5;
-
-    if (this.totalPages <= maxPagesToShow) {
-      // Show all pages if total pages is less than max
-      for (let i = 1; i <= this.totalPages; i++) {
-        pages.push(i);
-      }
-    } else {
-      // Show pages around current page
-      let startPage = Math.max(1, this.currentPage - Math.floor(maxPagesToShow / 2));
-      let endPage = Math.min(this.totalPages, startPage + maxPagesToShow - 1);
-
-      if (endPage - startPage < maxPagesToShow - 1) {
-        startPage = Math.max(1, endPage - maxPagesToShow + 1);
-      }
-
-      for (let i = startPage; i <= endPage; i++) {
-        pages.push(i);
-      }
-    }
-
-    return pages;
-  }
-
-  canViewEstimate(item: GetAwedanResponseModel): boolean {
-    // Can view estimate if status is 2 (RO स्वीकृत - SDO के पास लंबित), 4 (DFO के पास लंबित), or 6 (स्वीकृत अंतिम)
-    // return item.awedan_status === "2" || item.awedan_status === "4" || item.awedan_status === "6";
-    return item.awedan_status != "0"
-  }
-
-  getTextColorOfStatus(awedanStatus: string): string {
-    if (awedanStatus === "0") {
-      return 'orange';
-    } else if (awedanStatus === "1") {
-      return "green";
-    } else if (awedanStatus === "2") {
-      return "yellow";
-    } else {
-      return "red";
-    }
+    await modal.present();
   }
 
   getStatusText(item: GetAwedanResponseModel): string {
@@ -738,389 +697,9 @@ export class OfficersDashboardROPage implements OnInit {
     }
   }
 
-  async viewDocument(url: string) {
-    await Browser.open({ url });
-  }
-
-  isWebPlatform(): boolean {
-    return this.platform.is('desktop');
-  }
-
-  getLoginedOfficerName(): string {
-    const officersLoginModel = this.getOfficersSessionData() as OfficersLoginResponseModel;
-    if (officersLoginModel) {
-      return officersLoginModel.officer_name + " (" + officersLoginModel.designation_name + ")";
-    }
-    return '';
-  }
-
-  // async onMenuItemClick(page: string) {
-
-  //   this.isConnected = await this.networkCheckService.getCurrentStatus();
-
-  //   if (this.isConnected) {
-
-  //           if (page === "add-awedan-by-officer") {
-
-  //       const officersLoginModel = this.getOfficersSessionData() as OfficersLoginResponseModel;
-
-  //       if (officersLoginModel.designation === "4" || officersLoginModel.designation === "2") {
-
-  //         this.router.navigate(['submit-awedan-by-ro-dfo'], {
-  //           queryParams: {
-  //             isOnline: true
-  //           }
-  //         })
-
-  //       } else {
-  //         this.router.navigate(['registeration'], {
-  //           queryParams: {
-  //             isOnline: true
-  //           }
-  //         })
-  //       }
-
-  //     } else {
-  //       this.router.navigate([page]);
-  //     }
-
-  //   } else {
-  //     this.longToast(this.getTranslation("no_internet"));
-  //     return;
-  //   }
-
-  // }
-
-  async onMenuItemClick(page: MenuPage) {
-
-    this.isConnected = await this.networkCheckService.getCurrentStatus();
-    if (!this.isConnected) {
-      this.longToast(this.getTranslation("no_internet"));
-      return;
-    }
-
-    // -------------------------------
-    // SPECIAL CASE (existing logic)
-    // -------------------------------
-    if (page.url === "add-awedan-by-officer") {
-
-      const officersLoginModel = this.getOfficersSessionData() as OfficersLoginResponseModel;
-
-      if (officersLoginModel.designation === "4" || officersLoginModel.designation === "2") {
-
-        this.router.navigate(['submit-awedan-by-ro-dfo'], {
-          queryParams: { isOnline: true }
-        });
-
-      } else {
-        this.router.navigate(['registeration'], {
-          queryParams: { isOnline: true }
-        });
-      }
-
-      return;
-    }
-
-    // -------------------------------
-    // ROUTE + STATE (NEW)
-    // -------------------------------
-    if (page.route) {
-      this.router.navigateByUrl(page.route, {
-        state: page.state
-      });
-      return;
-    }
-
-    // -------------------------------
-    // NORMAL URL (OLD)
-    // -------------------------------
-    if (page.url) {
-      if (page.state) {
-        this.router.navigate([page.url], {
-          state: page.state
-        });
-      } else {
-        this.router.navigate([page.url]);
-      }
-      return;
-    }
-  }
-
-
-  isApproveApplication(item: GetAwedanResponseModel): boolean {
-
-    if (item.awedan_status === "0") {
-      return true;
-    }
-    return false;
-  }
-
-  isPendingApplication(item: GetAwedanResponseModel): boolean {
-    return item.awedan_status === "0" || item.awedan_status === "5";
-  }
-
-  isPendingApplicationRA(item: GetAwedanResponseModel): boolean {
-    return item.awedan_status === "5";
-  }
-
-
-  viewApplication(model: GetAwedanResponseModel) {
-    const statusValue = Number(model.awedan_status);
-    if (!isNaN(statusValue) && statusValue >= 1) {
-      this.router.navigate(['view-vivran-after-sampadit', model.application_number], {
-        state: { returnUrl: this.router.url }
-      });
-    } else {
-      this.router.navigate(['view-awedan-bykisanRO'], {
-        state: { applicationNumber: model.application_number }
-      });
-    }
-
-  }
-
-  async acceptOrRejectAwedan(model: GetAwedanResponseModel) {
-    // console.log('model', model.regTableId)
-    const alert = await this.alertController.create({
-      message: "आवेदन को स्वीकृत या अस्वीकृत करें |",
-      buttons: [
-        {
-          text: 'स्वीकृत',
-          cssClass: 'alert-accept', // green
-          handler: () => {
-            this.callApiToAcceptRejectAwedan("1", model.regTableId);
-          },
-        },
-        {
-          text: 'अस्वीकृत',
-          cssClass: 'alert-reject', // red
-          handler: () => {
-            this.callApiToAcceptRejectAwedan("2", model.regTableId);
-          },
-        },
-      ],
-    });
-
-    await alert.present();
-  }
-
-  isPendingAwedan(awedanStatus: string) {
-    if (awedanStatus === "0") {
-      return true;
-    }
-    return false;
-  }
-
-  callApiToAcceptRejectAwedan(approveReject: string, awedanId: number) {
-
-    const officersLoginModel = this.getOfficersSessionData() as OfficersLoginResponseModel;
-
-    this.showDialog("कृपया प्रतीक्षा करें.....");
-
-    this.apiService.awedanAcceptReject(
-      awedanId,
-      approveReject,
-      officersLoginModel.officerId).subscribe(
-        async (response) => {
-
-          await this.dismissDialog();
-          this.cdRef.detectChanges;
-
-          if (response.response.code === 200) {
-            this.longToast(response.response.msg);
-            this.getDashboardDataFromServer();
-            this.cdRef.detectChanges;
-          } else {
-            this.apiService.showServerMessages(response.response.msg);
-          }
-
-        },
-        async (error) => {
-          await this.dismissDialog();
-          this.shortToast(error);
-          this.apiService.showServerMessages(error)
-        }
-      );
-  }
-
-  async withdrawApplication(item: GetAwedanResponseModel) {
-
-    const modal = await this.modalCtrl.create({
-      component: MessageDialogComponent,
-      cssClass: 'custom-dialog-modal',
-      componentProps: {
-        server_message: 'क्या आप वास्तव में आवेदन रद्द करना चाहते हैं?',
-        isYesNo: true
-      },
-      backdropDismiss: false
-    });
-
-    modal.onDidDismiss().then((result) => {
-      if (result.data?.confirmed) {
-        this.callServerToWithdrawAwedan(item);
-      }
-    });
-
-    await modal.present();
-
-  }
-
-  callServerToWithdrawAwedan(item: GetAwedanResponseModel) {
-    const officersLoginModel = this.getOfficersSessionData() as OfficersLoginResponseModel;
-
-    this.showDialog("कृपया प्रतीक्षा करें.....");
-
-    this.apiService.awedanAcceptReject(
-      item.regTableId,
-      "3", // awedan radd ka status hai ye
-      officersLoginModel.officerId).subscribe(
-        async (response) => {
-
-          await this.dismissDialog();
-          this.cdRef.detectChanges;
-
-          if (response.response.code === 200) {
-            this.longToast(response.response.msg);
-            this.getDashboardDataFromServer();
-          } else {
-            this.apiService.showServerMessages(response.response.msg);
-          }
-
-        },
-        async (error) => {
-          await this.dismissDialog();
-          this.shortToast(error);
-          this.apiService.showServerMessages(error)
-        }
-      );
-  }
-
-  async logoutFunction() {
-    this.menuCtrl.close(); // Prevent aria-hidden focus warnings by closing menu before logging out
-    const modal = await this.modalCtrl.create({
-      component: MessageDialogComponent,
-      cssClass: 'custom-dialog-modal',
-      componentProps: {
-        server_message: 'क्या आप लॉगआउट करना चाहते हैं ?',
-        isYesNo: true
-      },
-      backdropDismiss: false
-    });
-
-    modal.onDidDismiss().then((result) => {
-      if (result.data?.confirmed) {
-        this.authService.logout();
-      }
-    });
-
-
-    await modal.present();
-  }
-
-  filteredAwedans: GetAwedanResponseModel[] = [];
-
-  editAwedan(item: GetAwedanResponseModel) {
-    // console.log('🔵 Edit button clicked, item:', item);
-    // console.log('Application number:', item.application_number);
-    // console.log('Item ID:', item.id);
-
-    // Validate required data
-    if (!item || !item.application_number) {
-      // console.error('❌ Invalid item or missing application number:', item);
-      this.longToast('आवेदन संख्या उपलब्ध नहीं है');
-      return;
-    }
-
-    try {
-      // Navigate using state instead of queryParams
-      const navigationState = {
-        applicationNumber: item.application_number,
-        id: item.id,
-        editMode: true
-      };
-
-      // console.log('🚀 Navigating to submit-awedan-by-ro2 with state:', navigationState);
-
-      this.router.navigate(['submit-awedan-by-ro2'], {
-        state: navigationState,
-        replaceUrl: false
-      }).then(
-        (success) => {
-          // console.log('✅ Navigation promise resolved:', success);
-          if (success) {
-            // console.log('✅ Successfully navigated to edit page');
-          } else {
-            // console.warn('⚠️ Navigation returned false - route might not exist');
-            this.longToast('संपादन पृष्ठ नहीं मिला');
-          }
-        },
-        (error) => {
-          // console.error('❌ Navigation promise rejected:', error);
-          this.longToast('संपादन पृष्ठ खोलने में त्रुटि: ' + (error?.message || 'अज्ञात त्रुटि'));
-        }
-      );
-    } catch (error) {
-      // console.error('❌ Error in editAwedan:', error);
-      this.longToast('संपादन पृष्ठ खोलने में त्रुटि: ' + (error as Error).message);
-    }
-  }
-
-
-  generateEstimate(item: GetAwedanResponseModel) {
-    this.router.navigate(['generate-estimate'], {
-      queryParams: {
-        applicationNumber: item.application_number,
-      }
-    });
-  }
-
-  generateEstimateDynamic(item: GetAwedanResponseModel) {
-    this.router.navigate(['generate-estimate-dynamic'], {
-      state: { applicationNumber: item.application_number }
-    });
-  }
-
-
-
-
-  viewRegistrationDetails(item: GetAwedanResponseModel) {
-    this.router.navigate(['ra-dwara-vivran', item.regTableId]);
-  }
-
-
-
-  finalSubmit(item: GetAwedanResponseModel) {
-    // TODO: Implement final submit functionality
-    this.longToast('अंतिम जमा सुविधा जल्द ही उपलब्ध होगी');
-  }
-
-  isSearched: boolean = false;
-
-  clearSearch() {
-    this.searchMobile = '';
-    this.isSearched = false;
-    this.currentPage = 1;
-    this.getListOfAwedanAfterClickOnBoxes(this.whichBoxClicked, 1);
-  }
-
-  onEnter() {
-    if (this.searchMobile && this.searchMobile.trim() !== '') {
-      this.isSearched = true;
-    } else {
-      this.isSearched = false;
-    }
-    this.currentPage = 1;
-    this.getListOfAwedanAfterClickOnBoxes(this.whichBoxClicked, 1);
-  }
-
-  onSearchInputChange() {
-    if (!this.searchMobile || this.searchMobile.trim() === '') {
-      this.isSearched = false;
-      this.currentPage = 1;
-      this.getListOfAwedanAfterClickOnBoxes(this.whichBoxClicked, 1);
-    }
-  }
-
   onYearSelect(year: number) {
+
+
     if (year == 2) {
       this.router.navigateByUrl('/year-two-dashboard', {
         state: { year }

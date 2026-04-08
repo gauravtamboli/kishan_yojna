@@ -425,7 +425,6 @@ export class OfficersDashboardPage implements OnInit {
 
             await this.dismissDialog();
             this.cdRef.detectChanges();
-            this.getListOfAwedanAfterClickOnBoxes(1);
           } else {
             await this.dismissDialog();
             this.longToast(countsResponse.response.msg);
@@ -501,164 +500,10 @@ export class OfficersDashboardPage implements OnInit {
   }
 
 
-  getListOfAwedanAfterClickOnBoxes(whichBoxClickeddd: number, page: number = 1) {
-    this.whichBoxClicked = whichBoxClickeddd;
-    this.currentPage = page;
-
-    switch (this.whichBoxClicked) {
-      case 1:
-        this.total_or_pending_or_accept_or_reject_label = "कुल आवेदन";
-        break;
-      case 2:
-        this.total_or_pending_or_accept_or_reject_label = "संपादन लंबित";
-        break;
-      case 3:
-        this.total_or_pending_or_accept_or_reject_label = "परिक्षेत्र अधिकारी स्तर पर लंबित";
-        break;
-      case 4:
-        this.total_or_pending_or_accept_or_reject_label = "उपवनमंडलाधिकारी स्तर पर लंबित";
-        break;
-      case 5:
-        this.total_or_pending_or_accept_or_reject_label = "वनमंडलाधिकारी स्तर पर लंबित";
-        break;
-      case 6:
-        this.total_or_pending_or_accept_or_reject_label = "स्वीकृत";
-        break;
-      case 7:
-        this.total_or_pending_or_accept_or_reject_label = "अस्वीकृत";
-        break;
-      case 8:
-        this.total_or_pending_or_accept_or_reject_label = "ड्राफ्ट";
-        break;
-    }
-
-    this.showDialog("कृपया प्रतीक्षा करें.....");
-
-    const officersLoginModel = this.getOfficersSessionData() as OfficersLoginResponseModel;
-
-    // Map whichBoxClicked to which_data for API
-    let whichData = 1; // default to total
-    if (this.whichBoxClicked === 1) {
-      whichData = 1; // Total - all applications
-    } else if (this.whichBoxClicked === 2) {
-      whichData = 2; // Status 0 (संपादन लंबित)
-      // Note: This only gets status 0. For status 3 and 5, you may need separate calls
-    } else if (this.whichBoxClicked === 3) {
-      whichData = 3; // Status 1 (परिक्षेत्र अधिकारी स्तर पर लंबित)
-    } else if (this.whichBoxClicked === 4) {
-      whichData = 4; // Status 2 (उपवनमंडलाधिकारी स्तर पर लंबित)
-    } else if (this.whichBoxClicked === 5) {
-      whichData = 6; // Status 4 (वनमंडलाधिकारी स्तर पर लंबित)
-    } else if (this.whichBoxClicked === 6) {
-      whichData = 8; // Status 6 (स्वीकृत)
-    } else if (this.whichBoxClicked === 7) {
-      whichData = 9; // Status 3, 5 (अस्वीकृत)
-    } else if (this.whichBoxClicked === 8) {
-      whichData = 10; // Status 7 (ड्राफ्ट/बैच)
-    }
-
-    // Calculate totalRecords based on which box is clicked
-    if (this.whichBoxClicked === 1) {
-      this.totalRecords = this.totalAwedan;
-    } else if (this.whichBoxClicked === 2) {
-      this.totalRecords = this.totalEditPending;
-    } else if (this.whichBoxClicked === 3) {
-      this.totalRecords = this.totalROPending;
-    } else if (this.whichBoxClicked === 4) {
-      this.totalRecords = this.totalSDOPending;
-    } else if (this.whichBoxClicked === 5) {
-      this.totalRecords = this.totalDFOPending;
-    } else if (this.whichBoxClicked === 6) {
-      this.totalRecords = this.totalApproved;
-    } else if (this.whichBoxClicked === 7) {
-      this.totalRecords = this.totalRejected;
-    } else if (this.whichBoxClicked === 8) {
-      this.totalRecords = this.totalBatch;
-    }
-
-    this.totalPages = Math.ceil(this.totalRecords / this.pageSize);
-
-    this.apiService.getListOfAwedanAccordingToAwedanStatus(
-      whichData,
-      officersLoginModel.designation,
-      officersLoginModel.circle_id,
-      officersLoginModel.devision_id,
-      officersLoginModel.rang_id,
-      officersLoginModel.officerId?.toString() || '',
-      this.currentPage,
-      this.pageSize,
-      this.curent_session
-    ).subscribe(
-      (response) => {
-        if (response.response.code === 200) {
-          this.listOfAwedan = response.data || [];
-          this.filteredAwedans = this.listOfAwedan;
-
-          if (this.listOfAwedan.length > 0) {
-            this.isNoRecordFound = false;
-          } else {
-            this.isNoRecordFound = true;
-          }
-
-          this.cdRef.detectChanges();
-        } else {
-          this.filteredAwedans = [];
-          this.isNoRecordFound = true;
-          this.listOfAwedan = [];
-          this.longToast(response.response.message)
-        }
-
-        this.dismissDialog();
-      },
-      (error) => {
-        this.shortToast(error);
-        this.dismissDialog();
-      }
-    );
-  }
-
-  goToPage(page: number) {
-    if (page >= 1 && page <= this.totalPages) {
-      this.getListOfAwedanAfterClickOnBoxes(this.whichBoxClicked, page);
-    }
-  }
-
-  goToPreviousPage() {
-    if (this.currentPage > 1) {
-      this.goToPage(this.currentPage - 1);
-    }
-  }
-
-  goToNextPage() {
-    if (this.currentPage < this.totalPages) {
-      this.goToPage(this.currentPage + 1);
-    }
-  }
-
-  getPageNumbers(): number[] {
-    const pages: number[] = [];
-    const maxPagesToShow = 5;
-
-    if (this.totalPages <= maxPagesToShow) {
-      // Show all pages if total pages is less than max
-      for (let i = 1; i <= this.totalPages; i++) {
-        pages.push(i);
-      }
-    } else {
-      // Show pages around current page
-      let startPage = Math.max(1, this.currentPage - Math.floor(maxPagesToShow / 2));
-      let endPage = Math.min(this.totalPages, startPage + maxPagesToShow - 1);
-
-      if (endPage - startPage < maxPagesToShow - 1) {
-        startPage = Math.max(1, endPage - maxPagesToShow + 1);
-      }
-
-      for (let i = startPage; i <= endPage; i++) {
-        pages.push(i);
-      }
-    }
-
-    return pages;
+  getListOfAwedanAfterClickOnBoxes(whichBoxClickeddd: number) {
+    this.router.navigate(['/application-list'], { 
+      queryParams: { status: whichBoxClickeddd } 
+    });
   }
 
   getTextColorOfStatus(awedanStatus: string): string {

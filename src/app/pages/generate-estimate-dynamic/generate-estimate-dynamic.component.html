@@ -84,23 +84,23 @@
           <thead>
             <!-- Row 1: Main headers -->
             <tr>
-              <th rowspan="2" class="detail-th-year">वर्ष</th>
-              <th rowspan="2" class="detail-th">क्रमांक</th>
-              <th rowspan="2" class="detail-th">कार्य विवरण</th>
-              <th colspan="2" class="detail-th">अनुदान दर (₹)</th>
-              <th rowspan="2" class="detail-th">कूल पौधों</th>
+              <th rowspan="2" class="detail-th-year">वर्ष  <br> (1)</th>
+              <th rowspan="2" class="detail-th">क्रमांक <br> (2)</th>
+              <th rowspan="2" class="detail-th">कार्य विवरण <br> (3)</th>
+              <th colspan="2" class="detail-th">अनुदान दर (₹) </th>
+              <th rowspan="2" class="detail-th">कूल पौधों <br> (6)</th>
               <th colspan="2" class="detail-th">रोपित पौधों की संख्या</th>
-              <th colspan="2" class="detail-th">अनुदान राशि (₹)</th>
-              <th rowspan="2" class="detail-th">राशि (₹)</th>
+              <th colspan="2" class="detail-th">अनुदान राशि (₹) </th>
+              <th rowspan="2" class="detail-th">राशि (₹) <br> (11)</th>
             </tr>
             <!-- Row 2: Sub headers -->
             <tr>
-              <th class="detail-th">5 एकड़ से कम (100%)</th>
-              <th class="detail-th">5 एकड़ से अधिक (50%)</th>
-              <th class="detail-th">5 एकड़ से कम</th>
-              <th class="detail-th">5 एकड़ से अधिक</th>
-              <th class="detail-th">5 एकड़ से कम</th>
-              <th class="detail-th">5 एकड़ से अधिक</th>
+              <th class="detail-th">5 एकड़ से कम (100%) <br> (4)</th>
+              <th class="detail-th">5 एकड़ से अधिक (50%)<br> (5)</th>
+              <th class="detail-th">5 एकड़ से कम <br> (7)</th>
+              <th class="detail-th">5 एकड़ से अधिक <br> (8)</th>
+              <th class="detail-th">5 एकड़ से कम <br> (9 = 4 * 7)</th>
+              <th class="detail-th">5 एकड़ से अधिक <br>(10 = 5 * 8)</th>
             </tr>
           </thead>
           <tbody>
@@ -112,20 +112,20 @@
               <td class="detail-td detail-kramank">{{ item.itemKramank }}</td>
               <td class="detail-td detail-karya" [style.text-align]="item.tablealign"
                 [style.font-weight]="item.fontweight">{{ item.karyaVivran }}</td>
-              <td class="detail-td detail-rate">{{ item[cat.rateField] | number:'1.0-0' }}</td>
-              <td class="detail-td detail-rate">{{ halfrate(item[cat.rateField]) | number:'1.0-0' }}</td>
+              <td class="detail-td detail-rate">{{ item[cat.rateField]  }}</td>
+              <td class="detail-td detail-rate">{{ halfrate(item[cat.rateField])  }}</td>
               <td class="detail-td detail-count">{{ cat.plantCount }}</td>
               <td class="detail-td detail-count">{{ less5TreeCount(cat) }}</td>
               <td class="detail-td detail-count">{{ more5TreeCount(cat) }}</td>
-              <td>{{ item[cat.rateField] * less5TreeCount(cat) | number:'1.0-0' }}</td>
-              <td>{{ halfrate(item[cat.rateField]) * more5TreeCount(cat) | number:'1.0-0' }}</td>
-              <td class="detail-td detail-amount">{{ total(cat, item, 1) | number:'1.0-0' }}</td>
+              <td>{{ item[cat.rateField] * less5TreeCount(cat)  }}</td>
+              <td>{{ halfrate(item[cat.rateField]) * more5TreeCount(cat)  }}</td>
+              <td class="detail-td detail-amount">{{ total(cat, item, 1)  }}</td>
             </tr>
             <tr class="detail-year-total-row">
               <td colspan="8" class="detail-year-total-label">प्रथम वर्ष का योग</td>
-              <td>{{ getKoolYog1(cat) | number:'1.0-0' }}</td>
-              <td>{{ getKoolYog1A(cat) | number:'1.0-0' }}</td>
-              <td class="detail-year-total-amount">{{ getYearTotal(cat, year1Rows) | number:'1.0-0' }}</td>
+              <td>{{ getKoolYog1(cat)  }}</td>
+              <td>{{ getKoolYog1A(cat)  }}</td>
+              <td class="detail-year-total-amount">{{ getYearTotal(cat, year1Rows)  }}</td>
             </tr>
 
             <!-- द्वितीय वर्ष -->
@@ -161,11 +161,11 @@
               <td class="detail-td detail-kramank">{{ item.itemKramank }}</td>
               <td class="detail-td detail-karya" [style.text-align]="item.tablealign"
                 [style.font-weight]="item.fontweight">{{ item.karyaVivran }}</td>
-              <td class="detail-td detail-count">{{ cat.plantCount }}</td>
-              <td class="detail-td detail-rate">{{ item[cat.rateField] | number:'1.0-0' }}</td>
-              <td class="detail-td detail-rate">{{ halfrate2(item[cat.rateField], item.itemKramank) | number:'1.0-0' }}
-              </td>
-              <td class="detail-td detail-count">{{ less5TreeCount(cat) }}</td>
+                <td class="detail-td detail-rate">{{ item[cat.rateField] | number:'1.0-0' }}</td>
+                <td class="detail-td detail-rate">{{ halfrate2(item[cat.rateField], item.itemKramank) | number:'1.0-0' }}
+                </td>
+                <td class="detail-td detail-count">{{ cat.plantCount }}</td>
+                <td class="detail-td detail-count">{{ less5TreeCount(cat) }}</td>
               <td class="detail-td detail-count">{{ more5TreeCount(cat) }}</td>
               <td class="detail-td detail-count">{{ item[cat.rateField] * less5TreeCount(cat) | number:'1.0-0' }}</td>
               <td class="detail-td detail-count">{{ halfrate(item[cat.rateField]) * more5TreeCount(cat) | number:'1.0-0'

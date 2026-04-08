@@ -137,5 +137,24 @@ export class AuthServiceService {
     this.router.navigateByUrl('/landingpage', { replaceUrl: true });
   }
 
+  /**
+   * ✅ Get the dashboard route based on officer designation
+   */
+  getDashboardRoute(): string {
+    const officer = this.getOfficerData();
+    if (!officer) return '/officer-login';
+
+    const designation = Number(officer.designation);
+    switch (designation) {
+      case 1: return '/officers-dashboard-circle';
+      case 2: return '/officers-dashboard';
+      case 3: return '/officers-dashboard-sdo';
+      case 4: return '/officers-dashboard-ro';
+      case 6:
+      case 7: return '/officers-dashboard-supreme';
+      default: return '/not-found-page';
+    }
+  }
+
 }
 

@@ -1,12 +1,13 @@
-// Shared Variables & Colors
-$primary-blue: #198edb;
-$success-green: #4caf50;
-$warning-orange: #ff9800;
-$danger-red: #f44336;
-$purple-ro: #2196f3;
-$purple-sdo: #9c27b0;
-$purple-dfo: #673ab7;
-$slate: #718096;
+$primary-blue: #007bff;
+$success-green: #28a745;
+$warning-orange: #fd7e14;
+$danger-red: #dc3545;
+$purple-ro: #6610f2;
+$purple-sdo: #6f42c1;
+$purple-dfo: #e83e8c; // Pinkish Purple for DFO
+$slate: #6c757d;
+$edit-pink: #ff3366;  // Solid Pink for Edit Pending
+$draft-cyan: #17a2b8; // Distinct Cyan for Draft
 
 .custom-back-button, ion-menu-button { color: white; }
 
@@ -123,8 +124,8 @@ ion-select {
   border-radius: 4px;
   transition: all 0.2s ease;
   &:hover { background: rgba(var(--ion-color-primary-rgb), 0.1); transform: translateX(2px); }
-  @media (min-width: 600px) { font-size: 13px; }
-  @media (min-width: 1024px) { font-size: 14px; }
+  @media (min-width: 600px) { font-size: 14px; }
+  @media (min-width: 1024px) { font-size: 18px; }
 }
 
 .no-gap-item {
@@ -176,13 +177,14 @@ ion-select {
 
   // Define Colors Efficiently
   @each $name, $color in (
-    "total": $primary-blue, "edit-pending": $warning-orange, "approved": $success-green, 
-    "rejected": $danger-red, "draft": $slate, "ro-pending": $purple-ro, 
+    "total": $primary-blue, "edit-pending": $edit-pink, "approved": $success-green, 
+    "rejected": $danger-red, "draft": $draft-cyan, "ro-pending": $purple-ro, 
     "sdo-pending": $purple-sdo, "dfo-pending": $purple-dfo
   ) {
     &.#{$name} {
       color: $color;
-      .icon-avatar { background: rgba($color, 0.15); color: $color; }
+      .icon-avatar { background: rgba($color, 0.2); color: $color; font-weight: bold; }
+      &.active { background: rgba($color, 0.05); border: 2px solid $color; }
       &.active .icon-avatar { background: $color; color: white; }
     }
   }
@@ -226,7 +228,9 @@ ion-button { transition: transform 0.2s; &:hover { transform: scale(1.05); } }
 // Dark Mode Strategy
 :host-context(.ion-palette-dark) {
   .stat-card {
-    background: #1e293b; .hindi-label { color: #f1f5f9; }
+    background: #1e293b; 
+    .label { color: #94a3b8; }
+    .hindi-label { color: #f1f5f9; }
     &.active { background: #334155; }
   }
   .custom-dashboard-table, .pagination-container, .no-record-found-box { background: #1e293b; color: white; }

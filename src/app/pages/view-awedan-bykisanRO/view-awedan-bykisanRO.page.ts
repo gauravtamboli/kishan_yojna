@@ -108,8 +108,9 @@ export class ViewAwedanBykisanROPage implements OnInit {
     const stateData = navigation?.extras.state;
 
     this.route.queryParams.subscribe(params => {
-      if (params['applicationNumber']) {
-        this.applicationNumber = params['applicationNumber'];
+      const appNo = params['application_number'] || params['applicationNumber'];
+      if (appNo) {
+        this.applicationNumber = appNo;
         this.fetchAwedanData();
       }
     });

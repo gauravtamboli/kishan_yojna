@@ -66,6 +66,7 @@ export class GenerateEstimateDynamicComponent implements OnInit {
 
 
   applicationNumber: string | null = null;
+  baseUrl: string = '';
   singleData: any;
   estimateRows: any[] = [];
 
@@ -240,25 +241,32 @@ export class GenerateEstimateDynamicComponent implements OnInit {
 
 
 
-    // Step 5.1: Get application number from URL query params
-    // this.route.queryParams.subscribe(params => {
-    //   this.applicationNumber = params['applicationNumber'] || null;
+    // Step 5.1: Get application number from URL query params or state
+    this.route.queryParams.subscribe(params => {
+      const qAppNo = params['appNo'] || params['applicationNumber'];
+      const navigation = this.router.getCurrentNavigation();
+      const stateAppNo = navigation?.extras?.state?.['applicationNumber'] || history.state?.['applicationNumber'];
+      
+      this.applicationNumber = qAppNo || stateAppNo || null;
 
-    const navigation = this.router.getCurrentNavigation();
-    this.applicationNumber = navigation?.extras?.state?.['applicationNumber'] || null;
+      if (this.applicationNumber) {
+        // Step 5.2: Show loading spinner, reset data tracker
+        this.isPageLoading = true;
+        this.dataLoadTracker = { bundle: false, approval: false };
 
-    if (this.applicationNumber) {
-      // Step 5.2: Show loading spinner, reset data tracker
-      this.isPageLoading = true;
-      this.dataLoadTracker = { bundle: false, approval: false };
+        // Step 5.3: Load data from API (two parallel calls)
+        this.loadBundle(this.applicationNumber);
+        this.loadExistingApprovalData(this.applicationNumber);
+        this.GetEstimateFile(this.applicationNumber);
+      } else {
+        this.isPageLoading = false;
+      }
+    });
 
-      // Step 5.3: Load data from API (two parallel calls)
-      this.loadBundle(this.applicationNumber);
-      this.loadExistingApprovalData(this.applicationNumber);
-      this.GetEstimateFile(this.applicationNumber);
-    } else {
-      this.isPageLoading = false;
-    }
+    // Initialize baseUrl for file downloads
+    this.api.buildApiUrl('').then(url => {
+      this.baseUrl = url || '';
+    });
 
 
     // // Step 5.4: Get logged-in officer info from service
@@ -1182,21 +1190,15 @@ export class GenerateEstimateDynamicComponent implements OnInit {
   }
 
   getFileUrl(fileName: string) {
-    // return `http://localhost:5027/uploads/estimate_file_ro/${fileName}`;
-    return ` https://nonaristocratically-frettiest-ben.ngrok-free.dev/uploads/estimate_file_ro/${fileName}`;
+    return `${this.baseUrl}/uploads/estimate_file_ro/${fileName}`;
   }
 
-
   getFileUrl1(fileName: string) {
-    // return `http://localhost:5027/uploads/estimate_file_sdo/${fileName}`;
-
-    return `https://nonaristocratically-frettiest-ben.ngrok-free.dev/uploads/estimate_file_sdo/${fileName}`;
+    return `${this.baseUrl}/uploads/estimate_file_sdo/${fileName}`;
   }
 
   getFileUrl2(fileName: string) {
-    // return `http://localhost:5027/uploads/estimate_file_dfo/${fileName}`;
-
-    return `https://nonaristocratically-frettiest-ben.ngrok-free.dev/uploads/estimate_file_dfo/${fileName}`;
+    return `${this.baseUrl}/uploads/estimate_file_dfo/${fileName}`;
   }
   changesdodecl: string = '';
   changedfodecl: string = '';

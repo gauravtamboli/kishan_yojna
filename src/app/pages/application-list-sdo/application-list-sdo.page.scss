@@ -1,0 +1,133 @@
+/* SDO Application List Scss */
+:host {
+  --ion-color-success: #10b981;
+  --ion-color-secondary: #0ea5e9;
+  --ion-color-tertiary: #8b5cf6;
+}
+
+.header-toolbar {
+  --background: linear-gradient(135deg, #198edb 0%, #2ecc71 100%);
+  --color: white;
+  --min-height: 64px;
+}
+
+.page-title {
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.content-container {
+  max-width: 100%;
+  margin: 0 auto;
+}
+
+.table-container { 
+  background: white; 
+  margin-bottom: 20px; 
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Search Box Styles */
+.unified-search-box {
+  display: flex;
+  align-items: center;
+  background-color: #f1f5f9;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 4px 8px;
+  transition: all 0.2s ease;
+  &:focus-within { background-color: #ffffff; border-color: #3b82f6; box-shadow: 0 0 0 3px rgba(59,130,246,0.1); }
+  
+  .unified-search-input { --padding-start: 12px; font-weight: 500; font-size: 15px; }
+  .unified-search-btn, .unified-clear-btn { background: none; border: none; font-size: 20px; cursor: pointer; padding: 4px; display: flex; }
+  .unified-search-btn { color: #3b82f6; }
+  .unified-clear-btn { color: #ef4444; }
+}
+
+.records-pill {
+    background: #e0f2fe; color: #0369a1; padding: 8px 16px; border-radius: 40px; 
+    display: inline-flex; align-items: center; gap: 8px; font-weight: 700;
+    .pill-label { opacity: 0.7; font-size: 0.85rem; }
+    .pill-value { font-size: 1.1rem; }
+}
+
+/* Custom Table Styles */
+.custom-table {
+  width: 100%; border-collapse: collapse;
+  th { background: #004d40; color: white; padding: 14px; font-weight: 600; text-align: left; }
+  td { padding: 12px; text-align: left; border-bottom: 1px solid #f1f5f9; }
+}
+
+.beneficiary-info {
+  display: flex; flex-direction: column;
+  .name { font-weight: 800; font-size: 1rem; color: #0f172a; }
+  .mobile { font-size: 0.85rem; color: #64748b; font-weight: 500; }
+}
+
+.bold-text { font-weight: 800; color: #1e293b; }
+
+/* Status Badges */
+.status-badge {
+  display: inline-block; padding: 6px 12px; border-radius: 8px; font-size: 11px;
+  font-weight: 800; text-align: center; min-width: 100px; text-transform: uppercase;
+  border: 1px solid transparent;
+  
+  &.status-approved { background: #dcfce7; color: #166534; border-color: #bbf7d0; }
+  &.status-pending { background: #eff6ff; color: #1e40af; border-color: #bfdbfe; }
+  &.status-edit-pending { background: #fff1f2; color: #9f1239; border-color: #fecdd3; }
+}
+
+/* Action Grid */
+.action-grid {
+  display: flex; gap: 12px; justify-content: center;
+}
+
+.action-btn-circle {
+  --padding-start: 10px; --padding-end: 10px; height: 38px; margin: 0;
+  ion-icon { font-size: 18px; margin-right: 6px; }
+  .btn-text { font-size: 11px; font-weight: 700; }
+}
+
+/* Pagination */
+.pagination-container { background: white; padding: 20px; border: 1px solid #e2e8f0; }
+.pagination-wrapper { display: flex; align-items: center; gap: 12px; }
+.page-numbers { display: flex; gap: 6px; }
+.page-btn { --border-radius: 8px; }
+
+/* Empty State */
+.empty-state-box {
+  text-align: center; padding: 60px 20px; background: #f8fafc; border-radius: 24px;
+  border: 2px dashed #cbd5e1; margin-top: 40px;
+  .empty-icon { font-size: 64px; color: #94a3b8; }
+  .empty-title { margin-top: 24px; font-weight: 800; color: #1e293b; }
+  .empty-desc { color: #64748b; font-size: 1rem; }
+}
+
+.fab-export {
+  --background: linear-gradient(135deg, #198edb 0%, #2ecc71 100%);
+  --color: #ffffff;
+  box-shadow: 0 8px 24px rgba(25, 142, 219, 0.3);
+}
+
+/* Dark Mode Overrides */
+:host-context(.ion-palette-dark) {
+  .header-toolbar { --background: #1e293b; }
+  .unified-search-box { background-color: #1e293b; border-color: #334155; .unified-search-input { color: white; } }
+  .table-container { background: #1e293b; border-color: #334155; }
+  .custom-table {
+    th { background: #0f172a; color: #4ade80; }
+    td { color: #f1f5f9; border-color: #334155; }
+  }
+  .beneficiary-info .name { color: #f8fafc; }
+  .bold-text { color: #f1f5f9; }
+  .status-badge {
+    &.status-approved { background: rgba(34, 197, 94, 0.2) !important; color: #4ade80 !important; }
+    &.status-pending { background: rgba(59, 130, 246, 0.2) !important; color: #60a5fa !important; }
+    &.status-edit-pending { background: rgba(225, 29, 72, 0.2) !important; color: #fb7185 !important; }
+  }
+  .pagination-container { background: #1e293b; border-color: #475569; .text-muted { color: #94a3b8 !important; } }
+  .empty-state-box { background: rgba(30, 41, 59, 0.5); border-color: #334155; .empty-title { color: #f1f5f9; } }
+  .records-pill { background: #1e3a8a; color: #60a5fa; .pill-label { color: #94a3b8; } .pill-value { color: #ffffff; } }
+}

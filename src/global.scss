@@ -103,6 +103,27 @@
   transition: transform 0.3s ease, opacity 0.3s ease;
 }
 
+/* Global Header Fix: Removes top margin from every page */
+ion-header {
+  margin: 0 !important;
+  padding: 0 !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+}
+
+ion-toolbar {
+  --padding-top: 0 !important;
+  --padding-bottom: 0 !important;
+  --min-height: 56px !important;
+  margin: 0 !important;
+}
+
+/* Reset any inherent safe area padding that might cause a top gap */
+:root {
+  --ion-safe-area-top: 0px !important;
+}
+
 /* Optional: Add responsiveness for smaller devices */
 @media (max-width: 360px) {
   .custom-dialog-modal::part(content) {

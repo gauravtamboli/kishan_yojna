@@ -1,0 +1,143 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar class="header-toolbar">
+    <ion-buttons slot="start">
+      <ion-button (click)="goBack()" class="back-btn">
+        <ion-icon name="chevron-back-outline" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title class="page-title">{{ total_or_pending_or_accept_or_reject_label }}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="export()" class="header-action-btn">
+        <ion-icon name="download-outline" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-loading [isOpen]="isLoading" [message]="loadingMessage" class="custom-loading"></ion-loading>
+
+  <div class="content-container ion-padding">
+    <!-- Search Bar Section -->
+    <div class="search-section shadow-sm mb-4">
+      <ion-row class="align-items-center">
+        <ion-col size="12">
+          <div class="unified-search-box">
+            <ion-input [(ngModel)]="searchMobile" placeholder="मोबाइल नंबर / हितग्राही नाम / पिता का नाम"
+              class="unified-search-input" (keyup.enter)="onSearch()" name="searchMobile"></ion-input>
+            <button *ngIf="!isSearched" class="unified-search-btn" (click)="onSearch()">
+              <ion-icon name="search-outline"></ion-icon>
+            </button>
+            <button *ngIf="isSearched" class="unified-clear-btn" (click)="clearSearch()">
+              <ion-icon name="close-circle-outline"></ion-icon>
+            </button>
+          </div>
+        </ion-col>
+      </ion-row>
+    </div>
+
+    <!-- Table Section -->
+    <div class="table-container shadow-sm border rounded-4 overflow-hidden" *ngIf="!isNoRecordFound">
+      <p-table [value]="filteredAwedans" [paginator]="false" [responsiveLayout]="'scroll'"
+        class="custom-table p-datatable-striped">
+        <ng-template pTemplate="header">
+          <tr>
+            <th>#</th>
+            <th>आवेदन नंबर</th>
+            <th>हितग्राही का नाम</th>
+            <th class="ion-hide-sm-down">पिता का नाम</th>
+            <th>स्थिति</th>
+            <th class="text-center">क्रियाएं</th>
+          </tr>
+        </ng-template>
+
+        <ng-template pTemplate="body" let-item let-i="rowIndex">
+          <tr>
+            <td>{{ (currentPage - 1) * pageSize + i + 1 }}</td>
+            <td class="bold-text">{{ item.application_number }}</td>
+            <td>
+              <div class="beneficiary-info">
+                <span class="name">{{ item.hitgrahi_name }}</span>
+                <span class="mobile">{{ item.mobile_no }}</span>
+              </div>
+            </td>
+            <td class="ion-hide-sm-down">{{ item.father_name }}</td>
+            <td>
+              <span class="status-badge" [ngClass]="{
+                  'status-approved': item.awedan_status == '6' || item.awedan_status == '7',
+                  'status-pending': item.awedan_status == '1' || item.awedan_status == '2' || item.awedan_status == '4',
+                  'status-edit-pending': item.awedan_status == '0' || item.awedan_status == '3' || item.awedan_status == '5',
+                  'status-rejected': false
+                }">
+                {{ getStatusText(item) }}
+              </span>
+            </td>
+            <td class="text-center">
+              <div class="action-grid">
+                <ion-button fill="clear" color="primary" class="action-btn-circle" (click)="viewApplication(item)" title="विवरण देखें">
+                  <ion-icon name="eye-outline"></ion-icon>
+                  <span class="btn-text">देखें</span>
+                </ion-button>
+
+                <ion-button *ngIf="canViewEstimate(item)" fill="clear" color="tertiary" class="action-btn-circle"
+                  (click)="generateEstimateDynamic(item)" title="प्राक्कलन">
+                  <ion-icon name="receipt-outline"></ion-icon>
+                  <span class="btn-text">प्राक्कलन</span>
+                </ion-button>
+
+              </div>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+
+    <!-- Custom Pagination -->
+    <div *ngIf="totalPages > 1" class="pagination-container mt-3 shadow-sm rounded-3">
+      <div class="pagination-wrapper ion-justify-content-center">
+          <ion-button [disabled]="currentPage === 1" (click)="goToPreviousPage()" fill="clear" size="small" class="nav-page-btn">
+            <ion-icon name="chevron-back-outline" slot="start"></ion-icon>
+            पिछला
+          </ion-button>
+        
+          <div class="page-numbers ion-hide-sm-down">
+            <ion-button *ngFor="let page of getPageNumbers()" [color]="page === currentPage ? 'primary' : 'medium'"
+              [fill]="page === currentPage ? 'solid' : 'outline'" size="small" (click)="goToPage(page)"
+              class="page-btn">
+              {{ page }}
+            </ion-button>
+          </div>
+
+          <ion-button [disabled]="currentPage === totalPages" (click)="goToNextPage()" fill="clear" size="small" class="nav-page-btn">
+            अगला
+            <ion-icon name="chevron-forward-outline" slot="end"></ion-icon>
+          </ion-button>
+      </div>
+      <div class="pagination-info text-center mt-2 text-muted">
+        <small>पृष्ठ {{ currentPage }} / {{ totalPages }} (कुल {{ totalRecords }} रिकॉर्ड)</small>
+      </div>
+
+      <div class="text-center mt-3">
+        <div class="records-pill">
+          <span class="pill-label">कुल रिकॉर्ड:</span>
+          <span class="pill-value">{{ filteredAwedans.length }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- No Record Placeholder -->
+    <div *ngIf="isNoRecordFound" class="empty-state-box">
+      <ion-icon name="document-text-outline" class="empty-icon"></ion-icon>
+      <h3 class="empty-title">कोई आवेदन प्राप्त नहीं हुआ</h3>
+      <p class="empty-desc">आपकी वर्तमान फिल्टर और सर्च के अनुसार कोई परिणाम उपलब्ध नहीं हैं।</p>
+    </div>
+
+    <!-- Excel Export Floating Button for Mobile -->
+    <ion-fab slot="fixed" vertical="bottom" horizontal="end" class="ion-hide-md-up">
+      <ion-fab-button class="fab-export" (click)="export()">
+        <ion-icon name="download-outline"></ion-icon>
+      </ion-fab-button>
+    </ion-fab>
+
+  </div>
+</ion-content>

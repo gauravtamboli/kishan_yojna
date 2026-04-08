@@ -137,13 +137,30 @@ export const routes: Routes = [
     canActivate: [authGuard]
   },
   {
+    path: 'application-list-ro',
+    loadComponent: () => import('./pages/application-list-ro/application-list-ro.page').then(m => m.ApplicationListRoPage),
+    canActivate: [authGuard]
+  },
+  {
+    path: 'application-list-sdo',
+    loadComponent: () => import('./pages/application-list-sdo/application-list-sdo.page').then(m => m.ApplicationListSdoPage),
+    canActivate: [authGuard]
+  },
+  {
+    path: 'application-list',
+    loadComponent: () => import('./pages/application-list/application-list.page').then(m => m.ApplicationListPage),
+    canActivate: [authGuard]
+  },
+  {
     path: 'submit-awedan-by-ro2',
-    loadComponent: () => import('./submit-awedan-by-rang2/submit-awedan-by-rang2.component').then(m => m.SubmitAwedanByRang2Component)
+    loadComponent: () => import('./submit-awedan-by-rang2/submit-awedan-by-rang2.component').then(m => m.SubmitAwedanByRang2Component),
+    canActivate: [authGuard]
   },
   {
     path: 'kissan-wise-report',
     loadComponent: () => import('./pages/kissan-wise-report/kissan-wise-report.component').then(m => m.KissanWiseReportComponent)
   },
+
 
   {
     path: 'ra-dwara-vivran/:id',

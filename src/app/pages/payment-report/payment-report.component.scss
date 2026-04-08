@@ -1,3 +1,33 @@
+:host {
+  /* Dynamic Design System Variables */
+  --report-bg: #f8fafc;
+  --card-bg: #ffffff;
+  --card-border: #f1f5f9;
+  --text-primary: #1e293b;
+  --text-secondary: #64748b;
+  --text-muted: #94a3b8;
+  --input-bg: #ffffff;
+  --input-border: #e2e8f0;
+  --table-header-bg: #f8fafc;
+  --table-border: #f1f5f9;
+  --theme-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  --theme-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+:host-context(.ion-palette-dark) {
+  --report-bg: #0f172a;
+  --card-bg: #1e293b;
+  --card-border: #334155;
+  --text-primary: #f8fafc;
+  --text-secondary: #cbd5e0;
+  --text-muted: #94a3b8;
+  --input-bg: #0f172a;
+  --input-border: #334155;
+  --table-header-bg: #334155;
+  --table-border: #334155;
+  --theme-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
 .premium-header {
   --background: linear-gradient(135deg, #1a237e 0%, #0d47a1 100%);
   --color: white;
@@ -5,7 +35,7 @@
 }
 
 .report-content {
-  --background: #f8fafc;
+  --background: var(--report-bg);
 }
 
 .report-container {
@@ -36,13 +66,13 @@
 }
 
 .stat-card {
-  background: white;
+  background: var(--card-bg);
   border-radius: 16px;
   padding: 16px;
   cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: var(--theme-transition);
   border: 2px solid transparent;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  box-shadow: var(--theme-shadow);
   position: relative;
   overflow: hidden;
 
@@ -52,9 +82,9 @@
   }
 
   &.active {
-    background: white;
+    background: var(--card-bg);
     border-color: currentColor;
-    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+    box-shadow: var(--theme-shadow);
     
     &::after {
       content: '';
@@ -94,14 +124,17 @@
     .label {
       font-size: 11px;
       font-weight: 800;
-      letter-spacing: 1px;
-      color: #64748b;
+      letter-spacing: 1.5px;
+      color: currentColor;
+      text-transform: uppercase;
+      opacity: 0.9;
     }
 
     .hindi-label {
-      font-size: 16px;
+      font-size: 17px;
       font-weight: 700;
-      margin-top: 2px;
+      margin-top: 4px;
+      color: var(--text-primary);
     }
   }
 
@@ -110,24 +143,48 @@
     color: #f59e0b;
     .icon-avatar { background: #fef3c7; color: #f59e0b; }
     &.active { border-color: #f59e0b; .icon-avatar { background: #f59e0b; color: white; } }
+    
+    :host-context(.ion-palette-dark) & {
+      color: #fbbf24;
+      .icon-avatar { background: rgba(251, 191, 36, 0.15); color: #fbbf24; }
+      &.active .icon-avatar { background: #fbbf24; color: #1e293b; }
+    }
   }
 
   &.completed {
     color: #10b981;
     .icon-avatar { background: #d1fae5; color: #10b981; }
     &.active { border-color: #10b981; .icon-avatar { background: #10b981; color: white; } }
+
+    :host-context(.ion-palette-dark) & {
+      color: #34d399;
+      .icon-avatar { background: rgba(52, 211, 153, 0.15); color: #34d399; }
+      &.active .icon-avatar { background: #34d399; color: #064e3b; }
+    }
   }
 
   &.rejected {
     color: #ef4444;
     .icon-avatar { background: #fee2e2; color: #ef4444; }
     &.active { border-color: #ef4444; .icon-avatar { background: #ef4444; color: white; } }
+
+    :host-context(.ion-palette-dark) & {
+      color: #f87171;
+      .icon-avatar { background: rgba(248, 113, 113, 0.15); color: #f87171; }
+      &.active .icon-avatar { background: #f87171; color: #7f1d1d; }
+    }
   }
 
   &.ack-failed {
     color: #64748b;
     .icon-avatar { background: #f1f5f9; color: #64748b; }
     &.active { border-color: #64748b; .icon-avatar { background: #64748b; color: white; } }
+
+    :host-context(.ion-palette-dark) & {
+      color: #94a3b8;
+      .icon-avatar { background: rgba(148, 163, 184, 0.15); color: #94a3b8; }
+      &.active .icon-avatar { background: #94a3b8; color: #0f172a; }
+    }
   }
 }
 
@@ -136,12 +193,12 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: white;
+  background: var(--card-bg);
   padding: 16px 24px;
   border-radius: 16px;
   margin-bottom: 24px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
-  border: 1px solid #f1f5f9;
+  box-shadow: var(--theme-shadow);
+  border: 1px solid var(--card-border);
   gap: 20px;
 
   @media (max-width: 768px) {
@@ -154,12 +211,12 @@
 .search-wrapper {
   display: flex;
   align-items: center;
-  background: white;
-  border: 2px solid #e2e8f0;
+  background: var(--input-bg);
+  border: 2px solid var(--input-border);
   border-radius: 12px;
   padding: 8px 16px;
   flex: 1;
-  transition: all 0.3s ease;
+  transition: var(--theme-transition);
 
   &:focus-within {
     border-color: #3b82f6;
@@ -167,7 +224,7 @@
   }
 
   ion-icon {
-    color: #94a3b8;
+    color: var(--text-muted);
     font-size: 22px;
     margin-right: 12px;
   }
@@ -175,19 +232,19 @@
   ion-input {
     --padding-start: 0;
     font-size: 15px;
-    font-weight: 500;
-    --color: #334155;
-    --placeholder-color: #94a3b8;
+    font-weight: 600;
+    --color: var(--text-primary);
+    --placeholder-color: var(--text-muted);
   }
 }
 
 .filter-dropdown {
-  background: white;
-  border: 2px solid #e2e8f0;
+  background: var(--input-bg);
+  border: 2px solid var(--input-border);
   border-radius: 12px;
   padding: 8px 16px;
   min-width: 220px;
-  transition: all 0.3s ease;
+  transition: var(--theme-transition);
   display: flex;
   align-items: center;
 
@@ -197,17 +254,17 @@
   }
 
   ion-icon {
-    color: #94a3b8;
+    color: var(--text-muted);
     font-size: 20px;
     margin-right: 8px;
   }
 
   ion-select {
     width: 100%;
-    color: #334155;
+    color: var(--text-primary);
     font-weight: 600;
     font-size: 15px;
-    --placeholder-color: #94a3b8;
+    --placeholder-color: var(--text-muted);
     --padding-start: 0;
     --padding-top: 0;
     --padding-bottom: 0;
@@ -215,28 +272,42 @@
 }
 
 .info-badge {
-  background: #e3f2fd;
-  color: #1565c0;
-  padding: 6px 16px;
-  border-radius: 20px;
-  font-weight: 700;
-  font-size: 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 14px;
+  border-radius: 8px;
+  font-weight: 800;
+  font-size: 11px;
   white-space: nowrap;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-width: 1px;
+  border-style: solid;
+  border-color: transparent;
 
-  &[color="success"] { background: #e8f5e9; color: #2e7d32; }
-  &[color="warning"] { background: #fff3e0; color: #ef6c00; }
-  &[color="danger"] { background: #ffebee; color: #c62828; }
+  &[color="success"] { background: #dcfce7 !important; color: #166534 !important; border-color: #bbf7d0 !important; }
+  &[color="warning"] { background: #fef3c7 !important; color: #92400e !important; border-color: #fde68a !important; }
+  &[color="danger"] { background: #fee2e2 !important; color: #991b1b !important; border-color: #fecaca !important; }
+
+  :host-context(.ion-palette-dark) &,
+  body.ion-palette-dark & {
+    &[color="success"] { background: rgba(34, 197, 94, 0.25) !important; color: #4ade80 !important; border-color: rgba(34, 197, 94, 0.5) !important; }
+    &[color="warning"] { background: rgba(245, 158, 11, 0.25) !important; color: #fbbf24 !important; border-color: rgba(245, 158, 11, 0.5) !important; }
+    &[color="danger"] { background: rgba(239, 68, 68, 0.25) !important; color: #f87171 !important; border-color: rgba(239, 68, 68, 0.5) !important; }
+    &[color="medium"] { background: rgba(148, 163, 184, 0.25) !important; color: #cbd5e1 !important; border-color: rgba(148, 163, 184, 0.5) !important; }
+  }
 }
 
 // Table Styling
 .premium-card {
-  background: white;
+  background: var(--card-bg);
   border-radius: 20px;
   overflow: hidden;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);
+  box-shadow: var(--theme-shadow);
   position: relative;
   min-height: 400px;
-  border: 1px solid #f1f5f9;
+  border: 1px solid var(--card-border);
 }
 
 .responsive-table {
@@ -251,19 +322,24 @@
   
   thead {
     th {
-      background: #f8fafc;
+      background: var(--table-header-bg);
       padding: 18px 20px;
       text-align: left;
-      color: #334155;
+      color: var(--text-primary);
       font-weight: 700;
       text-transform: uppercase;
       font-size: 12.5px;
       letter-spacing: 0.05em;
-      border-bottom: 2px solid #e2e8f0;
+      border-bottom: 2px solid var(--table-border);
       white-space: nowrap;
       
       &:first-child { padding-left: 24px; }
-      &:last-child { padding-right: 24px; }
+      &:last-child { 
+        padding-right: 24px; 
+        :host-context(.ion-palette-dark) & {
+          color: #4ade80 !important; /* Standout color for Status header in dark mode */
+        }
+      }
     }
   }
 
@@ -272,15 +348,15 @@
       transition: all 0.2s ease;
       
       &:hover {
-        background: #f8fafc;
-        td { color: #0f172a; }
+        background: var(--report-bg);
+        td { color: var(--text-primary); }
       }
       
       td {
         padding: 16px 20px;
         vertical-align: middle;
-        color: #475569;
-        border-bottom: 1px solid #f1f5f9;
+        color: var(--text-primary);
+        border-bottom: 1px solid var(--table-border);
         font-weight: 500;
         
         &:first-child { padding-left: 24px; }
@@ -295,14 +371,14 @@
 }
 
 .app-number {
-  background: #f1f5f9;
-  color: #334155;
+  background: var(--table-header-bg);
+  color: var(--text-primary);
   padding: 6px 12px;
   border-radius: 6px;
   font-family: 'Inter', monospace;
   font-weight: 600;
   letter-spacing: 0.5px;
-  border: 1px solid #e2e8f0;
+  border: 1px solid var(--table-border);
   display: inline-block;
 }
 
@@ -313,26 +389,32 @@
   
   strong {
     font-size: 15px;
-    color: #1e293b;
+    color: var(--text-primary);
     font-weight: 700;
   }
   
   .sub-text {
     font-size: 12.5px;
-    color: #64748b;
+    color: var(--text-secondary);
     font-weight: 500;
   }
 }
 
 .ifsc {
-  background: #fef2f2;
-  color: #ef4444;
+  background: #fff5f5;
+  color: #c53030;
   padding: 4px 10px;
   border-radius: 6px;
   font-weight: 600;
   letter-spacing: 0.5px;
-  border: 1px solid #fee2e2;
+  border: 1px solid #feb2b2;
   display: inline-block;
+
+  :host-context(.ion-palette-dark) & {
+    background: #451a1a;
+    color: #fca5a5;
+    border-color: #7f1d1d;
+  }
 }
 
 .amount {
@@ -349,10 +431,12 @@
   text-transform: uppercase;
   display: inline-block;
 
-  &.pending { background: #fff3e0; color: #ef6c00; }
-  &.completed { background: #e8f5e9; color: #2e7d32; }
-  &.rejected { background: #ffebee; color: #c62828; }
-  &.ack_failed { background: #eceff1; color: #455a64; }
+
+  &[status="pending"] { background: #fef3c7; color: #92400e; }
+  &[status="completed"] { background: #dcfce7; color: #166534; }
+  &[status="rejected"] { background: #fee2e2; color: #991b1b; }
+  &[status="ack-failed"] { background: #f1f5f9; color: #64748b; } 
+  
 }
 
 // Loading & No Data
@@ -404,8 +488,8 @@
   gap: 8px;
 
   ion-button {
-    --color: #4a5568;
-    --background-hover: #edf2f7;
+    --color: var(--text-secondary);
+    --background-hover: var(--table-header-bg);
     margin: 0;
 
     &[disabled] {
@@ -431,61 +515,8 @@
   }
 }
 
-// Dark Mode Overrides
-:host-context(.ion-palette-dark) {
-  .report-content { --background: #0f172a; }
-  .stats-grid { color: white; }
-  .stat-card { 
-    background: #1e293b; 
-    &.active { background: #334155; }
-    .hindi-label { color: white; }
-  }
-  .filter-card, .premium-card { 
-    background: #1e293b; 
-    color: white; 
-    border-color: #334155; 
-  }
-  .search-wrapper { 
-    background: #0f172a; 
-    border-color: #334155; 
-    ion-input { 
-      --color: white; 
-      --placeholder-color: #64748b; 
-    } 
-  }
-  .filter-dropdown { 
-    background: #0f172a; 
-    border-color: #334155; 
-    ion-select { 
-      color: white; 
-      --placeholder-color: #64748b; 
-    } 
-  }
-  .premium-table {
-    thead { 
-      th { 
-        background: #334155; 
-        border-bottom-color: #475569; 
-        color: #cbd5e0; 
-      } 
-    }
-    tbody tr { 
-      &:hover { background: #334155; td { color: white; } }
-      td { border-bottom-color: #334155; color: #e2e8f0; }
-    }
-  }
-  .user-cell strong { color: white; }
-  .app-number { 
-    background: #334155; 
-    color: #e2e8f0; 
-    border-color: #475569; 
-  }
-  .ifsc {
-    background: #451a1a;
-    color: #fca5a5;
-    border-color: #7f1d1d;
-  }
-  .amount { color: #34d399; }
-  .sub-text { color: #94a3b8; }
-  .pagination-info { color: #94a3b8; }
+.loading-overlay, .no-data {
+  color: var(--text-secondary);
 }
+
+// REMOVED LEGACY DARK MODE OVERRIDES AS THEY ARE NOW HANDLED BY VARIABLES

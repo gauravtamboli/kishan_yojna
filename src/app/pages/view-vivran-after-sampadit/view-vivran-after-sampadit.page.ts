@@ -129,10 +129,10 @@ export class ViewVivranAfterSampaditPage implements OnInit {
 
   goBack() {
     if (this.returnUrl) {
-      this.router.navigateByUrl(this.returnUrl);
+      this.router.navigateByUrl(this.returnUrl, { replaceUrl: true });
     } else {
       const dashboardUrl = this.getDashboardUrlByDesignation();
-      this.router.navigateByUrl(dashboardUrl);
+      this.router.navigateByUrl(dashboardUrl, { replaceUrl: true });
     }
   }
 

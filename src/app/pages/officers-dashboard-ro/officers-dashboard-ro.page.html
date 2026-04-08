@@ -39,7 +39,7 @@
             <ion-item *ngFor="let child of page.children" class="no-gap-item" lines="none" style="padding-left: 30px"
               (click)="onMenuItemClick(child)">
               <ion-icon *ngIf="child.icon" [name]="child.icon" class="menu-icon"
-                style="margin-right: 10px; font-size: 18px;"></ion-icon>
+                style="margin-right: 10px; font-size: 25px;"></ion-icon>
               <ion-text class="responsive-menu-title">
                 {{ child.title }}
               </ion-text>
@@ -164,6 +164,62 @@
                 </div>
               </div>
 
+
+
+   <!-- RO Pending -->
+              <div class="stat-card ro-pending" [class.active]="whichBoxClicked === 3"
+                (click)="getListOfAwedanAfterClickOnBoxes(3)">
+                <div class="card-inner">
+                  <div class="icon-avatar">
+                    <ion-icon name="person-outline"></ion-icon>
+                  </div>
+                  <div class="card-info">
+                    <span class="label">RO Pending</span>
+                    <div class="card-value-row">
+                      <span class="hindi-label">RO स्तर</span>
+                      <span class="count">{{ totalROPending }}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- SDO Pending -->
+              <div class="stat-card sdo-pending" [class.active]="whichBoxClicked === 4"
+                (click)="getListOfAwedanAfterClickOnBoxes(4)">
+                <div class="card-inner">
+                  <div class="icon-avatar">
+                    <ion-icon name="people-outline"></ion-icon>
+                  </div>
+                  <div class="card-info">
+                    <span class="label">SDO Pending</span>
+                    <div class="card-value-row">
+                      <span class="hindi-label">SDO स्तर</span>
+                      <span class="count">{{ totalSDOPending }}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- DFO Pending -->
+              <div class="stat-card dfo-pending" [class.active]="whichBoxClicked === 5"
+                (click)="getListOfAwedanAfterClickOnBoxes(5)">
+                <div class="card-inner">
+                  <div class="icon-avatar">
+                    <ion-icon name="business-outline"></ion-icon>
+                  </div>
+                  <div class="card-info">
+                    <span class="label">DFO Pending</span>
+                    <div class="card-value-row">
+                      <span class="hindi-label">DFO स्तर</span>
+                      <span class="count">{{ totalDFOPending }}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+
+
+
               <!-- स्वीकृत -->
               <div class="stat-card approved" [class.active]="whichBoxClicked === 6"
                 (click)="getListOfAwedanAfterClickOnBoxes(6)">
@@ -215,56 +271,7 @@
                 </div>
               </div>
 
-              <!-- RO Pending -->
-              <div class="stat-card ro-pending" [class.active]="whichBoxClicked === 3"
-                (click)="getListOfAwedanAfterClickOnBoxes(3)">
-                <div class="card-inner">
-                  <div class="icon-avatar">
-                    <ion-icon name="person-outline"></ion-icon>
-                  </div>
-                  <div class="card-info">
-                    <span class="label">RO Pending</span>
-                    <div class="card-value-row">
-                      <span class="hindi-label">RO स्तर</span>
-                      <span class="count">{{ totalROPending }}</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <!-- SDO Pending -->
-              <div class="stat-card sdo-pending" [class.active]="whichBoxClicked === 4"
-                (click)="getListOfAwedanAfterClickOnBoxes(4)">
-                <div class="card-inner">
-                  <div class="icon-avatar">
-                    <ion-icon name="people-outline"></ion-icon>
-                  </div>
-                  <div class="card-info">
-                    <span class="label">SDO Pending</span>
-                    <div class="card-value-row">
-                      <span class="hindi-label">SDO स्तर</span>
-                      <span class="count">{{ totalSDOPending }}</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <!-- DFO Pending -->
-              <div class="stat-card dfo-pending" [class.active]="whichBoxClicked === 5"
-                (click)="getListOfAwedanAfterClickOnBoxes(5)">
-                <div class="card-inner">
-                  <div class="icon-avatar">
-                    <ion-icon name="business-outline"></ion-icon>
-                  </div>
-                  <div class="card-info">
-                    <span class="label">DFO Pending</span>
-                    <div class="card-value-row">
-                      <span class="hindi-label">DFO स्तर</span>
-                      <span class="count">{{ totalDFOPending }}</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
+           
             </div>
 
             <hr style="background-color: black; height: 1px" />
@@ -272,135 +279,6 @@
         </ion-row>
       </ion-grid>
 
-      <div class="ion-padding">
-        <ion-row class="mb-3 align-items-center" style="justify-content: space-between; margin: 0 10px;">
-          <ion-col size="12" size-md="7" size-lg="6" style="padding: 0;">
-            <div class="unified-search-box shadow-sm">
-              <input class="unified-search-input" [(ngModel)]="searchMobile" (ngModelChange)="onSearchInputChange()" placeholder="खोजें (नाम, मोबाइल नंबर, आवेदन नंबर)" (keyup.enter)="onEnter()">
-              
-              <button *ngIf="!isSearched" class="unified-search-btn" (click)="onEnter()">
-                <ion-icon name="search-outline"></ion-icon>
-              </button>
-              
-              <button *ngIf="isSearched" class="unified-clear-btn" (click)="clearSearch()">
-                <ion-icon name="close-circle-outline"></ion-icon>
-              </button>
-            </div>
-          </ion-col>
-
-          <ion-col size="12" size-md="auto" class="ion-text-end" style="padding: 0; margin-left: auto;">
-            <ion-button class="my-btn" (click)="export()" color="success">
-              <ion-icon name="download-outline" slot="start"></ion-icon>
-              Export To Excel
-            </ion-button>
-          </ion-col>
-        </ion-row>
-
-        <div class="table-responsive shadow-sm rounded-4" style="margin-top: 10px;">
-          <p-table [value]="filteredAwedans" [paginator]="false" [responsiveLayout]="'scroll'"
-            class="bootstrap-table p-datatable-striped p-datatable-hoverable-rows custom-dashboard-table"
-            id="dashboard_table">
-            <!-- Header -->
-            <ng-template pTemplate="header">
-              <tr>
-                <th>#</th>
-                <th>आवेदन नंबर</th>
-                <th>हितग्राही का नाम</th>
-                <th>पिता का नाम</th>
-                <th>वृत्त (वन मंडल)</th>
-                <th>आवेदन की स्थिति</th>
-                <th class="text-center">क्रियाएँ</th>
-              </tr>
-            </ng-template>
-
-            <!-- Body -->
-            <ng-template pTemplate="body" let-item let-i="rowIndex">
-              <tr>
-                <td>{{ (currentPage - 1) * pageSize + i + 1 }}</td>
-                <td>{{ item.application_number }}</td>
-                <td>
-                  <div class="beneficiary-cell">
-                    <strong>{{ item.hitgrahi_name }}</strong>
-                    <div class="text-muted small">{{ item.mobile_no }}</div>
-                  </div>
-                </td>
-                <td>{{ item.father_name }}</td>
-                <td>{{ item.circle_name }} ({{ item.division_name }})</td>
-                <td>
-                  <span class="status-badge" [ngClass]="{
-              'status-approved': item.awedan_status == 6,
-              'status-pending': item.awedan_status == 2,
-              'status-draft': item.awedan_status == 1,
-              'status-edit-pending': item.awedan_status == 0,
-              'status-rejected': item.awedan_status == 3 || item.awedan_status == 5
-            }">
-                    {{ getStatusText(item) }}
-                  </span>
-                </td>
-
-                <td class="text-center">
-                  <div class="action-buttons">
-                    <ion-button fill="outline" color="primary" size="small" (click)="viewApplication(item)">
-                      विवरण देखें
-                    </ion-button>
-
-                    <ion-button *ngIf="item.awedan_status < 1" fill="outline" color="warning" size="small"
-                      (click)="editAwedan(item)">
-                      संपादित करें
-                    </ion-button>
-
-                    <ion-button *ngIf="canViewEstimate(item)" fill="solid" color="tertiary" size="small"
-                      (click)="generateEstimateDynamic(item)">
-                      {{ item.awedan_status < 2 ? 'प्राक्कलन बनाएं ' : 'प्राक्कलन देखें' }} </ion-button>
-                  </div>
-                </td>
-              </tr>
-            </ng-template>
-
-          </p-table>
-        </div>
-
-        <!-- Custom Pagination -->
-        <div *ngIf="totalPages > 1" class="pagination-container mt-3">
-          <ion-row class="align-items-center justify-content-center">
-            <ion-col size="auto">
-              <ion-button [disabled]="currentPage === 1" (click)="goToPreviousPage()" fill="clear" size="small">
-                <ion-icon name="chevron-back-outline" slot="start"></ion-icon>
-                पिछला
-              </ion-button>
-            </ion-col>
-            &nbsp;
-
-            <ion-col size="auto">
-              <div class="page-numbers">
-                <ion-button *ngFor="let page of getPageNumbers()" [color]="page === currentPage ? 'primary' : 'medium'"
-                  [fill]="page === currentPage ? 'solid' : 'outline'" size="small" (click)="goToPage(page)"
-                  class="page-btn">
-                  {{ page }}
-                </ion-button>
-              </div>
-            </ion-col>
-            &nbsp;
-            <ion-col size="auto">
-              <ion-button [disabled]="currentPage === totalPages" (click)="goToNextPage()" fill="clear" size="small">
-                अगला
-                <ion-icon name="chevron-forward-outline" slot="end"></ion-icon>
-              </ion-button>
-            </ion-col>
-
-            <ion-col size="auto" class="text-muted">
-              <small>पृष्ठ {{ currentPage }} / {{ totalPages }} (कुल {{ totalRecords }} रिकॉर्ड)</small>
-            </ion-col>
-          </ion-row>
-        </div>
-
-        <!-- No record message -->
-        <div *ngIf="isNoRecordFound" class="no-record-found-box">
-          <ion-label>कोई आवेदन प्राप्त नहीं</ion-label>
-        </div>
-
-
-      </div>
 
     </ion-content>
   </div>

@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { TableModule } from 'primeng/table';
 import { ApiService } from '../../services/api.service';
+import { AuthServiceService } from '../../services/auth-service.service';
 import { Router } from '@angular/router';
 import { addIcons } from 'ionicons';
 import { searchOutline, walletOutline, alertCircleOutline, checkmarkCircleOutline, closeCircleOutline, timeOutline, filterOutline, moon, sunny, chevronBackOutline, chevronForwardOutline } from 'ionicons/icons';
@@ -47,6 +48,7 @@ export class PaymentReportComponent implements OnInit {
     private platform: Platform,
     private router: Router,
     private api: ApiService,
+    private authService: AuthServiceService,
     private cdRef: ChangeDetectorRef
   ) {
     addIcons({
@@ -217,7 +219,8 @@ export class PaymentReportComponent implements OnInit {
   }
 
   goBack() {
-    this.router.navigate(['/officers-dashboard-ro']);
+    const dashboardRoute = this.authService.getDashboardRoute();
+    this.router.navigate([dashboardRoute]);
   }
 
   getTabLabel(tab: string): string {

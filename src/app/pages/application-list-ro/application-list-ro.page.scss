@@ -1,0 +1,216 @@
+.custom-dashboard-table {
+  width: 100%; border-radius: 12px; overflow: hidden; background: white;
+  th { background: #004d40; color: white; padding: 12px; font-weight: 600; text-align: center; }
+  td { padding: 10px 8px; text-align: center; vertical-align: middle; }
+  tr:hover { background: #f8f9fa; }
+  
+  .status-badge {
+    display: inline-block; 
+    padding: 6px 12px; 
+    border-radius: 6px; 
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    
+    &.status-approved { background: #dcfce7 !important; color: #166534 !important; border: 1px solid #bbf7d0 !important; }
+    &.status-ro { background: #e0f2fe !important; color: #075985 !important; border: 1px solid #bae6fd !important; }
+    &.status-sdo { background: #fef9c3 !important; color: #854d0e !important; border: 1px solid #fef08a !important; }
+    &.status-dfo { background: #e0e7ff !important; color: #4338ca !important; border: 1px solid #c7d2fe !important; }
+    &.status-edit-pending { background: #fce7f3 !important; color: #9d174d !important; border: 1px solid #fbcfe8 !important; }
+    &.status-draft { background: #f1f5f9 !important; color: #475569 !important; border: 1px solid #e2e8f0 !important; }
+    &.status-rejected { background: #fee2e2 !important; color: #991b1b !important; border: 1px solid #fecaca !important; }
+  }
+}
+
+
+.action-grid {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+.action-btn-circle {
+  --padding-start: 10px;
+  --padding-end: 10px;
+  height: 36px;
+  margin: 0;
+
+  ion-icon {
+    font-size: 18px;
+    margin-right: 6px;
+  }
+
+  .btn-text {
+    font-size: 11px;
+    font-weight: 700;
+  }
+}
+
+.no-record-found-box { 
+  display: flex; justify-content: center; align-items: center; border: 3px solid #ccc;
+  border-radius: 10px; padding: 20px; height: 100px; font-weight: 600; 
+}
+
+.pagination-container { padding: 1rem; background: #f8f9fa; border-radius: 8px; margin-top: 1rem; }
+
+// Unified Search Box Styles
+.unified-search-box {
+  display: flex;
+  align-items: center;
+  background-color: var(--ion-color-light, #f4f5f8);
+  border-radius: 25px;
+  border: 1px solid var(--ion-color-step-150, #d1d5db);
+  padding: 4px 6px 4px 16px;
+  transition: all 0.3s ease;
+  width: 100%;
+
+  &:focus-within {
+    border-color: var(--ion-color-primary, #3880ff);
+    box-shadow: 0 0 0 3px rgba(var(--ion-color-primary-rgb, 56, 128, 255), 0.2);
+    background-color: #ffffff;
+  }
+
+  .unified-search-input {
+    flex: 1;
+    border: none;
+    background: transparent;
+    outline: none;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--ion-color-dark, #222428);
+    padding: 8px 0;
+    width: 100%;
+    
+    &::placeholder {
+      color: var(--ion-color-medium, #92949c);
+      font-weight: 400;
+      opacity: 0.8;
+    }
+  }
+
+  button {
+    background: transparent;
+    border: none;
+    outline: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    
+    ion-icon {
+      font-size: 20px;
+    }
+  }
+
+  .unified-search-btn {
+    background-color: var(--ion-color-primary, #198edb);
+    color: white;
+    
+    &:hover {
+      background-color: var(--ion-color-primary-shade, #157abb);
+      transform: scale(1.05);
+    }
+  }
+
+  .unified-clear-btn {
+    background-color: transparent;
+    color: var(--ion-color-medium, #92949c);
+    
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.05);
+      color: var(--ion-color-danger, #eb445a);
+    }
+  }
+}
+
+.export-btn {
+  --border-radius: 8px;
+  --box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  font-weight: 600;
+  margin-right: 10px;
+  height: 36px;
+  --color: #ffffff !important;
+}
+
+:host-context(.ion-palette-dark) {
+
+  ion-toolbar {
+    --background: #1e293b;
+    --color: #ffffff;
+  }
+  
+  .custom-dashboard-table { 
+    background: #1e293b; 
+    color: #ffffff; 
+    
+    th {
+      background: #0f172a !important;
+      color: #4ade80 !important;
+      border-bottom: 2px solid #334155 !important;
+    }
+
+    tr:hover { background: #334155; }
+    td { color: #e2e8f0; }
+  }
+
+  .pagination-container {
+    background: #1e293b;
+    border: 1px solid #334155;
+    
+    .text-muted { color: #94a3b8 !important; }
+    small { color: #94a3b8 !important; }
+  }
+
+  .status-badge {
+    &.status-approved { background: rgba(34, 197, 94, 0.25) !important; color: #4ade80 !important; border: 1px solid rgba(34, 197, 94, 0.5) !important; }
+    &.status-ro { background: rgba(14, 165, 233, 0.25) !important; color: #7dd3fc !important; border: 1px solid rgba(14, 165, 233, 0.5) !important; }
+    &.status-sdo { background: rgba(234, 179, 8, 0.25) !important; color: #fde047 !important; border: 1px solid rgba(234, 179, 8, 0.5) !important; }
+    &.status-dfo { background: rgba(79, 70, 229, 0.25) !important; color: #a5b4fc !important; border: 1px solid rgba(79, 70, 229, 0.5) !important; }
+    &.status-edit-pending { background: rgba(219, 39, 119, 0.25) !important; color: #f9a8d4 !important; border: 1px solid rgba(219, 39, 119, 0.5) !important; }
+    &.status-draft { background: rgba(148, 163, 184, 0.25) !important; color: #cbd5e1 !important; border: 1px solid rgba(148, 163, 184, 0.5) !important; }
+    &.status-rejected { background: rgba(239, 68, 68, 0.25) !important; color: #f87171 !important; border: 1px solid rgba(239, 68, 68, 0.5) !important; }
+  }
+
+  .unified-search-box {
+
+    background-color: #334155;
+    border-color: #475569;
+    
+    .unified-search-input { color: #ffffff; }
+    &:focus-within { background-color: #1e293b; }
+  }
+
+  // Ensure button text is visible
+  ion-button[color="success"] { 
+    --background: #10b981 !important; // Vibrant emerald green
+    --color: #ffffff !important; 
+  }
+  ion-button[color="medium"] { --color: #ffffff !important; }
+
+  ion-button[fill="clear"] { --color: #3880ff !important; }
+  
+  .page-btn {
+    --color: #ffffff !important;
+    &[color="medium"] {
+      --border-color: #475569;
+      --color: #94a3b8 !important;
+    }
+    &.primary {
+       --color: #ffffff !important;
+    }
+  }
+}
+
+/* Fab Export */
+.fab-export {
+  --background: linear-gradient(135deg, #198edb 0%, #2ecc71 100%);
+  --color: #ffffff;
+  box-shadow: 0 8px 24px rgba(var(--ion-color-primary-rgb), 0.3);
+}
+
+
