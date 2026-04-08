@@ -124,14 +124,14 @@ ion-select {
 
 .responsive-menu-title {
   font-size: 16px;
-  font-weight: 600;
+  font-weight: 500;
   color: var(--theme-text-primary);
   padding: 8px 12px;
   border-radius: 4px;
   transition: all 0.2s ease;
   &:hover { background: rgba(var(--ion-color-primary-rgb), 0.1); transform: translateX(2px); }
-  @media (min-width: 600px) { font-size: 16px; }
-  @media (min-width: 1024px) { font-size: 18px; }
+  @media (min-width: 600px) { font-size: 12px; }
+  @media (min-width: 1024px) { font-size: 14px; }
 }
 
 .no-gap-item {
@@ -185,7 +185,9 @@ ion-select {
   @each $name, $color in (
     "total": $primary-blue, "edit-pending": $edit-pink, "approved": $success-green, 
     "rejected": $danger-red, "draft": $draft-cyan, "ro-pending": $purple-ro, 
-    "sdo-pending": $purple-sdo, "dfo-pending": $purple-dfo
+    "sdo-pending": $purple-sdo, "dfo-pending": $purple-dfo,
+    "payment-pending": $warning-orange, "payment-rejected": $danger-red,
+    "payment-failed": #ffc107, "payment-done": $success-green
   ) {
     &.#{$name} {
       color: $color;

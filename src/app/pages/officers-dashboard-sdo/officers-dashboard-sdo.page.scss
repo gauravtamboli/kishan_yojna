@@ -116,7 +116,9 @@ ion-content {
   @each $name, $color in (
     "total": $primary-blue, "edit-pending": $edit-pink, "approved": $success-green, 
     "rejected": $danger-red, "draft": $draft-cyan, "ro-pending": $purple-ro, 
-    "sdo-pending": $purple-sdo, "dfo-pending": $purple-dfo
+    "sdo-pending": $purple-sdo, "dfo-pending": $purple-dfo,
+    "payment-pending": $warning-orange, "payment-rejected": $danger-red,
+    "payment-failed": #ffc107, "payment-done": $success-green
   ) {
     &.#{$name} {
       color: $color;

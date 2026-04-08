@@ -133,6 +133,10 @@ export class ApplicationListSdoPage implements OnInit {
       case 6: this.total_or_pending_or_accept_or_reject_label = "स्वीकृत"; break;
       case 7: this.total_or_pending_or_accept_or_reject_label = "अस्वीकृत"; break;
       case 8: this.total_or_pending_or_accept_or_reject_label = "प्रकटन बैच"; break;
+      case 9: this.total_or_pending_or_accept_or_reject_label = "भुगतान लंबित"; break;
+      case 10: this.total_or_pending_or_accept_or_reject_label = "भुगतान अस्वीकृत"; break;
+      case 11: this.total_or_pending_or_accept_or_reject_label = "भुगतान अंकन विफल"; break;
+      case 12: this.total_or_pending_or_accept_or_reject_label = "भुगतान स्वीकृत"; break;
       default: this.total_or_pending_or_accept_or_reject_label = "आवेदन सूची";
     }
   }
@@ -156,8 +160,13 @@ export class ApplicationListSdoPage implements OnInit {
       case 4: whichData = 4; break; // SDO Pending
       case 5: whichData = 6; break; // DFO Pending
       case 6: whichData = 8; break; // Approved
-      case 7: whichData = 9; break; // Rejected
+      case 7: whichData = 5; break; // Rejected/Error Correction
       case 8: whichData = 10; break; // Batch
+      case 9: whichData = 9; break; // Payment Pending
+      case 10: whichData = 10; break; // Payment Rejected
+      case 11: whichData = 11; break; // Ack Fail
+      case 12: whichData = 12; break; // Payment Done
+      default: whichData = 1; break;
     }
 
     this.apiService.getListOfAwedanAccordingToAwedanStatus(
@@ -222,7 +231,11 @@ export class ApplicationListSdoPage implements OnInit {
       case '4': return "DFO स्तर पर लंबित";
       case '5': return "त्रुटि सुधार (DFO द्वारा वापस)";
       case '6': return "स्वीकृत";
-      case '7': return "भुगतान हेतु प्रेषित (Draft)";
+      case '7': return "ड्राफ्ट";
+      case '8': return "भुगतान लंबित";
+      case '9': return "भुगतान अस्वीकृत";
+      case '10': return "भुगतान अंकन विफल";
+      case '11': return "भुगतान स्वीकृत";
       default: return item.awedan_status_text || 'अज्ञात';
     }
   }

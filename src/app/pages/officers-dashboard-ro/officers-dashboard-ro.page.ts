@@ -11,7 +11,7 @@ import { MenuController } from '@ionic/angular';
 import { ApiService } from 'src/app/services/api.service';
 import { OfficersLoginResponseModel } from '../officer-login/OfficersLoginResponse.model';
 import { addIcons } from 'ionicons';
-import { appsOutline, homeOutline, informationOutline, informationCircle, buildOutline, logOutOutline, chevronBackOutline, chevronForwardOutline, downloadOutline, chevronDownOutline, optionsOutline, reorderThreeOutline, documentTextOutline, statsChartOutline, mapOutline, peopleOutline, personOutline, addCircleOutline, trendingUpOutline, leafOutline, hammerOutline, clipboardOutline, businessOutline, receiptOutline, cashOutline, listOutline, walletOutline, moon, sunny, createOutline, checkmarkCircleOutline, closeCircleOutline, searchOutline } from 'ionicons/icons';
+import { appsOutline, homeOutline, informationOutline, informationCircle, buildOutline, logOutOutline, chevronBackOutline, chevronForwardOutline, downloadOutline, chevronDownOutline, optionsOutline, reorderThreeOutline, documentTextOutline, statsChartOutline, mapOutline, peopleOutline, personOutline, addCircleOutline, trendingUpOutline, leafOutline, hammerOutline, clipboardOutline, businessOutline, receiptOutline, cashOutline, listOutline, walletOutline, moon, sunny, createOutline, checkmarkCircleOutline, closeCircleOutline, searchOutline, timeOutline, alertCircleOutline, checkmarkDoneCircleOutline } from 'ionicons/icons';
 import { Browser } from '@capacitor/browser';
 import { Platform, AlertController } from '@ionic/angular';
 import { NetworkCheckService } from 'src/app/services/network-check.service';
@@ -156,6 +156,10 @@ export class OfficersDashboardROPage implements OnInit {
   whichBoxClicked: number = 1;
   totalRejected: number = 0;               // अस्वीकृत (3,5)
   totalBatch: number = 0;                  // प्रकटन बैच (7)
+  totalpaymentpending: number = 0;                  // payment pending (8)
+  totalpaymentrjcted: number = 0;                  // payment rejected (9)
+  totalpaymentackfaild: number = 0;                  // payment acknowledgement failed (10)
+  totalpaymentdone: number = 0;                  // payment done (11)
   totalAwedanTextColor = "#198edb";
   totalEditPendingTextColor = "#caf102ff";    // Orange for Edit Pending
   totalROPendingTextColor = "#2196f3";      // Blue for RO Pending
@@ -483,6 +487,16 @@ export class OfficersDashboardROPage implements OnInit {
             // प्रकटन बैच (7)
             this.totalBatch = findCount(7);
 
+            // payment pending (8)
+            this.totalpaymentpending = findCount(8);
+            // payment rejected (9)
+            this.totalpaymentrjcted = findCount(9);
+            // payment acknowledgement failed (10)
+            this.totalpaymentackfaild = findCount(10);
+            // payment done (11)
+            this.totalpaymentdone = findCount(11);
+            
+
             await this.dismissDialog();
             this.cdRef.detectChanges();
             // Removed auto-loading list of first box
@@ -560,7 +574,8 @@ export class OfficersDashboardROPage implements OnInit {
       'create-outline': createOutline,
       'checkmark-circle-outline': checkmarkCircleOutline,
       'close-circle-outline': closeCircleOutline,
-      moon, sunny, searchOutline
+      moon, sunny, searchOutline,
+      timeOutline, alertCircleOutline, checkmarkDoneCircleOutline
     });
   }
 
@@ -579,7 +594,16 @@ export class OfficersDashboardROPage implements OnInit {
       return this.totalRejectedTextColor;
     } else if (this.whichBoxClicked == 8) {
       return this.totalBatchTextColor;
-    } else {
+    } else if (this.whichBoxClicked == 9) {
+      return "#ff9800"; // Orange for Payment Pending
+    } else if (this.whichBoxClicked == 10) {
+      return "#f44336"; // Red for Payment Rejected
+    } else if (this.whichBoxClicked == 11) {
+      return "#4caf50"; // Green for Payment Done
+    }
+    
+    
+    else {
       return this.totalApprovedTextColor;
     }
   }
@@ -598,6 +622,10 @@ export class OfficersDashboardROPage implements OnInit {
     else if (this.whichBoxClicked === 6) recordsCount = this.totalApproved;
     else if (this.whichBoxClicked === 7) recordsCount = this.totalRejected;
     else if (this.whichBoxClicked === 8) recordsCount = this.totalBatch;
+    else if (this.whichBoxClicked === 9 ) recordsCount = this.totalpaymentpending;
+    else if (this.whichBoxClicked === 10) recordsCount = this.totalpaymentrjcted;
+    else if (this.whichBoxClicked === 11) recordsCount = this.totalpaymentackfaild;
+    else if (this.whichBoxClicked === 12) recordsCount = this.totalpaymentdone;
 
     // Navigate to separate page with parameters using state
     this.router.navigate(['/application-list-ro'], {
@@ -692,7 +720,21 @@ export class OfficersDashboardROPage implements OnInit {
       return "त्रुटि सुधार कर प्राकलन पुनः प्रस्तुत करें (DFO)";
     } else if (item.awedan_status === "6") {
       return "स्वीकृत";
-    } else {
+    } else if (item.awedan_status === "7") {
+      return "ड्राफ्ट";
+    } else if (item.awedan_status === "8") {
+      return "भुगतान लंबित";
+    } else if (item.awedan_status === "9") {
+      return "भुगतान अस्वीकृत";
+    } else if (item.awedan_status === "10") {
+      return "भुगतान की स्वीकृति असफल";
+    } else if (item.awedan_status === "11") {
+      return "भुगतान हो चुका है";
+    } 
+    
+    
+    
+    else {
       return item.awedan_status_text || '';
     }
   }

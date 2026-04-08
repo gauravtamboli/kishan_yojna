@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
 import { ApiService } from 'src/app/services/api.service';
 import { OfficersLoginResponseModel } from '../officer-login/OfficersLoginResponse.model';
 import { addIcons } from 'ionicons';
-import { appsOutline, homeOutline, informationOutline, informationCircle, buildOutline, logOutOutline, chevronBackOutline, chevronForwardOutline, optionsOutline, reorderThreeOutline, downloadOutline, chevronDownOutline, moon, sunny, listOutline, createOutline, checkmarkCircleOutline, closeCircleOutline, personOutline, peopleOutline, businessOutline, documentTextOutline } from 'ionicons/icons';
+import { appsOutline, homeOutline, informationOutline, informationCircle, buildOutline, logOutOutline, chevronBackOutline, chevronForwardOutline, optionsOutline, reorderThreeOutline, downloadOutline, chevronDownOutline, moon, sunny, listOutline, createOutline, checkmarkCircleOutline, closeCircleOutline, personOutline, peopleOutline, businessOutline, documentTextOutline, timeOutline, alertCircleOutline, checkmarkDoneCircleOutline } from 'ionicons/icons';
 import { Browser } from '@capacitor/browser';
 import { NetworkCheckService } from 'src/app/services/network-check.service';
 import { TableModule } from 'primeng/table';
@@ -47,6 +47,10 @@ export class OfficersDashboardSDOPage implements OnInit {
   totalApproved: number = 0;
   totalRejected: number = 0;
   totalBatch: number = 0;
+  totalpaymentpending: number = 0;
+  totalpaymentrjcted: number = 0;
+  totalpaymentackfaild: number = 0;
+  totalpaymentdone: number = 0;
   
   curent_session: any;
   whichBoxClicked: number = 1;
@@ -146,6 +150,12 @@ export class OfficersDashboardSDOPage implements OnInit {
             this.totalApproved = findCount(6);
             this.totalRejected = findCount(3) + findCount(5);
             this.totalBatch = findCount(7);
+            
+            // New Payment IDs
+            this.totalpaymentpending = findCount(8);
+            this.totalpaymentrjcted = findCount(9);
+            this.totalpaymentackfaild = findCount(10);
+            this.totalpaymentdone = findCount(11);
 
             await this.dismissDialog();
           } else {
@@ -229,7 +239,8 @@ export class OfficersDashboardSDOPage implements OnInit {
     addIcons({
       appsOutline, homeOutline, informationOutline, informationCircle, buildOutline, logOutOutline, reorderThreeOutline,
       chevronBackOutline, chevronForwardOutline, chevronDownOutline, optionsOutline, downloadOutline, moon, sunny,
-      listOutline, createOutline, checkmarkCircleOutline, closeCircleOutline, personOutline, peopleOutline, businessOutline, documentTextOutline
+      listOutline, createOutline, checkmarkCircleOutline, closeCircleOutline, personOutline, peopleOutline, businessOutline, documentTextOutline,
+      timeOutline, alertCircleOutline, checkmarkDoneCircleOutline
     });
   }
 }
