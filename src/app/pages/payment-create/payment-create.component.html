@@ -149,23 +149,25 @@
           <thead>
             <!-- Row 1: Main headers -->
             <tr>
-              <th rowspan="2" class="detail-th-year">वर्ष</th>
-              <th rowspan="2" class="detail-th">क्रमांक</th>
-              <th rowspan="2" class="detail-th">कार्य विवरण</th>
-              <th rowspan="2"></th>
-              <th rowspan="2"></th>
+              <th rowspan="2" class="detail-th-year">वर्ष <br>(1)</th>
+              <th rowspan="2" class="detail-th">क्रमांक <br>(2)</th>
+              <th rowspan="2" class="detail-th">कार्य विवरण <br>(3)</th>
+              <th rowspan="2" class="detail-th">स्थिति <br>(4)</th>
+              <th rowspan="2" class="detail-th">ग्रांट <br> (5)</th>
+              <th colspan="2" class="detail-th">अनुदान दर (%)</th>
               <th colspan="2" class="detail-th">रोपित पौधों की संख्या</th>
-
-              <th colspan="2" class="detail-th">दर (₹)</th>
-              <th rowspan="2" class="detail-th">राशि (₹)</th>
+              <th rowspan="2" class="detail-th">कुल संभावित राशि <br> (10)</th>
+              <th rowspan="2" class="detail-th">पूर्व भुगतान <br> (11)</th>
+              <th rowspan="2" class="detail-th">देय राशि <br> (12)</th>
             </tr>
 
             <!-- Row 2: Sub headers -->
             <tr>
-              <th class="detail-th">5 एकड़ से कम</th>
-              <th class="detail-th">5 एकड़ से अधिक</th>
-              <th class="detail-th">5 एकड़ से कम (100%)</th>
-              <th class="detail-th">5 एकड़ से अधिक (50%)</th>
+              <th class="detail-th">5 एकड़ से कम (100%) <br> (6)</th>
+              <th class="detail-th">5 एकड़ से अधिक (50%) <br> (7)</th>
+              <th class="detail-th">5 एकड़ से कम <br> (8)</th>
+              <th class="detail-th">5 एकड़ से अधिक <br> (9)</th>
+         
             </tr>
           </thead>
 
@@ -184,33 +186,37 @@
                 <td class="detail-td detail-karya" [style.text-align]="item.tablealign"
                   [style.font-weight]="item.fontweight">
                   {{ item.karyaVivran }}
+                </td>
+                <td class="detail-td detail-status">
+                  <div style="display: flex; flex-direction: column; align-items: center; gap: 4px;">
+                    <input type="checkbox" class="form-check-input" [(ngModel)]="cat.rowGrantMap[1][item.itemKramank]"
+                      [disabled]="calculateRowAmount(cat, item, 1) <= 0" />
 
+                  </div>
                 </td>
-                <td>
-                  <input type="checkbox" class="form-check-input"
-                    [(ngModel)]="cat.rowGrantMap[1][item.itemKramank]"
-                    [disabled]="calculateRowAmount(cat, item, 1) <= 0" />
-                </td>
-                <td>
-                  {{ cat.rowGrantMap[selectedYear!][item.itemKramank] ? 'Yes' : 'No' }}
-                </td>
-                <td class="detail-td detail-count"> {{ item.itemKramank === 3 ? less5PitCount(cat) :
-                  less5AreaCount(cat)
-                  }}</td>
-                <td class="detail-td detail-count"> {{ item.itemKramank === 3 ? more5PitCount(cat) :
-                  more5AreaCount(cat)
-                  }}</td>
+                <td class="detail-td detail-unit"> {{ cat.rowGrantMap[1][item.itemKramank] ? 'Yes' : 'No' }}</td>
+
                 <td class="detail-td detail-rate">{{ item[cat.rateField] }}</td>
                 <td class="detail-td detail-rate">{{ item[cat.rateField] / 2 }}</td>
+
+                <td class="detail-td detail-count"> {{ item.itemKramank === 3 ? less5PitCount(cat) : less5AreaCount(cat)
+                  }}</td>
+                <td class="detail-td detail-count"> {{ item.itemKramank === 3 ? more5PitCount(cat) : more5AreaCount(cat)
+                  }}</td>
+
+                <td class="detail-td">
+                  {{ getEstimatedRowAmount(cat, item) | number:'1.2-2' }}
+                </td>
+                <td class="detail-td">
+                  {{ getAlreadyPaidAmount(cat, item.itemKramank, 1) | number:'1.2-2' }}
+                </td>
                 <td class="detail-td detail-amount">
                   {{ calculateRowAmount(cat, item, 1) | number:'1.2-2' }}
                 </td>
-
               </tr>
 
-
               <tr class="detail-year-total-row">
-                <td colspan="" class="detail-grand-total-label">महायोग</td>
+                <td colspan="3" class="detail-grand-total-label">महायोग</td>
                 <td colspan="8" class="detail-words-text"> राशि शब्दों में :
                   {{ convertNumberToWords(getYearTotal(cat, year1Rows, 1)) }}</td>
                 <td class="detail-year-total-amount">
@@ -235,29 +241,36 @@
                   [style.font-weight]="item.fontweight">
                   {{ item.karyaVivran }}
                 </td>
-                <td>
-                  <input type="checkbox" class="form-check-input"
-                    [(ngModel)]="cat.rowGrantMap[2][item.itemKramank]"
-                    [disabled]="calculateRowAmount(cat, item, 2) <= 0" />
+                <td class="detail-td detail-unit">{{ item.unit }}</td>
+                <td class="detail-td detail-status">
+                  <div style="display: flex; flex-direction: column; align-items: center; gap: 4px;">
+                    <input type="checkbox" class="form-check-input" [(ngModel)]="cat.rowGrantMap[2][item.itemKramank]"
+                      [disabled]="calculateRowAmount(cat, item, 2) <= 0" />
+                  </div>
                 </td>
-                <td>
-                  {{ cat.rowGrantMap[selectedYear!][item.itemKramank] ? 'Yes' : 'No' }}
-                </td>
-                <td class="detail-td detail-count"> {{ item.itemKramank === 3 ? less5PitCount(cat) :
-                  less5AreaCount(cat)
-                  }}</td>
-                <td class="detail-td detail-count"> {{ item.itemKramank === 3 ? more5PitCount(cat) :
-                  more5AreaCount(cat)
-                  }}</td>
+                <td class="detail-td detail-unit"> {{ cat.rowGrantMap[2][item.itemKramank] ? 'Yes' : 'No' }}</td>
+
                 <td class="detail-td detail-rate">{{ item[cat.rateField] }}</td>
                 <td class="detail-td detail-rate">{{ item[cat.rateField] / 2 }}</td>
+
+                <td class="detail-td detail-count"> {{ item.itemKramank === 3 ? less5PitCount(cat) : less5AreaCount(cat)
+                  }}</td>
+                <td class="detail-td detail-count"> {{ item.itemKramank === 3 ? more5PitCount(cat) : more5AreaCount(cat)
+                  }}</td>
+
+                <td class="detail-td">
+                  {{ getEstimatedRowAmount(cat, item) | number:'1.2-2' }}
+                </td>
+                <td class="detail-td">
+                  {{ getAlreadyPaidAmount(cat, item.itemKramank, 2) | number:'1.2-2' }}
+                </td>
                 <td class="detail-td detail-amount">
                   {{ calculateRowAmount(cat, item, 2) | number:'1.2-2' }}
                 </td>
               </tr>
 
               <tr class="detail-year-total-row">
-                <td colspan="9" class="detail-year-total-label">द्वितीय वर्ष का योग</td>
+                <td colspan="10" class="detail-year-total-label">द्वितीय वर्ष का योग</td>
                 <td class="detail-year-total-amount">
                   {{ getYearTotal(cat, year2Rows, 2) | number:'1.2-2' }}
                 </td>
@@ -280,29 +293,36 @@
                   [style.font-weight]="item.fontweight">
                   {{ item.karyaVivran }}
                 </td>
-                <td>
-                  <input type="checkbox" class="form-check-input"
-                    [(ngModel)]="cat.rowGrantMap[3][item.itemKramank]"
-                    [disabled]="calculateRowAmount(cat, item, 3) <= 0" />
+                <td class="detail-td detail-unit">{{ item.unit }}</td>
+                <td class="detail-td detail-status">
+                  <div style="display: flex; flex-direction: column; align-items: center; gap: 4px;">
+                    <input type="checkbox" class="form-check-input" [(ngModel)]="cat.rowGrantMap[3][item.itemKramank]"
+                      [disabled]="calculateRowAmount(cat, item, 3) <= 0" />
+                  </div>
                 </td>
-                <td>
-                  {{ cat.rowGrantMap[selectedYear!][item.itemKramank] ? 'Yes' : 'No' }}
-                </td>
-                <td class="detail-td detail-count"> {{ item.itemKramank === 3 ? less5PitCount(cat) :
-                  less5AreaCount(cat)
-                  }}</td>
-                <td class="detail-td detail-count"> {{ item.itemKramank === 3 ? more5PitCount(cat) :
-                  more5AreaCount(cat)
-                  }}</td>
+                <td class="detail-td detail-unit"> {{ cat.rowGrantMap[3][item.itemKramank] ? 'Yes' : 'No' }}</td>
+
                 <td class="detail-td detail-rate">{{ item[cat.rateField] }}</td>
                 <td class="detail-td detail-rate">{{ item[cat.rateField] / 2 }}</td>
+
+                <td class="detail-td detail-count"> {{ item.itemKramank === 3 ? less5PitCount(cat) : less5AreaCount(cat)
+                  }}</td>
+                <td class="detail-td detail-count"> {{ item.itemKramank === 3 ? more5PitCount(cat) : more5AreaCount(cat)
+                  }}</td>
+
+                <td class="detail-td">
+                  {{ getEstimatedRowAmount(cat, item) | number:'1.2-2' }}
+                </td>
+                <td class="detail-td">
+                  {{ getAlreadyPaidAmount(cat, item.itemKramank, 3) | number:'1.2-2' }}
+                </td>
                 <td class="detail-td detail-amount">
                   {{ calculateRowAmount(cat, item, 3) | number:'1.2-2' }}
                 </td>
               </tr>
 
               <tr class="detail-year-total-row">
-                <td colspan="9" class="detail-year-total-label">तृतीय वर्ष का योग</td>
+                <td colspan="10" class="detail-year-total-label">तृतीय वर्ष का योग</td>
                 <td class="detail-year-total-amount">
                   {{ getYearTotal(cat, year3Rows, 3) | number:'1.2-2' }}
                 </td>

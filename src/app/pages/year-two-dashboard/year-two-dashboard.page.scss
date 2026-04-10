@@ -437,6 +437,11 @@ ion-select {
   }
 }
 
+.card-no-click {
+  cursor: default !important;
+  pointer-events: none;
+}
+
 .glass-card::before,
 .custom-card::before {
   content: '';

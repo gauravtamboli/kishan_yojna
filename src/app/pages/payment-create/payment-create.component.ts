@@ -309,6 +309,27 @@ export class PaymentCreateComponent implements OnInit {
     return rowTotal - alreadyPaid;
   }
 
+  getEstimatedRowAmount(cat: DisplayCategory, row: any): number {
+    const rate = Number(row?.[cat.rateField]) || 0;
+    const halfRate = rate / 2;
+    let lessCount = row.itemKramank === 3 ? this.less5PitCount(cat) : this.less5AreaCount(cat);
+    let moreCount = row.itemKramank === 3 ? this.more5PitCount(cat) : this.more5AreaCount(cat);
+    return (lessCount * rate) + (moreCount * halfRate);
+  }
+
+  getLess5Amount(cat: DisplayCategory, row: any): number {
+    const rate = Number(row?.[cat.rateField]) || 0;
+    const lessCount = row.itemKramank === 3 ? this.less5PitCount(cat) : this.less5AreaCount(cat);
+    return lessCount * rate;
+  }
+
+  getMore5Amount(cat: DisplayCategory, row: any): number {
+    const rate = Number(row?.[cat.rateField]) || 0;
+    const halfRate = rate / 2;
+    const moreCount = row.itemKramank === 3 ? this.more5PitCount(cat) : this.more5AreaCount(cat);
+    return moreCount * halfRate;
+  }
+
   updateInitialCheckboxes() {
     if (!this.categoriesToShow || this.categoriesToShow.length === 0 || !this.paymentDetails) {
       return;
@@ -531,13 +552,18 @@ export class PaymentCreateComponent implements OnInit {
             if (isGranted) {
               const rate = Number(item[cat.rateField]) || 0;
               const halfRate = rate / 2;
-              if (item.itemKramank === 3) {
-                less5Amount = less5pitCount * rate;
-                more5Amount = more5pitCount * halfRate;
-              } else {
-                less5Amount = less5Count * rate;
-                more5Amount = more5Count * halfRate;
-              }
+
+              const alreadyPaidX = this.getAlreadyPaidAmountSpecific(cat, item.itemKramank, this.selectedYear!, false);
+              const alreadyPaidXA = this.getAlreadyPaidAmountSpecific(cat, item.itemKramank, this.selectedYear!, true);
+
+              const currentLessCount = item.itemKramank === 3 ? less5pitCount : less5Count;
+              const currentMoreCount = item.itemKramank === 3 ? more5pitCount : more5Count;
+
+              less5Amount = (currentLessCount * rate) - alreadyPaidX;
+              more5Amount = (currentMoreCount * halfRate) - alreadyPaidXA;
+
+              if (less5Amount < 0) less5Amount = 0;
+              if (more5Amount < 0) more5Amount = 0;
             }
 
             return {
@@ -599,27 +625,23 @@ export class PaymentCreateComponent implements OnInit {
 
 
   getAlreadyPaidAmount(cat: any, itemKramank: number, year: number): number {
+    return this.getAlreadyPaidAmountSpecific(cat, itemKramank, year, false) +
+      this.getAlreadyPaidAmountSpecific(cat, itemKramank, year, true);
+  }
 
+  getAlreadyPaidAmountSpecific(cat: any, itemKramank: number, year: number, isHalfColumn: boolean): number {
     if (!this.paymentDetails?.length) return 0;
-
     const selectedYearStr = String(year);
+    const colKey = isHalfColumn ? `work${itemKramank}A` : `Work${itemKramank}`;
 
     return this.paymentDetails
       .filter((p: any) =>
         Number(p.PlantId) === Number(cat.plant_id) &&
         String(p.payment_year) === selectedYearStr &&
-        p.is_delete === false
+        p.is_delete === false &&
+        (p.payment_Status === 'P' || p.payment_Status === 'C' || p.payment_Status === 'p' || p.payment_Status === 'c')
       )
-      .reduce((sum: number, pay: any) => {
-
-        const mainKey = `Work${itemKramank}`;
-        const halfKey = `work${itemKramank}A`;
-
-        return sum +
-          Number(pay[mainKey] ?? 0) +
-          Number(pay[halfKey] ?? 0);
-
-      }, 0);
+      .reduce((sum: number, pay: any) => sum + Number(pay[colKey] ?? 0), 0);
   }
 
 

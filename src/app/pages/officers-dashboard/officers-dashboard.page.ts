@@ -10,7 +10,7 @@ import { ChangeDetectorRef } from '@angular/core';
 import { ApiService } from 'src/app/services/api.service';
 import { OfficersLoginResponseModel } from '../officer-login/OfficersLoginResponse.model';
 import { addIcons } from 'ionicons';
-import { appsOutline, homeOutline, informationOutline, informationCircle, buildOutline, logOutOutline, chevronBackOutline, chevronForwardOutline, downloadOutline, chevronDownOutline, optionsOutline, reorderThreeOutline, documentTextOutline, statsChartOutline, mapOutline, peopleOutline, personOutline, addCircleOutline, trendingUpOutline, leafOutline, hammerOutline, clipboardOutline, businessOutline, receiptOutline, cashOutline, listOutline, walletOutline, moon, sunny, createOutline, checkmarkCircleOutline, closeCircleOutline } from 'ionicons/icons';
+import { appsOutline, homeOutline, informationOutline, informationCircle, buildOutline, logOutOutline, chevronBackOutline, chevronForwardOutline, downloadOutline, chevronDownOutline, optionsOutline, reorderThreeOutline, documentTextOutline, statsChartOutline, mapOutline, peopleOutline, personOutline, addCircleOutline, trendingUpOutline, leafOutline, hammerOutline, clipboardOutline, businessOutline, receiptOutline, cashOutline, listOutline, walletOutline, moon, sunny, createOutline, checkmarkCircleOutline, closeCircleOutline, timeOutline, alertCircleOutline, checkmarkDoneCircleOutline } from 'ionicons/icons';
 import { Browser } from '@capacitor/browser';
 import { Platform, AlertController } from '@ionic/angular';
 import { NetworkCheckService } from 'src/app/services/network-check.service';
@@ -46,13 +46,14 @@ export interface MenuPage {
   templateUrl: './officers-dashboard.page.html',
   styleUrls: ['./officers-dashboard.page.scss'],
   standalone: true,
-  imports: [IonSplitPane, IonMenu, IonMenuButton, IonList, IonAvatar, IonLoading, IonText, IonButton, IonInput, IonLabel, IonItem, IonGrid, IonRow, IonCol, IonButtons, IonContent, IonHeader, IonToolbar, CommonModule, FormsModule, IonIcon, TableModule, IonPopover]
+  imports: [IonSplitPane, IonMenu, IonMenuButton, IonList, IonAvatar, IonLoading, IonText, IonButton, IonLabel, IonItem, IonGrid, IonRow, IonCol, IonButtons, IonContent, IonHeader, IonToolbar, CommonModule, FormsModule, IonIcon, TableModule, IonPopover]
 })
 export class OfficersDashboardPage implements OnInit {
-  isUserMenuOpen = false;
-  popoverEvent: any;
-  isDarkMode = false;
-  curent_session: any;
+isUserMenuOpen = false;
+popoverEvent: any;
+isDarkMode = false;
+curent_session: any;
+totalpaymentpending: any;
 
 
 
@@ -128,7 +129,10 @@ export class OfficersDashboardPage implements OnInit {
       'list-outline': listOutline,
       'create-outline': createOutline,
       'checkmark-circle-outline': checkmarkCircleOutline,
-      'close-circle-outline': closeCircleOutline
+      'close-circle-outline': closeCircleOutline,
+      'time-outline': timeOutline,
+      'alert-circle-outline': alertCircleOutline,
+      'checkmark-done-circle-outline': checkmarkDoneCircleOutline
     });
   }
 
@@ -202,6 +206,9 @@ export class OfficersDashboardPage implements OnInit {
   totalApproved: number = 0;               // स्वीकृत (6)
   totalRejected: number = 0;               // अस्वीकृत (3, 5)
   totalBatch: number = 0;                  // प्रकटन बैच (7)
+  totalpaymentrjcted: number = 0;
+  totalpaymentackfaild: number = 0;
+  totalpaymentdone: number = 0;
   total_or_pending_or_accept_or_reject_label: string = "कुल आवेदन";
   whichBoxClicked: number = 1;
 
@@ -423,6 +430,12 @@ export class OfficersDashboardPage implements OnInit {
             // प्रकटन बैच (7)
             this.totalBatch = findCount(7);
 
+            // New Payment IDs
+            this.totalpaymentpending = findCount(8);
+            this.totalpaymentrjcted = findCount(9);
+            this.totalpaymentackfaild = findCount(10);
+            this.totalpaymentdone = findCount(11);
+
             await this.dismissDialog();
             this.cdRef.detectChanges();
           } else {
@@ -500,9 +513,40 @@ export class OfficersDashboardPage implements OnInit {
   }
 
 
-  getListOfAwedanAfterClickOnBoxes(whichBoxClickeddd: number) {
+  getListOfAwedanAfterClickOnBoxes(id: number) {
+    this.whichBoxClicked = id;
+    
+    // Map box numbers to status IDs for the list page
+    let statusId = 99; // Default Total
+    
+    if (this.whichBoxClicked === 1) {
+        statusId = 99;
+    } else if (this.whichBoxClicked === 2) {
+        statusId = 0;
+    } else if (this.whichBoxClicked === 3) {
+        statusId = 1;
+    } else if (this.whichBoxClicked === 4) {
+        statusId = 2;
+    } else if (this.whichBoxClicked === 5) {
+        statusId = 4;
+    } else if (this.whichBoxClicked === 6) {
+        statusId = 6;
+    } else if (this.whichBoxClicked === 7) {
+        statusId = 13; // Rejected (3, 5)
+    } else if (this.whichBoxClicked === 8) {
+        statusId = 7; // Draft
+    } else if (this.whichBoxClicked === 9) {
+        statusId = 8;
+    } else if (this.whichBoxClicked === 10) {
+        statusId = 9;
+    } else if (this.whichBoxClicked === 11) {
+        statusId = 10;
+    } else if (this.whichBoxClicked === 12) {
+        statusId = 11;
+    }
+
     this.router.navigate(['/application-list'], { 
-      queryParams: { status: whichBoxClickeddd } 
+      queryParams: { status: statusId } 
     });
   }
 
@@ -533,6 +577,16 @@ export class OfficersDashboardPage implements OnInit {
       return "त्रुटि सुधार कर प्राकलन पुनः प्रस्तुत करें (DFO)";
     } else if (item.awedan_status === "6") {
       return "स्वीकृत";
+    } else if (item.awedan_status === "7") {
+      return "ड्राफ्ट";
+    } else if (item.awedan_status === "8") {
+      return "भुगतान लंबित";
+    } else if (item.awedan_status === "9") {
+      return "भुगतान अस्वीकृत";
+    } else if (item.awedan_status === "10") {
+      return "भुगतान अंकन विफल";
+    } else if (item.awedan_status === "11") {
+      return "भुगतान स्वीकृत";
     } else {
       return item.awedan_status_text || '';
     }

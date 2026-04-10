@@ -359,11 +359,9 @@ ion-header {
 }
 
 // --- MATCHING LAYOUT SCSS ---
-
+//"G:\KVMY\Angular\src\assets\img\ek-ped-maa-ke-naam.jpg"
 .hero-section {
   position: relative;
-  background: url('src/assets/img/ek-ped-maa-ke-naam.png') no-repeat right center;
-  background-size: cover;
   min-height: 91.1vh;
   display: flex;
 }
@@ -478,14 +476,18 @@ ion-header {
    --------------- */
 .right-cta-layout {
   align-self: flex-end;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 2rem;
   text-align: left;
-  max-width: 500px;
+  max-width: 900px; // Increased to fit both in one row
   margin-right: 5%;
   margin-bottom: 5rem;
 }
 
 .main-heading {
-  font-size: 3.5rem;
+  font-size: 2.5rem;
   font-weight: 800;
   color: white;
   margin: 0 0 1rem 0;
@@ -512,6 +514,7 @@ ion-header {
   cursor: pointer;
   box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
+align-self: center;
 
   &:hover {
     transform: translateY(-3px);
@@ -526,6 +529,9 @@ ion-header {
 @media (max-width: 992px) {
   .right-cta-layout {
     align-self: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     text-align: center;
     margin-right: 0;
   }

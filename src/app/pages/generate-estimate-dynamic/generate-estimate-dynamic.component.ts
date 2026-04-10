@@ -167,6 +167,11 @@ export class GenerateEstimateDynamicComponent implements OnInit {
   sdo_declaration: any;
   dfo_declaration: any;
 
+  // Approval Modal State
+  isApprovalModalOpen = false;
+  tempSDOVal: string = '';
+  tempDFOVal: string = '';
+
   // Modal State
   isStatusModalOpen = false;
   statusType: 'success' | 'error' | 'question' = 'success';
@@ -246,7 +251,7 @@ export class GenerateEstimateDynamicComponent implements OnInit {
       const qAppNo = params['appNo'] || params['applicationNumber'];
       const navigation = this.router.getCurrentNavigation();
       const stateAppNo = navigation?.extras?.state?.['applicationNumber'] || history.state?.['applicationNumber'];
-      
+
       this.applicationNumber = qAppNo || stateAppNo || null;
 
       if (this.applicationNumber) {
@@ -1222,53 +1227,44 @@ export class GenerateEstimateDynamicComponent implements OnInit {
 
 
   generatePDF() {
-
-
-    const ro_declaration = 'उप-वनमंडलाधिकारी की ओर स्वीकृत हेतु सादर प्रेषित है |';
-
-
-    if (!this.firstRecord?.SDODeclaration || this.firstRecord.SDODeclaration.trim() === '') {
-
-      // If empty → use dropdown values 3 or 4
-      this.sdo_declaration =
-        this.changesdodecl === '4'
-          ? 'वन मंडलाधिकारी की ओर स्वीकृत हेतु प्रेषित है |'
-          : this.changesdodecl === '3'
-            ? 'वन परिक्षेत्र अधिकारी, त्रुटि सुधार कर प्राक्कलन पुनः प्रस्तुत करें |'
-            : '';
-
+    // Determine default values for the modal
+    if (this.firstRecord?.SDODeclaration && this.firstRecord.SDODeclaration.trim() !== '') {
+      this.tempSDOVal = this.firstRecord.SDODeclaration;
     } else {
-
-      // If existing → use 1 or 2 from DB
-      this.sdo_declaration =
-        this.firstRecord.SDODeclaration === '1'
-          ? 'वन मंडलाधिकारी की ओर स्वीकृत हेतु प्रेषित है |'
-          : this.firstRecord.SDODeclaration === '2'
-            ? 'वन परिक्षेत्र अधिकारी, त्रुटि सुधार कर प्राक्कलन पुनः प्रस्तुत करें |'
-            : '';
+      this.tempSDOVal = this.changesdodecl || '';
     }
 
-
-
-    if (!this.firstRecord?.DFODeclaration || this.firstRecord.DFODeclaration.trim() === '') {
-
-      // If empty → use dropdown values 3 or 4
-      this.dfo_declaration =
-        this.changedfodecl === '6'
-          ? 'प्राक्कलन स्वीकृत किया जाता है |'
-          : this.changedfodecl === '5'
-            ? 'वन परिक्षेत्र अधिकारी, त्रुटि सुधार कर प्राक्कलन पुनः प्रस्तुत करें |'
-            : '';
-
+    if (this.firstRecord?.DFODeclaration && this.firstRecord.DFODeclaration.trim() !== '') {
+      this.tempDFOVal = this.firstRecord.DFODeclaration;
     } else {
+      this.tempDFOVal = this.changedfodecl || '';
+    }
 
-      // If existing → use 1 or 2 from DB
-      this.dfo_declaration =
-        this.firstRecord.DFODeclaration === '1'
-          ? 'प्राक्कलन स्वीकृत किया जाता है |'
-          : this.firstRecord.DFODeclaration === '2'
-            ? 'वन परिक्षेत्र अधिकारी, त्रुटि सुधार कर प्राक्कलन पुनः प्रस्तुत करें |'
-            : '';
+    // Open the modal for approval selection
+    this.isApprovalModalOpen = true;
+  }
+
+  finalizePDF() {
+    this.isApprovalModalOpen = false;
+
+    const ro_declaration = 'उप-वनमंडलाधिकारी की ओर स्वीकृत हेतु प्रेषित है |';
+
+    // Set SDO Declaration based on selection in modal
+    if (this.tempSDOVal === '4' || this.tempSDOVal === '1') {
+      this.sdo_declaration = 'वन मंडलाधिकारी की ओर स्वीकृत हेतु प्रेषित है |';
+    } else if (this.tempSDOVal === '3' || this.tempSDOVal === '2') {
+      this.sdo_declaration = 'वन परिक्षेत्र अधिकारी, त्रुटि सुधार कर प्राक्कलन पुनः प्रस्तुत करें |';
+    } else {
+      this.sdo_declaration = '';
+    }
+
+    // Set DFO Declaration based on selection in modal
+    if (this.tempDFOVal === '6' || this.tempDFOVal === '1') {
+      this.dfo_declaration = 'प्राक्कलन स्वीकृत किया जाता है |';
+    } else if (this.tempDFOVal === '5' || this.tempDFOVal === '2') {
+      this.dfo_declaration = 'वन परिक्षेत्र अधिकारी, त्रुटि सुधार कर प्राक्कलन पुनः प्रस्तुत करें |';
+    } else {
+      this.dfo_declaration = '';
     }
 
 

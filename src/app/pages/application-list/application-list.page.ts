@@ -90,17 +90,7 @@ export class ApplicationListPage implements OnInit {
     }
 
     // Map whichBoxClicked to which_data for API
-    let whichData = 1;
-    switch (this.whichBoxClicked) {
-      case 1: whichData = 1; break; // Total
-      case 2: whichData = 2; break; // Edit Pending
-      case 3: whichData = 3; break; // RO Pending
-      case 4: whichData = 4; break; // SDO Pending
-      case 5: whichData = 6; break; // DFO Pending
-      case 6: whichData = 8; break; // Approved
-      case 7: whichData = 9; break; // Rejected
-      case 8: whichData = 10; break; // Batch
-    }
+    let whichData = this.whichBoxClicked; // Status ID passed from dashboard query params
 
     this.apiService.getListOfAwedanAccordingToAwedanStatus(
       whichData,
@@ -164,7 +154,11 @@ export class ApplicationListPage implements OnInit {
       case '4': return "DFO स्तर पर लंबित";
       case '5': return "त्रुटि सुधार (DFO द्वारा वापस)";
       case '6': return "स्वीकृत";
-      case '7': return "भुगतान हेतु प्रेषित (Batch)";
+      case '7': return "ड्राफ्ट";
+      case '8': return "भुगतान लंबित";
+      case '9': return "भुगतान अस्वीकृत";
+      case '10': return "भुगतान अंकन विफल";
+      case '11': return "भुगतान स्वीकृत";
       default: return item.awedan_status_text || 'अज्ञात';
     }
   }
@@ -223,14 +217,18 @@ export class ApplicationListPage implements OnInit {
 
   getTitle(): string {
     switch (this.whichBoxClicked) {
-      case 1: return "कुल आवेदन सूची";
-      case 2: return "संपादन लंबित सूची";
-      case 3: return "RO स्तर पर लंबित सूची";
-      case 4: return "SDO स्तर पर लंबित सूची";
-      case 5: return "DFO स्तर पर लंबित सूची";
+      case 99: return "कुल आवेदन सूची";
+      case 0: return "संपादन लंबित सूची";
+      case 1: return "RO स्तर पर लंबित सूची";
+      case 2: return "SDO स्तर पर लंबित सूची";
+      case 4: return "DFO स्तर पर लंबित सूची";
       case 6: return "स्वीकृत आवेदन सूची";
-      case 7: return "अस्वीकृत आवेदन सूची";
-      case 8: return "ड्राफ्ट सूची";
+      case 13: return "अस्वीकृत आवेदन सूची";
+      case 7: return "ड्राफ्ट सूची";
+      case 8: return "भुगतान लंबित सूची";
+      case 9: return "भुगतान अस्वीकृत सूची";
+      case 10: return "भुगतान अंकन विफल सूची";
+      case 11: return "भुगतान स्वीकृत सूची";
       default: return "आवेदन सूची";
     }
   }

@@ -50,24 +50,23 @@ import { MessageDialogComponent } from 'src/app/message-dialog/message-dialog.co
   styleUrls: ['./application-list-sdo.page.scss'],
   standalone: true,
   imports: [
-    CommonModule, 
-    FormsModule, 
-    IonHeader, 
-    IonToolbar, 
-    IonButtons, 
-    IonTitle, 
-    IonContent, 
-    IonLoading, 
-    IonRow, 
-    IonCol, 
-    IonButton, 
-    IonIcon, 
-    IonLabel, 
-    IonFab, 
+    CommonModule,
+    FormsModule,
+    IonHeader,
+    IonToolbar,
+    IonButtons,
+    IonTitle,
+    IonContent,
+    IonLoading,
+    IonRow,
+    IonCol,
+    IonButton,
+    IonIcon,
+    IonFab,
     IonFabButton,
     IonInput,
     TableModule
-  ]
+]
 })
 export class ApplicationListSdoPage implements OnInit {
   isLoading = false;
@@ -125,18 +124,18 @@ export class ApplicationListSdoPage implements OnInit {
 
   updateLabel() {
     switch (this.whichBoxClicked) {
-      case 1: this.total_or_pending_or_accept_or_reject_label = "कुल आवेदन"; break;
-      case 2: this.total_or_pending_or_accept_or_reject_label = "संपादन लंबित"; break;
-      case 3: this.total_or_pending_or_accept_or_reject_label = "परिक्षेत्र अधिकारी स्तर पर लंबित"; break;
-      case 4: this.total_or_pending_or_accept_or_reject_label = "उपवनमंडलाधिकारी स्तर पर लंबित"; break;
-      case 5: this.total_or_pending_or_accept_or_reject_label = "वनमंडलाधिकारी स्तर पर लंबित"; break;
+      case 99: this.total_or_pending_or_accept_or_reject_label = "कुल आवेदन"; break;
+      case 0: this.total_or_pending_or_accept_or_reject_label = "संपादन लंबित"; break;
+      case 1: this.total_or_pending_or_accept_or_reject_label = "परिक्षेत्र अधिकारी स्तर पर लंबित"; break;
+      case 2: this.total_or_pending_or_accept_or_reject_label = "उपवनमंडलाधिकारी स्तर पर लंबित"; break;
+      case 13: this.total_or_pending_or_accept_or_reject_label = "अस्वीकृत"; break;
+      case 4: this.total_or_pending_or_accept_or_reject_label = "वनमंडलाधिकारी स्तर पर लंबित"; break;
       case 6: this.total_or_pending_or_accept_or_reject_label = "स्वीकृत"; break;
-      case 7: this.total_or_pending_or_accept_or_reject_label = "अस्वीकृत"; break;
-      case 8: this.total_or_pending_or_accept_or_reject_label = "प्रकटन बैच"; break;
-      case 9: this.total_or_pending_or_accept_or_reject_label = "भुगतान लंबित"; break;
-      case 10: this.total_or_pending_or_accept_or_reject_label = "भुगतान अस्वीकृत"; break;
-      case 11: this.total_or_pending_or_accept_or_reject_label = "भुगतान अंकन विफल"; break;
-      case 12: this.total_or_pending_or_accept_or_reject_label = "भुगतान स्वीकृत"; break;
+      case 7: this.total_or_pending_or_accept_or_reject_label = "ड्राफ्ट"; break;
+      case 8: this.total_or_pending_or_accept_or_reject_label = "भुगतान लंबित"; break;
+      case 9: this.total_or_pending_or_accept_or_reject_label = "भुगतान अस्वीकृत"; break;
+      case 10: this.total_or_pending_or_accept_or_reject_label = "भुगतान अंकन विफल"; break;
+      case 11: this.total_or_pending_or_accept_or_reject_label = "भुगतान स्वीकृत"; break;
       default: this.total_or_pending_or_accept_or_reject_label = "आवेदन सूची";
     }
   }
@@ -152,22 +151,7 @@ export class ApplicationListSdoPage implements OnInit {
       return;
     }
 
-    let whichData = 1;
-    switch (this.whichBoxClicked) {
-      case 1: whichData = 1; break; // Total
-      case 2: whichData = 2; break; // Edit Pending
-      case 3: whichData = 3; break; // RO Pending
-      case 4: whichData = 4; break; // SDO Pending
-      case 5: whichData = 6; break; // DFO Pending
-      case 6: whichData = 8; break; // Approved
-      case 7: whichData = 5; break; // Rejected/Error Correction
-      case 8: whichData = 10; break; // Batch
-      case 9: whichData = 9; break; // Payment Pending
-      case 10: whichData = 10; break; // Payment Rejected
-      case 11: whichData = 11; break; // Ack Fail
-      case 12: whichData = 12; break; // Payment Done
-      default: whichData = 1; break;
-    }
+    let whichData = this.whichBoxClicked; // Status ID passed from dashboard query params
 
     this.apiService.getListOfAwedanAccordingToAwedanStatus(
       whichData,

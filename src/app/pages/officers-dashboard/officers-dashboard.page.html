@@ -138,56 +138,6 @@
                 </div>
               </div>
 
-              <!-- स्वीकृत -->
-              <div class="stat-card approved" [class.active]="whichBoxClicked === 6"
-                (click)="getListOfAwedanAfterClickOnBoxes(6)">
-                <div class="card-inner">
-                  <div class="icon-avatar">
-                    <ion-icon name="checkmark-circle-outline"></ion-icon>
-                  </div>
-                  <div class="card-info">
-                    <span class="label">Approved</span>
-                    <div class="card-value-row">
-                      <span class="hindi-label">स्वीकृत</span>
-                      <span class="count">{{ totalApproved }}</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <!-- अस्वीकृत -->
-              <div class="stat-card rejected" [class.active]="whichBoxClicked === 7"
-                (click)="getListOfAwedanAfterClickOnBoxes(7)">
-                <div class="card-inner">
-                  <div class="icon-avatar">
-                    <ion-icon name="close-circle-outline"></ion-icon>
-                  </div>
-                  <div class="card-info">
-                    <span class="label">Rejected</span>
-                    <div class="card-value-row">
-                      <span class="hindi-label">अस्वीकृत</span>
-                      <span class="count">{{ totalRejected }}</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <!-- ड्राफ्ट / प्रकटन बैच -->
-              <div class="stat-card draft" [class.active]="whichBoxClicked === 8"
-                (click)="getListOfAwedanAfterClickOnBoxes(8)">
-                <div class="card-inner">
-                  <div class="icon-avatar">
-                    <ion-icon name="document-text-outline"></ion-icon>
-                  </div>
-                  <div class="card-info">
-                    <span class="label">Batch</span>
-                    <div class="card-value-row">
-                      <span class="hindi-label">ड्राफ्ट</span>
-                      <span class="count">{{ totalBatch }}</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
 
               <!-- RO Pending -->
               <div class="stat-card ro-pending" [class.active]="whichBoxClicked === 3"
@@ -239,6 +189,131 @@
                   </div>
                 </div>
               </div>
+
+
+
+
+
+              <!-- स्वीकृत -->
+              <div class="stat-card approved" [class.active]="whichBoxClicked === 6"
+                (click)="getListOfAwedanAfterClickOnBoxes(6)">
+                <div class="card-inner">
+                  <div class="icon-avatar">
+                    <ion-icon name="checkmark-circle-outline"></ion-icon>
+                  </div>
+                  <div class="card-info">
+                    <span class="label">Approved</span>
+                    <div class="card-value-row">
+                      <span class="hindi-label">स्वीकृत</span>
+                      <span class="count">{{ totalApproved }}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- अस्वीकृत -->
+              <div class="stat-card rejected" [class.active]="whichBoxClicked === 7"
+                (click)="getListOfAwedanAfterClickOnBoxes(7)">
+                <div class="card-inner">
+                  <div class="icon-avatar">
+                    <ion-icon name="close-circle-outline"></ion-icon>
+                  </div>
+                  <div class="card-info">
+                    <span class="label">Rejected</span>
+                    <div class="card-value-row">
+                      <span class="hindi-label">अस्वीकृत</span>
+                      <span class="count">{{ totalRejected }}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- ड्राफ्ट / प्रकटन बैच -->
+              <div class="stat-card draft" [class.active]="whichBoxClicked === 8"
+                (click)="getListOfAwedanAfterClickOnBoxes(8)">
+                <div class="card-inner">
+                  <div class="icon-avatar">
+                    <ion-icon name="document-text-outline"></ion-icon>
+                  </div>
+                  <div class="card-info">
+                    <span class="label">Batch</span>
+                    <div class="card-value-row">
+                      <span class="hindi-label">ड्राफ्ट</span>
+                      <span class="count">{{ totalBatch }}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- भुगतान लंबित  -->
+              <div class="stat-card payment-pending" [class.active]="whichBoxClicked === 9"
+                (click)="getListOfAwedanAfterClickOnBoxes(9)">
+                <div class="card-inner">
+                  <div class="icon-avatar">
+                    <ion-icon name="time-outline"></ion-icon>
+                  </div>
+                  <div class="card-info">
+                    <span class="label">Payment Pending</span>
+                    <div class="card-value-row">
+                      <span class="hindi-label">भुगतान लंबित </span>
+                      <span class="count">{{ totalpaymentpending }}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- भुगतान अस्वीकृत  -->
+              <div class="stat-card payment-rejected" [class.active]="whichBoxClicked === 10"
+                (click)="getListOfAwedanAfterClickOnBoxes(10)">
+                <div class="card-inner">
+                  <div class="icon-avatar">
+                    <ion-icon name="close-circle-outline"></ion-icon>
+                  </div>
+                  <div class="card-info">
+                    <span class="label">Payment Rejected</span>
+                    <div class="card-value-row">
+                      <span class="hindi-label">भुगतान अस्वीकृत</span>
+                      <span class="count">{{ totalpaymentrjcted }}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- भुगतान  विफल  -->
+              <div class="stat-card payment-failed" [class.active]="whichBoxClicked === 11"
+                (click)="getListOfAwedanAfterClickOnBoxes(11)">
+                <div class="card-inner">
+                  <div class="icon-avatar">
+                    <ion-icon name="alert-circle-outline"></ion-icon>
+                  </div>
+                  <div class="card-info">
+                    <span class="label">Payment Ack Failed</span>
+                    <div class="card-value-row">
+                      <span class="hindi-label">भुगतान अंकन विफल</span>
+                      <span class="count">{{ totalpaymentackfaild }}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- भुगतान  स्वीकृत  -->
+              <div class="stat-card payment-done" [class.active]="whichBoxClicked === 12"
+                (click)="getListOfAwedanAfterClickOnBoxes(12)">
+                <div class="card-inner">
+                  <div class="icon-avatar">
+                    <ion-icon name="checkmark-done-circle-outline"></ion-icon>
+                  </div>
+                  <div class="card-info">
+                    <span class="label">Payment Done</span>
+                    <div class="card-value-row">
+                      <span class="hindi-label">भुगतान स्वीकृत</span>
+                      <span class="count">{{ totalpaymentdone }}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+
             </div>
           </ion-col>
         </ion-row>

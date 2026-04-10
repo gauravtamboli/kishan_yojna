@@ -21,7 +21,7 @@ import { ChangeDetectorRef } from '@angular/core';
   templateUrl: './application-list-ro.page.html',
   styleUrls: ['./application-list-ro.page.scss'],
   standalone: true,
-  imports: [CommonModule, FormsModule, IonHeader, IonToolbar, IonButtons, IonBackButton, IonTitle, IonContent, IonLoading, IonRow, IonCol, IonButton, IonIcon, IonLabel, IonFab, IonFabButton, IonInput, TableModule]
+  imports: [CommonModule, FormsModule, IonHeader, IonToolbar, IonButtons, IonTitle, IonContent, IonLoading, IonRow, IonCol, IonButton, IonIcon, IonLabel, IonFab, IonFabButton, IonInput, TableModule]
 })
 export class ApplicationListRoPage implements OnInit {
   isLoading = false;
@@ -78,18 +78,20 @@ export class ApplicationListRoPage implements OnInit {
 
   updateLabel() {
     switch (this.whichBoxClicked) {
-      case 1: this.total_or_pending_or_accept_or_reject_label = "कुल आवेदन"; break;
-      case 2: this.total_or_pending_or_accept_or_reject_label = "संपादन लंबित"; break;
-      case 3: this.total_or_pending_or_accept_or_reject_label = "परिक्षेत्र अधिकारी स्तर पर लंबित"; break;
-      case 4: this.total_or_pending_or_accept_or_reject_label = "उपवनमंडलाधिकारी स्तर पर लंबित"; break;
-      case 5: this.total_or_pending_or_accept_or_reject_label = "वनमंडलाधिकारी स्तर पर लंबित"; break;
+      case 99: this.total_or_pending_or_accept_or_reject_label = "कुल आवेदन"; break;
+      case 0: this.total_or_pending_or_accept_or_reject_label = "संपादन लंबित"; break;
+      case 1: this.total_or_pending_or_accept_or_reject_label = "परिक्षेत्र अधिकारी स्तर पर लंबित"; break;
+      case 2: this.total_or_pending_or_accept_or_reject_label = "उपवनमंडलाधिकारी स्तर पर लंबित"; break;
+      case 3: this.total_or_pending_or_accept_or_reject_label = "त्रुटि सुधार कर प्राकलन पुनः प्रस्तुत करें (SDO)"; break;
+      case 4: this.total_or_pending_or_accept_or_reject_label = "वनमंडलाधिकारी स्तर पर लंबित"; break;
+      case 5: this.total_or_pending_or_accept_or_reject_label = "त्रुटि सुधार कर प्राकलन पुनः प्रस्तुत करें (DFO)"; break;
       case 6: this.total_or_pending_or_accept_or_reject_label = "स्वीकृत"; break;
-      case 7: this.total_or_pending_or_accept_or_reject_label = "अस्वीकृत"; break;
-      case 8: this.total_or_pending_or_accept_or_reject_label = "प्रकटन बैच"; break;
-      case 9: this.total_or_pending_or_accept_or_reject_label = "भुगतान लंबित "; break;
-      case 10: this.total_or_pending_or_accept_or_reject_label = "भुगतान अस्वीकृत"; break;
-      case 11: this.total_or_pending_or_accept_or_reject_label = "भुगतान अंकन विफल"; break;
-      case 12: this.total_or_pending_or_accept_or_reject_label = "भुगतान स्वीकृत"; break;
+      case 13: this.total_or_pending_or_accept_or_reject_label = "अस्वीकृत"; break;
+      case 7: this.total_or_pending_or_accept_or_reject_label = "ड्राफ्ट"; break;
+      case 8: this.total_or_pending_or_accept_or_reject_label = "भुगतान लंबित "; break;
+      case 9: this.total_or_pending_or_accept_or_reject_label = "भुगतान अस्वीकृत"; break;
+      case 10: this.total_or_pending_or_accept_or_reject_label = "भुगतान अंकन विफल"; break;
+      case 11: this.total_or_pending_or_accept_or_reject_label = "भुगतान स्वीकृत"; break;
       default: this.total_or_pending_or_accept_or_reject_label = "आवेदन सूची";
     }
   }
@@ -104,17 +106,7 @@ export class ApplicationListRoPage implements OnInit {
       return;
     }
 
-    let whichData = 1;
-    if (this.whichBoxClicked === 1) whichData = 1;
-    else if (this.whichBoxClicked === 2) whichData = 2;
-    else if (this.whichBoxClicked === 3) whichData = 3;
-    else if (this.whichBoxClicked === 4) whichData = 4;
-    else if (this.whichBoxClicked === 5) whichData = 6;
-    else if (this.whichBoxClicked === 6) whichData = 8;
-    else if (this.whichBoxClicked === 7) whichData = 9;
-    else if (this.whichBoxClicked === 8) whichData = 10;
-    else if (this.whichBoxClicked === 9) whichData = 11;
-    else if (this.whichBoxClicked === 10) whichData = 12;
+    let whichData = this.whichBoxClicked; // Simplified mapping: whichBoxClicked IS the Data ID (status) passed from dashboard
 
     this.apiService.getListOfAwedanAccordingToAwedanStatus(
       whichData,
@@ -177,19 +169,7 @@ export class ApplicationListRoPage implements OnInit {
       return;
     }
 
-    let whichData = 1;
-    if (this.whichBoxClicked === 1) whichData = 1;
-    else if (this.whichBoxClicked === 2) whichData = 2;
-    else if (this.whichBoxClicked === 3) whichData = 3;
-    else if (this.whichBoxClicked === 4) whichData = 4;
-    else if (this.whichBoxClicked === 5) whichData = 6;
-    else if (this.whichBoxClicked === 6) whichData = 8;
-    else if (this.whichBoxClicked === 7) whichData = 9;
-    else if (this.whichBoxClicked === 8) whichData = 10;
-    else if (this.whichBoxClicked === 9) whichData = 9; // payment pending
-    else if (this.whichBoxClicked === 10) whichData = 10; // payment rejected
-    else if (this.whichBoxClicked === 11) whichData = 11; // ack fail
-    else if (this.whichBoxClicked === 12) whichData = 12; // payment done
+    let whichData = this.whichBoxClicked; // Use the same consistent ID for export
 
 
     const fullPageSize = this.totalRecords > 0 ? this.totalRecords : 5000;

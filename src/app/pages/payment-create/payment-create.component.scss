@@ -180,11 +180,12 @@ ion-content {
   background: var(--detail-header-bg);
   color: var(--detail-header-text);
   font-weight: 800;
-  font-size: 12px;
-  padding: 14px;
+  font-size: 11px; // Reduced for 12 columns
+  padding: 10px 4px;
   text-align: center;
   border: 1px solid var(--table-border-color) !important;
   text-transform: uppercase;
+  vertical-align: middle;
 }
 
 .detail-table tbody td {

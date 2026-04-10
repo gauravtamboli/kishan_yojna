@@ -10,7 +10,7 @@ import { ChangeDetectorRef } from '@angular/core';
 import { ApiService } from 'src/app/services/api.service';
 import { OfficersLoginResponseModel } from '../officer-login/OfficersLoginResponse.model';
 import { addIcons } from 'ionicons';
-import { appsOutline, homeOutline, informationOutline, informationCircle, buildOutline, logOutOutline, downloadOutline, eyeOutline, createOutline, calculatorOutline, chevronBackOutline, chevronForwardOutline, optionsOutline } from 'ionicons/icons';
+import { appsOutline, homeOutline, informationOutline, informationCircle, buildOutline, logOutOutline, downloadOutline, eyeOutline, createOutline, calculatorOutline, chevronBackOutline, chevronForwardOutline, optionsOutline, timeOutline, alertCircleOutline, checkmarkDoneCircleOutline, closeOutline, closeCircleOutline } from 'ionicons/icons';
 import { Browser } from '@capacitor/browser';
 import { Platform, AlertController } from '@ionic/angular';
 import { NetworkCheckService } from 'src/app/services/network-check.service';
@@ -90,6 +90,12 @@ export class OfficersDashboardCirclePage implements OnInit {
   totalSDOPending: number = 0;            // उपवनमंडलाधिकारी स्तर पर लंबित (2)
   totalDFOPending: number = 0;            // वनमंडलाधिकारी स्तर पर लंबित (4)
   totalApproved: number = 0;               // स्वीकृत (6)
+  totalRejected: number = 0;
+  totalBatch: number = 0;
+  totalpaymentpending: number = 0;
+  totalpaymentrjcted: number = 0;
+  totalpaymentackfaild: number = 0;
+  totalpaymentdone: number = 0;
   total_or_pending_or_accept_or_reject_label: string = "कुल आवेदन";
   whichBoxClicked: number = 1;
 
@@ -209,11 +215,15 @@ export class OfficersDashboardCirclePage implements OnInit {
             };
 
             this.totalAwedan = findCount(99);
-            this.totalEditPending = findCount(0) + findCount(3) + findCount(5);
-            this.totalROPending = findCount(1);
-            this.totalSDOPending = findCount(2);
-            this.totalDFOPending = findCount(4);
             this.totalApproved = findCount(6);
+            this.totalRejected = findCount(3) + findCount(5);
+            this.totalBatch = findCount(7);
+
+            // New Payment IDs
+            this.totalpaymentpending = findCount(8);
+            this.totalpaymentrjcted = findCount(9);
+            this.totalpaymentackfaild = findCount(10);
+            this.totalpaymentdone = findCount(11);
 
             await this.dismissDialog();
             this.cdRef.detectChanges();
@@ -273,7 +283,8 @@ export class OfficersDashboardCirclePage implements OnInit {
   addAllIcon() {
     addIcons({
       appsOutline, homeOutline, informationOutline, informationCircle, buildOutline, logOutOutline,
-      chevronBackOutline, chevronForwardOutline, downloadOutline
+      chevronBackOutline, chevronForwardOutline, downloadOutline, optionsOutline,
+      timeOutline, alertCircleOutline, checkmarkDoneCircleOutline, closeOutline, closeCircleOutline
     });
   }
 
@@ -297,28 +308,44 @@ export class OfficersDashboardCirclePage implements OnInit {
       case 5:
         this.total_or_pending_or_accept_or_reject_label = "वनमंडलाधिकारी स्तर पर लंबित";
         break;
-      case 6:
-        this.total_or_pending_or_accept_or_reject_label = "स्वीकृत";
-        break;
+      case 6: this.total_or_pending_or_accept_or_reject_label = "स्वीकृत"; break;
+      case 7: this.total_or_pending_or_accept_or_reject_label = "अस्वीकृत"; break;
+      case 8: this.total_or_pending_or_accept_or_reject_label = "ड्राफ्ट"; break;
+      case 9: this.total_or_pending_or_accept_or_reject_label = "भुगतान लंबित"; break;
+      case 10: this.total_or_pending_or_accept_or_reject_label = "भुगतान अस्वीकृत"; break;
+      case 11: this.total_or_pending_or_accept_or_reject_label = "भुगतान अंकन विफल"; break;
+      case 12: this.total_or_pending_or_accept_or_reject_label = "भुगतान स्वीकृत"; break;
     }
 
     this.showDialog("कृपया प्रतीक्षा करें.....");
 
     const officersLoginModel = this.getOfficersSessionData() as OfficersLoginResponseModel;
 
-    let whichData = 1;
+    let whichData = 99;
     if (this.whichBoxClicked === 1) {
-      whichData = 1;
+      whichData = 99;
     } else if (this.whichBoxClicked === 2) {
-      whichData = 2;
+      whichData = 0;
     } else if (this.whichBoxClicked === 3) {
-      whichData = 3;
+      whichData = 1;
     } else if (this.whichBoxClicked === 4) {
-      whichData = 4;
+      whichData = 2;
     } else if (this.whichBoxClicked === 5) {
-      whichData = 6;
+      whichData = 4;
     } else if (this.whichBoxClicked === 6) {
+      whichData = 6;
+    } else if (this.whichBoxClicked === 7) {
+      whichData = 13; // Rejected (3, 5)
+    } else if (this.whichBoxClicked === 8) {
+      whichData = 7;
+    } else if (this.whichBoxClicked === 9) {
       whichData = 8;
+    } else if (this.whichBoxClicked === 10) {
+      whichData = 9;
+    } else if (this.whichBoxClicked === 11) {
+      whichData = 10;
+    } else if (this.whichBoxClicked === 12) {
+      whichData = 11;
     }
 
     if (this.whichBoxClicked === 1) {
@@ -333,6 +360,18 @@ export class OfficersDashboardCirclePage implements OnInit {
       this.totalRecords = this.totalDFOPending;
     } else if (this.whichBoxClicked === 6) {
       this.totalRecords = this.totalApproved;
+    } else if (this.whichBoxClicked === 7) {
+      this.totalRecords = this.totalRejected;
+    } else if (this.whichBoxClicked === 8) {
+      this.totalRecords = this.totalBatch;
+    } else if (this.whichBoxClicked === 9) {
+      this.totalRecords = this.totalpaymentpending;
+    } else if (this.whichBoxClicked === 10) {
+      this.totalRecords = this.totalpaymentrjcted;
+    } else if (this.whichBoxClicked === 11) {
+      this.totalRecords = this.totalpaymentackfaild;
+    } else if (this.whichBoxClicked === 12) {
+      this.totalRecords = this.totalpaymentdone;
     }
 
     this.totalPages = Math.ceil(this.totalRecords / this.pageSize);
@@ -433,6 +472,16 @@ export class OfficersDashboardCirclePage implements OnInit {
       return "त्रुटि सुधार कर प्राकलन पुनः प्रस्तुत करें (DFO)";
     } else if (item.awedan_status === "6") {
       return "स्वीकृत";
+    } else if (item.awedan_status === "7") {
+      return "ड्राफ्ट";
+    } else if (item.awedan_status === "8") {
+      return "भुगतान लंबित";
+    } else if (item.awedan_status === "9") {
+      return "भुगतान अस्वीकृत";
+    } else if (item.awedan_status === "10") {
+      return "भुगतान अंकन विफल";
+    } else if (item.awedan_status === "11") {
+      return "भुगतान स्वीकृत";
     } else {
       return item.awedan_status_text || '';
     }

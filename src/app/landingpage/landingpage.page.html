@@ -50,10 +50,10 @@
       </ion-toolbar>
     </ion-header>
     <ion-content>
-      <div class="hero-section">
+      <div class="hero-section" style="background: url('assets/img/ek-ped-maa-ke-naam.jpg') no-repeat right center; background-size: cover;">
         <div class="hero-gradient-overlay">
           <div class="content-wrapper">
-            
+
             <!-- Top Officials & Logo Row -->
             <div class="top-officials-row">
               <!-- CM -->
@@ -61,37 +61,53 @@
                 <img src="assets/img/cm_image.jpg" alt="CM Image" class="round-img" />
                 <div class="text-info">
                   <h4 style="color: white;">श्री विष्णु देव साय</h4>
-                  <p>{{ getTranslation('cm_designation') }}<br/>{{ getTranslation('state_name') }}</p>
+                  <p>{{ getTranslation('cm_designation') }}<br />{{ getTranslation('state_name') }}</p>
                 </div>
               </div>
-              
-              <!-- State Logo -->
+
+              <!-- State Logo
               <div class="official-item">
                 <img src="assets/img/cg_image.png" alt="CG Logo" class="round-img logo-img" />
                 <div class="text-info">
                   <h4 style="color: white;" >{{ getTranslation('cg_sasan') }}</h4>
                 </div>
-              </div>
+              </div> -->
 
               <!-- Minister -->
               <div class="official-item">
                 <img src="assets/img/minister_image.jpg" alt="Minister Image" class="round-img" />
                 <div class="text-info">
                   <h4 style="color: white;">{{ getTranslation('minister_name') }}</h4>
-                  <p style="color: white;">{{ getTranslation('minister_designation') }}<br/>{{ getTranslation('state_name') }}</p>
+                  <p style="color: white;">{{ getTranslation('minister_designation') }}<br />{{
+                    getTranslation('state_name') }}</p>
                 </div>
               </div>
             </div>
 
+
             <!-- Right Align Call to Action -->
             <div class="right-cta-layout">
-              <h1 class="main-heading">एक पेड़ माँ के नाम </h1>
-              <h2 class="sub-heading">{{ getTranslation('department') }}</h2>
-              <button class="apply-btn" (click)="navigateToKisanAwedan()">
-                योजना के लिए आवेदन करें
-              </button>
+              <div>
+                <!-- State Logo -->
+                <div class="official-item">
+                  <img src="assets/img/cg_image.png" alt="CG Logo" class="round-img logo-img" />
+                  <div class="text-info">
+                    <h4 style="color: white;">{{ getTranslation('cg_sasan') }}</h4>
+                  </div>
+                </div>
+              </div>
+              <div>
+                <h1 class="main-heading">एक पेड़ माँ के नाम 2.0 </h1>
+                <h2 class="sub-heading">{{ getTranslation('department') }}</h2>
+                <button class="apply-btn" (click)="navigateToKisanAwedan()">
+                  योजना के लिए आवेदन करें
+                </button>
+              </div>
+
             </div>
-            
+
+
+
           </div>
         </div>
       </div>

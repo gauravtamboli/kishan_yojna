@@ -229,6 +229,155 @@
                     </ion-grid>
                   </ion-card>
                 </ion-col>
+                <!-- अस्वीकृत -->
+                <ion-col size="6" size-lg="2">
+                  <ion-card class="custom-card" (click)="getListOfAwedanAfterClickOnBoxes(7)">
+                    <ion-grid style="
+                        background: linear-gradient(
+                          135deg,
+                          #f44336 0%,
+                          #d32f2f 100%
+                        );
+                      ">
+                      <ion-row>
+                        <ion-col size="12" class="ion-text-center">
+                          <ion-label class="responsive-label-count">{{totalRejected}}</ion-label>
+                          <hr style="
+                              border: none;
+                              border-top: 1px solid rgba(255, 255, 255, 0.3);
+                              margin: 8px 0;
+                            " />
+                          <ion-label class="responsive-label" style="color: white">अस्वीकृत</ion-label>
+                        </ion-col>
+                      </ion-row>
+                    </ion-grid>
+                  </ion-card>
+                </ion-col>
+
+                <!-- ड्राफ्ट -->
+                <ion-col size="6" size-lg="2">
+                  <ion-card class="custom-card" (click)="getListOfAwedanAfterClickOnBoxes(8)">
+                    <ion-grid style="
+                        background: linear-gradient(
+                          135deg,
+                          #607d8b 0%,
+                          #455a64 100%
+                        );
+                      ">
+                      <ion-row>
+                        <ion-col size="12" class="ion-text-center">
+                          <ion-label class="responsive-label-count">{{totalBatch}}</ion-label>
+                          <hr style="
+                              border: none;
+                              border-top: 1px solid rgba(255, 255, 255, 0.3);
+                              margin: 8px 0;
+                            " />
+                          <ion-label class="responsive-label" style="color: white">ड्राफ्ट</ion-label>
+                        </ion-col>
+                      </ion-row>
+                    </ion-grid>
+                  </ion-card>
+                </ion-col>
+
+                <!-- भुगतान लंबित -->
+                <ion-col size="6" size-lg="2">
+                  <ion-card class="custom-card" (click)="getListOfAwedanAfterClickOnBoxes(9)">
+                    <ion-grid style="
+                        background: linear-gradient(
+                          135deg,
+                          #795548 0%,
+                          #5d4037 100%
+                        );
+                      ">
+                      <ion-row>
+                        <ion-col size="12" class="ion-text-center">
+                          <ion-label class="responsive-label-count">{{totalpaymentpending}}</ion-label>
+                          <hr style="
+                              border: none;
+                              border-top: 1px solid rgba(255, 255, 255, 0.3);
+                              margin: 8px 0;
+                            " />
+                          <ion-label class="responsive-label" style="color: white">भुगतान लंबित</ion-label>
+                        </ion-col>
+                      </ion-row>
+                    </ion-grid>
+                  </ion-card>
+                </ion-col>
+
+                <!-- भुगतान अस्वीकृत -->
+                <ion-col size="6" size-lg="2">
+                  <ion-card class="custom-card" (click)="getListOfAwedanAfterClickOnBoxes(10)">
+                    <ion-grid style="
+                        background: linear-gradient(
+                          135deg,
+                          #ff5722 0%,
+                          #e64a19 100%
+                        );
+                      ">
+                      <ion-row>
+                        <ion-col size="12" class="ion-text-center">
+                          <ion-label class="responsive-label-count">{{totalpaymentrjcted}}</ion-label>
+                          <hr style="
+                              border: none;
+                              border-top: 1px solid rgba(255, 255, 255, 0.3);
+                              margin: 8px 0;
+                            " />
+                          <ion-label class="responsive-label" style="color: white">भुगतान अस्वीकृत</ion-label>
+                        </ion-col>
+                      </ion-row>
+                    </ion-grid>
+                  </ion-card>
+                </ion-col>
+
+                <!-- भुगतान अंकन विफल -->
+                <ion-col size="6" size-lg="2">
+                  <ion-card class="custom-card" (click)="getListOfAwedanAfterClickOnBoxes(11)">
+                    <ion-grid style="
+                        background: linear-gradient(
+                          135deg,
+                          #e91e63 0%,
+                          #c2185b 100%
+                        );
+                      ">
+                      <ion-row>
+                        <ion-col size="12" class="ion-text-center">
+                          <ion-label class="responsive-label-count">{{totalpaymentackfaild}}</ion-label>
+                          <hr style="
+                              border: none;
+                              border-top: 1px solid rgba(255, 255, 255, 0.3);
+                              margin: 8px 0;
+                            " />
+                          <ion-label class="responsive-label" style="color: white">भुगतान अंकन विफल</ion-label>
+                        </ion-col>
+                      </ion-row>
+                    </ion-grid>
+                  </ion-card>
+                </ion-col>
+
+                <!-- भुगतान स्वीकृत -->
+                <ion-col size="6" size-lg="2">
+                  <ion-card class="custom-card" (click)="getListOfAwedanAfterClickOnBoxes(12)">
+                    <ion-grid style="
+                        background: linear-gradient(
+                          135deg,
+                          #009688 0%,
+                          #00796b 100%
+                        );
+                      ">
+                      <ion-row>
+                        <ion-col size="12" class="ion-text-center">
+                          <ion-label class="responsive-label-count">{{totalpaymentdone}}</ion-label>
+                          <hr style="
+                              border: none;
+                              border-top: 1px solid rgba(255, 255, 255, 0.3);
+                              margin: 8px 0;
+                            " />
+                          <ion-label class="responsive-label" style="color: white">भुगतान स्वीकृत</ion-label>
+                        </ion-col>
+                      </ion-row>
+                    </ion-grid>
+                  </ion-card>
+                </ion-col>
               </ion-row>
             </ion-grid>
 

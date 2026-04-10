@@ -119,6 +119,7 @@ export class YearTwoDashboardPage implements OnInit {
   totalCount: number = 0;
   countYes: number = 0;  // Applications with year 2 data
   countNo: number = 0;    // Applications without year 2 data
+  totalPlants: number = 0; // Total plants to be implanted (eligible)
   whichBoxClicked: number = 1; // 1 = All, 2 = Yes, 3 = No
   currentFilter: string | null = null; // "Yes", "No", or null
 
@@ -328,13 +329,15 @@ export class YearTwoDashboardPage implements OnInit {
         officersLoginModel.circle_id,
         officersLoginModel.devision_id,
         officersLoginModel.rang_id,
-        officersLoginModel.officerId.toString()
+        officersLoginModel.officerId.toString(),
+        this.curent_session
       ).subscribe(
         (response: YearTwoAwedanCountsResponse) => {
           if (response.response.code === 200) {
             this.totalCount = response.data.total_count || 0;
             this.countYes = response.data.count_yes || 0;
             this.countNo = response.data.count_no || 0;
+            this.totalPlants = response.data.total_plants || 0;
             this.cdRef.detectChanges();
           }
         },
@@ -363,7 +366,8 @@ export class YearTwoDashboardPage implements OnInit {
         officersLoginModel.officerId?.toString() || '',
         this.currentPage,
         this.pageSize,
-        filterYear2 // Pass filter parameter
+        filterYear2, // Pass filter parameter
+        this.curent_session
       ).subscribe(
         (response: YearTwoAwedanResponse) => {
           if (response.response.code === 200) {

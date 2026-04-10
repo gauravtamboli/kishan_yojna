@@ -9,6 +9,7 @@ export interface YearTwoAwedanCountsResponse {
     count_yes: number;
     count_no: number;
     total_count: number;
+    total_plants?: number;
   };
 }
 

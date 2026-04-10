@@ -356,23 +356,31 @@ export class OfficersDashboardROPage implements OnInit {
     }
 
     // Map whichBoxClicked to which_data for API
-    let whichData = 1; // default to total
+    let whichData = this.whichBoxClicked; // default
     if (this.whichBoxClicked === 1) {
-      whichData = 1; // Total
+      whichData = 99; // Total
     } else if (this.whichBoxClicked === 2) {
-      whichData = 2; // Edit Pending
+      whichData = 0; // Edit Pending (Sampadan Lambit)
     } else if (this.whichBoxClicked === 3) {
-      whichData = 3; // RO Pending
+      whichData = 1; // RO Pending
     } else if (this.whichBoxClicked === 4) {
-      whichData = 4; // SDO Pending
+      whichData = 2; // SDO Pending
     } else if (this.whichBoxClicked === 5) {
-      whichData = 6; // DFO Pending
+      whichData = 4; // DFO Pending
     } else if (this.whichBoxClicked === 6) {
-      whichData = 8; // Approved
+      whichData = 6; // Approved
     } else if (this.whichBoxClicked === 7) {
-      whichData = 9; // Rejected
+      whichData = 13; // Rejected (3, 5)
     } else if (this.whichBoxClicked === 8) {
-      whichData = 10; // Batch
+      whichData = 7; // Draft
+    } else if (this.whichBoxClicked === 9) {
+      whichData = 8; // Payment Pending
+    } else if (this.whichBoxClicked === 10) {
+      whichData = 9; // Payment Rejected
+    } else if (this.whichBoxClicked === 11) {
+      whichData = 10; // Ack Fail
+    } else if (this.whichBoxClicked === 12) {
+      whichData = 11; // Payment Done
     }
 
     // Set a high pageSize to fetch everything for this category
@@ -612,25 +620,52 @@ export class OfficersDashboardROPage implements OnInit {
   getListOfAwedanAfterClickOnBoxes(whichBoxClickeddd: number) {
     this.whichBoxClicked = whichBoxClickeddd;
 
-    // Get totalRecords for the clicked box
+    // Map box numbers to status IDs for the list page
+    let statusId = 99; // Default Total
     let recordsCount = 0;
-    if (this.whichBoxClicked === 1) recordsCount = this.totalAwedan;
-    else if (this.whichBoxClicked === 2) recordsCount = this.totalEditPending;
-    else if (this.whichBoxClicked === 3) recordsCount = this.totalROPending;
-    else if (this.whichBoxClicked === 4) recordsCount = this.totalSDOPending;
-    else if (this.whichBoxClicked === 5) recordsCount = this.totalDFOPending;
-    else if (this.whichBoxClicked === 6) recordsCount = this.totalApproved;
-    else if (this.whichBoxClicked === 7) recordsCount = this.totalRejected;
-    else if (this.whichBoxClicked === 8) recordsCount = this.totalBatch;
-    else if (this.whichBoxClicked === 9 ) recordsCount = this.totalpaymentpending;
-    else if (this.whichBoxClicked === 10) recordsCount = this.totalpaymentrjcted;
-    else if (this.whichBoxClicked === 11) recordsCount = this.totalpaymentackfaild;
-    else if (this.whichBoxClicked === 12) recordsCount = this.totalpaymentdone;
+
+    if (this.whichBoxClicked === 1) {
+        statusId = 99;
+        recordsCount = this.totalAwedan;
+    } else if (this.whichBoxClicked === 2) {
+        statusId = 0;
+        recordsCount = this.totalEditPending;
+    } else if (this.whichBoxClicked === 3) {
+        statusId = 1;
+        recordsCount = this.totalROPending;
+    } else if (this.whichBoxClicked === 4) {
+        statusId = 2;
+        recordsCount = this.totalSDOPending;
+    } else if (this.whichBoxClicked === 5) {
+        statusId = 4;
+        recordsCount = this.totalDFOPending;
+    } else if (this.whichBoxClicked === 6) {
+        statusId = 6;
+        recordsCount = this.totalApproved;
+    } else if (this.whichBoxClicked === 7) {
+        statusId = 13; // Rejected (3, 5)
+        recordsCount = this.totalRejected;
+    } else if (this.whichBoxClicked === 8) {
+        statusId = 7; // Draft
+        recordsCount = this.totalBatch;
+    } else if (this.whichBoxClicked === 9) {
+        statusId = 8;
+        recordsCount = this.totalpaymentpending;
+    } else if (this.whichBoxClicked === 10) {
+        statusId = 9;
+        recordsCount = this.totalpaymentrjcted;
+    } else if (this.whichBoxClicked === 11) {
+        statusId = 10;
+        recordsCount = this.totalpaymentackfaild;
+    } else if (this.whichBoxClicked === 12) {
+        statusId = 11;
+        recordsCount = this.totalpaymentdone;
+    }
 
     // Navigate to separate page with parameters using state
     this.router.navigate(['/application-list-ro'], {
       state: {
-        boxType: whichBoxClickeddd,
+        boxType: statusId, // Pass the STATUS ID as boxType
         totalRecords: recordsCount
       }
     });

@@ -25,7 +25,7 @@ import { AuthServiceService } from 'src/app/services/auth-service.service';
   templateUrl: './officers-dashboard-sdo.page.html',
   styleUrls: ['./officers-dashboard-sdo.page.scss'],
   standalone: true,
-  imports: [IonPopover, IonSplitPane, IonMenuToggle, IonMenu, IonMenuButton, IonList, IonAvatar, IonLoading, IonText, IonButton, IonInput, IonLabel, IonItem, IonGrid,
+  imports: [IonPopover, IonSplitPane, IonMenuToggle, IonMenu, IonMenuButton, IonList, IonAvatar, IonLoading, IonText, IonButton, IonLabel, IonItem, IonGrid,
     IonRow, IonCol, IonButtons, IonContent, IonHeader, IonToolbar, CommonModule, FormsModule, IonIcon, TableModule]
 })
 export class OfficersDashboardSDOPage implements OnInit {
@@ -173,8 +173,39 @@ export class OfficersDashboardSDOPage implements OnInit {
     }
   }
 
-  getListOfAwedanAfterClickOnBoxes(id: any) {
-    this.router.navigate(['/application-list-sdo'], { queryParams: { status: id } });
+  getListOfAwedanAfterClickOnBoxes(id: number) {
+    this.whichBoxClicked = id;
+    
+    // Map box numbers to status IDs for the list page
+    let statusId = 99; // Default Total
+    
+    if (this.whichBoxClicked === 1) {
+        statusId = 99;
+    } else if (this.whichBoxClicked === 2) {
+        statusId = 0;
+    } else if (this.whichBoxClicked === 3) {
+        statusId = 1;
+    } else if (this.whichBoxClicked === 4) {
+        statusId = 2;
+    } else if (this.whichBoxClicked === 5) {
+        statusId = 4;
+    } else if (this.whichBoxClicked === 6) {
+        statusId = 6;
+    } else if (this.whichBoxClicked === 7) {
+        statusId = 13; // Rejected (3, 5)
+    } else if (this.whichBoxClicked === 8) {
+        statusId = 7; // Draft
+    } else if (this.whichBoxClicked === 9) {
+        statusId = 8;
+    } else if (this.whichBoxClicked === 10) {
+        statusId = 9;
+    } else if (this.whichBoxClicked === 11) {
+        statusId = 10;
+    } else if (this.whichBoxClicked === 12) {
+        statusId = 11;
+    }
+
+    this.router.navigate(['/application-list-sdo'], { queryParams: { status: statusId } });
   }
 
   async onMenuItemClick(page: string) {

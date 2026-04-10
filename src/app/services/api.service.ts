@@ -830,7 +830,8 @@ export class ApiService {
     circle_id: string,
     devision_id: string | null,
     rang_id: string | null,
-    officers_id: string
+    officers_id: string,
+    curent_session?: string
   ): Observable<YearTwoAwedanCountsResponse> {
     const headers = { 'Content-Type': 'application/json' };
 
@@ -841,6 +842,7 @@ export class ApiService {
       division_id: devision_id ? devision_id.toString() : null,
       rang_id: rang_id ? rang_id.toString() : null,
       officers_id: officers_id.toString(),
+      curent_session: curent_session,
       page: 1,
       pageSize: 10
     };
@@ -866,7 +868,8 @@ export class ApiService {
     officers_id: string,
     page: number = 1,
     pageSize: number = 10,
-    filter_year2: string | null = null // "Yes", "No", or null for all
+    filter_year2: string | null = null, // "Yes", "No", or null for all
+    curent_session?: string
   ): Observable<YearTwoAwedanResponse> {
     const headers = { 'Content-Type': 'application/json' };
 
@@ -879,7 +882,8 @@ export class ApiService {
       officers_id: officers_id.toString(),
       page: page,
       pageSize: pageSize,
-      filter_year2: filter_year2 // Add filter parameter
+      filter_year2: filter_year2,
+      curent_session: curent_session
     };
 
     return from(this.buildApiUrl(this.apiUrlGetYearTwoAwedanList)).pipe(
@@ -944,7 +948,8 @@ export class ApiService {
     circle_id: string,
     devision_id: string | null,
     rang_id: string | null,
-    officers_id: string
+    officers_id: string,
+    curent_session?: string
   ): Observable<YearThreeAwedanCountsResponse> {
     const headers = { 'Content-Type': 'application/json' };
 
@@ -955,6 +960,7 @@ export class ApiService {
       division_id: devision_id ? devision_id.toString() : null,
       rang_id: rang_id ? rang_id.toString() : null,
       officers_id: officers_id.toString(),
+      curent_session: curent_session,
       page: 1,
       pageSize: 10
     };
@@ -980,7 +986,8 @@ export class ApiService {
     officers_id: string,
     page: number = 1,
     pageSize: number = 10,
-    filter_year3: string | null = null // "Yes", "No", or null for all
+    filter_year3: string | null = null, // "Yes", "No", or null for all
+    curent_session?: string
   ): Observable<YearThreeAwedanResponse> {
     const headers = { 'Content-Type': 'application/json' };
 
@@ -993,7 +1000,8 @@ export class ApiService {
       officers_id: officers_id.toString(),
       page: page,
       pageSize: pageSize,
-      filter_year3: filter_year3 // Add filter parameter
+      filter_year3: filter_year3,
+      curent_session: curent_session
     };
 
     return from(this.buildApiUrl(this.apiUrlGetYearThreeAwedanList)).pipe(

@@ -43,7 +43,8 @@
           </div>
           <div class="detail-legacy-item">
             <span class="l-label">पता :</span>
-            <span class="l-value">Address {{ singleData.applicationNumber }}, Gram Panchayat {{ singleData.applicationNumber }}</span>
+            <span class="l-value">Address {{ singleData.applicationNumber }}, Gram Panchayat {{
+              singleData.applicationNumber }}</span>
           </div>
           <div class="detail-legacy-item">
             <span class="l-label">मोबाइल नंबर :</span>
@@ -84,7 +85,7 @@
           <thead>
             <!-- Row 1: Main headers -->
             <tr>
-              <th rowspan="2" class="detail-th-year">वर्ष  <br> (1)</th>
+              <th rowspan="2" class="detail-th-year">वर्ष <br> (1)</th>
               <th rowspan="2" class="detail-th">क्रमांक <br> (2)</th>
               <th rowspan="2" class="detail-th">कार्य विवरण <br> (3)</th>
               <th colspan="2" class="detail-th">अनुदान दर (₹) </th>
@@ -112,20 +113,20 @@
               <td class="detail-td detail-kramank">{{ item.itemKramank }}</td>
               <td class="detail-td detail-karya" [style.text-align]="item.tablealign"
                 [style.font-weight]="item.fontweight">{{ item.karyaVivran }}</td>
-              <td class="detail-td detail-rate">{{ item[cat.rateField]  }}</td>
-              <td class="detail-td detail-rate">{{ halfrate(item[cat.rateField])  }}</td>
+              <td class="detail-td detail-rate">{{ item[cat.rateField] }}</td>
+              <td class="detail-td detail-rate">{{ halfrate(item[cat.rateField]) }}</td>
               <td class="detail-td detail-count">{{ cat.plantCount }}</td>
               <td class="detail-td detail-count">{{ less5TreeCount(cat) }}</td>
               <td class="detail-td detail-count">{{ more5TreeCount(cat) }}</td>
-              <td>{{ item[cat.rateField] * less5TreeCount(cat)  }}</td>
-              <td>{{ halfrate(item[cat.rateField]) * more5TreeCount(cat)  }}</td>
-              <td class="detail-td detail-amount">{{ total(cat, item, 1)  }}</td>
+              <td>{{ item[cat.rateField] * less5TreeCount(cat) | number:'1.0-0' }}</td>
+              <td>{{ halfrate(item[cat.rateField]) * more5TreeCount(cat) | number:'1.0-0' }}</td>
+              <td class="detail-td detail-amount">{{ total(cat, item, 1) | number:'1.0-0'}}</td>
             </tr>
             <tr class="detail-year-total-row">
               <td colspan="8" class="detail-year-total-label">प्रथम वर्ष का योग</td>
-              <td>{{ getKoolYog1(cat)  }}</td>
-              <td>{{ getKoolYog1A(cat)  }}</td>
-              <td class="detail-year-total-amount">{{ getYearTotal(cat, year1Rows)  }}</td>
+              <td>{{ getKoolYog1(cat) | number:'1.0-0' }}</td>
+              <td>{{ getKoolYog1A(cat) | number:'1.0-0' }}</td>
+              <td class="detail-year-total-amount">{{ getYearTotal(cat, year1Rows) | number:'1.0-0' }}</td>
             </tr>
 
             <!-- द्वितीय वर्ष -->
@@ -161,11 +162,11 @@
               <td class="detail-td detail-kramank">{{ item.itemKramank }}</td>
               <td class="detail-td detail-karya" [style.text-align]="item.tablealign"
                 [style.font-weight]="item.fontweight">{{ item.karyaVivran }}</td>
-                <td class="detail-td detail-rate">{{ item[cat.rateField] | number:'1.0-0' }}</td>
-                <td class="detail-td detail-rate">{{ halfrate2(item[cat.rateField], item.itemKramank) | number:'1.0-0' }}
-                </td>
-                <td class="detail-td detail-count">{{ cat.plantCount }}</td>
-                <td class="detail-td detail-count">{{ less5TreeCount(cat) }}</td>
+              <td class="detail-td detail-rate">{{ item[cat.rateField] | number:'1.0-0' }}</td>
+              <td class="detail-td detail-rate">{{ halfrate2(item[cat.rateField], item.itemKramank) | number:'1.0-0' }}
+              </td>
+              <td class="detail-td detail-count">{{ cat.plantCount }}</td>
+              <td class="detail-td detail-count">{{ less5TreeCount(cat) }}</td>
               <td class="detail-td detail-count">{{ more5TreeCount(cat) }}</td>
               <td class="detail-td detail-count">{{ item[cat.rateField] * less5TreeCount(cat) | number:'1.0-0' }}</td>
               <td class="detail-td detail-count">{{ halfrate(item[cat.rateField]) * more5TreeCount(cat) | number:'1.0-0'
@@ -258,14 +259,15 @@
                   <ion-col size="12" size-md="4" size-lg="4">
 
                     <!-- When DFO Can Take Action -->
-                    <div *ngIf="singleData.awedan_status === '4' && isDFO" class="custome-declearation status-edit-view">
+                    <div *ngIf="singleData.awedan_status === '4' && isDFO"
+                      class="custome-declearation status-edit-view">
                       <div class="select-container">
                         <ng-select *ngIf="estimate_data?.dfo_file != null" [(ngModel)]="vanMandalAdhikari"
                           [items]="vanMandalOptions" bindLabel="label" bindValue="value" placeholder="विकल्प चुनें"
                           class="custom-ngselect" (change)="changeDFODeclaration($event)">
                         </ng-select>
                       </div>
-                      
+
                       <div class="action-label">
                         {{vanMandalAdhikari === '5' ? 'पत्र अपलोड करे' : 'अग्रेषण पत्र अपलोड करे :-'}}
                       </div>
@@ -278,8 +280,7 @@
                       </div>
 
                       <div class="file-link-section" *ngIf="estimate_data?.dfo_file != null">
-                        <a [href]="getFileUrl2(estimate_data?.dfo_file)" target="_blank"
-                          class="official-link">
+                        <a [href]="getFileUrl2(estimate_data?.dfo_file)" target="_blank" class="official-link">
                           {{ estimate_data?.dfo_file }}
                         </a>
                       </div>
@@ -321,7 +322,8 @@
                   <ion-col size="12" size-md="4" size-lg="4">
 
                     <!-- When SDO Can Take Action -->
-                    <div *ngIf="singleData.awedan_status === '2' && isSDO" class="custome-declearation status-edit-view">
+                    <div *ngIf="singleData.awedan_status === '2' && isSDO"
+                      class="custome-declearation status-edit-view">
                       <div class="select-container">
                         <ng-select *ngIf="estimate_data?.sdo_file != null" [(ngModel)]="upVanMandalAdhikari"
                           [items]="upVanMandalOptions" bindLabel="label" bindValue="value" placeholder="विकल्प चुनें"
@@ -339,10 +341,9 @@
                           <ion-icon name="cloud-upload-outline"></ion-icon>
                         </ion-button>
                       </div>
-                      
+
                       <div class="file-link-section" *ngIf="estimate_data?.sdo_file != null">
-                        <a [href]="getFileUrl1(estimate_data?.sdo_file)" target="_blank"
-                          class="official-link">
+                        <a [href]="getFileUrl1(estimate_data?.sdo_file)" target="_blank" class="official-link">
                           {{ estimate_data?.sdo_file }}
                         </a>
                       </div>
@@ -389,8 +390,9 @@
                     <!-- When RO Can Take Action -->
                     <div *ngIf="singleData.awedan_status === '1' && isRO" class="custome-declearation status-edit-view">
                       <div class="select-container">
-                        <ng-select *ngIf="estimate_data" [(ngModel)]="vanParikshanAdhikari" [items]="vanParikshanOptions"
-                          bindLabel="label" bindValue="value" placeholder="विकल्प चुनें" class="custom-ngselect">
+                        <ng-select *ngIf="estimate_data" [(ngModel)]="vanParikshanAdhikari"
+                          [items]="vanParikshanOptions" bindLabel="label" bindValue="value" placeholder="विकल्प चुनें"
+                          class="custom-ngselect">
                         </ng-select>
                       </div>
 
@@ -407,8 +409,7 @@
                       </div>
 
                       <div class="file-link-section" *ngIf="estimate_data">
-                        <a [href]="getFileUrl(estimate_data.ro_file)" target="_blank"
-                          class="official-link">
+                        <a [href]="getFileUrl(estimate_data.ro_file)" target="_blank" class="official-link">
                           {{ estimate_data.ro_file }}
                         </a>
                       </div>
@@ -519,6 +520,52 @@
     </div>
   </div>
 
+
+  <!-- Approval Modal for PDF Generation -->
+  <ion-modal [isOpen]="isApprovalModalOpen" (didDismiss)="isApprovalModalOpen = false" [backdropDismiss]="false"
+    class="premium-modal">
+    <ng-template>
+      <div class="modal-glass-content">
+        <h2 class="modal-title">अनुमोदन चयन करें (Select Approval)</h2>
+        <p class="modal-desc">प्रिंट के लिए अनुमोदन का चयन करें :</p>
+
+        <div style="margin: 20px 0;">
+          <ion-list lines="none" style="background: transparent;">
+            <!-- SDO Selection (Only show if logged-in user is SDO) -->
+            <ion-item *ngIf="isSDO" style="--background: transparent; --padding-start: 0;">
+              <div style="width: 100%;">
+                <label style="display: block; margin-bottom: 8px; font-weight: 500; font-size: 14px;">उप-वनमंडलाधिकारी
+                  (SDO) का अनुमोदन :</label>
+                <ng-select [(ngModel)]="tempSDOVal" [items]="upVanMandalOptions" bindLabel="label" bindValue="value"
+                  placeholder="विकल्प चुनें" class="custom-ngselect" appendTo="body">
+                </ng-select>
+              </div>
+            </ion-item>
+
+            <!-- DFO Selection (Only show if logged-in user is DFO) -->
+            <ion-item *ngIf="isDFO" style="--background: transparent; --padding-start: 0; margin-top: 15px;">
+              <div style="width: 100%;">
+                <label style="display: block; margin-bottom: 8px; font-weight: 500; font-size: 14px;">वनमंडलाधिकारी
+                  (DFO) का अनुमोदन :</label>
+                <ng-select [(ngModel)]="tempDFOVal" [items]="vanMandalOptions" bindLabel="label" bindValue="value"
+                  placeholder="विकल्प चुनें" class="custom-ngselect" appendTo="body">
+                </ng-select>
+              </div>
+            </ion-item>
+          </ion-list>
+        </div>
+
+        <div class="modal-footer">
+          <ion-button class="action-btn success" (click)="finalizePDF()">
+            प्रिंट PDF तैयार करें
+          </ion-button>
+          <ion-button fill="clear" color="medium" (click)="isApprovalModalOpen = false">
+            रद्द करें
+          </ion-button>
+        </div>
+      </div>
+    </ng-template>
+  </ion-modal>
 
   <!-- Modern Status/Action Modal -->
   <ion-modal [isOpen]="isStatusModalOpen" (didDismiss)="closeStatusModal()" [backdropDismiss]="false"
